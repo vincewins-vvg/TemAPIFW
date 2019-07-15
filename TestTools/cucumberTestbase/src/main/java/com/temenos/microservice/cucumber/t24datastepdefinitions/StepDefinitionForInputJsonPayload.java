@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.temenos.useragent.cucumber.config.StepDefinitionConfiguration;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
+import com.temenos.useragent.cucumber.steps.HeaderStepDefs;
+import com.temenos.useragent.cucumber.steps.InteractionSessionStepDefs;
 import com.temenos.useragent.generic.internal.DefaultEntityWrapper;
 import com.temenos.useragent.generic.internal.EntityHandler;
 import com.temenos.useragent.generic.internal.EntityWrapper;
@@ -27,13 +29,26 @@ import cucumber.api.java8.En;
 public class StepDefinitionForInputJsonPayload implements En {
     @Autowired
     private CucumberInteractionSession cucumberInteractionSession;
-    
+    @Autowired
+    private HeaderStepDefs headerStepDefs;
+    @Autowired
+    private InteractionSessionStepDefs  interactionSessionsDefs;
+
     private JSONObject json;
-    
+
     private JSONArray jsonArray;
 
     public StepDefinitionForInputJsonPayload(StepDefinitionConfiguration stepConfig) {
-      
+        
+//New line added for sending microservice request to enable script execution on multiple platforms
+        
+        Given("^(?:I ?)*create a new MS request$", () ->  {
+            interactionSessionsDefs.createSession();
+            interactionSessionsDefs.setDefaultBasicAuthoriztion();
+            interactionSessionsDefs.setDefaultMediaType();
+            initialize();            
+        });
+
         Given("^(?:I ?)*I Initialize Json Payload$", () -> {
             json = new JSONObject();
             this.setJson(json);
@@ -41,67 +56,75 @@ public class StepDefinitionForInputJsonPayload implements En {
 
         Given(format("^(?:I ?)*set property {0} from bundle value {0}$", stepConfig.stringRegEx()),
                 (String propertyName, String bundlevariablename) -> {
-                   String id =cucumberInteractionSession.scenarioBundle().getString(bundlevariablename.replace("{", "").replace("}", ""));
+                    String id = cucumberInteractionSession.scenarioBundle()
+                            .getString(bundlevariablename.replace("{", "").replace("}", ""));
                     this.getJson().put(propertyName, id);
                 });
-        Given(format("^(?:I ?)*set property {0} with json value {0} append with unique value {0}$", stepConfig.stringRegEx()),
-                (String propertyName,String propertyValue, String bundlevariablename) -> {
-                   String id =cucumberInteractionSession.scenarioBundle().getString(bundlevariablename.replace("{", "").replace("}", ""));
-                   String uniqueValue= propertyValue.concat(id);
+        Given(format("^(?:I ?)*set property {0} with json value {0} append with unique value {0}$",
+                stepConfig.stringRegEx()), (String propertyName, String propertyValue, String bundlevariablename) -> {
+                    String id = cucumberInteractionSession.scenarioBundle()
+                            .getString(bundlevariablename.replace("{", "").replace("}", ""));
+                    String uniqueValue = propertyValue.concat(id);
                     this.getJson().put(propertyName, uniqueValue);
-                }); 
-            
+                });
+
         Given(format("^(?:I ?)*set property {0} from bundle array value {0}$", stepConfig.stringRegEx()),
                 (String propertyName, String bundlevariablename) -> {
-                   String id =cucumberInteractionSession.scenarioBundle().getString(bundlevariablename.replace("{", "").replace("}", ""));
-                   jsonArray = new JSONArray();
-                   this.getJsonArray().put(new JSONObject().put(propertyName, id));
+                    String id = cucumberInteractionSession.scenarioBundle()
+                            .getString(bundlevariablename.replace("{", "").replace("}", ""));
+                    jsonArray = new JSONArray();
+                    this.getJsonArray().put(new JSONObject().put(propertyName, id));
                 });
-        
 
         Given("^(?:I ?)*I Initialize JsonArray$", () -> {
             jsonArray = new JSONArray();
             this.setJsonArray(jsonArray);
         });
-        
+
         Given(format("^(?:I ?)*set property {0} into Json Array with value {0}$", stepConfig.stringRegEx()),
-        (String propertyName, String propertyValue) -> {
-            this.getJsonArray().put(new JSONObject().put(propertyName, propertyValue));
-        });
-        
-        
-        Given(format("^(?:I ?)*set property {0} into Json Array with value {0} append with unique value {0}$", stepConfig.stringRegEx()),
-                (String propertyName,String propertyValue, String bundlevariablename) -> {
-                   String id =cucumberInteractionSession.scenarioBundle().getString(bundlevariablename.replace("{", "").replace("}", ""));
-                   String uniqueValue= propertyValue.concat(id);
-                   this.getJsonArray().put(new JSONObject().put(propertyName, uniqueValue));
-                }); 
-        
-        
-        Given(format("^(?:I ?)*I add this JsonArray into the Json Object with a name {0}$" , stepConfig.stringRegEx()),
-                (String propertyName) -> {
-                   this.getJson().put(propertyName, this.getJsonArray());
+                (String propertyName, String propertyValue) -> {
+                    this.getJsonArray().put(new JSONObject().put(propertyName, propertyValue));
                 });
-        
-         Given(format("^(?:I ?)*I set property {0} with json value {0}$", stepConfig.stringRegEx()),
+
+        Given(format("^(?:I ?)*set property {0} into Json Array with value {0} append with unique value {0}$",
+                stepConfig.stringRegEx()), (String propertyName, String propertyValue, String bundlevariablename) -> {
+                    String id = cucumberInteractionSession.scenarioBundle()
+                            .getString(bundlevariablename.replace("{", "").replace("}", ""));
+                    String uniqueValue = propertyValue.concat(id);
+                    this.getJsonArray().put(new JSONObject().put(propertyName, uniqueValue));
+                });
+
+        Given(format("^(?:I ?)*I add this JsonArray into the Json Object with a name {0}$", stepConfig.stringRegEx()),
+                (String propertyName) -> {
+                    this.getJson().put(propertyName, this.getJsonArray());
+                });
+
+        Given(format("^(?:I ?)*I set property {0} with json value {0}$", stepConfig.stringRegEx()),
                 (String propertyName, String propertyValue) -> {
                     System.out.println(propertyName);
-                    this.getJson().put(propertyName, propertyValue)    ;               
-                }); 
-                
-         Given(format("^(?:I ?)*I post to {0} with arguments$", stepConfig.stringRegEx()),
-                (String fileName) -> {
-                    
-                    generateInputwithJson(fileName, this.getJson());                   
-                });              
+                    this.getJson().put(propertyName, propertyValue);
+                });
+
+        Given(format("^(?:I ?)*I post to {0} with arguments$", stepConfig.stringRegEx()), (String fileName) -> {
+
+            generateInputwithJson(fileName, this.getJson());
+        });
     }
     
-    
-    public void generateInputwithJson(String fileName,JSONObject jsonPayload) {       
-        cucumberInteractionSession.use(setRequestPayloadAtRuntime(fileName, jsonPayload));   
+    public void initialize(){
+        
+        //To pass api key as header while sending the request if platform is AWS
+        String apiKey = System.getProperty("API_KEY");
+        if (apiKey != null) {
+            headerStepDefs.setHeader("x-api-Key", apiKey);
+        }
     }
-  
-    private EntityWrapper setRequestPayloadAtRuntime(String fileName ,JSONObject jsonProperties) {
+
+    public void generateInputwithJson(String fileName, JSONObject jsonPayload) {
+        cucumberInteractionSession.use(setRequestPayloadAtRuntime(fileName, jsonPayload));
+    }
+
+    private EntityWrapper setRequestPayloadAtRuntime(String fileName, JSONObject jsonProperties) {
         String payload = "";
 
         try {
@@ -124,14 +147,13 @@ public class StepDefinitionForInputJsonPayload implements En {
         return json;
     }
 
-
     /**
-     * @param json the json to set
+     * @param json
+     *            the json to set
      */
     public void setJson(JSONObject json) {
         this.json = json;
     }
-
 
     /**
      * @return the jsonArray
@@ -140,9 +162,9 @@ public class StepDefinitionForInputJsonPayload implements En {
         return jsonArray;
     }
 
-
     /**
-     * @param jsonArray the jsonArray to set
+     * @param jsonArray
+     *            the jsonArray to set
      */
     public void setJsonArray(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
