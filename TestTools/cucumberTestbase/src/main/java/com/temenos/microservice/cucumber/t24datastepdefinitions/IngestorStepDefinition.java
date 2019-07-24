@@ -1,8 +1,11 @@
 package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 
-import com.temenos.logger.Logger;
-import com.temenos.logger.diagnostics.Diagnostic;
+import com.temenos.des.schema.exception.EventSchemaParseException;
+import com.temenos.des.serializer.exception.AvroSerializationException;
+import com.temenos.des.serializer.exception.SchemaRegistryException;
+import com.temenos.des.streamprocessor.exception.StreamProducerException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
@@ -10,12 +13,14 @@ import com.temenos.microservice.framework.test.dao.DaoFactory;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
 
 
+import static com.temenos.microservice.test.util.ResourceHandler.readResource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
+import com.temenos.microservice.test.producer.AvroProducer;
 import com.temenos.microservice.test.util.ResourceHandler;
 import com.temenos.microservice.test.util.RetryUtil;
 import cucumber.api.DataTable;
@@ -24,7 +29,10 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +41,15 @@ import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCri
 
 public class IngestorStepDefinition {
 
-    private static final Diagnostic log = Logger.forDiagnostic().forComp(IngestorStepDefinition.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
     private static final String REPLACE_COMPANY = "COMPANY_ID_HERE";
     private static final String REPLACE_TESTCASE_ID = "TEST_CASE_ID_HERE";
     private DaoFacade daoFacade = DaoFactory.getInstance();
 
     private String apiName;
     private TestCase testCase;
-    private ITestProducer producer;
+    private AvroProducer avroProducer;
+    private ITestProducer t24Producer;
     private List<Criterion> dataCriterions = null;
     Map<Integer, List<Attribute>> dataMap = null;
 
@@ -65,7 +74,7 @@ public class IngestorStepDefinition {
     }
 
     @Given("^Delete Record in the table ([^\\s]+) for the following criteria$")
-    public void deleteRecordsInTable(String tableName,DataTable dataTable) throws Exception {
+    public void deleteRecordsInTable(String tableName, DataTable dataTable) throws Exception {
         dataCriterions = new ArrayList<>();
         List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
         tableValues.forEach(tableValue -> {
@@ -76,18 +85,40 @@ public class IngestorStepDefinition {
                         tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
             }
         });
-        log.info("Deleting records in table {} for testcase {}",tableName,testCase.getTestCaseID());
-        daoFacade.deleteItems(tableName,dataCriterions);
+        log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
+        daoFacade.deleteItems(tableName, dataCriterions);
     }
 
     @When("^Send Data to Topic from file ([^\\s]+)$")
     public void sendDataToTopic(String resourcePath) throws Exception {
-        producer = new ITestProducer("table-update-holdings", System.getenv("localSchemaNamesAsCSVOrRemoteSchemaURL"));
-        testCase.setT24Payload(ResourceHandler.
-                readResource("/" + resourcePath));
-        producer.sendAsGenericEvent(testCase.getT24Payload());
+        t24Producer = new ITestProducer("table-update-holdings", Environment
+                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+        testCase.setT24Payload(readResource("/" + resourcePath));
+        t24Producer.sendAsGenericEvent(testCase.getT24Payload());
     }
 
+    @When("^Send Data to Topic for following records$")
+    public void sendDataToTopic(DataTable dataTable) throws Exception {
+        avroProducer = new AvroProducer("table-update-holdings", Environment
+                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+        tableValues.forEach(tableValue -> {
+            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                try {
+                    testCase.setT24Payload(readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    avroProducer.sendGenericEvent(testCase.getT24Payload(),
+                            tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
+                } catch (IOException | StreamProducerException | InterruptedException |
+                        AvroSerializationException | EventSchemaParseException | SchemaRegistryException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
 
     @Then("^Set the following data criteria$")
@@ -106,21 +137,22 @@ public class IngestorStepDefinition {
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")
     public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(40,() -> {
-            return daoFacade.readItems(tableName, dataCriterions);
-        }," Getting DB records from table: "+tableName);
+        dataMap = RetryUtil.getWithRetry(40, () -> {
+            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+            return (dataMap.size() != 0 ? dataMap : null);
+        }, " Getting DB records from table: " + tableName);
         if (dataMap.size() >= 2) {
             throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
         }
-        List<Attribute>data = dataMap.get(Integer.valueOf(1));
+        List<Attribute> data = dataMap.get(Integer.valueOf(1));
         List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
         tableValues.forEach(tableValue -> {
             if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
                 data.forEach(attribute -> {
-                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))){
-                        assertEquals(getDataMismatchErrorLog(tableName,tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),attribute.getValue()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),attribute.getValue().toString());
+                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+                        assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
                     }
                 });
             }
@@ -128,15 +160,18 @@ public class IngestorStepDefinition {
     }
 
     private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
-        return "For testcase: "+testCase.getTestCaseID()+" Data mismatch in table: "
-                +tableName+" for column"+columnName.toString()+" expected value: "+expected.toString()+" actual value: "+actual.toString();
+        return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: "
+                + tableName + " for column" + columnName.toString() + " expected value: " + expected.toString() + " actual value: " + actual.toString();
     }
 
 
     @After
     public void tearDown() {
-        if (producer != null) {
-            producer.cleanup();
+        if (avroProducer != null) {
+            avroProducer.close();
+        }
+        if (t24Producer != null) {
+            t24Producer.cleanup();
         }
         if (daoFacade != null) {
             daoFacade.closeConnection();

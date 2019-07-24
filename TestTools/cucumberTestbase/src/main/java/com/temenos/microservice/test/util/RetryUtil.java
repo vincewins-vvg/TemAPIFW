@@ -2,22 +2,20 @@ package com.temenos.microservice.test.util;
 
 
 
-import com.temenos.logger.Logger;
-import com.temenos.logger.alert.Alert;
-import com.temenos.logger.diagnostics.Diagnostic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
+
 public class RetryUtil {
 
-    private static final Diagnostic log = Logger.forDiagnostic().forComp(RetryUtil.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
 
     public static <T> T getWithRetry(int timeoutSeconds, Supplier<T> supplier, String message) throws TimeoutException {
         long timeoutMillis = timeoutSeconds * 1000;

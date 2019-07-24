@@ -5,7 +5,9 @@ public enum DataTablesColumnNames {
     COLUMN_NAME("ColumnName"),
     COLUMN_OPERATOR("Operator"),
     COLUMN_DATATYPE("DataType"),
-    COLUMN_VALUE("ColumnValue");
+    COLUMN_VALUE("ColumnValue"),
+    AVRO_JSON("AvroJson"),
+    APPLICATION_NAME("ApplicationName");
 
     private String name;
 
