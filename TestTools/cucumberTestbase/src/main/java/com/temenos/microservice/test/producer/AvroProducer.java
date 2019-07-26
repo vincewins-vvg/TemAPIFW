@@ -49,7 +49,7 @@ public class AvroProducer {
         Schema schema = schemaProvider.getSchema(applicationName).getAvroSchema();
         System.out.println(schema.toString());
         GenericRecord payload = getGenericRecordFromJson(schema, jsonMessage);
-        streamProducer.batch().add(Topic, getSerializedMessage
+        streamProducer.batch().add(Topic,"1", getSerializedMessage
                 (getOutgoingConsumerAvro(payload, Topic, registerSchema(applicationName, schema))));
         streamProducer.batch().send();
     }
