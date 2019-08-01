@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.useragent.cucumber.config.StepDefinitionConfiguration;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
 import com.temenos.useragent.cucumber.steps.HeaderStepDefs;
@@ -37,16 +38,20 @@ public class StepDefinitionForInputJsonPayload implements En {
     private JSONObject json;
 
     private JSONArray jsonArray;
+    
+    private String authCodeVariable="";
 
     public StepDefinitionForInputJsonPayload(StepDefinitionConfiguration stepConfig) {
         
 //New line added for sending microservice request to enable script execution on multiple platforms
         
-        Given("^(?:I ?)*create a new MS request$", () ->  {
+        Given(format("^(?:I ?)*create a new MS request with code {0}$", stepConfig.stringRegEx()),
+        (String envVariable) -> {
             interactionSessionsDefs.createSession();
             interactionSessionsDefs.setDefaultBasicAuthoriztion();
             interactionSessionsDefs.setDefaultMediaType();
-            initialize();            
+            System.out.println(" Before Initialise");
+            initialize(envVariable);            
         });
 
         Given("^(?:I ?)*I Initialize Json Payload$", () -> {
@@ -80,7 +85,7 @@ public class StepDefinitionForInputJsonPayload implements En {
             jsonArray = new JSONArray();
             this.setJsonArray(jsonArray);
         });
-
+ 
         Given(format("^(?:I ?)*set property {0} into Json Array with value {0}$", stepConfig.stringRegEx()),
                 (String propertyName, String propertyValue) -> {
                     this.getJsonArray().put(new JSONObject().put(propertyName, propertyValue));
@@ -108,16 +113,41 @@ public class StepDefinitionForInputJsonPayload implements En {
         Given(format("^(?:I ?)*I post to {0} with arguments$", stepConfig.stringRegEx()), (String fileName) -> {
 
             generateInputwithJson(fileName, this.getJson());
-        });
-    }
+        }); 
+        
+        //This query parameter is set for additional params for azure environment
+        And(format("^(?:I ?)*query parameter will be set to value {0}$", stepConfig.stringRegEx()),
+                (String queryParams) -> setQueryParamsAzure(queryParams+this.authCodeVariable));
+         
+        
+    }  
     
-    public void initialize(){
+    public void initialize(String authEnvVariable){ 
+        
+        if (Environment.getEnvironmentVariable("CLOUDENV", "").equalsIgnoreCase("AZURE")) { 
+            
+            System.out.println(" Inside Initialise" +Environment.getEnvironmentVariable(authEnvVariable, ""));
+            this.authCodeVariable = "&code="+Environment.getEnvironmentVariable(authEnvVariable, "");
+            //cucumberInteractionSession.queryParam("code="+Environment.getEnvironmentVariable(authEnvVariable, ""));
+        }
         
         //To pass api key as header while sending the request if platform is AWS
         String apiKey = System.getProperty("API_KEY");
         if (apiKey != null) {
             headerStepDefs.setHeader("x-api-Key", apiKey);
         }
+    }
+     
+
+    
+    public void setQueryParamsAzure(String queryParams) {
+        if(queryParams.startsWith("&")){
+            queryParams = queryParams.substring(1);
+        }
+        System.out.println(queryParams);
+        cucumberInteractionSession
+                .queryParam(queryParams);
+        System.out.println(this.cucumberInteractionSession.url());
     }
 
     public void generateInputwithJson(String fileName, JSONObject jsonPayload) {
