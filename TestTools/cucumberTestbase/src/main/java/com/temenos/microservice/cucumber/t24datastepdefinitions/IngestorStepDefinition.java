@@ -137,7 +137,7 @@ public class IngestorStepDefinition {
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")
     public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(40, () -> {
+        dataMap = RetryUtil.getWithRetry(60, () -> {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
