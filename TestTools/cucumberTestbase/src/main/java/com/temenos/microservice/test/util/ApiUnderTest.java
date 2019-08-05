@@ -1,7 +1,8 @@
 package com.temenos.microservice.test.util;
 
 public enum ApiUnderTest {
-    HOLDINGS_API("HOLDINGS");
+    HOLDINGS_API("HOLDINGS"),
+    ENTITLEMENT_API("ENTITLEMENT");
 
     String name;
     ApiUnderTest(String name){
