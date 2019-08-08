@@ -2,7 +2,8 @@ package com.temenos.microservice.test.util;
 
 public enum ApiUnderTest {
     HOLDINGS_API("HOLDINGS"),
-    ENTITLEMENT_API("ENTITLEMENT");
+    ENTITLEMENT_API("ENTITLEMENT"),
+    MKT_CATALOG_API("MARKETING_CATALOG");
 
     String name;
     ApiUnderTest(String name){
