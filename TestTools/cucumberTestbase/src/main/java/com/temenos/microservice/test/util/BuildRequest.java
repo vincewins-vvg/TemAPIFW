@@ -3,10 +3,13 @@ package com.temenos.microservice.test.util;
 import com.temenos.microservice.framework.core.conf.Environment;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.params.CoreConnectionPNames;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,10 +21,15 @@ public class BuildRequest {
     private String baseUrl;
     private String bodyMessage;
     RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
+    RestAssuredConfig restAssuredConfig;
     Response response;
 
     public BuildRequest(ApiUnderTest apiUnderTest) {
         this.apiUndertest = apiUnderTest;
+        restAssuredConfig = RestAssured.config()
+                .httpClient(HttpClientConfig.httpClientConfig()
+                        .setParam(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+                        .setParam(CoreConnectionPNames.SO_TIMEOUT, 60000));
     }
 
     public String getURL() {
@@ -45,6 +53,7 @@ public class BuildRequest {
         switch (apiUndertest.getName()) {
             case "CALL_BACK_REGISTRY":
                 baseUrl = getCallBKRegistryURL();
+                System.out.println(baseUrl);
                 break;
             default:
                 baseUrl = null;
@@ -67,17 +76,18 @@ public class BuildRequest {
     public void buildRequest() {
         if (isAzureEnv()) putAzureToken();
         if (Environment.getEnvironmentVariable("API_KEY", null) != null) {
-            addHeader("x-api=key", Environment.getEnvironmentVariable("API_KEY", null));
+            addHeader("x-api-key", Environment.getEnvironmentVariable("API_KEY", null));
+            System.out.println("Header Added");
         }
         formBaseURL();
         requestSpecBuilder.setBaseUri(baseUrl)
                 .addParams(queryParams)
-                .setContentType(ContentType.JSON)
+                .addHeader("Content-Type","application/json")
                 .setBody(bodyMessage);
     }
 
     public void sendRequest() throws Exception {
-        RequestSpecification httpRequest = RestAssured.given();
+        RequestSpecification httpRequest = RestAssured.given().config(restAssuredConfig);
         response = httpRequest.spec(requestSpecBuilder.build())
                 .post();
         if (response.statusCode() != 200) {

@@ -3,7 +3,6 @@ package com.temenos.microservice.test;
 import com.temenos.microservice.test.util.ApiUnderTest;
 
 
-import java.net.Inet4Address;
 import java.util.Optional;
 
 public class TestCase {
