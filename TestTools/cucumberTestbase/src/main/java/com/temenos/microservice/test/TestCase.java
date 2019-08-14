@@ -2,7 +2,9 @@ package com.temenos.microservice.test;
 
 import com.temenos.microservice.test.util.ApiUnderTest;
 
+
 import java.net.Inet4Address;
+import java.util.Optional;
 
 public class TestCase {
     protected String testCaseID = null;
@@ -12,9 +14,13 @@ public class TestCase {
 
     public TestCase(String testCaseID,String apiUnderTest) throws Exception {
         this.testCaseID = testCaseID;
-        this.API_UNDER_TEST = ApiUnderTest.from(apiUnderTest);
+        this.API_UNDER_TEST = Optional.ofNullable(ApiUnderTest.from(apiUnderTest))
+                .orElse(ApiUnderTest.DUMMY_API);
     }
 
+    public ApiUnderTest getApiUnderTest() {
+        return API_UNDER_TEST;
+    }
 
     public String getCompanyID() {
         return companyID;
