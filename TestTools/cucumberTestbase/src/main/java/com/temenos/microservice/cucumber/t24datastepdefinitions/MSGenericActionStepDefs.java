@@ -5,9 +5,7 @@ package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static java.text.MessageFormat.format;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -62,6 +60,12 @@ public class MSGenericActionStepDefs implements En {
         
         And(format("^(?:I ?)*remove mulitvalue property {0}$", stepConfig.stringRegEx()), 
                 (String key) -> removeMultivalueProperty(key));
+
+        Then("^response item count should be (\\d+)$", (Integer count) -> {
+            assertEquals("Item count mismatch expected " + count +
+                            " actual " + cucumberInteractionSession.entities().item().count("items"),
+                    count, (Integer) cucumberInteractionSession.entities().item().count("items"));
+        });
         
         
         Then(format("^count of multivalue property {0} should be equal to {0}$", stepConfig.stringRegEx()), 
