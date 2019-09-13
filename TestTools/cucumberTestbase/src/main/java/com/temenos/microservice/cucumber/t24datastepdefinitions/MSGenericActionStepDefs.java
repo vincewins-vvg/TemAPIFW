@@ -23,6 +23,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpHeaders;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.temenos.useragent.cucumber.config.EndPointConfiguration;
@@ -65,6 +67,16 @@ public class MSGenericActionStepDefs implements En {
             assertEquals("Item count mismatch expected " + count +
                             " actual " + cucumberInteractionSession.entities().item().count("items"),
                     count, (Integer) cucumberInteractionSession.entities().item().count("items"));
+        });
+
+        And("^try until response code should be (\\d+)$", (httpCode) -> {
+            int retryCount =0;
+            while (cucumberInteractionSession.result().code() != 200 && retryCount<3){
+                System.out.println("Retrying sending request iteration "+retryCount);
+                cucumberInteractionSession.rerun();
+                retryCount++;
+            }
+            Assert.assertThat(cucumberInteractionSession.result().code(), CoreMatchers.equalTo(httpCode));
         });
         
         
