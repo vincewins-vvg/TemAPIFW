@@ -70,9 +70,10 @@ public class MSGenericActionStepDefs implements En {
         });
 
         And("^try until response code should be (\\d+)$", (httpCode) -> {
-            int retryCount =0;
-            while (cucumberInteractionSession.result().code() != 200 && retryCount<3){
-                System.out.println("Retrying sending request iteration "+retryCount);
+            int retryCount = 0;
+            while (cucumberInteractionSession.result().code() != 200 && retryCount < 3) {
+                System.out.println("Retrying sending request iteration " + retryCount
+                        + "since response code is " + cucumberInteractionSession.result().code());
                 cucumberInteractionSession.rerun();
                 retryCount++;
             }
