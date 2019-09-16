@@ -23,7 +23,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpHeaders;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,13 +70,17 @@ public class MSGenericActionStepDefs implements En {
 
         And("^try until response code should be (\\d+)$", (httpCode) -> {
             int retryCount = 0;
+            System.out.println(httpCode.toString());
+            Integer expected = Integer.valueOf(httpCode.toString());
             while (cucumberInteractionSession.result().code() != 200 && retryCount < 3) {
                 System.out.println("Retrying sending request iteration " + retryCount
                         + "since response code is " + cucumberInteractionSession.result().code());
                 cucumberInteractionSession.rerun();
                 retryCount++;
             }
-            Assert.assertThat(cucumberInteractionSession.result().code(), CoreMatchers.equalTo(httpCode));
+            System.out.println("The response code is "+cucumberInteractionSession.result().code());
+            Assert.assertEquals(Integer.valueOf(cucumberInteractionSession.result().code()),
+                    expected);
         });
         
         
