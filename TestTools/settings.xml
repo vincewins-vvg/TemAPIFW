@@ -1,0 +1,121 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<!-- <localRepository>C:\Users\kdhanraj\.m2\repository</localRepository> -->
+	<!-- Nexus servers -->
+	<servers>
+		<server>
+			<id>nexus-t24</id>
+			<username>deployment-t24</username>
+			<password>ZEfrE4ap</password>
+			<filePermissions>775</filePermissions>
+			<directoryPermissions>775</directoryPermissions>
+			<configuration></configuration>
+		</server>
+	</servers>
+	
+	<!-- Active profile --> 
+	<activeProfiles>
+		<activeProfile>temenos-plugin</activeProfile>
+	</activeProfiles>
+	
+	<!-- Profiles -->
+	<profiles>
+		<profile>
+			<id>temenos-plugin</id>
+			<repositories>
+				<repository>
+					<id>nexus-t24-rep</id>
+					<url>http://maven.temenosgroup.com/content/groups/all/</url>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+				</repository>
+				<repository>
+					<id>temenos-group.com</id>
+					<name>Temenos Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/groups/odyssey</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>nexus-t24-pluginrepo</id>
+					<name>Temenos Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/groups/all/</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>nexus-temenos-pluginrepo</id>
+					<name>Temenos Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/groups/odyssey</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+		<profile>
+			<id>releaseRepository</id>
+			<activation>
+			<activeByDefault>true</activeByDefault>
+			<property>
+				<name>release</name>	
+			</property>
+			</activation>	
+			<repositories>
+				<repository>	
+					<id>temenos-group.com</id>
+					<name>Temenos Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/repositories/t24-releases</url>	
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>temenos-group.com</id>	
+					<name>Temenos Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/groups/t24/</url>		
+				</pluginRepository>	
+			</pluginRepositories>	
+		</profile>
+		<profile>
+			<id>snapshotsRepository</id>
+			<activation>	
+				<activeByDefault>true</activeByDefault>	
+				<property>			
+					<name>!release</name>	
+				</property>
+			</activation>	
+			<repositories>
+				<repository>
+					<id>temenos-group.com</id>
+					<name>Temeno Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/repositories/t24-snapshots</url>
+				</repository>
+			</repositories>	
+			<pluginRepositories>
+				<pluginRepository>
+					<id>temenos-group.com</id>
+					<name>Temeno Maven Repository</name>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<url>http://maven.temenosgroup.com/content/groups/t24</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+
+	<!-- Plugins -->
+	<pluginGroups>
+		<pluginGroup>com.odcgroup.maven.plugin</pluginGroup>
+	</pluginGroups>
+
+</settings>
+
