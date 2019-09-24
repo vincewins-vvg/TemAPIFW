@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="commonPattern">%m{nolookups}%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${commonPattern}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <logger name="com.temenos.useragent.generic.http.DefaultHttpClient" level="info" />
+
+        <root level="info">
+            <AppenderRef ref="STDOUT"/>
+        </root>
+    </Loggers>
+</Configuration>

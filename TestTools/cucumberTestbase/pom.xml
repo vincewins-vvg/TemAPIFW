@@ -24,6 +24,7 @@
 		<commons-logging.version>1.1</commons-logging.version>
 		<spring.version>4.3.2.RELEASE</spring.version>
 		<log4j.version>1.2.14</log4j.version>
+		<log4j-core.version>2.12.1</log4j-core.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
        
@@ -143,35 +144,35 @@
 			<artifactId>cucumber-core</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-		
-		<dependency>
-            <groupId>com.temenos.technology</groupId>
-            <artifactId>useragent-cucumber</artifactId>
-            <version>${useragentcucumber.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>info.cukes</groupId>
-                    <artifactId>cucumber-jvm-deps</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>info.cukes</groupId>
-                    <artifactId>cucumber-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>info.cukes</groupId>
-                    <artifactId>cucumber-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>info.cukes</groupId>
-                    <artifactId>cucumber-java8</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>info.cukes</groupId>
-                    <artifactId>cucumber-junit</artifactId>
-                </exclusion>
-            </exclusions>
 
-        </dependency>
+		<dependency>
+			<groupId>com.temenos.technology</groupId>
+			<artifactId>useragent-cucumber</artifactId>
+			<version>${useragentcucumber.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>info.cukes</groupId>
+					<artifactId>cucumber-jvm-deps</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>info.cukes</groupId>
+					<artifactId>cucumber-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>info.cukes</groupId>
+					<artifactId>cucumber-java</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>info.cukes</groupId>
+					<artifactId>cucumber-java8</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>info.cukes</groupId>
+					<artifactId>cucumber-junit</artifactId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
 
 		<dependency>
 			<groupId>io.rest-assured</groupId>
@@ -181,11 +182,11 @@
 		</dependency>
 		
 		
-		<dependency>
+	 	<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -216,24 +217,37 @@
 			<version>4.0.0</version>
 			<scope>compile</scope>
 		</dependency>
-		
-		<dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.2.0</version>
-        </dependency>
 
-       <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.10</version>
-        </dependency> 
-        
-        <dependency>
-        <groupId>com.googlecode.json-simple</groupId>
-        <artifactId>json-simple</artifactId>
-        <version>1.1.1</version>
-    </dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+    <!-- log4j dependencies for enabling UserAgent Console log -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j-core.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
         
