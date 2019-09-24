@@ -5,8 +5,12 @@ package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static java.text.MessageFormat.format;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +26,7 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.http.HttpHeaders;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.temenos.useragent.cucumber.config.EndPointConfiguration;
 import com.temenos.useragent.cucumber.config.StepDefinitionConfiguration;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
+import com.temenos.useragent.cucumber.steps.ScenarioBundleStepDefs;
 import com.temenos.useragent.cucumber.transformer.ExpressionListConverter.ExpressionList;
 import com.temenos.useragent.cucumber.transformer.StringListConverter.StringList;
 import com.temenos.useragent.cucumber.utils.StringEvaluator;
@@ -48,6 +54,9 @@ public class MSGenericActionStepDefs implements En {
     
     @Autowired
     private CucumberInteractionSession cucumberInteractionSession;
+    @Autowired
+    private ScenarioBundleStepDefs scenarioBundleStepDefs;
+    
     private static String currentDate;
     private static String dateAfterIncrement;
     private static String dateAfterDecrement;
@@ -58,6 +67,33 @@ public class MSGenericActionStepDefs implements En {
     private static final String METHOD_EXCEPTION_MSG = "Link method not available {0}. Exception: {1}";
         
     public MSGenericActionStepDefs(StepDefinitionConfiguration stepConfig, EndPointConfiguration endPointConfig, StringEvaluator stringEvaluator) {
+        
+        And(format("^(?:I ?)*store the response data {0} in keyvalue pair {0}$", stepConfig.stringRegEx()), 
+                (String key, String value) -> storeKeyValues(key,cucumberInteractionSession.entities().item().get(value)));
+     
+        And(format("^(?:I ?)*fetch the response data for {0}$", stepConfig.stringRegEx()), 
+                (String key) -> scenarioBundleStepDefs.setBundleStringValue(key ,fetchKeyValues(key)));
+        
+        And(format("^(?:I ?)*store the response data {0} in keyvalue pair fetching from another api without maintaining session {0}$", stepConfig.stringRegEx()), 
+                (String key, String value) -> storeKeyValues(key,scenarioBundleStepDefs.getBundleStringValue(value)));
+        
+        And("^clear the test data in property files$",
+                () -> removeKeyValues());
+                
+         //Reusable test data with filenames passing from feature file
+        
+        And(format("^(?:I ?)*store the response data {0} in keyvalue pair {0} from file path {0}$", stepConfig.stringRegEx()), 
+                (String key, String value, String fileName) -> storeKeyValues(key,cucumberInteractionSession.entities().item().get(value),fileName));
+        
+        And(format("^(?:I ?)*store the response data {0} in keyvalue pair fetching from another api without maintaining session {0} from file path {0}$", stepConfig.stringRegEx()), 
+                (String key, String value, String fileName) -> storeKeyValues(key,scenarioBundleStepDefs.getBundleStringValue(value),fileName));
+        
+        And(format("^(?:I ?)*fetch the response data for {0} from file path {0}$", stepConfig.stringRegEx()), 
+                (String key, String fileName) -> scenarioBundleStepDefs.setBundleStringValue(key ,fetchKeyValues(key,fileName)));
+        
+        And(format("^(?:I ?)*fetch the response data having static values in test data {0} from file path {0}$", stepConfig.stringRegEx()), 
+                (String key, String fileName) -> scenarioBundleStepDefs.setBundleStringValue(key ,fetchKeyValuesFromStaticTestData(key,fileName)));
+        
         
         And(format("^(?:I ?)*remove mulitvalue property {0}$", stepConfig.stringRegEx()), 
                 (String key) -> removeMultivalueProperty(key));
@@ -96,9 +132,23 @@ public class MSGenericActionStepDefs implements En {
         And("^the response item is not empty$",
                 () -> assertNotNull(cucumberInteractionSession.entities().item()));
         
+        Then(format("^clear the test data in property from file path {0}$", stepConfig.stringRegEx()), 
+                (String fileName) -> {
+                    removeKeyValues(fileName);
+                });
+        
+        Then(format("^clear the static test data in testdata property from file path {0}$", stepConfig.stringRegEx()), 
+                (String fileName) -> {
+                    removeKeyValuesFromStaticTestData(fileName);
+                });
+        
         And("^set timeout session for one minute$",
                 () -> //Thread.sleep(60000));  
         TimeUnit.MINUTES.sleep(1));
+        
+        And("^set timeout session for 30 seconds$",
+                () ->   
+        TimeUnit.SECONDS.sleep(30));
         
         /* Examples:
          * And increment "systemDate" with value "15 days" in bundle 
@@ -177,6 +227,9 @@ public class MSGenericActionStepDefs implements En {
         Then(format("^property {0} should be equal to bundle value {0} {0} {0}$", stepConfig.stringRegEx()),
                 (String key, String prefix, String bundleKey, String suffix) -> comparePropetyValueWithBundleValue(key, prefix, bundleKey, suffix));
         
+        And(format("^set request header key {0} with multiple values {0}$", stepConfig.stringRegEx()),
+                (String key, String values) -> setHeaderMultiValues(key, values));
+    
     }
     
     
@@ -442,6 +495,116 @@ public class MSGenericActionStepDefs implements En {
         String bundleValueStore =cucumberInteractionSession.scenarioBundle().getString(bundleValue.replace("{", "").replace("}", ""));
         cucumberInteractionSession.header(key, bundleValueStore);
     }
+    
+    public void setHeaderMultiValues(String key, String... values) {
+        cucumberInteractionSession.header(key, values);
+    }
+
+ public void storeKeyValues(String key, String value, String filePath){
+        
+        try {
+
+            PropertiesConfiguration conf = new PropertiesConfiguration(filePath);
+            conf.setProperty(key, value);
+            conf.save();
+
+        } catch (Exception io) {
+            io.printStackTrace();
+        }
+    }
+     
+    
+    public String fetchKeyValues(String key,String filePath){
+        
+        try {
+
+            PropertiesConfiguration conf = new PropertiesConfiguration(filePath);
+         //   conf.getProperties(key);
+            return (String) conf.getProperty(key);
+
+        } catch (Exception io) {
+            io.printStackTrace();
+        }
+        return null;
+    }
+    
+  public String fetchKeyValuesFromStaticTestData(String key,String filePath){
+        
+        try {
+
+            PropertiesConfiguration conf = new PropertiesConfiguration(filePath);
+         //   conf.getProperties(key);
+            return (String) conf.getProperty(key);
+
+        } catch (Exception io) {
+            io.printStackTrace();
+        }
+        return null;
+    }
+    
+  public void removeKeyValues(String filePath){
+        
+        try {
+
+            PrintWriter w= new PrintWriter(filePath);
+            w.close();           
+   
+        } catch (Exception io) {
+            io.printStackTrace();
+        }
+    }
+  
+  public void removeKeyValuesFromStaticTestData(String filePath){
+      
+      try {
+
+          PrintWriter w= new PrintWriter(filePath);
+          w.close();           
+ 
+      } catch (Exception io) {
+          io.printStackTrace();
+      }
+  }
+  
+  public void storeKeyValues(String key, String value){
+      
+      try {
+
+          PropertiesConfiguration conf = new PropertiesConfiguration("./src/test/resources/ReusuableTestData/TestData.txt");
+          conf.setProperty(key, value);
+          conf.save();
+
+      } catch (Exception io) {
+          io.printStackTrace();
+      }
+  }
+   
+  
+  public String fetchKeyValues(String key){
+      
+      try {
+
+          PropertiesConfiguration conf = new PropertiesConfiguration("./src/test/resources/ReusuableTestData/TestData.txt");
+       //   conf.getProperties(key);
+          return (String) conf.getProperty(key);
+
+      } catch (Exception io) {
+          io.printStackTrace();
+      }
+      return null;
+  }
+  
+  public void removeKeyValues(){
+      
+      try {
+
+          PrintWriter w= new PrintWriter("./src/test/resources/ReusuableTestData/TestData.txt");
+          w.close();           
+ 
+      } catch (Exception io) {
+          io.printStackTrace();
+      }
+  }
     
     
 }
