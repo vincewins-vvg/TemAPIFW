@@ -1,18 +1,18 @@
 package com.temenos.microservice.test.util;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.apache.http.params.CoreConnectionPNames;
+
 import com.temenos.microservice.framework.core.conf.Environment;
+
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
-import org.apache.http.params.CoreConnectionPNames;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class BuildRequest {
 
@@ -66,10 +66,10 @@ public class BuildRequest {
     }
 
     private String getCallBKRegistryURL() {
-        return Environment.getEnvironmentVariable("API_BASE_URL", "")
+        return Environment.getEnvironmentVariable("URI", "")
                 .equalsIgnoreCase("") ?
                 "http://localhost:8085/ms-callbackregistry-api/api/v1.0.0/callbackregistry/callbacks" :
-                Environment.getEnvironmentVariable("API_BASE_URL", "") +
+                Environment.getEnvironmentVariable("URI", "") +
                         "/v1.0.0/callbackregistry/callbacks";
     }
 
