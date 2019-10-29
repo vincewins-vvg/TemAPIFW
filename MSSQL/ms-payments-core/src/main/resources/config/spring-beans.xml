@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa
+    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		">
+
+	<!-- Scans for components that will be auto-registered as Spring beans -->
+
+	<context:component-scan
+		base-package="com.temenos.microservice.payments.core" />
+	<context:component-scan
+		base-package="com.temenos.microservice.payments.function" />
+		<context:component-scan
+		base-package="com.temenos.microservice.payments.ingester" />
+	<context:component-scan
+		base-package="com.temenos.microservice.payments.entity" />
+	<context:component-scan base-package="com.temenos.microservice.payments.dao" />
+	<context:component-scan base-package="com.temenos.microservice.framework.core.data" />
+	<context:annotation-config />
+
+
+	<jpa:repositories base-package="com.temenos.microservice.framework.core.data" />
+	<jpa:repositories base-package="com.temenos.microservice.payments.entity" />
+
+	<bean name="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://#{systemEnvironment['HOST']}:#{systemEnvironment['PORT']}/#{systemEnvironment['DATABASE_NAME']}" />
+		<property name="username" value="#{systemEnvironment['DB_USERNAME']}" />
+		<property name="password" value="#{systemEnvironment['DB_PASSWORD']}" />
+	</bean>
+	<bean name="hibernateJpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="generateDdl" value="true" />
+		<property name="showSql" value="true" />
+	</bean>
+	<!-- EntityManagerFactory -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource">
+		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter">
+		</property>
+		<property name="packagesToScan">
+         <array>
+              <value>com.temenos.microservice.framework.core.*</value>
+              <value>com.temenos.microservice.payments.dao</value>
+              <value>com.temenos.microservice.payments.entity</value>
+         </array>
+         </property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="javax.persistence.schema-generation.database.action">none</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="database">payments</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+</beans>

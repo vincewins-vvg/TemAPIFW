@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-aws-jpa</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments-package-aws</artifactId>
+	<name>ms-payments-package-aws</name>
+	<description>ms-payments aws packaging</description>
+	<version>DEV.0.0-SNAPSHOT</version>
+
+	<properties>
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
+
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-payments-AWS</assemblyOutputDirectory>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ms-payments-core</artifactId>
+			<version>DEV.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

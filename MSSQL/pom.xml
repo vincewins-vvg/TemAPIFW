@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>com.temenos.microservice</groupId>
+		<artifactId>microservice-parent</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments</artifactId>
+	<version>DEV.0.0-SNAPSHOT</version>
+	<properties>
+		<minimum.code.coverage>0.0</minimum.code.coverage>
+		<spring.version>5.1.4.RELEASE</spring.version>
+		<spring.data.jpa.version>2.1.4.RELEASE</spring.data.jpa.version>
+		<hibernate.version>5.2.17.Final</hibernate.version>
+		<mysql.connector.version>8.0.15</mysql.connector.version>
+		<org.apache.httpcomponents.httpclient.version>4.5.5</org.apache.httpcomponents.httpclient.version>
+		<org.springframework.spring-test.version>2.5</org.springframework.spring-test.version>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>ms-payments-core</artifactId>
+				<version>DEV.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>ms-payments-model</artifactId>
+				<version>DEV.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>ms-payments-data</artifactId>
+				<version>DEV.0.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+  <modules>
+    <module>ms-payments-model</module>
+    <module>ms-payments-data</module>
+    <module>ms-payments-core</module>
+    <module>ms-payments-package</module>
+  </modules>
+</project>
