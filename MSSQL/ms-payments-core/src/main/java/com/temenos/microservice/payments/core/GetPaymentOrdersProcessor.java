@@ -44,20 +44,23 @@ public class GetPaymentOrdersProcessor {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("status", "INITIATED");
 
-		List<com.temenos.microservice.payments.entity.PaymentOrder> entities = PaymentOrderDao
-				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-				.executeQuery(criteriaBuilder, criteriaQuery, root, predicateList, parameters,
-						com.temenos.microservice.payments.entity.PaymentOrder.class);
+		// List<com.temenos.microservice.payments.entity.PaymentOrder> entities
+		// = PaymentOrderDao
+		// .getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
+		// .executeQuery(criteriaBuilder, criteriaQuery, root, predicateList,
+		// parameters,
+		// com.temenos.microservice.payments.entity.PaymentOrder.class);
 
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
-		for (com.temenos.microservice.payments.entity.PaymentOrder entity : entities) {
-			PaymentOrder view = new PaymentOrder();
-			view.setAmount(entity.getAmount());
-			view.setCurrency(entity.getCurrency());
-			view.setFromAccount(entity.getDebitAccount());
-			view.setToAccount(entity.getCreditAccount());
-			views.add(view);
-		}
+		// for (com.temenos.microservice.payments.entity.PaymentOrder entity :
+		// entities) {
+		// PaymentOrder view = new PaymentOrder();
+		// view.setAmount(entity.getAmount());
+		// view.setCurrency(entity.getCurrency());
+		// view.setFromAccount(entity.getDebitAccount());
+		// view.setToAccount(entity.getCreditAccount());
+		// views.add(view);
+		// }
 		PaymentOrders orders = new PaymentOrders();
 		orders.addItems(views.toArray(new PaymentOrder[0]));
 		return orders;
