@@ -3,7 +3,6 @@ package com.temenos.microservice.payments.core;
 import java.time.Instant;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -17,13 +16,12 @@ import com.temenos.microservice.payments.view.PaymentStatus;
 @Component
 public class CreateNewPaymentOrderProcessor {
 
-
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
-		
+
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
-		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
+		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
 
 		PaymentStatus paymentStatus = executePaymentOrder(paymentOrder);
 		return paymentStatus;
