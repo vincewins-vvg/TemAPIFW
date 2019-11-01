@@ -42,6 +42,7 @@ services:
       className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
       className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
+      className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
   
@@ -73,5 +74,74 @@ services:
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.security.authz.enabled: "false"
+      temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
+      DATABASE_KEY: sql
+      
+  stateingester:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}
+    depends_on:
+      - db-service
+    ports:
+      - "40504:40501"
+    environment:
+      HOST: db-service
+      PORT: 3306
+      DATABASE_NAME: payments
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      temn.msf.name: PaymentOrder
+      temn.msf.stream.vendor: kafka
+      temn.msf.schema.registry.url: http://schema-registry:8081
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.source.stream: table-update-state
+      temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
+      temn.msf.ingest.sink.error.stream: error-paymentorder
+      temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+      temn.msf.security.authz.enabled: "false"
+      temn.ingester.business.group.id: msf-test-group-id
+      temn.ingester.business.topic: table-update-business
+      temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderStateIngester
+      temn.msf.ingest.is.avro.event.ingester: "false"
+      temn.msf.security.authz.enabled: "false"
+      DATABASE_KEY: sql
+  businessingester:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}
+    depends_on:
+      - db-service
+    ports:
+      - "40505:40504"
+    environment:
+      HOST: db-service
+      PORT: 3306
+      DATABASE_NAME: payments
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      temn.msf.name: PaymentOrder
+      temn.msf.stream.vendor: kafka
+      temn.msf.schema.registry.url: http://schema-registry:8081
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.source.stream: table-update-business
+      temn.msf.ingest.source.stream.consumergroup.id: msf-test-group-id
+      temn.msf.ingest.sink.error.stream: error-paymentorder
+      temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+      temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderBusinessIngester
+      temn.msf.security.authz.enabled: "false"
+      temn.msf.ingest.is.avro.event.ingester: "false"
+      temn.msf.security.authz.enabled: "false"
+      temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
