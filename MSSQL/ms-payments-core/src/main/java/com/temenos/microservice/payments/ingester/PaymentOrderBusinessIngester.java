@@ -8,7 +8,7 @@ public class PaymentOrderBusinessIngester extends BinaryIngesterUpdater {
 	@Override
 	public void transform(byte[] binaryObject) throws FunctionException {
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

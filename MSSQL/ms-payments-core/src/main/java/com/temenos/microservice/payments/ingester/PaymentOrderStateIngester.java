@@ -7,7 +7,6 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 import com.temenos.microservice.framework.core.ingester.EventStreamChecker;
-import com.temenos.microservice.kafka.util.KafkaStreamConsumer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
