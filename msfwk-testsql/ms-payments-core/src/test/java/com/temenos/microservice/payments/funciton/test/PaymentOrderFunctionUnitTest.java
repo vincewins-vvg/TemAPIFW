@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -27,8 +27,17 @@ import com.temenos.microservice.payments.view.PaymentOrders;
 import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
 
-@Ignore
 public class PaymentOrderFunctionUnitTest {
+
+	@Before
+	public void setup() {
+		System.getProperties().setProperty("DATABASE_KEY", "sql");
+		System.getProperties().setProperty("temn.msf.security.authz.enabled", "false");
+		System.getProperties().setProperty("VALIDATE_PAYMENT_ORDER", "false");
+		System.getProperties().setProperty("DATABASE_NAME", "payments");
+		System.getProperties().setProperty("DB_USERNAME", "root");
+		System.getProperties().setProperty("DB_PASSWORD", "root");
+	}
 
 	@Test
 	public void testCreateNewPaymentOrder() {
@@ -43,7 +52,6 @@ public class PaymentOrderFunctionUnitTest {
 		try {
 			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(null, createNewPaymentOrderInput);
 			Assert.assertNotNull(paymentStatus);
-
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -86,8 +94,7 @@ public class PaymentOrderFunctionUnitTest {
 		paymentStatus.setDetails("Test");
 		paymentStatus.setPaymentId("12355");
 		paymentStatus.setStatus("test");
-		UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(
-				orderParams, paymentStatus);
+		UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
 		try {
 			PaymentStatus status = updatePaymentOrder.invoke(null, paymentOrderInput);
 			Assert.assertNotNull(status);

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
@@ -21,7 +22,9 @@ public class CreateNewPaymentOrderProcessor {
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
-		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
+		if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("true")) {
+			PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
+		}
 
 		PaymentStatus paymentStatus = executePaymentOrder(paymentOrder);
 		return paymentStatus;

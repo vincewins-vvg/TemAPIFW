@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
 
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
@@ -44,6 +45,9 @@ public class PaymentOrder extends JPAEntity implements ExtendableEntity {
 	
 	private String status;
 
+	@OneToOne
+	private PayeeDetails payeeDetails;
+	
 	public String getPaymentOrderId() {
 		return paymentOrderId;
 	}

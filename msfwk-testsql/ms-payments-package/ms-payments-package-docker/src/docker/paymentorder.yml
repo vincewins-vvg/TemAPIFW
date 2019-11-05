@@ -39,6 +39,7 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: root
       className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
+      VALIDATE_PAYMENT_ORDER: "false"
       className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
       className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl

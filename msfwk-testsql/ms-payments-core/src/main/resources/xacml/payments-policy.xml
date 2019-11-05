@@ -20,8 +20,7 @@
 			</AnyOf>
 		</Target>
 		<Rule RuleId="permit-for-amount-less-than-x" Effect="Permit">
-			<Description>Permit when amount less than the specified value
-			</Description>
+			<Description>Permit when amount less than the specified value</Description>
 			<Condition>
 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
 					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only">
@@ -37,7 +36,8 @@
 		</Rule>
 		<Rule RuleId="deny-otherwise" Effect="Deny" />
 	</Policy>
-	<Policy PolicyId="permit-only-allowed-accounts" Version="1.0"
+	<Policy PolicyId="permit-only-ManagersforBSNLPaymentOrders"
+		Version="1.0"
 		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Target>
 			<AnyOf>
@@ -79,31 +79,28 @@
 				</Apply>
 			</Condition>
 			<ObligationExpressions>
+				<!-- <ObligationExpression ObligationId="filter-accounts" FulfillOn="Permit"> 
+					<AttributeAssignmentExpression AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation" 
+					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"> <AttributeValue 
+					DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue> 
+					</AttributeAssignmentExpression> <AttributeAssignmentExpression AttributeId="debitAccount" 
+					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"> <AttributeDesignator 
+					AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts" DataType="http://www.w3.org/2001/XMLSchema#string" 
+					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="false" 
+					/> </AttributeAssignmentExpression> </ObligationExpression> -->
 				<ObligationExpression ObligationId="filter-accounts"
 					FulfillOn="Permit">
 					<AttributeAssignmentExpression
 						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue>
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_Equal</AttributeValue>
 					</AttributeAssignmentExpression>
 					<AttributeAssignmentExpression
-						AttributeId="debitAccount"
+						AttributeId="PaymentOrders.payeeDetails.payeeName"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
-						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts"
-							DataType="http://www.w3.org/2001/XMLSchema#string"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							MustBePresent="false" />
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">BSNL</AttributeValue>
 					</AttributeAssignmentExpression>
 				</ObligationExpression>
-				<!-- <ObligationExpression ObligationId="filter-accounts" FulfillOn="Permit"> 
-					<AttributeAssignmentExpression AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation" 
-					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"> <AttributeValue 
-					DataType="http://www.w3.org/2001/XMLSchema#string">filter_notEqual </AttributeValue> 
-					</AttributeAssignmentExpression> <AttributeAssignmentExpression AttributeId="paymentOrderId" 
-					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"> <AttributeValue 
-					DataType="http://www.w3.org/2001/XMLSchema#string">PO/1237/4567/USD/3000 
-					</AttributeValue> </AttributeAssignmentExpression> </ObligationExpression> -->
 			</ObligationExpressions>
 		</Rule>
 		<Rule RuleId="deny-otherwise" Effect="Deny" />
