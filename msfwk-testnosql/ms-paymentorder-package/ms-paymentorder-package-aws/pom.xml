@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-aws-nosql</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-paymentorder-package-aws</artifactId>
+	<name>ms-paymentorder-package-aws</name>
+	<description>Payment Order aws packaging</description>
+	<version>DEV.0.0-SNAPSHOT</version>
+
+	<properties>
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<aws.codegen.enabled>false</aws.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
+
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-paymentorder-AWS</assemblyOutputDirectory>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ms-paymentorder-core</artifactId>
+			<version>DEV.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.temenos.microservice.plugin</groupId>
+					<artifactId>ms-framework-gen</artifactId>
+					<executions>
+						<execution>
+							<id>generate-function</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-function</goal>
+							</goals>
+							<configuration>
+								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<enableInbox>true</enableInbox>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

@@ -1,0 +1,60 @@
+{
+  "name": "PaymentOrder",
+  "javaPackage": "com.temenos.microservice.payments.entity",
+  "tableName": "ms_payment_order",
+  "properties": [
+    {
+      "name": "paymentOrderId",
+      "type": "string",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]      
+    },
+    {
+      "name": "debitAccount",
+      "type": "string",
+      "attributes" : [
+        "KEY_SORT"
+      ]
+    },
+    {
+      "name": "creditAccount",
+      "type": "string"
+    },
+    {
+      "name": "paymentReference",
+      "type": "string"
+    },
+    {
+      "name": "paymentDetails",
+      "type": "string"
+    },
+    {
+      "name": "paymentDate",
+      "type": "date"
+    },
+    {
+      "name": "amount",
+      "type": "decimal"
+    },
+    {
+      "name": "currency",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "paymentMethod",
+      "type": "userdefined",
+      "childentity": "PaymentMethod"
+    },
+    {
+      "name": "exchangeRates",
+      "type": "userdefined",
+      "childentity": "ExchangeRate",
+      "collection": true
+    }
+  ]
+}
