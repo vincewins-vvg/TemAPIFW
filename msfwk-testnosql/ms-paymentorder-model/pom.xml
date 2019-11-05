@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.payments</groupId>
+		<artifactId>ms-paymentorder</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>ms-paymentorder-model</artifactId>
+	<packaging>jar</packaging>
+	<name>ms-paymentorder-model</name>
+	<description>Model for Payment Order Service</description>
+
+	<properties>
+		<!-- Enable code gen -->
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-framework-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-inbox-outbox</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.temenos.microservice.plugin</groupId>
+					<artifactId>ms-framework-gen</artifactId>
+					<executions>
+						<execution>
+							<id>generate-function</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-function</goal>
+							</goals>
+							<configuration>
+								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<enableInbox>true</enableInbox>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
