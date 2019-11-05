@@ -33,6 +33,8 @@ public class StateIngesterItTest {
 
 	String bootstrapServers = "";
 
+	String url = "";
+
 	@Test
 	public void testNoConsumerLag() {
 		businessTopic = Environment.getEnvironmentVariable("temn.msf.ingest.source.stream", "table-update-business");
@@ -44,7 +46,8 @@ public class StateIngesterItTest {
 		messageList.add(new String("4").getBytes());
 		messageList.add(new String("5").getBytes());
 		KafkaStreamProducer.postMessageToTopic(businessTopic, messageList);
-		String url = "http://localhost:8090/ms-payments-api/api/payments/orders/invoke";
+		url = Environment.getEnvironmentVariable("url",
+				"http://localhost:8090/ms-payments-api/api/payments/orders/invoke");
 		try {
 			URIBuilder builder = new URIBuilder(url);
 			builder.setParameter("paymentStateId", "prep");
@@ -87,7 +90,8 @@ public class StateIngesterItTest {
 	public void testConsumerLag() {
 		businessTopic = Environment.getEnvironmentVariable("temn.msf.ingest.source.stream", "table-update-business");
 		bootstrapServers = Environment.getEnvironmentVariable("temn.msf.stream.kafka.bootstrap.servers", "kafka:29092");
-		String url = "http://localhost:8090/ms-payments-api/api/payments/orders/invoke";
+		url = Environment.getEnvironmentVariable("url",
+				"http://localhost:8090/ms-payments-api/api/payments/orders/invoke");
 		try {
 			URIBuilder builder = new URIBuilder(url);
 			builder.setParameter("paymentStateId", "prep");
