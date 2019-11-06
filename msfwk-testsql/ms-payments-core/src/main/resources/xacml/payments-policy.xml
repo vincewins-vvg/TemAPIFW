@@ -56,11 +56,13 @@
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:EntityName"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
-					<!-- <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal"> 
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue> 
-						<AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" 
-						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Method" DataType="http://www.w3.org/2001/XMLSchema#string" 
-						MustBePresent="false" /> </Match> -->
+					<!-- <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:action:Method"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match> -->
 				</AllOf>
 			</AnyOf>
 		</Target>
@@ -79,21 +81,29 @@
 				</Apply>
 			</Condition>
 			<ObligationExpressions>
-				<!-- <ObligationExpression ObligationId="filter-accounts" FulfillOn="Permit"> 
-					<AttributeAssignmentExpression AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation" 
-					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"> <AttributeValue 
-					DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue> 
-					</AttributeAssignmentExpression> <AttributeAssignmentExpression AttributeId="debitAccount" 
-					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"> <AttributeDesignator 
-					AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts" DataType="http://www.w3.org/2001/XMLSchema#string" 
-					Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="false" 
-					/> </AttributeAssignmentExpression> </ObligationExpression> -->
+				<!-- <ObligationExpression ObligationId="filter-accounts"
+					FulfillOn="Permit">
+					<AttributeAssignmentExpression
+						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue>
+					</AttributeAssignmentExpression>
+					<AttributeAssignmentExpression
+						AttributeId="debitAccount"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+						<AttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts"
+							DataType="http://www.w3.org/2001/XMLSchema#string"
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							MustBePresent="false" />
+					</AttributeAssignmentExpression>
+				</ObligationExpression> -->
 				<ObligationExpression ObligationId="filter-accounts"
 					FulfillOn="Permit">
 					<AttributeAssignmentExpression
 						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_Equal</AttributeValue>
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_equal</AttributeValue>
 					</AttributeAssignmentExpression>
 					<AttributeAssignmentExpression
 						AttributeId="PaymentOrders.payeeDetails.payeeName"
