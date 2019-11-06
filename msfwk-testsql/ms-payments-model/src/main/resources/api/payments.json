@@ -91,6 +91,13 @@ paths:
 
 components:
   schemas:
+    PayeeDetails:
+      properties:
+        payeeName:
+          type: string
+        payeeType:
+          type: string
+
     PaymentOrder:
       properties:
         fromAccount:
@@ -111,7 +118,10 @@ components:
           type: array
           items:
             type: string
-          
+        payeeDetails:
+          allOf:
+          - $ref: '#/components/schemas/PayeeDetails'
+    
     PaymentOrders:
       type: array
       items:

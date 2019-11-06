@@ -6,8 +6,10 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
+import com.temenos.microservice.payments.entity.PayeeDetails;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
 import com.temenos.microservice.payments.view.PaymentOrder;
@@ -21,7 +23,9 @@ public class CreateNewPaymentOrderProcessor {
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
-		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
+		if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("true")) {
+			PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
+		}
 
 		PaymentStatus paymentStatus = executePaymentOrder(paymentOrder);
 		return paymentStatus;
@@ -46,6 +50,14 @@ public class CreateNewPaymentOrderProcessor {
 		entity.setPaymentReference(view.getPaymentReference());
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
+
+		if (view.getPayeeDetails() != null) {
+			PayeeDetails payeeDetails = new PayeeDetails();
+			payeeDetails.setPayeeName(view.getPayeeDetails().getPayeeName());
+			payeeDetails.setPayeeType(view.getPayeeDetails().getPayeeType());
+			entity.setPayeeDetails(payeeDetails);
+		}
+
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
 
