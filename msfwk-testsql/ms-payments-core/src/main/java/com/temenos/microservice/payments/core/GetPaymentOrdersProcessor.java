@@ -30,7 +30,6 @@ public class GetPaymentOrdersProcessor {
 		Root<com.temenos.microservice.payments.entity.PaymentOrder> root = criteriaQuery
 				.from(com.temenos.microservice.payments.entity.PaymentOrder.class);
 		criteriaQuery.select(root);
-		criteriaQuery.distinct(true);
 
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("status"), "INITIATED")));
