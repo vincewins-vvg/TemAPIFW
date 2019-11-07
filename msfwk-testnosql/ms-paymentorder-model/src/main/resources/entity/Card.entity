@@ -1,0 +1,19 @@
+{
+  "name": "Card",
+  "javaPackage": "com.temenos.microservice.payments.entity",
+  "tableName": "",
+  "properties": [
+    {
+      "name": "cardid",
+      "type": "number"     
+    },
+    {
+      "name": "cardname",
+      "type": "string"
+    },
+    {
+      "name": "cardlimit",
+      "type": "decimal"
+    }
+  ]
+}

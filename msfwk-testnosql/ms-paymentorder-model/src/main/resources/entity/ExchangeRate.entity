@@ -1,0 +1,19 @@
+{
+  "name": "ExchangeRate",
+  "javaPackage": "com.temenos.microservice.payments.entity",
+  "tableName": "",
+  "properties": [
+    {
+      "name": "id",
+      "type": "number"     
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+	{
+      "name": "value",
+      "type": "decimal"
+    }
+  ]
+}

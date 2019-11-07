@@ -1,0 +1,65 @@
+package com.temenos.microservice.payments.function;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.temenos.microservice.framework.core.function.Context;
+
+import com.temenos.microservice.framework.core.adapter.ServiceAdapterFactory;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.HttpClientRequest;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Response;
+import com.temenos.microservice.framework.core.util.StringUtil;
+import com.temenos.microservice.payments.view.PaymentOrder;
+
+// TODO: remove this class and input validation once the framework gen supports input validation based on mandatory/requires attributes fom swagger doc.
+public class PaymentOrderFunctionHelper {
+
+	public static void validateInput(CreateNewPaymentOrderInput input) throws InvalidInputException {
+		if (!input.getBody().isPresent()) {
+			throw new InvalidInputException(new FailureMessage("Input body is empty", "PAYM-PORD-A-2001"));
+		}
+	}
+
+	public static void validatePaymentOrder(PaymentOrder paymentOrder, Context ctx) throws InvalidInputException {
+		List<FailureMessage> failureMessages = new ArrayList<FailureMessage>();
+		if (paymentOrder.getAmount() == null) {
+			failureMessages.add(new FailureMessage("Amount is mandatory", "PAYM-PORD-A-2101"));
+		}
+		if (StringUtil.isNullOrEmpty(paymentOrder.getFromAccount())) {
+			failureMessages.add(new FailureMessage("From Account is mandatory", "PAYM-PORD-A-2102"));
+		} else {
+			HttpClientRequest request = new HttpClientRequest.Builder()
+					.basePath("http://10.93.23.30:9089/irf-test-web/api/")
+					.resourcePath("v1.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balance")
+					.context(ctx).build();
+
+			Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
+			JSONObject irisResponse = new JSONObject(response.getBody());
+			System.out.println("IRIS Response:" + irisResponse);
+			JSONArray responseBody = irisResponse.getJSONArray("body");
+			JSONObject jsonBody = responseBody.getJSONObject(0);
+
+			java.math.BigDecimal availableBalance = new java.math.BigDecimal(
+					jsonBody.get("availableBalance").toString());
+
+			if (availableBalance.compareTo(paymentOrder.getAmount()) < 0) {
+				failureMessages
+						.add(new FailureMessage("From Account does not have sufficient balance", "PAYM-PORD-A-2103"));
+			}
+		}
+		if (StringUtil.isNullOrEmpty(paymentOrder.getToAccount())) {
+			failureMessages.add(new FailureMessage("To Account is mandatory", "PAYM-PORD-A-2104"));
+		}
+		if (StringUtil.isNullOrEmpty(paymentOrder.getCurrency())) {
+			failureMessages.add(new FailureMessage("Currency is mandatory", "PAYM-PORD-A-2105"));
+		}
+		if (!failureMessages.isEmpty()) {
+			throw new InvalidInputException(failureMessages);
+		}
+	}
+}
