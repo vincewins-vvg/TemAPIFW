@@ -41,7 +41,6 @@ public class StateIngesterItTest {
 
 	@Test
 	public void AtestConsumerLag() {
-		System.out.println("first ");
 		if ("kafka".equals(Environment.getEnvironmentVariable("temn.msf.stream.vendor", ""))) {
 			businessTopic = Environment.getEnvironmentVariable("temn.msf.ingest.source.stream.business",
 					"table-update-business");
@@ -97,7 +96,6 @@ public class StateIngesterItTest {
 
 	@Test
 	public void BtestConsumerLag() {
-		System.out.println("second");
 		if ("kafka".equals(Environment.getEnvironmentVariable("temn.msf.stream.vendor", ""))) {
 			businessTopic = Environment.getEnvironmentVariable("temn.msf.ingest.source.stream.business",
 					"table-update-business");
