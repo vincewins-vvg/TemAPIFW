@@ -31,7 +31,7 @@ services:
       - db-service
     ports:
       - "8090:8080"
-      - "40500:40500"
+      - "40508:40500"
     environment:
       HOST: db-service
       PORT: 3306
@@ -58,7 +58,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "40503:40500"
+      - "40509:40500"
     environment:
       HOST: db-service
       PORT: 3306
