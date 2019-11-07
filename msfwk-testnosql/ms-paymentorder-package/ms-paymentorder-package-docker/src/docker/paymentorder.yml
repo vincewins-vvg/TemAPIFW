@@ -13,7 +13,7 @@ services:
     image: ${DB_IMAGE}
     shm_size: '1gb'
     ports:
-      - "9042:9042" 
+      - "9047:9042" 
     environment:
       CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
   
@@ -30,7 +30,7 @@ services:
       - db-service
     ports:
       - "8090:8080"
-      - "40500:40500"
+      - "40509:40500"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -58,7 +58,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "40503:40500"
+      - "40508:40500"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
