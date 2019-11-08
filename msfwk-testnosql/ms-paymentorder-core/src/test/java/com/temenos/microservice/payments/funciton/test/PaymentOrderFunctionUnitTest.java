@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.funciton.test;
 
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,22 +11,15 @@ import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.DefaultExchange;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.FunctionInputBuilder;
-import com.temenos.microservice.framework.core.function.HttpJsonRequest;
 import com.temenos.microservice.framework.core.function.HttpRequest;
 import com.temenos.microservice.framework.core.function.HttpRequestContext;
 import com.temenos.microservice.framework.core.function.HttpRequestTransformer;
 import com.temenos.microservice.framework.core.function.camel.CamelHttpRequestTransformer;
-import com.temenos.microservice.payments.view.Card;
-import com.temenos.microservice.payments.view.ExchangeRate;
-import com.temenos.microservice.payments.view.PaymentMethod;
-import com.temenos.microservice.payments.view.PaymentOrder;
-
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
@@ -38,6 +32,7 @@ import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
 import com.temenos.microservice.payments.function.UpdatePaymentOrder;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
+import com.temenos.microservice.payments.view.Card;
 import com.temenos.microservice.payments.view.ExchangeRate;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
 import com.temenos.microservice.payments.view.PaymentMethod;
@@ -49,7 +44,16 @@ import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
 
 public class PaymentOrderFunctionUnitTest {
 
-	@Ignore
+	
+	@Before
+	public void setup() {
+		System.getProperties().setProperty("class.outbox.dao", "com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
+		System.getProperties().setProperty("class.inbox.dao", "com.temenos.microservice.framework.core.inbox.InboxDaoImpl");
+		System.getProperties().setProperty("class.package.name", "com.temenos.microservice.payments.function");
+
+	}
+
+	
 	@Test
 	public void testCreateNewPaymentOrder() {
 		CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
