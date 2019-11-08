@@ -55,6 +55,11 @@
       "type": "userdefined",
       "childentity": "ExchangeRate",
       "collection": true
+    },
+    {
+      "name": "payeeDetails",
+      "type": "userdefined",
+      "childentity": "PayeeDetails"
     }
   ]
 }

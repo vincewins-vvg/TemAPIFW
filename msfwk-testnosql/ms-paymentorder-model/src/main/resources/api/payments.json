@@ -142,6 +142,12 @@ components:
         value:
           type: number
           format: decimal
+    PayeeDetails:
+      properties:
+        payeeName:
+          type: string
+        payeeType:
+          type: string
           
     PaymentOrder:
       properties:
@@ -167,6 +173,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExchangeRate"
+        payeeDetails:
+          allOf:
+          - $ref: '#/components/schemas/PayeeDetails'
         descriptions:
           type: array
           items:

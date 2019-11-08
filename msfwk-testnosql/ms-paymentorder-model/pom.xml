@@ -44,7 +44,7 @@
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
-								<enableInbox>true</enableInbox>
+								<enableInbox>false</enableInbox>
 							</configuration>
 						</execution>
 					</executions>

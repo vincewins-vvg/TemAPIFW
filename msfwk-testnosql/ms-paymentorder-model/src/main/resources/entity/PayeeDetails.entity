@@ -1,0 +1,19 @@
+{
+  "name": "PayeeDetails",
+  "javaPackage": "com.temenos.microservice.payments.entity",
+  "tableName": "",
+  "properties": [
+    {
+      "name": "payeeId",
+      "type": "number"     
+    },
+    {
+      "name": "payeeName",
+      "type": "string"
+    },
+    {
+      "name": "payeeType",
+      "type": "string"
+    }
+  ]
+}

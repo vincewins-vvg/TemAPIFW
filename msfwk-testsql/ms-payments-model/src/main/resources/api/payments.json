@@ -70,7 +70,6 @@ paths:
     get:
       summary: Get a payment order
       operationId: GetPaymentOrder
-      x-altkey: true
       tags:
         - Payments
       parameters:
@@ -88,16 +87,68 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentOrderStatus"
+                
+  /payments/orders/invoke:              
+    get:
+      summary: Invoke State Ingester
+      operationId: invokePaymentState
+      tags:
+        - Payments
+      parameters:
+      - name: paymentStateId
+        in: query
+        description: paymentStateId
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: invokePaymentState
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrderStatus" 
 
 components:
   schemas:
+    Card:
+      properties:
+        cardid:
+          type: number
+          format: biginteger
+        cardname:
+          type: string
+        cardlimit:
+          type: number
+          format: decimal
+    PaymentMethod:
+      properties:
+        id:
+          type: number
+          format: biginteger
+        name:
+          type: string
+        card:
+          allOf:
+          - $ref: "#/components/schemas/Card"
+    ExchangeRate:
+      properties:
+        id:
+          type: number
+          format: biginteger
+        name:
+          type: string
+        value:
+          type: number
+          format: decimal
     PayeeDetails:
       properties:
         payeeName:
           type: string
         payeeType:
           type: string
-
+          
     PaymentOrder:
       properties:
         fromAccount:
@@ -111,17 +162,25 @@ components:
         currency:
           type: string
         amount:
-          type: decimal
+          type: number
+          format: decimal
         expires:
           type: number
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+        payeeDetails:
+          allOf:
+          - $ref: '#/components/schemas/PayeeDetails'
         descriptions:
           type: array
           items:
             type: string
-        payeeDetails:
-          allOf:
-          - $ref: '#/components/schemas/PayeeDetails'
-    
+          
     PaymentOrders:
       type: array
       items:
@@ -137,6 +196,13 @@ components:
           type: string
         details:
           type: string
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
           
     PaymentOrderStatus:
       properties:

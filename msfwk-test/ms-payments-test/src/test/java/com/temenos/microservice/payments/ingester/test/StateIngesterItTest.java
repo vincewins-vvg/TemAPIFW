@@ -1,9 +1,9 @@
 package com.temenos.microservice.payments.ingester.test;
 
 import static org.junit.Assert.assertFalse;
-
 import static org.junit.Assert.assertTrue;
 
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,25 +11,26 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.ClientResponse;
 
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
+import com.temenos.microservice.payments.api.test.ITTest;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class StateIngesterItTest {
+public class StateIngesterItTest extends ITTest {
 
 	private KafkaConsumer<String, byte[]> kafkaConsmer;
 
@@ -37,7 +38,10 @@ public class StateIngesterItTest {
 
 	String bootstrapServers = "";
 
-	String url = "";
+	@Before
+	public void setUp() throws SQLException {
+		this.client = newWebClient();
+	}
 
 	@Test
 	public void AtestConsumerLag() {
@@ -53,15 +57,12 @@ public class StateIngesterItTest {
 			messageList.add(new String("4").getBytes());
 			messageList.add(new String("5").getBytes());
 			KafkaStreamProducer.postMessageToTopic(businessTopic, messageList);
-			url = Environment.getEnvironmentVariable("url",
-					"http://localhost:8090/ms-paymentorder-api/api/payments/orders/invoke");
 			try {
-				URIBuilder builder = new URIBuilder(url);
-				builder.setParameter("paymentStateId", "prep");
-				CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-				HttpGet getRequest = new HttpGet(builder.build());
-				httpClient.execute(getRequest);
-				Thread.sleep(20000);
+				ClientResponse getResponse;
+				do {
+					getResponse = this.client.get().uri("/payments/orders/invoke?paymentStateId=prep").exchange()
+							.block();
+				} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 				Properties props = new Properties();
 				props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 				props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -89,7 +90,7 @@ public class StateIngesterItTest {
 				adminClient.close();
 				assertTrue(Boolean.valueOf(resultFlags));
 			} catch (Exception e) {
-				e.printStackTrace();
+				Assert.fail(e.getMessage());
 			}
 		}
 	}
@@ -101,15 +102,12 @@ public class StateIngesterItTest {
 					"table-update-business");
 			bootstrapServers = Environment.getEnvironmentVariable("temn.msf.stream.kafka.bootstrap.servers",
 					"kafka:29092");
-			url = Environment.getEnvironmentVariable("url",
-					"http://localhost:8090/ms-paymentorder-api/api/payments/orders/invoke");
 			try {
-				URIBuilder builder = new URIBuilder(url);
-				builder.setParameter("paymentStateId", "prep");
-				CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-				HttpGet getRequest = new HttpGet(builder.build());
-				httpClient.execute(getRequest);
-				Thread.sleep(Long.valueOf(200));
+				ClientResponse getResponse;
+				do {
+					getResponse = this.client.get().uri("/payments/orders/invoke?paymentStateId=prep").exchange()
+							.block();
+				} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 				List<byte[]> messageList = new ArrayList<>();
 				for (int i = 0; i < 100; i++) {
 					messageList.add(String.valueOf(i).getBytes());
@@ -142,8 +140,7 @@ public class StateIngesterItTest {
 				adminClient.close();
 				assertFalse(Boolean.valueOf(resultFlags));
 			} catch (Exception e) {
-				e.printStackTrace();
-
+				Assert.fail(e.getMessage());
 			}
 		}
 	}

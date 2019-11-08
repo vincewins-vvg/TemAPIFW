@@ -3,6 +3,7 @@ package com.temenos.microservice.payments.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -13,23 +14,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
+@Table(name = "ms_payment_order")
 public class PaymentOrder extends JPAEntity implements ExtendableEntity {
 
 	@Id
 	private String paymentOrderId;
-
-	// maps from attribute name to value
-	@ElementCollection
-	@MapKeyColumn(name = "name")
-	@Column(name = "value")
-	@CollectionTable(name = "PaymentOrder_extension", joinColumns = @JoinColumn(name = "PaymentOrder_paymentOrderId"))
-	Map<String, String> extensionData = new HashMap<String, String>();
 
 	private String debitAccount;
 
@@ -48,7 +45,20 @@ public class PaymentOrder extends JPAEntity implements ExtendableEntity {
 	private String status;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	private PaymentMethod paymentMethod;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ExchangeRate> exchangeRates;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private PayeeDetails payeeDetails;
+
+	// maps from attribute name to value
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "PaymentOrder_extension", joinColumns = @JoinColumn(name = "PaymentOrder_paymentOrderId"))
+	Map<String, String> extensionData = new HashMap<String, String>();
 
 	public String getPaymentOrderId() {
 		return paymentOrderId;
