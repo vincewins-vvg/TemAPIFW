@@ -87,6 +87,28 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentOrderStatus"
+                
+  /payments/orders/invoke:              
+    get:
+      summary: Invoke State Ingester
+      operationId: invokePaymentState
+      tags:
+        - Payments
+      parameters:
+      - name: paymentStateId
+        in: query
+        description: paymentStateId
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: invokePaymentState
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrderStatus" 
 
 components:
   schemas:
