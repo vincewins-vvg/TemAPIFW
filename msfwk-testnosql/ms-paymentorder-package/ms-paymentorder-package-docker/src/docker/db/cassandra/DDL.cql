@@ -16,6 +16,12 @@ CREATE TYPE IF NOT EXISTS ms_paymentorder.ExchangeRate (
   value decimal
 );
 
+CREATE TYPE IF NOT EXISTS ms_paymentorder.PayeeDetails (
+  payeeId bigint,
+  payeeName text,
+  payeeType text
+);
+
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_payment_order(
 paymentOrderId text
 , debitAccount text
@@ -27,7 +33,8 @@ paymentOrderId text
 , currency text
 , status text
 , paymentMethod PaymentMethod
-, extensionData text
+, payeeDetails PayeeDetails
+, extensionData map<text,text>
 , exchangeRates list<FROZEN <ExchangeRate>>
 , PRIMARY KEY (paymentOrderId,debitAccount));
 
