@@ -1,7 +1,7 @@
 #-------------------------------------------------------------
 #- Docker compose base definition file to run containers.
 #-----------------------------------------------------------
----
+
 version: '3.6'
 services:
   db-service:
@@ -47,6 +47,8 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       temn.msf.security.authz.enabled: "false"
+      temn.msf.stream.vendor: kafka
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   ingester:
@@ -82,7 +84,10 @@ services:
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
       com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
+      temn.msf.ingest.consumer.max.poll.records: "1"
       temn.msf.security.authz.enabled: "false"
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -154,8 +159,8 @@ services:
       temn.ingester.business.topic: table-update-business
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderStateIngester
       temn.msf.ingest.is.avro.event.ingester: "false"
-      temn.iris.fdata.enquiry.base.path: http://10.92.4.84:9089/irf-provider-container/api/v1.0.0/
-      temn.iris.fdata.enquiry.resource.path: system/events/pendingEvents
+      temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
+      temn.iris.fdata.enquiry.resource.path: system/metrics/dataEvents/pendings/itemCount
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
