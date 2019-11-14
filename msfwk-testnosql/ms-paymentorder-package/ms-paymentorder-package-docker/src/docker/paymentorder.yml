@@ -34,7 +34,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "8099:8080"
+      - "8090:8080"
       - "40509:40500"
     environment:
       DATABASE_KEY: cassandra

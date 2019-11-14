@@ -8,6 +8,7 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
+import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 
@@ -18,9 +19,24 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 				"msf-test-group-id");
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
-		while (true) {
-			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId);
+		for (int i = 0; i < 3; i++) {
+			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList("topic"), businessGroupId);
+			if (result) {
+				lagResult = result;
+				List<byte[]> lagResultList = new ArrayList<>();
+				lagResultList.add(lagResult.toString().getBytes());
+				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
+				break;
+			}
+			if (i == 2 && result == false) {
+				lagResult = result;
+				List<byte[]> lagResultList = new ArrayList<>();
+				lagResultList.add(lagResult.toString().getBytes());
+				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
+				break;
+			}
 		}
+
 	}
 
 	@Override
