@@ -20,7 +20,7 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
 		for (int i = 0; i < 3; i++) {
-			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList("topic"), businessGroupId);
+			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId);
 			if (result) {
 				lagResult = result;
 				List<byte[]> lagResultList = new ArrayList<>();
