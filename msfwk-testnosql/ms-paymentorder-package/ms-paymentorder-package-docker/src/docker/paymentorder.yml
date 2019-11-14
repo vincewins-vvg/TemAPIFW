@@ -1,8 +1,13 @@
 #-------------------------------------------------------------
 #- Docker compose base definition file to run containers.
 #-----------------------------------------------------------
----
+
 version: '3.6'
+
+networks:
+ default:
+  external:
+   name: src_default
 services:
   db-service:
     build:
@@ -29,7 +34,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "8090:8080"
+      - "8099:8080"
       - "40509:40500"
     environment:
       DATABASE_KEY: cassandra
@@ -47,6 +52,8 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       temn.msf.security.authz.enabled: "false"
+      temn.msf.stream.vendor: kafka
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   ingester:
@@ -76,13 +83,16 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
-      temn.msf.ingest.source.stream: table-update-paymentorder
+      temn.msf.ingest.source.stream: table-update
       temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
       com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
+      temn.msf.ingest.consumer.max.poll.records: "1"
       temn.msf.security.authz.enabled: "false"
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -150,17 +160,17 @@ services:
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.security.authz.enabled: "false"
-      temn.ingester.business.group.id: msf-test-group-id
-      temn.ingester.business.topic: table-update-business
+      temn.ingester.business.group.id: msf-paymentorder-ingester-consumer
+      temn.ingester.business.topic: table-update
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderStateIngester
       temn.msf.ingest.is.avro.event.ingester: "false"
-      temn.iris.fdata.enquiry.base.path: http://10.92.4.84:9089/irf-provider-container/api/v1.0.0/
-      temn.iris.fdata.enquiry.resource.path: system/events/pendingEvents
+      temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
+      temn.iris.fdata.enquiry.resource.path: system/metrics/dataEvents/pendings/itemCount
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       DATABASE_KEY: sql
-      EXECUTION_ENVIRONMENT: TEST
+      EXECUTION_ENVIRONMENT: TESTSSS
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -184,7 +194,7 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
-      temn.msf.ingest.source.stream: table-update-business
+      temn.msf.ingest.source.stream: error
       temn.msf.ingest.source.stream.consumergroup.id: msf-test-group-id
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer

@@ -1,13 +1,13 @@
 package com.temenos.microservice.payments.ingester;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
-import com.temenos.microservice.framework.core.ingester.EventStreamChecker;
-import com.temenos.microservice.kafka.util.KafkaStreamProducer;
+import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 
@@ -18,24 +18,9 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 				"msf-test-group-id");
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
-		for (int i = 0; i < 3; i++) {
-			result = EventStreamChecker.isConsumerGroupInLag(topic, businessGroupId);
-			if (result) {
-				lagResult = result;
-				List<byte[]> lagResultList = new ArrayList<>();
-				lagResultList.add(lagResult.toString().getBytes());
-				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
-				break;
-			}
-			if (i == 2 && result == false) {
-				lagResult = result;
-				List<byte[]> lagResultList = new ArrayList<>();
-				lagResultList.add(lagResult.toString().getBytes());
-				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
-				break;
-			}
+		while (true) {
+			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId);
 		}
-
 	}
 
 	@Override

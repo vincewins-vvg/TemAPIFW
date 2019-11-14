@@ -1,12 +1,13 @@
 package com.temenos.microservice.payments.ingester;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
-import com.temenos.microservice.framework.core.ingester.EventStreamChecker;
+import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
@@ -19,7 +20,7 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
 		for (int i = 0; i < 3; i++) {
-			result = EventStreamChecker.isConsumerGroupInLag(topic, businessGroupId);
+			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList("topic"), businessGroupId);
 			if (result) {
 				lagResult = result;
 				List<byte[]> lagResultList = new ArrayList<>();
