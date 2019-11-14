@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
-import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.PayeeDetails;
@@ -23,9 +22,7 @@ public class CreateNewPaymentOrderProcessor {
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
-		if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("true")) {
-			PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
-		}
+		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
 
 		PaymentStatus paymentStatus = executePaymentOrder(paymentOrder);
 		return paymentStatus;
@@ -35,11 +32,13 @@ public class CreateNewPaymentOrderProcessor {
 		String paymentOrderId = ("PO~" + paymentOrder.getFromAccount() + "~" + paymentOrder.getToAccount() + "~"
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
 
-		createEntity(paymentOrderId, paymentOrder);
-		return readStatus(paymentOrder.getFromAccount(), paymentOrderId);
+		com.temenos.microservice.payments.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
+		// return readStatus(paymentOrder.getFromAccount(), paymentOrderId);
+		return readStatus(entity);
 	}
 
-	private void createEntity(String paymentOrderId, PaymentOrder view) throws FunctionException {
+	private com.temenos.microservice.payments.entity.PaymentOrder createEntity(String paymentOrderId, PaymentOrder view)
+			throws FunctionException {
 		com.temenos.microservice.payments.entity.PaymentOrder entity = new com.temenos.microservice.payments.entity.PaymentOrder();
 		entity.setPaymentOrderId(paymentOrderId);
 		entity.setAmount(view.getAmount());
@@ -60,17 +59,25 @@ public class CreateNewPaymentOrderProcessor {
 
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
-
+		return entity;
 	}
 
 	private PaymentStatus readStatus(String debitAccount, String paymentOrderId) throws FunctionException {
-
 		com.temenos.microservice.payments.entity.PaymentOrder paymentOrder = (com.temenos.microservice.payments.entity.PaymentOrder) PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.findById(paymentOrderId, com.temenos.microservice.payments.entity.PaymentOrder.class);
 
 		PaymentStatus paymentStatus = new PaymentStatus();
 		paymentStatus.setPaymentId(paymentOrderId);
+		paymentStatus.setStatus(paymentOrder.getStatus());
+		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
+		return paymentStatus;
+	}
+
+	private PaymentStatus readStatus(com.temenos.microservice.payments.entity.PaymentOrder paymentOrder)
+			throws FunctionException {
+		PaymentStatus paymentStatus = new PaymentStatus();
+		paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 		paymentStatus.setStatus(paymentOrder.getStatus());
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
 		return paymentStatus;

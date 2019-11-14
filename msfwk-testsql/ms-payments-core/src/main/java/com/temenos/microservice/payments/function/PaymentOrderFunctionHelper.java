@@ -1,14 +1,17 @@
 package com.temenos.microservice.payments.function;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.temenos.microservice.framework.core.function.Context;
-
 import com.temenos.microservice.framework.core.adapter.ServiceAdapterFactory;
+import com.temenos.microservice.framework.core.conf.Environment;
+import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.HttpClientRequest;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
@@ -33,13 +36,30 @@ public class PaymentOrderFunctionHelper {
 		if (StringUtil.isNullOrEmpty(paymentOrder.getFromAccount())) {
 			failureMessages.add(new FailureMessage("From Account is mandatory", "PAYM-PORD-A-2102"));
 		} else {
-			HttpClientRequest request = new HttpClientRequest.Builder()
-					.basePath("http://10.93.23.30:9089/irf-test-web/api/")
-					.resourcePath("v1.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balance")
-					.context(ctx).build();
+			String irisApiResponse;
+			if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("false")) {
+				ClassLoader classLoader = PaymentOrderFunctionHelper.class.getClassLoader();
+				InputStream is = classLoader.getResourceAsStream("IrisApiResponse.json");
+				try {
+					@SuppressWarnings("deprecation")
+					String contents = org.apache.commons.io.IOUtils.toString(is);
+					irisApiResponse = new JSONObject(contents).toString();
+				} catch (JSONException | IOException e) {
+					InvalidInputException invalidInputExp = new InvalidInputException(
+							"Parse exception during RetailApiResponse json file");
+					throw invalidInputExp;
+				}
+			} else {
+				HttpClientRequest request = new HttpClientRequest.Builder()
+						.basePath("http://10.93.23.30:9089/irf-test-web/api/")
+						.resourcePath("v1.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balance")
+						.context(ctx).build();
 
-			Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
-			JSONObject irisResponse = new JSONObject(response.getBody());
+				Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
+				irisApiResponse = response.getBody();
+			}
+
+			JSONObject irisResponse = new JSONObject(irisApiResponse);
 			System.out.println("IRIS Response:" + irisResponse);
 			JSONArray responseBody = irisResponse.getJSONArray("body");
 			JSONObject jsonBody = responseBody.getJSONObject(0);

@@ -1,0 +1,20 @@
+{
+	"eventId": "1a316d88-3c17-4b59-ad7e-77a3961ac21",
+	"dateTime": "2019-10-21T00:49:35",
+	"eventType": "PaymentOrderService.CreateNewPaymentOrder",
+	"payload": {
+		"body": {
+			"fromAccount": "ABC-123",
+			"toAccount": "ABC-125",
+			"paymentReference": "PayRef",
+			"paymentDetails": "PayDetails",
+			"currency": "USD",
+			"amount": 300,
+			"expires": 0,
+			"payeeDetails": {
+				"payeeName": "BSNL",
+				"payeeType": "card"
+			}
+		}
+	}
+}
