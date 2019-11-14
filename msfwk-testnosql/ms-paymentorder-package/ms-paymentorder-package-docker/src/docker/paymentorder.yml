@@ -83,7 +83,7 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
-      temn.msf.ingest.source.stream: table-update
+      temn.msf.ingest.source.stream: table-update-paymentorder
       temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
@@ -160,8 +160,8 @@ services:
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.security.authz.enabled: "false"
-      temn.ingester.business.group.id: msf-paymentorder-ingester-consumer
-      temn.ingester.business.topic: table-update
+      temn.ingester.business.group.id: msf-test-group-id
+      temn.ingester.business.topic: table-update-business
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderStateIngester
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
@@ -170,7 +170,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       DATABASE_KEY: sql
-      EXECUTION_ENVIRONMENT: TESTSSS
+      EXECUTION_ENVIRONMENT: TEST
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -194,7 +194,7 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
-      temn.msf.ingest.source.stream: error
+      temn.msf.ingest.source.stream: table-update-business
       temn.msf.ingest.source.stream.consumergroup.id: msf-test-group-id
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
