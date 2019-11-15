@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.function;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +63,10 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
+		if(view.getFileContent()!=null) {
+		entity.setFileContent(ByteBuffer.wrap(view.getFileContent().getBytes()));
+		//	entity.setFileContent(view.getFileContent());
+		}
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());
 			entity.getPaymentMethod().setName(view.getPaymentMethod().getName());
