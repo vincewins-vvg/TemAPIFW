@@ -166,6 +166,10 @@ components:
           format: decimal
         expires:
           type: number
+        fileContent:
+          type: string
+        autoPayment:
+          type: boolean
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

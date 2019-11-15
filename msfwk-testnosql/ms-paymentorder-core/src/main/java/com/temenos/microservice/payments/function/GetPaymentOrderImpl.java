@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.function;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 			paymentStatus.setStatus(paymentOrder.getStatus());
 			paymentStatus.setDetails(paymentOrder.getPaymentDetails());
+			
 
 			PaymentOrderStatus paymentOrderStatus = new PaymentOrderStatus();
 			PaymentOrder order = new PaymentOrder();
@@ -55,7 +57,16 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
 			
+			//order.setFileContent(paymentOrder.getFileContent());
+			try {
+				order.setFileContent(new String(paymentOrder.getFileContent().array(),"UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
+			if(paymentOrder.getPaymentMethod()!=null) {
 			card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());
 			card.setCardname(paymentOrder.getPaymentMethod().getCard().getCardname());
 			card.setCardlimit(paymentOrder.getPaymentMethod().getCard().getCardlimit());
@@ -75,7 +86,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 				exchangeRates.add(exchangeRate);
 			}
 			order.setExchangeRates(exchangeRates);
-			
+			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;

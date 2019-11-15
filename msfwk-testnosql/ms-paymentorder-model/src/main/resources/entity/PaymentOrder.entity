@@ -60,6 +60,16 @@
       "name": "payeeDetails",
       "type": "userdefined",
       "childentity": "PayeeDetails"
+    },
+    {
+      "name": "fileContent",
+      "type": "binary"
+      
+    },
+	{
+      "name": "autoPayment",
+      "type": "Boolean"
+      
     }
   ]
 }
