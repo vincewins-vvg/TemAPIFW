@@ -35,6 +35,7 @@ paymentOrderId text
 , paymentMethod PaymentMethod
 , payeeDetails PayeeDetails
 , extensionData map<text,text>
+,fileContent blob
 , exchangeRates list<FROZEN <ExchangeRate>>
 , PRIMARY KEY (paymentOrderId,debitAccount));
 

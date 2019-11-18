@@ -83,6 +83,7 @@ public class PaymentOrderFunctionUnitTest {
 		paymentOrder.setExpires(Long.valueOf("1"));
 		paymentOrder.setFromAccount("70010");
 		paymentOrder.setToAccount("70012");
+		paymentOrder.setFileContent("R2FuZXNhbW9vcnRoaQ==");
 		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
 			CamelContext ctx = new DefaultCamelContext();
