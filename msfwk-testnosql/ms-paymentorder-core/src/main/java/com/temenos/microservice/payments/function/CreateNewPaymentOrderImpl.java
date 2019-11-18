@@ -64,8 +64,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
 		if(view.getFileContent()!=null) {
-		entity.setFileContent(ByteBuffer.wrap(view.getFileContent().getBytes()));
-		//	entity.setFileContent(view.getFileContent());
+			entity.setFileContent(view.getFileContent());
 		}
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());

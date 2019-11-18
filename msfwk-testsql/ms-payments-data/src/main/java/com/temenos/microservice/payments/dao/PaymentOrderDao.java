@@ -2,7 +2,7 @@ package com.temenos.microservice.payments.dao;
 
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.DataAccessException;
-import com.temenos.microservice.framework.core.data.mssql.SqlDbDao;
+import com.temenos.microservice.framework.core.data.sql.SqlDbDao;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 
 public class PaymentOrderDao {
