@@ -168,8 +168,7 @@ components:
           type: number
         fileContent:
           type: string
-        autoPayment:
-          type: boolean
+          format: binary	
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

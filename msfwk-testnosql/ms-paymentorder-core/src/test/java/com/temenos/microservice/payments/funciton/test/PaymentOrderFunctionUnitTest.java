@@ -2,6 +2,7 @@ package com.temenos.microservice.payments.funciton.test;
 
 
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +84,8 @@ public class PaymentOrderFunctionUnitTest {
 		paymentOrder.setExpires(Long.valueOf("1"));
 		paymentOrder.setFromAccount("70010");
 		paymentOrder.setToAccount("70012");
-		paymentOrder.setFileContent("R2FuZXNhbW9vcnRoaQ==");
+		String fileContent ="R2FuZXNhbW9vcnRoaQ==";
+		paymentOrder.setFileContent(ByteBuffer.wrap(fileContent.getBytes()));
 		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
 			CamelContext ctx = new DefaultCamelContext();
