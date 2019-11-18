@@ -29,17 +29,8 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
             view.setCurrency(entity.getCurrency());
             view.setFromAccount(entity.getDebitAccount());
             view.setToAccount(entity.getCreditAccount());
-          //  view.setFileContent(entity.getFileContent());
+            view.setFileContent(entity.getFileContent());
             
-            
-        	try {
-        		view.setFileContent(new String(entity.getFileContent().array(),"UTF-8"));
-				
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-           
             com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
             if(entity.getPaymentMethod()!=null) {
 			card.setCardid(entity.getPaymentMethod().getCard().getCardid());

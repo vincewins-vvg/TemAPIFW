@@ -52,6 +52,14 @@ CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_outbox_events(
 eventId text
 , eventname text
 , payload text
-, eventdate timestamp
 , status text
+, tenantId text
+, organizationId text
+, correlationId text
+, userId text
+, priority int
+, eventDetails text
+, creationTime timestamp
+, procesedTime timestamp
 , PRIMARY KEY (eventId,eventname));
+

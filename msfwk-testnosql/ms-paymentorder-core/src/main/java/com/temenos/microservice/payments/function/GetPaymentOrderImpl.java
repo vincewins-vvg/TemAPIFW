@@ -57,13 +57,8 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
 			
-			//order.setFileContent(paymentOrder.getFileContent());
-			try {
-				order.setFileContent(new String(paymentOrder.getFileContent().array(),"UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			order.setFileContent(paymentOrder.getFileContent());
+			
 			
 			com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
 			if(paymentOrder.getPaymentMethod()!=null) {
