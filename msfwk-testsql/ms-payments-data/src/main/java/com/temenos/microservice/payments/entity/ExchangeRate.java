@@ -5,10 +5,8 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.temenos.microservice.framework.core.data.JPAEntity;
-
 @Entity
-public class ExchangeRate extends JPAEntity {
+public class ExchangeRate implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	private int id;

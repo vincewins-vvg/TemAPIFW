@@ -5,10 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.temenos.microservice.framework.core.data.JPAEntity;
-
 @Entity
-public class PaymentMethod extends JPAEntity {
+public class PaymentMethod implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	private int id;

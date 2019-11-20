@@ -4,10 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import com.temenos.microservice.framework.core.data.JPAEntity;
-
 @Entity
-public class PayeeDetails extends JPAEntity {
+public class PayeeDetails implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	@GeneratedValue
