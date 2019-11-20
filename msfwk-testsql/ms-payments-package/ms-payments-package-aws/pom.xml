@@ -31,4 +31,27 @@
 			<version>DEV.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.temenos.microservice.plugin</groupId>
+					<artifactId>ms-framework-gen</artifactId>
+					<executions>
+						<execution>
+							<id>generate-function</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-function</goal>
+							</goals>
+							<configuration>
+								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<enableInbox>true</enableInbox>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

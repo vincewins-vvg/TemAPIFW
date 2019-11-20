@@ -1,116 +1,112 @@
 #!/bin/bash -x
 
+
 # Setup the environment
 export PATH=/opt/apache-maven-3.3.9/bin:/usr/bin:/usr/sbin:/usr/local/bin:$PATH
 export MAVEN_OPTS="-Xmx2048m"
 
-# Create Dynamo DB Tables
-aws dynamodb create-table --table-name ms_marketing_catalog_productinformation --attribute-definitions AttributeName=productId,AttributeType=S AttributeName=currencyId,AttributeType=S,AttributeType=S AttributeName=productGroupId,AttributeType=S,AttributeType=S AttributeName=productLineId,AttributeType=S --key-schema AttributeName=productId,KeyType=HASH AttributeName=currencyId,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=1 --global-secondary-indexes IndexName=productGroupId,KeySchema=["{AttributeName=productGroupId,KeyType=HASH}"],Projection="{ProjectionType=INCLUDE ,NonKeyAttributes=["key"]}",ProvisionedThroughput="{ReadCapacityUnits=10,WriteCapacityUnits=10}" IndexName=productLineId,KeySchema=["{AttributeName=productLineId,KeyType=HASH}"],Projection="{ProjectionType=INCLUDE ,NonKeyAttributes=["key"]}",ProvisionedThroughput="{ReadCapacityUnits=10,WriteCapacityUnits=10}"
-sleep 10
-aws dynamodb create-table --table-name ms_marketing_catalog_marketinginformation --attribute-definitions AttributeName=productId,AttributeType=S AttributeName=currencyId,AttributeType=S --key-schema AttributeName=productId,KeyType=HASH AttributeName=currencyId,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=1
-sleep 10
 
-# Create Stream table-update-marketingcatalog for testing
-aws kinesis create-stream --stream-name table-update-marketingcatalog --shard-count 1
-sleep 10
-aws kinesis create-stream --stream-name error-marketingcatalog --shard-count 1
+# Create Streams
+aws kinesis create-stream --stream-name payment-inbox-topic --shard-count 1
+aws kinesis create-stream --stream-name payment-inbox-error-topic --shard-count 1
+aws kinesis create-stream --stream-name payment-outbox-topic --shard-count 1
 sleep 10
 
-# Before installing functions, get the fileName of the jar from /app
-export serviceFileName=$(ls app)
 
-# Install Ingester
-#To-Do
-
-# Install marketingcatalog API functions
-aws lambda create-function --function-name marketingcatalog-productline-forcurrency --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.marketingcatalog.function.GetProductsInProductLineForCurrencyFunctionAWS::invoke --description "API to get products in product-line for currency" --timeout 120 --memory-size 256 --publish --tags FunctionType=API,Service=Marketingcatalog --zip-file fileb://app/${serviceFileName} --environment Variables=\{DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,className_getProductsInProductLineForCurrency=com.temenos.microservice.marketingcatalog.function.GetProductsInProductLineForCurrencyImpl\}
-sleep 10
-aws lambda create-function --function-name marketingcatalog-productgroup-forcurrency --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.marketingcatalog.function.GetProductsInProductGroupForCurrencyFunctionAWS::invoke --description "API to get products in product-group for currency" --timeout 120 --memory-size 256 --publish --tags FunctionType=API,Service=Marketingcatalog --zip-file fileb://app/${serviceFileName} --environment Variables=\{DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,className_getProductsInProductGroupForCurrency=com.temenos.microservice.marketingcatalog.function.GetProductsInProductGroupForCurrencyImpl\}
-sleep 10
-aws lambda create-function --function-name marketingcatalog-productline --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.marketingcatalog.function.GetProductsInProductLineFunctionAWS::invoke --description "API to get products in product-line" --timeout 120 --memory-size 256 --publish --tags FunctionType=API,Service=Marketingcatalog --zip-file fileb://app/${serviceFileName} --environment Variables=\{DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,className_getProductsInProductLine=com.temenos.microservice.marketingcatalog.function.GetProductsInProductLineImpl\}
-sleep 10
-aws lambda create-function --function-name marketingcatalog-productgroup --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.marketingcatalog.function.GetProductsInProductGroupFunctionAWS::invoke --description "API to get products in product-group" --timeout 120 --memory-size 256 --publish --tags FunctionType=API,Service=Marketingcatalog --zip-file fileb://app/${serviceFileName} --environment Variables=\{DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,className_getProductsInProductGroup=com.temenos.microservice.marketingcatalog.function.GetProductsInProductGroupImpl\}
-sleep 10
-aws lambda create-function --function-name marketingcatalog-product --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.marketingcatalog.function.GetProductFunctionAWS::invoke --description "API to get products for currency" --timeout 120 --memory-size 256 --publish --tags FunctionType=API,Service=Marketingcatalog --zip-file fileb://app/${serviceFileName} --environment Variables=\{DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,className_getProduct=com.temenos.microservice.marketingcatalog.function.GetProductImpl\}
+# Create DB parameter group to grant lambda access privilege
+aws rds create-db-cluster-parameter-group --db-cluster-parameter-group-name PaymentOrderPG --db-parameter-group-family aurora5.6 --description "Payment order parameter group"
 sleep 10
 
-# Create REST API
-export restAPIId=$(aws apigateway create-rest-api --name ms-marketingcatalog-api --description "Marketingcatalog API" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
-# Get root resource id for all other resources
-export apiRootResourcetId=$(aws apigateway get-resources --rest-api-id $restAPIId | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["items"][-1]["id"]')
-
+# Modify aws_default_lambda_role in Parameter group
+aws rds modify-db-cluster-parameter-group --db-cluster-parameter-group-name PaymentOrderPG --parameters 'ParameterName=aws_default_lambda_role,ParameterValue=arn:aws:iam::177642146375:role/rds_lambda_execution_role,ApplyMethod=immediate'
+sleep 10
 
 
-# Create version resource and get id
-export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourcetId --path-part "v1.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+# Create Aurora-MySql DB Cluster
+aws rds create-db-cluster --db-cluster-identifier PaymentOrderCluster --engine aurora --engine-version "5.6.10a" --port 3306 --master-username root --master-user-password rootroot --database-name payments --db-cluster-parameter-group-name PaymentOrderPG
+sleep 120
+
+
+# Associate Aurora-MySql DB Cluster to IAM role to provide the permission to execute lambda
+aws rds add-role-to-db-cluster --db-cluster-identifier PaymentOrderCluster --role-arn arn:aws:iam::177642146375:role/rds_lambda_execution_role
+sleep 30
+
+
+# Create Aurora-MySql DB Instance
+aws rds create-db-instance --db-instance-identifier PaymentOrderInstance --db-cluster-identifier PaymentOrderCluster --engine aurora --engine-version "5.6.10a" --db-instance-class db.t2.small --publicly-accessible
+sleep 900
+
+
+# Get Aurora-mysql DB Instance endpoint address
+export host=$(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["Endpoint"]["Address"]')
+
+# Get Aurora-mysql DB Instance endpoint port
+export port=$(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["Endpoint"]["Port"]')
+
+# Get Aurora-mysql DB name
+export dbname=$(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["DBName"]')
+
+# Get Aurora-mysql DB master username
+export username=$(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["MasterUsername"]')
+
+# Get Aurora-mysql DB instance arn
+export dbinstancearn = $(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["DBInstanceArn"]')
+
+## Create stored procedure in the DB Instance
+#aws rds-data execute-statement --resource-arn arn:aws:rds:eu-west-2:177642146375:cluster:paymentordercluster --database "payments" --sql "CREATE  TABLE IF NOT EXISTS members (name VARCHAR(30));"
+
+#aws rds-data execute-sql --aws-secret-store-arn "" --db-cluster-or-instance-arn arn:aws:rds:eu-west-2:177642146375:cluster:paymentordercluster --database "payments" --sql-statements "CREATE TABLE IF NOT EXISTS members (name VARCHAR(30));"
+
+
+# upload files
+aws s3 mb s3://ms-payment-order-sql
+sleep 30
+aws s3 cp app/ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar s3://ms-payment-order-sql --storage-class REDUCED_REDUNDANCY
+
+
+# Create lambdas
+aws lambda create-function --function-name payment-sql-create --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.payments.function.CreateNewPaymentOrderFunctionAWS::invoke --description "Handler for SQL Create new payment order Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=sql\}
+sleep 10
+
+aws lambda create-function --function-name payment-sql-inbox-ingester --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.payments.ingester.InboxEventProcessor::handleRequest --description "Inbox Ingester Service" --timeout 120 --memory-size 512 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,EXECUTION_ENV=TEST,temn_msf_name=PaymentOrderService,temn_exec_env=serverless,temn_msf_ingest_sink_error_stream=payment-inbox-error-topic,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false",temn_msf_ingest_is_avro_event_ingester=false,DATABASE_KEY=sql,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl\}
+sleep 10
+
+aws lambda create-function --function-name inbox-sql-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.payments.function.InboxHandler::handleRequest --description "Listen inbox table and deliver the events to designated queue" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,EXECUTION_ENV=TEST,temn_msf_name=PaymentOrderService,DATABASE_KEY=sql,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_exec_env=serverless,class_package_name=com.temenos.microservice.payments.function,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false"\}
+sleep 10
+
+aws lambda create-function --function-name outbox-sql-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.payments.function.OutboxHandler::handleRequest --description "Listen outbox table and deliver the events to designated queue" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,EXECUTION_ENV=TEST,temn_msf_name=PaymentOrderService,DATABASE_KEY=sql,OUTBOX_STREAM=payment-outbox-topic,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_exec_env=serverless,class_package_name=com.temenos.microservice.payments.function,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false"\}
+sleep 10
+
+# Create event source mapping
+aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-sql-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
+sleep 10
 
 
 
-# Create productLines resource and get id
-export productLinesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "productLines" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+# Create and add APIs to ApiGateway
+export restAPIId=$(aws apigateway create-rest-api --name ms-payment-order-sql-api --description "Payment order SQL API" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+aws apigateway put-gateway-response --rest-api-id $restAPIId --response-type MISSING_AUTHENTICATION_TOKEN --status-code 404
 
-# Create productLineId resource and get id.  Create access method i.e. GET and link it with the function installed above
-export productLineIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productLinesResourceId --path-part "{productLineId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-aws apigateway put-method --rest-api-id $restAPIId --resource-id $productLineIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
-aws apigateway put-integration --rest-api-id $restAPIId --resource-id $productLineIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:marketingcatalog-productline/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+export apiRootResourceId=$(aws apigateway get-resources --rest-api-id $restAPIId | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["items"][-1]["id"]')
 
-# Create currencies resource and get Id
-export productLineCurrenciesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productLineIdResourceId --path-part "currencies" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+export paymentsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "payments" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
-# Create currencyId resource and get id.  Create access method i.e. GET and link it with the function installed above
-export productLineCurrencyIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productLineCurrenciesResourceId --path-part "{currencyId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-aws apigateway put-method --rest-api-id $restAPIId --resource-id $productLineCurrencyIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
-aws apigateway put-integration --rest-api-id $restAPIId --resource-id $productLineCurrencyIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:marketingcatalog-productline-forcurrency/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+export ordersId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "orders" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $ordersId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $ordersId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-sql-create/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"
 
+export apiKeyId=$(aws apigateway create-api-key --name ms-payment-order-sql-apikey --description "Payment order SQL API Key" --enabled | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
-
-# Create productGroups resource and get id
-export productGroupsResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "productGroups" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create productGroupId resource and get id.  Create access method i.e. GET and link it with the function installed above
-export productGroupIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productGroupsResourceId --path-part "{productGroupId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-aws apigateway put-method --rest-api-id $restAPIId --resource-id $productGroupIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
-aws apigateway put-integration --rest-api-id $restAPIId --resource-id $productGroupIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:marketingcatalog-productgroup/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
-
-# Create currencies resource and get Id
-export productGroupCurrenciesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productGroupIdResourceId --path-part "currencies" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create currencyId resource and get id.  Create access method i.e. GET and link it with the function installed above
-export productGroupCurrencyIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productGroupCurrenciesResourceId --path-part "{currencyId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-aws apigateway put-method --rest-api-id $restAPIId --resource-id $productGroupCurrencyIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
-aws apigateway put-integration --rest-api-id $restAPIId --resource-id $productGroupCurrencyIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:marketingcatalog-productgroup-forcurrency/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
-
-
-
-# Create product resource and get id
-export productResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "product" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create productId resource and get id
-export productIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productResourceId --path-part "{productId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create currencies resource and get Id
-export productCurrenciesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productIdResourceId --path-part "currencies" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create currencyId resource and get id.  Create access method i.e. GET and link it with the function installed above
-export productCurrencyIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $productCurrenciesResourceId --path-part "{currencyId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-aws apigateway put-method --rest-api-id $restAPIId --resource-id $productCurrencyIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
-aws apigateway put-integration --rest-api-id $restAPIId --resource-id $productCurrencyIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:marketingcatalog-product/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
-
-
-
-# To publish API so that we can access, create deployment and get id
-export deploymentId=$(aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Marketingcatalog Test Primary" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-
-# Create API Key
-export apiKeyId=$(aws apigateway create-api-key --name ms-marketingcatalog-apikey --description "Marketingcatalog api key" --enabled | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 export apiKeyValue=$(aws apigateway get-api-key --api-key $apiKeyId --include-value | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["value"]')
-export API_KEY=$apiKeyValue
 
-# Create usage plan and get Id
-export usagePlanId=$(aws apigateway create-usage-plan --name ms-marketingcatalog-usageplan --api-stages apiId=$restAPIId,stage=test-primary | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
-# Now map the usage plan with the key
+export API_KEY=$apiKeyValue
+echo $API_KEY
+
+# Create usage plan
+export usagePlanId=$(aws apigateway create-usage-plan --name ms-payment-order-sql-usageplan --api-stages apiId=$restAPIId,stage=test-primary | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 aws apigateway create-usage-plan-key --usage-plan-id $usagePlanId --key-id $apiKeyId --key-type API_KEY
 
-# Finally set the URL for integration test to invoke
 export API_BASE_URL=https://${restAPIId}.execute-api.eu-west-2.amazonaws.com/test-primary
+echo $API_BASE_URL
