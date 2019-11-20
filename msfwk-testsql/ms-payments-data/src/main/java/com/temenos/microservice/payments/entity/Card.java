@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
-public class Card extends JPAEntity {
+public class Card implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	private int cardid;
