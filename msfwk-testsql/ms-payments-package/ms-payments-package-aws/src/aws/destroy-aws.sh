@@ -7,12 +7,12 @@ export MAVEN_OPTS="-Xmx2048m"
 
 # Delete DB Instance
 aws rds delete-db-instance --db-instance-identifier PaymentOrderInstance --skip-final-snapshot
-sleep 450
+sleep 400
 
 
 # Delete DB Cluster
 aws rds delete-db-cluster --db-cluster-identifier PaymentOrderCluster --skip-final-snapshot
-sleep 120
+sleep 400
 
 
 # Delete DB parameter group

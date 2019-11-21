@@ -25,7 +25,7 @@ sleep 10
 
 # Create Aurora-MySql DB Cluster
 aws rds create-db-cluster --db-cluster-identifier PaymentOrderCluster --engine aurora --engine-version "5.6.10a" --port 3306 --master-username root --master-user-password rootroot --database-name payments --db-cluster-parameter-group-name PaymentOrderPG
-sleep 120
+sleep 400
 
 
 # Associate Aurora-MySql DB Cluster to IAM role to provide the permission to execute lambda
