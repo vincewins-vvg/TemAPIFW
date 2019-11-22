@@ -5,6 +5,7 @@ import static com.temenos.microservice.framework.core.ingester.IngesterLogger.in
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -48,6 +49,7 @@ public class OutboxHandler implements RequestHandler<Object, Integer> {
 
 			sendToKinesisStream(outboxEvent.getPayload());
 			outboxEvent.setStatus(OutboxStatus.DELIVERED.toString());
+			outboxEvent.setProcesedTime(new Date());
 			OutboxDaoFactory.getDao().save(outboxEvent);
 			ingesterDiagnostic.prepareInfo("Sent the outbox event to the Kinesis stream").log();
 		} catch (IllegalArgumentException e) {
