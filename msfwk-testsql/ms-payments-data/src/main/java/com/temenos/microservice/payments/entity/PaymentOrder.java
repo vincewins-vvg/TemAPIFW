@@ -47,7 +47,7 @@ public class PaymentOrder extends JPAEntity implements ExtendableEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	private PaymentMethod paymentMethod;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<ExchangeRate> exchangeRates;
 
 	@OneToOne(cascade = CascadeType.ALL)
