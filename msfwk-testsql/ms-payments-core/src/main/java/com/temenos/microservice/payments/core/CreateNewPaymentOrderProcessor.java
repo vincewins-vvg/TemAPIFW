@@ -63,10 +63,15 @@ public class CreateNewPaymentOrderProcessor {
 
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
-		GenericEvent paymentOrderEvent = new GenericEvent();
+		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
 		paymentOrderEvent.setDateTime(new java.util.Date());
 		paymentOrderEvent.setEventId(UUID.randomUUID().toString());
 		paymentOrderEvent.setOrganizationId(UUID.randomUUID().toString());
+		paymentOrderEvent.setAmount(entity.getAmount());
+		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
+		paymentOrderEvent.setCurrency(entity.getCurrency());
+		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
+		
 		EventManager.raiseBusinessEvent(ctx, paymentOrderEvent);
 		return entity;
 	}
