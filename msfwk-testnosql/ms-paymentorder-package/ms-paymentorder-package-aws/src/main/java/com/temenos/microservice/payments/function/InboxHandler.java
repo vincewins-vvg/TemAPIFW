@@ -39,7 +39,7 @@ public class InboxHandler implements RequestHandler<DynamodbEvent, Integer> {
 			context.getLogger().log(record.getDynamodb().getNewImage().get("eventdate").getS());
 
 			InboxEvent inboxEvent = null;
-			inboxEvent = (InboxEvent) InboxDaoFactory.getDao().getByPrimaryKeyAndSortKey(
+			inboxEvent = (InboxEvent) InboxDaoFactory.getDao().getByIdAndName(
 					record.getDynamodb().getNewImage().get("eventId").getS(),
 					record.getDynamodb().getNewImage().get("eventname").getS());
 			Class<?> commandClass;

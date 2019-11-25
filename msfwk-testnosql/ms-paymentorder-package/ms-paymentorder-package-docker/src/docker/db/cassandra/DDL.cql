@@ -42,9 +42,14 @@ paymentOrderId text
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_inbox_events(
 eventId text
 , eventname text
-, eventdetails text
+, eventDetails text
 , payload text
-, eventdate timestamp
+, creationTime timestamp
+, tenantId text
+, organizationId text
+, userId text
+, priority int
+, processedTime timestamp
 , status text
 , PRIMARY KEY (eventId,eventname));
 
