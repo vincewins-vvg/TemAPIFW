@@ -65,6 +65,6 @@ eventId text
 , priority int
 , eventDetails text
 , creationTime timestamp
-, procesedTime timestamp
+, processedTime timestamp
 , PRIMARY KEY (eventId,eventname));
 

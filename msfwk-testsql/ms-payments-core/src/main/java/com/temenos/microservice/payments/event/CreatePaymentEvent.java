@@ -1,8 +1,6 @@
 package com.temenos.microservice.payments.event;
 
-import com.temenos.inbox.outbox.core.GenericEvent;
-
-public class CreatePaymentEvent extends GenericEvent {
+public class CreatePaymentEvent {
 
 	private java.lang.String paymentOrderId;
 
@@ -13,8 +11,6 @@ public class CreatePaymentEvent extends GenericEvent {
 	private java.math.BigDecimal amount;
 
 	private java.lang.String currency;
-
-	private java.lang.String status;
 
 	public java.lang.String getPaymentOrderId() {
 		return paymentOrderId;
@@ -54,14 +50,6 @@ public class CreatePaymentEvent extends GenericEvent {
 
 	public void setCurrency(java.lang.String currency) {
 		this.currency = currency;
-	}
-
-	public java.lang.String getStatus() {
-		return status;
-	}
-
-	public void setStatus(java.lang.String status) {
-		this.status = status;
 	}
 
 }

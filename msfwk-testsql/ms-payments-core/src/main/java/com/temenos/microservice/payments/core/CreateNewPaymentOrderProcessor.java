@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.temenos.inbox.outbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
@@ -64,15 +65,13 @@ public class CreateNewPaymentOrderProcessor {
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
 		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
-		paymentOrderEvent.setDateTime(new java.util.Date());
-		paymentOrderEvent.setEventId(UUID.randomUUID().toString());
-		paymentOrderEvent.setOrganizationId(UUID.randomUUID().toString());
+		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
 		paymentOrderEvent.setAmount(entity.getAmount());
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
 		
-		EventManager.raiseBusinessEvent(ctx, paymentOrderEvent);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		return entity;
 	}
 

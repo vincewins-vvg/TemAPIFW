@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.temenos.inbox.outbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
@@ -42,7 +43,14 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
 		com.temenos.microservice.payments.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
 		// Business event raised from payment order microservice
-		raiseBusinessEvent(ctx, entity);
+		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
+		paymentOrderEvent.setAmount(entity.getAmount());
+		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
+		paymentOrderEvent.setCurrency(entity.getCurrency());
+		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
+		
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		return readStatus(entity);
 	}
 
@@ -102,20 +110,4 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		return paymentStatus;
 	}
 
-	private void raiseBusinessEvent(Context ctx, com.temenos.microservice.payments.entity.PaymentOrder paymentOrder) {
-		GenericEvent genericEvent = new GenericEvent("PAYMENT_ORDER_CREATED", createEvent(paymentOrder));
-		EventManager.raiseBusinessEvent(ctx, genericEvent);
-	}
-
-	private CreatePaymentEvent createEvent(com.temenos.microservice.payments.entity.PaymentOrder paymentOrder) {
-		CreatePaymentEvent createPaymentEvent = new CreatePaymentEvent();
-		createPaymentEvent.setPaymentOrderId(paymentOrder.getPaymentOrderId());
-		createPaymentEvent.setDebitAccount(paymentOrder.getDebitAccount());
-		createPaymentEvent.setCreditAccount(paymentOrder.getCreditAccount());
-		createPaymentEvent.setAmount(paymentOrder.getAmount());
-		createPaymentEvent.setCurrency(paymentOrder.getCurrency());
-		createPaymentEvent.setStatus(paymentOrder.getStatus());
-
-		return createPaymentEvent;
-	}
 }

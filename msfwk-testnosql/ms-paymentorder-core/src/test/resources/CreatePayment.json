@@ -1,0 +1,16 @@
+{
+	"eventId": "1a316d88-3c17-4b59-ad7e-77a3961ac232",
+	"dateTime": "2019-10-21T00:49:35",
+	"eventType": "ms-paymentorder.CreateNewPaymentOrder",
+	"payload": {
+		"body": {
+			"fromAccount": "1234",
+			"toAccount": "5678",
+			"paymentReference": "hello",
+			"paymentDetails": "test",
+			"currency": "USD",
+			"amount": 100,
+			"expires": 0
+		}
+	}
+}
