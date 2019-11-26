@@ -49,7 +49,7 @@ public class OutboxHandler implements RequestHandler<Object, Integer> {
 
 			sendToKinesisStream(outboxEvent.getPayload());
 			outboxEvent.setStatus(OutboxStatus.DELIVERED.toString());
-			outboxEvent.setProcesedTime(new Date());
+			outboxEvent.setProcessedTime(new Date());
 			OutboxDaoFactory.getDao().save(outboxEvent);
 			ingesterDiagnostic.prepareInfo("Sent the outbox event to the Kinesis stream").log();
 		} catch (IllegalArgumentException e) {

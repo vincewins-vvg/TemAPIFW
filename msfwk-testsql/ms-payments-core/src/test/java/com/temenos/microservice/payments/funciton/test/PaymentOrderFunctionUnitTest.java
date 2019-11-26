@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.function.RequestContext;
+import com.temenos.microservice.framework.core.function.RequestImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
@@ -37,6 +39,7 @@ public class PaymentOrderFunctionUnitTest {
 		System.getProperties().setProperty("DATABASE_NAME", "payments");
 		System.getProperties().setProperty("DB_USERNAME", "root");
 		System.getProperties().setProperty("DB_PASSWORD", "root");
+		System.getProperties().setProperty("class.outbox.dao", "com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
 	}
 
 	@Test
@@ -50,7 +53,7 @@ public class PaymentOrderFunctionUnitTest {
 		paymentOrder.setToAccount("70012");
 		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
-			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(null, createNewPaymentOrderInput);
+			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()), createNewPaymentOrderInput);
 			Assert.assertNotNull(paymentStatus);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
