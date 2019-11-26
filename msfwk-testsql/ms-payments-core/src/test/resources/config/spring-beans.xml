@@ -27,19 +27,8 @@
 	<jpa:repositories base-package="com.temenos.microservice.framework.core.data" />
 	<jpa:repositories base-package="com.temenos.microservice.payments.entity" />
 
-	<bean id="org.h2.tools.Server" class="org.h2.tools.Server" scope="singleton"
-		factory-method="createTcpServer" init-method="start"
-		depends-on="org.h2.tools.Server-WebServer">
-		<constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092" />
-	</bean>
-	<bean id="org.h2.tools.Server-WebServer" class="org.h2.tools.Server"
-		scope="singleton" factory-method="createWebServer" init-method="start">
-		<constructor-arg value="-web,-webAllowOthers,-webPort,8082" />
-	</bean>
-
 	<bean name="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		depends-on="org.h2.tools.Server">
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
 		<property name="url"
 			value="jdbc:h2:mem:#{systemProperties['DATABASE_NAME']};DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1" />

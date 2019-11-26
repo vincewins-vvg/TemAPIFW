@@ -1,7 +1,5 @@
 package com.temenos.microservice.payments.event;
 
-import com.temenos.inbox.outbox.core.GenericEvent;
-
 public class CreatePaymentEvent {
 
 	private java.lang.String paymentOrderId;

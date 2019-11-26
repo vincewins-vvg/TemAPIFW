@@ -34,7 +34,7 @@ public class InboxHandler implements RequestHandler<Object, String> {
 			InboxEvent inboxEvent = null;
 			try {
 				ingesterDiagnostic.prepareInfo("Get the InboxEvent corresponding to the eventId").log();
-				inboxEvent = InboxDaoFactory.getDao().getByPrimaryKey(jsonObject.optString("eventId"));
+				inboxEvent = InboxDaoFactory.getDao().getById(jsonObject.optString("eventId"));
 			} catch (NoSuchElementException e) {
 				ingesterAlert.prepareError(MSLogCode.EVENT_PROCESSING_FAILED)
 						.tag("functionName", context.getFunctionName())

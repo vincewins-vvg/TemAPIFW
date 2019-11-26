@@ -46,6 +46,7 @@ services:
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
