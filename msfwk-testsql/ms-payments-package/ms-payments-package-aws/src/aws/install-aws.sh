@@ -53,10 +53,6 @@ export username=$(aws rds describe-db-instances | python -c 'import json,sys;api
 # Get Aurora-mysql DB instance arn
 export dbinstancearn = $(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderinstance" == api["DBInstanceIdentifier"]]; print filter[0]["DBInstanceArn"]')
 
-## Create stored procedure in the DB Instance
-#aws rds-data execute-statement --resource-arn arn:aws:rds:eu-west-2:177642146375:cluster:paymentordercluster --database "payments" --sql "CREATE  TABLE IF NOT EXISTS members (name VARCHAR(30));"
-
-#aws rds-data execute-sql --aws-secret-store-arn "" --db-cluster-or-instance-arn arn:aws:rds:eu-west-2:177642146375:cluster:paymentordercluster --database "payments" --sql-statements "CREATE TABLE IF NOT EXISTS members (name VARCHAR(30));"
 
 
 # upload files
@@ -110,3 +106,10 @@ aws apigateway create-usage-plan-key --usage-plan-id $usagePlanId --key-id $apiK
 
 export API_BASE_URL=https://${restAPIId}.execute-api.eu-west-2.amazonaws.com/test-primary
 echo $API_BASE_URL
+
+
+
+# Creation of Tables [DDL] & Triggers [DML] & Stored Procedures [DML] via script file execution on Aurora-MySql database in AWS environment
+export rdsscriptpath="db/sql/DDL.sql"
+java -cp db/lib/microservice-package-aws-resources-DEV.0.0-SNAPSHOT.jar -Drds_instance_host=${host} -Drds_instance_port=${port} -Drds_instance_dbname=${dbname} -Drds_instance_username=${username} -Drds_instance_password=rootroot -Drds_script_path=${rdsscriptpath} com.temenos.microservice.aws.rds.query.execution.AwsRdsScriptExecution
+sleep 20
