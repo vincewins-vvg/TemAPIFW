@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
+import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
@@ -52,8 +53,11 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 	}
 
 	@Override
-	public void process() throws FunctionException {
-
+	public void process(Context context) throws FunctionException {
+		// TODO Auto-generated method stub
+		
 	}
+
+	 
 
 }

@@ -1,11 +1,11 @@
 {
-	"eventId": "1a316d88-3c17-4b59-ad7e-77a3961ac21",
+	"eventId": "1a316d88-3c7-4-ad7e-773961ac21",
 	"dateTime": "2019-10-21T00:49:35",
-	"eventType": "PaymentOrderService.CreateNewPaymentOrder",
+	"eventType": "PaymentOrder.CreateNewPaymentOrder",
 	"payload": {
 		"body": {
-			"fromAccount": "ABC-123",
-			"toAccount": "ABC-125",
+			"fromAccount": "AZ-124",
+			"toAccount": "AZ-126",
 			"paymentReference": "PayRef",
 			"paymentDetails": "PayDetails",
 			"currency": "USD",

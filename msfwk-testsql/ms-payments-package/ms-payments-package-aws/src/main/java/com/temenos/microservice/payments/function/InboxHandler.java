@@ -42,7 +42,7 @@ public class InboxHandler implements RequestHandler<Object, String> {
 				throw new RuntimeException(e);
 			}
 
-			gcp.processCommand(JsonUtil.readValue(inboxEvent.getPayload(), GenericCommand.class));
+			gcp.processCommand(JsonUtil.readValue(inboxEvent.getPayload(), GenericCommand.class), null);
 			ingesterDiagnostic.prepareInfo("Processed the inbox event").log();
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException
 				| InvocationTargetException | IllegalArgumentException | IOException | FunctionException e) {

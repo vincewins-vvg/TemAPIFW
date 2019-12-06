@@ -1,6 +1,7 @@
 package com.temenos.microservice.payments.ingester;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 
 public class PaymentOrderBusinessIngester extends BinaryIngesterUpdater {
@@ -14,9 +15,12 @@ public class PaymentOrderBusinessIngester extends BinaryIngesterUpdater {
 		}
 	}
 
-	@Override
-	public void process() throws FunctionException {
+	 
 
+	@Override
+	public void process(Context context) throws FunctionException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
