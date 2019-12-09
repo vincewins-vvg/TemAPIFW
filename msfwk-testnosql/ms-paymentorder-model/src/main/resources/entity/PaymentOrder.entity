@@ -2,6 +2,7 @@
   "name": "PaymentOrder",
   "javaPackage": "com.temenos.microservice.payments.entity",
   "tableName": "ms_payment_order",
+  "isExtendable": true,
   "properties": [
     {
       "name": "paymentOrderId",
