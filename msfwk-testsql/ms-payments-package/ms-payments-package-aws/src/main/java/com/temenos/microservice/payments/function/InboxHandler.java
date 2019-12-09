@@ -12,9 +12,9 @@ import org.json.JSONTokener;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.temenos.inbox.outbox.core.GenericCommand;
-import com.temenos.inbox.outbox.data.InboxEvent;
-import com.temenos.inbox.outbox.factory.InboxDaoFactory;
+import com.temenos.inboxoutbox.core.GenericCommand;
+import com.temenos.inboxoutbox.data.InboxEvent;
+import com.temenos.inboxoutbox.factory.InboxDaoFactory;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.core.function.GenericCommandProcessor;

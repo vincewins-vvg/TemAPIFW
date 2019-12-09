@@ -184,7 +184,7 @@ services:
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
       temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
       temn.msf.ingest.sink.enabled: "true"
-      temn.msf.ingest.sink.stream: ms-paymentorder-outbox-topic
+      temn.msf.ingest.sink.stream:
       temn.msf.ingest.sink.stream.producer.id: ms-paymentorder-ingester-sink-producer
       temn.msf.ingest.sink.error.enabled: "false"
       temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic

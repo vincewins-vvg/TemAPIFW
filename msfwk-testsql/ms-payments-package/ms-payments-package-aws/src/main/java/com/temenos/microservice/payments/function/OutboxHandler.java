@@ -18,9 +18,9 @@ import com.amazonaws.services.kinesis.model.PutRecordsRequest;
 import com.amazonaws.services.kinesis.model.PutRecordsRequestEntry;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.temenos.inbox.outbox.core.OutboxStatus;
-import com.temenos.inbox.outbox.data.OutboxEvent;
-import com.temenos.inbox.outbox.factory.OutboxDaoFactory;
+import com.temenos.inboxoutbox.core.OutboxStatus;
+import com.temenos.inboxoutbox.data.OutboxEvent;
+import com.temenos.inboxoutbox.factory.OutboxDaoFactory;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 
