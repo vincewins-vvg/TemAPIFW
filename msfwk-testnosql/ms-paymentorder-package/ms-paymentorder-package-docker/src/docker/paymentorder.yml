@@ -248,4 +248,4 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
-      temn.config.file.path: /etc/mapping/generic/ 
+      temn.config.file.path: /etc/mapping/generic/
