@@ -20,7 +20,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
-import com.temenos.inbox.outbox.core.OutboxStatus;
+import com.temenos.inboxoutbox.core.OutboxStatus;
 import com.temenos.microservice.framework.core.conf.Environment;
 
 public class OutboxHandler implements RequestHandler<DynamodbEvent, Integer> {

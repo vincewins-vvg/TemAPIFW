@@ -25,7 +25,7 @@ public class InboxEventProcessor implements RequestHandler<KinesisEvent, String>
 		GenericCommandBinaryIngester gcbi = new GenericCommandBinaryIngester();
 		try {
 			gcbi.transform(event.getRecords().get(0).getKinesis().getData().array());
-			gcbi.process();
+			gcbi.process(null);
 		} catch (FunctionException e) {
 			e.printStackTrace();
 			ingesterAlert.prepareError(MSLogCode.EVENT_PROCESSING_FAILED).tag("functionName", context.getFunctionName())

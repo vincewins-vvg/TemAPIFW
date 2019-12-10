@@ -1,0 +1,101 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:
+  db-service:
+    build:
+      context: ${DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+    image: ${DB_IMAGE}
+    shm_size: '1gb'
+    ports:
+      - "9047:9042" 
+    environment:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+  
+  api:
+    build:
+      context: ${API_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        api_artifactid: ${api_artifactid}
+        api_java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${API_IMAGE}
+    depends_on:
+      - db-service
+    ports:
+      - "8090:8080"
+      - "40509:40500"
+    environment:
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
+      className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
+      className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
+      className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
+      className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
+      className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
+      temn.msf.name: PaymentOrder
+      temn.msf.security.authz.enabled: "false"
+      temn.msf.stream.vendor: kafka
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+ 
+  ingesterbinary:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}
+    depends_on:
+      - db-service
+    ports:
+      - "40510:40500"
+    environment:
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
+      temn.msf.name: ms-paymentorder
+      temn.msf.stream.vendor: kafka
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
+      temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
+      temn.msf.ingest.sink.enabled: "true"
+      temn.msf.ingest.sink.stream:
+      temn.msf.ingest.sink.stream.producer.id: ms-paymentorder-ingester-sink-producer
+      temn.msf.ingest.sink.error.enabled: "false"
+      temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic
+      temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
+      temn.msf.stream.kafka.transaction.enabled: "true"
+      temn.msf.stream.ms.data.transaction.enabled: "true"
+      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+      temn.msf.exec.env: server
+      temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
+      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
+      class.package.name: com.temenos.microservice.payments.function
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.ingest.is.avro.event.ingester: "false"
+      temn.msf.security.authz.enabled: "false"
+      temn.msf.ingest.consumer.max.poll.records: "1"

@@ -15,9 +15,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStreamRecord;
-import com.temenos.inbox.outbox.core.InboxStatus;
-import com.temenos.inbox.outbox.data.InboxEvent;
-import com.temenos.inbox.outbox.factory.InboxDaoFactory;
+import com.temenos.inboxoutbox.core.InboxStatus;
+import com.temenos.inboxoutbox.data.InboxEvent;
+import com.temenos.inboxoutbox.factory.InboxDaoFactory;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DataAccessException;
 
