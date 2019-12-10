@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-j2ee-jpa</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments-package-j2ee</artifactId>
+	<name>ms-payments-package-j2ee</name>
+	<description>ms-payments j2ee packaging</description>
+	<version>DEV.0.0-SNAPSHOT</version>
+
+	<properties>
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
+
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-payments-j2ee</assemblyOutputDirectory>
+
+		<!-- Provider API WAR filename as it would be used as /context-root -->
+		<web.apiPackageFileName>ms-payments-j2ee.war</web.apiPackageFileName>
+
+		<!-- Ingester App Name -->
+		<web.ingester.app.name>ms-payments-ingester.jar</web.ingester.app.name>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ms-payments-core</artifactId>
+			<version>DEV.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.temenos.microservice.plugin</groupId>
+					<artifactId>ms-framework-gen</artifactId>
+					<executions>
+						<execution>
+							<id>generate-function</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-function</goal>
+							</goals>
+							<configuration>
+								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<enableInbox>true</enableInbox>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
