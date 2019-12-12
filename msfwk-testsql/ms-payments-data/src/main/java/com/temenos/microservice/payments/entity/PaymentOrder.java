@@ -23,7 +23,7 @@ import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
 @Table(name = "ms_payment_order")
-public class PaymentOrder extends JPAEntity implements ExtendableEntity {
+public class PaymentOrder implements ExtendableEntity {
 
 	@Id
 	private String paymentOrderId;
@@ -46,6 +46,22 @@ public class PaymentOrder extends JPAEntity implements ExtendableEntity {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private PaymentMethod paymentMethod;
+
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public List<ExchangeRate> getExchangeRates() {
+		return exchangeRates;
+	}
+
+	public void setExchangeRates(List<ExchangeRate> exchangeRates) {
+		this.exchangeRates = exchangeRates;
+	}
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<ExchangeRate> exchangeRates;

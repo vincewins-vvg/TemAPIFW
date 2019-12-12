@@ -225,8 +225,8 @@ services:
       - "40513:40500"
     environment:
       DATABASE_KEY: cassandra
-      CASSANDRA_HOST: 10.93.23.52
-      CASSANDRA_PORT: 9047
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
       CASSANDRA_USER: cassandra
       CASSANDRA_PASS:
       CASSANDRA_KEYSPACE: ${DB_KEYSPACE}

@@ -3,11 +3,12 @@
 	"metadata": {
 		"requestId": "5ca8715224ca:a0c98631-4ad0-48d3-bf4f-53aac8f7bf72"
 	},
-	"emittedTime": 1574842276962,
+	"emittedTime": 154,
 	"companyTable": null,
 	"entityId": "PI19107122J61FC8",
-	"processingTime": 1574842276454,
-	"application": "PAYMENT.ORDER",
+	"CurrentState": "Placed",
+	"processingTime": 157,
+	"application": "PI19107122J61FC8",
 	"dataEventSize": 1,
 	"payload": {
 		"DebtorNamePrefix": null,
