@@ -89,7 +89,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
-      temn.config.file.path: /etc/mapping/avro/
+      temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
   ingesterbinary:
@@ -222,7 +222,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "40512:40500"
+      - "40513:40500"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: 10.93.23.52
@@ -248,4 +248,4 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
-      temn.config.file.path: /etc/mapping/generic/
+      temn.config.file.path: mapping/
