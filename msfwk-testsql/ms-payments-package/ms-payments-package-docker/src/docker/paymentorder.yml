@@ -38,6 +38,9 @@ services:
       DATABASE_NAME: payments
       DB_USERNAME: root
       DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
       VALIDATE_PAYMENT_ORDER: "false"
       className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
@@ -70,6 +73,9 @@ services:
       DATABASE_NAME: payments
       DB_USERNAME: root
       DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -102,6 +108,9 @@ services:
       DATABASE_NAME: payments
       DB_USERNAME: root
       DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -142,6 +151,9 @@ services:
       DATABASE_NAME: payments
       DB_USERNAME: root
       DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -177,7 +189,10 @@ services:
       PORT: 3306
       DATABASE_NAME: payments
       DB_USERNAME: root
-      DB_PASSWORD: root 
+      DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
