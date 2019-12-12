@@ -1,25 +1,36 @@
 CREATE TYPE IF NOT EXISTS ms_paymentorder.Card (
   cardid bigint,
   cardname text,
-  cardlimit decimal
+  cardlimit decimal,
+  extensionData map<text,text>
 );
+
+
+CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_altkey(
+alternateKey text
+, entityId text
+, alternateName text
+, PRIMARY KEY(alternateKey));
 
 CREATE TYPE IF NOT EXISTS ms_paymentorder.PaymentMethod (
   id bigint,
   name text,
-  card FROZEN<Card>
+  card FROZEN<Card>,
+  extensionData map<text,text>
 );
 
 CREATE TYPE IF NOT EXISTS ms_paymentorder.ExchangeRate (
   id bigint,
   name text,
-  value decimal
+  value decimal,
+  extensionData map<text,text>
 );
 
 CREATE TYPE IF NOT EXISTS ms_paymentorder.PayeeDetails (
   payeeId bigint,
   payeeName text,
-  payeeType text
+  payeeType text,
+  extensionData map<text,text>
 );
 
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_payment_order(
@@ -32,10 +43,10 @@ paymentOrderId text
 , amount decimal
 , currency text
 , status text
-, paymentMethod PaymentMethod
-, payeeDetails PayeeDetails
+, paymentMethod FROZEN<PaymentMethod>
+, payeeDetails FROZEN<PayeeDetails>
 , extensionData map<text,text>
-,fileContent blob
+, fileContent blob
 , exchangeRates list<FROZEN <ExchangeRate>>
 , PRIMARY KEY (paymentOrderId,debitAccount));
 

@@ -1,0 +1,10 @@
+ [
+	{
+		"operation": "shift",
+		"spec": {
+			"entityId": "alternateKey",
+			"application": "entityId",
+			"#entityId": "alternateName"
+		}
+	}
+]

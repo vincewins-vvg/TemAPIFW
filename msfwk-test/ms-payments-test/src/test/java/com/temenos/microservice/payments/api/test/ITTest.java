@@ -4,6 +4,8 @@ import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCri
 import static com.temenos.microservice.payments.util.ITConstants.API_KEY;
 import static com.temenos.microservice.payments.util.ITConstants.BASE_URI;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,5 +87,31 @@ public class ITTest {
 		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
 		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
 		return daoFacade.readItems(table, criterions);
+	}
+
+	protected static String readFromFile(String fileName) {
+		FileInputStream fis = null;
+		byte[] buffer = new byte[1000];
+		StringBuilder sb = new StringBuilder();
+		try {
+			fis = new FileInputStream(fileName);
+
+			while (fis.read(buffer) != -1) {
+				sb.append(new String(buffer));
+				buffer = new byte[10];
+			}
+			fis.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (fis != null)
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return sb.toString();
 	}
 }
