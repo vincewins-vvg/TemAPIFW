@@ -35,7 +35,7 @@ public class PaymentOrderInboxOutboxITTest extends ITTest {
 	}
 
 	@Test
-	public void testMethod1() {
+	public void testCreatePayment() {
 		ClientResponse createResponse;
 
 		do {
@@ -56,7 +56,7 @@ public class PaymentOrderInboxOutboxITTest extends ITTest {
 	}
 
 	@Test
-	public void testMethod2() {
+	public void testInboxCheck() {
 		String tableName = "ms_inbox_events";
 		String eventId = "";
 		List<Criterion> criterions = new ArrayList<Criterion>();
@@ -81,7 +81,7 @@ public class PaymentOrderInboxOutboxITTest extends ITTest {
 	}
 
 	@Test
-	public void testMethod3() {
+	public void testOutboxCheck() {
 		String tableName = "ms_outbox_events";
 		String eventId = "";
 		if (requestedEventId != null) {
