@@ -17,6 +17,7 @@
 	</properties>
 	<modules>
 		<module>ms-payments-package-aws</module>
-		<module>ms-payments-package-docker</module>
+		 <module>ms-payments-package-docker</module>
+		<module>ms-payments-package-j2ee</module>
 	</modules>
 </project>

@@ -34,12 +34,16 @@
 
 	<bean name="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="driverClassName"
+			value="#{systemEnvironment['DRIVER_NAME']}" />
 		<property name="url"
-			value="jdbc:mysql://#{systemEnvironment['HOST']}:#{systemEnvironment['PORT']}/#{systemEnvironment['DATABASE_NAME']}" />
-		<property name="username" value="#{systemEnvironment['DB_USERNAME']}" />
-		<property name="password" value="#{systemEnvironment['DB_PASSWORD']}" />
+			value="#{systemEnvironment['DB_CONNECTION_URL']}" />
+		<property name="username"
+			value="#{systemEnvironment['DB_USERNAME']}" />
+		<property name="password"
+			value="#{systemEnvironment['DB_PASSWORD']}" />
 	</bean>
+	
 	<bean name="hibernateJpaVendorAdapter"
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="generateDdl" value="true" />
@@ -60,11 +64,11 @@
          </property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="hibernate.dialect">#{systemEnvironment['DIALECT']}</prop>
 				<prop key="javax.persistence.schema-generation.database.action">none</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="database">payments</prop>
+				<prop key="database">#{systemEnvironment['DATABASE_NAME']}</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 			</props>
 		</property>
