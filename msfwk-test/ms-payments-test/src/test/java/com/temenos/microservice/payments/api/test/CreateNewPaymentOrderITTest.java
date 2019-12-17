@@ -50,12 +50,13 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
-		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
+		
 
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
 		try {
+			assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
 			assertNotNull(entry);
 			assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
 			assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
