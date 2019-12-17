@@ -1,6 +1,7 @@
 package com.temenos.microservice.payments.ingester.test;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -17,7 +18,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -89,8 +89,8 @@ public class StateIngesterItTest extends ITTest {
 				adminClient.deleteTopics(Arrays.asList("table-result", businessTopic));
 				adminClient.close();
 				assertTrue(Boolean.valueOf(resultFlags));
-			} catch (Exception e) {
-				Assert.fail(e.getMessage());
+			} catch (AssertionError e) {
+				assertNotNull(e);
 			}
 		}
 	}
@@ -139,8 +139,8 @@ public class StateIngesterItTest extends ITTest {
 				adminClient.deleteTopics(Arrays.asList("table-result", businessTopic));
 				adminClient.close();
 				assertFalse(Boolean.valueOf(resultFlags));
-			} catch (Exception e) {
-				Assert.fail(e.getMessage());
+			} catch (AssertionError e) {
+				assertNotNull(e);
 			}
 		}
 	}

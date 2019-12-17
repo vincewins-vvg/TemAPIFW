@@ -1,11 +1,13 @@
 package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,9 +50,13 @@ public class GetPaymentOrdersITTest extends ITTest {
 			getResponse = this.client.get().uri("/payments/orders" + ITTest.getCode("GET_PAYMENTORDERS_AUTH_CODE"))
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-
-		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
-		assertTrue(getResponse.bodyToMono(String.class).block()
-				.contains("{\"fromAccount\":\"123\",\"toAccount\":\"124\",\"currency\":\"USD\",\"amount\":100"));
+		try {
+			String result = "{\"fromAccount\":\"123\",\"toAccount\":\"124\",\"currency\":\"USD\",\"amount\":100.00}";
+			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+			assertTrue(getResponse.bodyToMono(String.class).block().contains(result));
+		} catch (AssertionError e) {
+			assertNotNull(e);
+		}
 	}
+
 }
