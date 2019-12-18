@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
 import reactor.core.publisher.Mono;
-@Ignore
 public class GetPaymentOrdersITTest extends ITTest {
 
 	@Before

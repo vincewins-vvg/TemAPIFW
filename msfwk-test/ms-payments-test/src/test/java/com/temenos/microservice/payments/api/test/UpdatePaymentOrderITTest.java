@@ -22,7 +22,6 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
-@Ignore
 public class UpdatePaymentOrderITTest extends ITTest {
 
 	@Before
