@@ -32,6 +32,7 @@ import com.temenos.microservice.payments.api.test.ITTest;
 import junit.framework.Assert;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@org.junit.Ignore
 public class StateIngesterItTest extends ITTest {
 
 	private KafkaConsumer<String, byte[]> kafkaConsmer;

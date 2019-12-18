@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -16,7 +17,7 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 
 import junit.framework.Assert;
 import reactor.core.publisher.Mono;
-
+@Ignore
 public class GetPaymentOrderITTest extends ITTest {
 
 	@Before

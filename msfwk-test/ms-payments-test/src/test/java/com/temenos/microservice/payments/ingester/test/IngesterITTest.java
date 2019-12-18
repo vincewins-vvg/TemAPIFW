@@ -8,7 +8,7 @@ import com.temenos.des.eventtransformer.data.parse.marker.TAFJMarker;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
 
-
+@org.junit.Ignore
 public class IngesterITTest {
 
 	private static final RuntimeMarker MARKER = new TAFJMarker();
