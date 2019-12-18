@@ -73,13 +73,15 @@ public class StateIngesterItTest extends ITTest {
 				this.kafkaConsmer = new KafkaConsumer<String, byte[]>(props);
 				this.kafkaConsmer.subscribe(Arrays.asList("table-result"));
 				String resultFlags = "false";
-				while (true) {
+				for (int i = 0; i < 5; i++) {
+					Thread.sleep(1000);
 					ConsumerRecords<String, byte[]> records = this.kafkaConsmer.poll(Duration.ofMillis(1000));
 					if (records.count() == 1) {
 						resultFlags = new String(records.iterator().next().value());
 						break;
 					}
 				}
+
 				this.kafkaConsmer.close();
 				Properties properties = new Properties();
 				properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:29092");
@@ -93,6 +95,7 @@ public class StateIngesterItTest extends ITTest {
 				Assert.fail(e.getMessage());
 			}
 		}
+
 	}
 
 	@Test
@@ -123,7 +126,8 @@ public class StateIngesterItTest extends ITTest {
 				this.kafkaConsmer = new KafkaConsumer<String, byte[]>(props);
 				this.kafkaConsmer.subscribe(Arrays.asList("table-result"));
 				String resultFlags = "false";
-				while (true) {
+				for (int i = 0; i < 5; i++) {
+					Thread.sleep(1000);
 					ConsumerRecords<String, byte[]> records = this.kafkaConsmer.poll(Duration.ofMillis(1000));
 					if (records.count() == 1) {
 						resultFlags = new String(records.iterator().next().value());

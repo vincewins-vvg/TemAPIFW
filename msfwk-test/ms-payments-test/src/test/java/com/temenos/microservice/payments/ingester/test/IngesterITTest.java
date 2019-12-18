@@ -1,6 +1,5 @@
 package com.temenos.microservice.payments.ingester.test;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.des.eventtransformer.data.parse.data.DynamicArrayBuilder;
@@ -21,7 +20,6 @@ public class IngesterITTest {
 				.value("20190610").lfm(29).value("IN_PROGRESS").lfm(71).value("100.00").fm().build();
 	}
 
-	@Ignore
 	@Test
 	public void ingestEvent() {
 		producer = new ITestProducer("paymentorder-test",
