@@ -88,6 +88,10 @@ services:
       temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
       DATABASE_KEY: sql
+      EXECUTION_ENVIRONMENT: "TEST"
+      PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+      temn.config.file.path: mapping/
+      temn.ingester.mapping.enabled: "true"
   
   stateingester:
     build:
@@ -225,6 +229,7 @@ services:
     ports:
       - "40513:40500"
     environment:
+      DATABASE_KEY: sql
       HOST: db-service
       PORT: 3306
       DATABASE_NAME: payments
@@ -249,3 +254,4 @@ services:
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
+      EXECUTION_ENVIRONMENT: "TEST"

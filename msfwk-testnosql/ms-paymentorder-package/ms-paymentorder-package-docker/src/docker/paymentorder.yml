@@ -92,6 +92,7 @@ services:
       temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
+      EXECUTION_ENVIRONMENT: "TEST"
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -249,3 +250,4 @@ services:
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
+      EXECUTION_ENVIRONMENT: "TEST"
