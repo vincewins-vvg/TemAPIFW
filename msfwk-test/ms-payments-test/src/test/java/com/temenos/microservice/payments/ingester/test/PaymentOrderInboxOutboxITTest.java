@@ -12,10 +12,11 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.payments.api.test.ITTest;
+
 import org.junit.runners.*;
 import reactor.core.publisher.Mono;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class PaymentOrderInboxOutboxITTest extends ITTest {
 	static String requestedEventId = "";
 
