@@ -16,7 +16,7 @@ import com.temenos.microservice.payments.api.test.ITTest;
 import org.junit.runners.*;
 import reactor.core.publisher.Mono;
 
-@Ignore
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PaymentOrderInboxOutboxITTest extends ITTest {
 	static String requestedEventId = "";
 

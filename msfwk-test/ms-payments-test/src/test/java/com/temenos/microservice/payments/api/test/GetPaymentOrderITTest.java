@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 
 import junit.framework.Assert;
 import reactor.core.publisher.Mono;
-@Ignore
 public class GetPaymentOrderITTest extends ITTest {
 
 	@Before
