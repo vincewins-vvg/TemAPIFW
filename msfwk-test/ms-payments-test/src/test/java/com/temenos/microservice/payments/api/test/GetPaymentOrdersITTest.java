@@ -50,13 +50,9 @@ public class GetPaymentOrdersITTest extends ITTest {
 			getResponse = this.client.get().uri("/payments/orders" + ITTest.getCode("GET_PAYMENTORDERS_AUTH_CODE"))
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		try {
-			String result = "{\"fromAccount\":\"123\",\"toAccount\":\"124\",\"currency\":\"USD\",\"amount\":100.00}";
-			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
-			assertTrue(getResponse.bodyToMono(String.class).block().contains(result));
-		} catch (AssertionError e) {
-			assertNotNull(e);
-		}
+		String result = "{\"fromAccount\":\"123\",\"toAccount\":\"124\",\"currency\":\"USD\",\"amount\":100.00}";
+		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+		assertTrue(getResponse.bodyToMono(String.class).block().toString().contains(result));
 	}
 
 }

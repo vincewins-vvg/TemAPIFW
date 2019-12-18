@@ -29,6 +29,8 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
+import junit.framework.Assert;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StateIngesterItTest extends ITTest {
 
@@ -89,8 +91,8 @@ public class StateIngesterItTest extends ITTest {
 				adminClient.deleteTopics(Arrays.asList("table-result", businessTopic));
 				adminClient.close();
 				assertTrue(Boolean.valueOf(resultFlags));
-			} catch (AssertionError e) {
-				assertNotNull(e);
+			} catch (Exception e) {
+				Assert.fail(e.getMessage());
 			}
 		}
 	}
@@ -139,8 +141,8 @@ public class StateIngesterItTest extends ITTest {
 				adminClient.deleteTopics(Arrays.asList("table-result", businessTopic));
 				adminClient.close();
 				assertFalse(Boolean.valueOf(resultFlags));
-			} catch (AssertionError e) {
-				assertNotNull(e);
+			} catch (Exception e) {
+				Assert.fail(e.getMessage());
 			}
 		}
 	}
