@@ -10,3 +10,7 @@ ENV JAVA_OPTS ${java_options}
 
 COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
 
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+RUN sed -i 's/\r//' /wait-for-it.sh
+
