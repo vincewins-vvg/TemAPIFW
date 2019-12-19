@@ -18,7 +18,7 @@ import com.temenos.des.streamvendorio.kinesis.producer.KinesisStreamProducer;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
 
-public class ITestGenericProducer {
+public class PaymentOrderTester {
 
 	private static final String DEFAULT_STREAM_KAFKA_BOOTSTRAP_SERVERS = "kafka:29092";
 

@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -21,7 +22,6 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
-
 public class UpdatePaymentOrderITTest extends ITTest {
 
 	@Before
@@ -57,12 +57,9 @@ public class UpdatePaymentOrderITTest extends ITTest {
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_UPDATE), String.class)).exchange().block();
 		} while (updateResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
-		assertTrue(updateResponse.statusCode().equals(HttpStatus.OK));
-
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
-
 		assertNotNull(entry);
 		assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
 		assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
