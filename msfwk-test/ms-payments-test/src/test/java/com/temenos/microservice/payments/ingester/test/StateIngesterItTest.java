@@ -73,8 +73,8 @@ public class StateIngesterItTest extends ITTest {
 				this.kafkaConsmer = new KafkaConsumer<String, byte[]>(props);
 				this.kafkaConsmer.subscribe(Arrays.asList("table-result"));
 				String resultFlags = "false";
-				for (int i = 0; i < 5; i++) {
-					Thread.sleep(1000);
+				Thread.sleep(10000);
+				for (int i = 0; i < 10; i++) {
 					ConsumerRecords<String, byte[]> records = this.kafkaConsmer.poll(Duration.ofMillis(1000));
 					if (records.count() == 1) {
 						resultFlags = new String(records.iterator().next().value());
@@ -126,8 +126,8 @@ public class StateIngesterItTest extends ITTest {
 				this.kafkaConsmer = new KafkaConsumer<String, byte[]>(props);
 				this.kafkaConsmer.subscribe(Arrays.asList("table-result"));
 				String resultFlags = "false";
-				for (int i = 0; i < 5; i++) {
-					Thread.sleep(1000);
+				Thread.sleep(10000);
+				for (int i = 0; i < 10; i++) {
 					ConsumerRecords<String, byte[]> records = this.kafkaConsmer.poll(Duration.ofMillis(1000));
 					if (records.count() == 1) {
 						resultFlags = new String(records.iterator().next().value());
