@@ -18,6 +18,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -48,7 +49,10 @@ public class ConfigBasedMappingITTest extends ITTest {
 			List<Object> objectList = new ArrayList<>();
 			InputStream inputBinary = ConfigBasedMappingITTest.class.getClassLoader()
 					.getResourceAsStream("PaymentInputBinaryData.json");
-			objectList.add(new JSONObject(convertInputStreamToString(inputBinary)));
+			Assert.assertNotNull("binary data is not read", inputBinary);
+			String binaryInputReader = convertInputStreamToString(inputBinary);
+			System.out.println("input for binary data" + binaryInputReader);
+			objectList.add(new JSONObject(binaryInputReader));
 			object.put("payload", objectList);
 			JSONArray array = new JSONArray();
 			array.put(0, object);
@@ -113,7 +117,10 @@ public class ConfigBasedMappingITTest extends ITTest {
 					Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "localhost:8081"));
 			InputStream inputAvro = ConfigBasedMappingITTest.class.getClassLoader()
 					.getResourceAsStream("PaymentOrderInputAvroData.json");
-			producer.sendGenericEvent(convertInputStreamToString(inputAvro), "PAYMENT_ORDEREvent");
+			Assert.assertNotNull("avro data is read", inputAvro);
+			String inputAvroReader = convertInputStreamToString(inputAvro);
+			System.out.println("input for avro data" + inputAvroReader);
+			producer.sendGenericEvent(inputAvroReader, "PAYMENT_ORDEREvent");
 			Map<Integer, List<Attribute>> records = null;
 			int maxDBReadRetryCount = 3;
 			int retryCount = 0;
