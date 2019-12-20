@@ -1,8 +1,16 @@
 package com.temenos.microservice.payments.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -15,6 +23,13 @@ public class PaymentMethod implements com.temenos.microservice.framework.core.da
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Card card;
+
+	// maps from attribute name to value
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "PaymentMethod_extension", joinColumns = @JoinColumn(name = "PaymentMethod_id"))
+	Map<String, String> extensionData = new HashMap<String, String>();
 
 	public int getId() {
 		return id;
@@ -38,5 +53,13 @@ public class PaymentMethod implements com.temenos.microservice.framework.core.da
 
 	public void setCard(Card card) {
 		this.card = card;
+	}
+
+	public Map<String, String> getExtensionData() {
+		return extensionData;
+	}
+
+	public void setExtensionData(Map<String, String> extensionData) {
+		this.extensionData = extensionData;
 	}
 }

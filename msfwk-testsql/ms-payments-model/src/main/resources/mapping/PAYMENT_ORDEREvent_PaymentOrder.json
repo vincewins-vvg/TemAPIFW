@@ -1,0 +1,31 @@
+[
+	{
+		"operation": "shift",
+		"spec": {
+			"emittedTime": "paymentMethod.id",
+			"entityName": "paymentMethod.name",
+			"processingTime": "paymentMethod.card.cardid",
+			"company": "paymentMethod.card.cardname",
+			"payload": {
+				"recId": "paymentOrderId",
+				"DebitAccount": "debitAccount",
+				"CreditAccount": "creditAccount",
+				"PaymentCurrency": "currency",
+				"PaymentAmount": "amount",
+				"OrderingCompany": "paymentReference",
+				"ARRAY_Inputter": {
+					"*": {
+						"Inputter": "exchangeRates.[&1].id",
+						"AUTHOR": "exchangeRates.[&1].name"
+					}
+				}
+			}
+		}
+	},
+	{
+		"operation": "default",
+		"spec": {
+			"paymentDetails": "Funds transfer"
+		}
+	}
+]

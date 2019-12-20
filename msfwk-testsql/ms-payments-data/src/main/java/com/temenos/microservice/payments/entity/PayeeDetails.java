@@ -1,5 +1,7 @@
 package com.temenos.microservice.payments.entity;
 
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,4 +40,5 @@ public class PayeeDetails implements com.temenos.microservice.framework.core.dat
 	public void setPayeeType(String payeeType) {
 		this.payeeType = payeeType;
 	}
+
 }

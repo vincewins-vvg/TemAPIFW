@@ -2,6 +2,7 @@
   "name": "Card",
   "javaPackage": "com.temenos.microservice.payments.entity",
   "tableName": "",
+  "isExtendable": true,
   "properties": [
     {
       "name": "cardid",
