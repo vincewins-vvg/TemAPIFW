@@ -3,6 +3,11 @@ package com.temenos.microservice.payments.ingester.test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -41,7 +46,9 @@ public class ConfigBasedMappingITTest extends ITTest {
 			JSONObject object = new JSONObject();
 			object.put("schemaName", "PAYMENT_ORDEREvent");
 			List<Object> objectList = new ArrayList<>();
-			objectList.add(new JSONObject(readFromFile("src/test/resources/PaymentInputBinaryData.json")));
+			InputStream inputBinary = ConfigBasedMappingITTest.class.getClassLoader()
+					.getResourceAsStream("PaymentInputBinaryData.json");
+			objectList.add(new JSONObject(convertInputStreamToString(inputBinary)));
 			object.put("payload", objectList);
 			JSONArray array = new JSONArray();
 			array.put(0, object);
@@ -104,8 +111,9 @@ public class ConfigBasedMappingITTest extends ITTest {
 			System.setProperty("temn.msf.ingest.sink.stream", "table-update-paymentorder");
 			AvroProducer producer = new AvroProducer("paymentorder-test",
 					Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "localhost:8081"));
-			producer.sendGenericEvent(readFromFile("src/test/resources/PaymentOrderInputAvroData.json"),
-					"PAYMENT_ORDEREvent");
+			InputStream inputAvro = ConfigBasedMappingITTest.class.getClassLoader()
+					.getResourceAsStream("PaymentOrderInputAvroData.json");
+			producer.sendGenericEvent(convertInputStreamToString(inputAvro), "PAYMENT_ORDEREvent");
 			Map<Integer, List<Attribute>> records = null;
 			int maxDBReadRetryCount = 3;
 			int retryCount = 0;
@@ -131,5 +139,18 @@ public class ConfigBasedMappingITTest extends ITTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String convertInputStreamToString(InputStream inputStream) throws IOException {
+
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int length;
+		while ((length = inputStream.read(buffer)) != -1) {
+			result.write(buffer, 0, length);
+		}
+
+		return result.toString(StandardCharsets.UTF_8.name());
+
 	}
 }
