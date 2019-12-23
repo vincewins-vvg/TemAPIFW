@@ -52,7 +52,7 @@ paymentOrderId text
 
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_inbox_events(
 eventId text
-, eventname text
+, eventType text
 , eventDetails text
 , payload text
 , creationTime timestamp
@@ -62,11 +62,11 @@ eventId text
 , priority int
 , processedTime timestamp
 , status text
-, PRIMARY KEY (eventId,eventname));
+, PRIMARY KEY (eventId,eventType));
 
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_outbox_events(
 eventId text
-, eventname text
+, eventType text
 , payload text
 , status text
 , tenantId text
@@ -77,5 +77,5 @@ eventId text
 , eventDetails text
 , creationTime timestamp
 , processedTime timestamp
-, PRIMARY KEY (eventId,eventname));
+, PRIMARY KEY (eventId,eventType));
 
