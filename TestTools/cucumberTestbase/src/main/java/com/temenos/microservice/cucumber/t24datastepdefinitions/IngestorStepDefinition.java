@@ -1,6 +1,18 @@
 package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 
+import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
+import static com.temenos.microservice.test.util.ResourceHandler.readResource;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.temenos.des.schema.exception.EventSchemaParseException;
 import com.temenos.des.serializer.exception.AvroSerializationException;
 import com.temenos.des.serializer.exception.SchemaRegistryException;
@@ -11,39 +23,19 @@ import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
 import com.temenos.microservice.framework.test.dao.DaoFactory;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
-import static io.restassured.RestAssured.*;
-
-
-import static com.temenos.microservice.test.util.ResourceHandler.readResource;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
 import com.temenos.microservice.test.producer.AvroProducer;
 import com.temenos.microservice.test.util.BuildRequest;
 import com.temenos.microservice.test.util.ResourceHandler;
 import com.temenos.microservice.test.util.RetryUtil;
+
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.config.RestAssuredConfig;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
 
 public class IngestorStepDefinition {
 
@@ -133,13 +125,22 @@ public class IngestorStepDefinition {
         List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
         tableValues.forEach(tableValue -> {
             if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+                if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null) {
+                    dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+                }
+                else{
+                    dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+                            MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
+                    //System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
+                }
             }
         });
-    }
+    } 
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")
     public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
