@@ -23,6 +23,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +33,9 @@ import org.apache.http.HttpHeaders;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.temenos.microservice.test.db.PartyDBFields;
+import com.temenos.microservice.test.db.T24DAO;
+import com.temenos.microservice.test.util.ExecuteOFSString;
 import com.temenos.useragent.cucumber.config.EndPointConfiguration;
 import com.temenos.useragent.cucumber.config.StepDefinitionConfiguration;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
@@ -56,7 +61,8 @@ public class MSGenericActionStepDefs implements En {
     private CucumberInteractionSession cucumberInteractionSession;
     @Autowired
     private ScenarioBundleStepDefs scenarioBundleStepDefs;
-    
+
+    public static Map<String, String> DbcolumnValues = new HashMap<>(); // key - columnName, Value -
     private static String currentDate;
     private static String dateAfterIncrement;
     private static String dateAfterDecrement;
@@ -166,7 +172,11 @@ public class MSGenericActionStepDefs implements En {
         And(format("^set bundle {0} with unique identifier value$", stepConfig.stringRegEx()),
                 (String key) -> setBundleStringValue(key));
         
-        /* Examples:
+
+        //ExecuteOFSString.testOFSStringWithRecordId(cucumberInteractionSession.scenarioBundle().getString(RecordId),OfsMessageWithId);
+        //DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordId));
+        
+            /* Examples:
          * And set bundle "uniqID" with "4" characters "alphabet" unique identifier value 
          * And set bundle "uniqID" with "7" characters "alphanumeric" unique identifier value 
          * And set bundle "uniqID" with "2" characters "numeric" unique identifier value 
@@ -229,11 +239,43 @@ public class MSGenericActionStepDefs implements En {
         
         And(format("^set request header key {0} with multiple values {0}$", stepConfig.stringRegEx()),
                 (String key, String values) -> setHeaderMultiValues(key, values));
-    
+
+        
+        //** Use the below step to input a OFS String/Message by passing uniquely generated ID
+        And(format("^(?:I ?)*post an OFS Message with record id as {0} and string {0}$", stepConfig.stringRegEx()),
+                (String RecordId, String OfsMessageWithId) ->{
+                    ExecuteOFSString.testOFSStringWithRecordIdGenerated(cucumberInteractionSession.scenarioBundle().getString(RecordId),OfsMessageWithId);
+                    DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordId));
+        });
+
+      //** Use the below step to input a OFS String/Message
+        And(format("^(?:I ?)*post an OFS Message {0}$", stepConfig.stringRegEx()),
+                (String OfsMessage) -> ExecuteOFSString.testOFSString(OfsMessage));
+        
+        //** Use the below step to input a OFS String/Message and store the ID generated in a key
+        And(format("^(?:I ?)*post an OFS Message and store record id in {0} and message {0}$", stepConfig.stringRegEx()),
+                (String RecordIdKey , String OfsString) -> { recordIdFromOFSString(RecordIdKey, OfsString);
+        DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordIdKey));
+                });
+
+
+      //** Use the below step to check if the record id created is present in the F_DATA_EVENTS table
+        Then(format("^Verify the {0} in t24 table {0}$", stepConfig.stringRegEx()),
+                (String Id, String tableName) -> {
+                    T24DAO t24DAO = new T24DAO();
+                    t24DAO.executeQuery(cucumberInteractionSession.scenarioBundle().getString(Id),tableName);
+                });
     }
+
     
-    
-    
+    /**
+     * 
+     */
+//    public MSGenericActionStepDefs() {
+//        // TODO Auto-generated constructor stub
+//    }
+
+
     public String getPropertyValue(String propertyKey) {
         return cucumberInteractionSession.entities().item().get(propertyKey);
     }
@@ -433,6 +475,18 @@ public class MSGenericActionStepDefs implements En {
         currentTime = (int) System.currentTimeMillis();
         uniqueIdentifier = (Integer.toString(currentTime)).substring(3);
         return cucumberInteractionSession.scenarioBundle().put(key, uniqueIdentifier);
+    }
+    
+    //**Method to read Record Id from the OFS response
+    public Object recordIdFromOFSString(String key, String OFS) {
+
+        
+        String responseContents= JsonUtil.ExecuteOfsMessage(OFS);
+      
+         String  idFromResponseContent = responseContents.split("/")[0];
+        
+        System.out.println("Record Id in OFS message is" + idFromResponseContent);
+        return cucumberInteractionSession.scenarioBundle().put(key, idFromResponseContent);
     }
     
     public Object currentSystemDate(String key) {
