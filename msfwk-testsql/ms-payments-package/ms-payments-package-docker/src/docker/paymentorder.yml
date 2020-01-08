@@ -53,7 +53,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  
+      Token.Generator: com.temenos.sample.security.JWTTokenGenerator
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

@@ -51,8 +51,8 @@ public class PaymentOrderFunctionHelper {
 				}
 			} else {
 				HttpClientRequest request = new HttpClientRequest.Builder()
-						.basePath("http://10.93.23.30:9089/irf-test-web/api/")
-						.resourcePath("v1.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balance")
+						.basePath(Environment.getEnvironmentVariable("IRIS_BASE_URI", "http://10.93.27.98:9089/irf-provider-container/api/"))
+						.resourcePath("v2.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balances")
 						.context(ctx).build();
 
 				Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
@@ -64,8 +64,14 @@ public class PaymentOrderFunctionHelper {
 			JSONArray responseBody = irisResponse.getJSONArray("body");
 			JSONObject jsonBody = responseBody.getJSONObject(0);
 
-			java.math.BigDecimal availableBalance = new java.math.BigDecimal(
-					jsonBody.get("availableBalance").toString());
+			java.math.BigDecimal availableBalance;
+			if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("false")) {
+				 availableBalance = new java.math.BigDecimal(
+						jsonBody.get("availableBalance").toString());
+			}else {
+				 availableBalance = new java.math.BigDecimal(
+						jsonBody.get("balanceAmount").toString());
+			}
 
 			if (availableBalance.compareTo(paymentOrder.getAmount()) < 0) {
 				failureMessages
