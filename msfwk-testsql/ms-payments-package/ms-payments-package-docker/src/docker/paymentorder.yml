@@ -268,7 +268,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
-<<<<<<< HEAD
+
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -309,7 +309,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
-=======
+
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -351,4 +351,3 @@ services:
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
       VALIDATE_PAYMENT_ORDER: "false"
->>>>>>> MSF-1079 Fixed the SQL multi threading transaction isseus
