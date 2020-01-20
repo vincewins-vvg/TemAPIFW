@@ -1,11 +1,16 @@
 package com.temenos.microservice.test.db;
 
-import com.temenos.microservice.framework.core.conf.Environment;
+import static junit.framework.TestCase.fail;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.sql.*;
 
-import static junit.framework.TestCase.fail;
+import com.temenos.microservice.framework.core.conf.Environment;
 
 public class T24DAO {
     private static final Logger log = LoggerFactory.getLogger(T24DAO.class.getName());
@@ -24,11 +29,11 @@ public class T24DAO {
         long timeoutMillis = 60 * 1000;
         while(System.currentTimeMillis() - start < timeoutMillis) {
             try {
-                String cusRec = "select COUNT(*) from " + tableName + " where XMLRECORD LIKE '%" + CusId + "%' AND PROCESSEDTIME IS NOT NULL";
+                String cusRec = "select COUNT(*) as resultCount from " + tableName + " where XMLRECORD LIKE '%" + CusId + "%' AND PROCESSEDTIME IS NOT NULL";
                 System.out.println(cusRec);
                 ResultSet rs = stmt.executeQuery(cusRec);
                 if (rs.next()){
-                    if(rs.getInt("COUNT(*)") == 1);
+                    if(rs.getInt("resultCount") == 1);
                     return;
                 }
                 else {
@@ -48,8 +53,11 @@ public class T24DAO {
         if(T24_DB_URL == null || T24_DB_USER == null || T24_DB_PWD == null){
             throw new RuntimeException("Mandatory system property 'T24_DB_URL' or 'T24_DB_USER' or 'T24_DB_PWD' is not set");
         }
+        
+        String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        Class.forName(driver).newInstance();
         connection = DriverManager.getConnection(T24_DB_URL, T24_DB_USER, T24_DB_PWD);
         stmt = connection.createStatement();
 
-    }
+    } 
 }
