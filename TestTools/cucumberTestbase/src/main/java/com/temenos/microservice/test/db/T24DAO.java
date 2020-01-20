@@ -59,5 +59,5 @@ public class T24DAO {
         connection = DriverManager.getConnection(T24_DB_URL, T24_DB_USER, T24_DB_PWD);
         stmt = connection.createStatement();
 
-    }
+    } 
 }
