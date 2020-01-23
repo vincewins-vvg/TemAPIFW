@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.adapter.ServiceAdapterFactory;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
@@ -28,7 +29,7 @@ public class PaymentOrderFunctionHelper {
 		}
 	}
 
-	public static void validatePaymentOrder(PaymentOrder paymentOrder, Context ctx) throws InvalidInputException {
+	public static void validatePaymentOrder(PaymentOrder paymentOrder, Context ctx) throws FunctionException {
 		List<FailureMessage> failureMessages = new ArrayList<FailureMessage>();
 		if (paymentOrder.getAmount() == null) {
 			failureMessages.add(new FailureMessage("Amount is mandatory", "PAYM-PORD-A-2101"));
@@ -51,11 +52,21 @@ public class PaymentOrderFunctionHelper {
 				}
 			} else {
 				HttpClientRequest request = new HttpClientRequest.Builder()
-						.basePath("http://10.93.23.30:9089/irf-test-web/api/")
-						.resourcePath("v1.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balance")
+						.basePath(Environment.getEnvironmentVariable("IRIS_BASE_URI", "http://10.92.17.106:9089/irf-provider-container/api/"))
+						.resourcePath("v2.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balances")
 						.context(ctx).build();
 
 				Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
+				if(response.getStatus() != 200 ) {
+					FunctionException exception = new FunctionException(response.getFailureMessages()) {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public int getStatusCode() {
+							return response.getStatus();
+						}
+					};
+					throw exception;
+				}
 				irisApiResponse = response.getBody();
 			}
 
@@ -64,8 +75,14 @@ public class PaymentOrderFunctionHelper {
 			JSONArray responseBody = irisResponse.getJSONArray("body");
 			JSONObject jsonBody = responseBody.getJSONObject(0);
 
-			java.math.BigDecimal availableBalance = new java.math.BigDecimal(
-					jsonBody.get("availableBalance").toString());
+			java.math.BigDecimal availableBalance;
+			if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("false")) {
+				 availableBalance = new java.math.BigDecimal(
+						jsonBody.get("availableBalance").toString());
+			}else {
+				 availableBalance = new java.math.BigDecimal(
+						jsonBody.get("balanceAmount").toString());
+			}
 
 			if (availableBalance.compareTo(paymentOrder.getAmount()) < 0) {
 				failureMessages
