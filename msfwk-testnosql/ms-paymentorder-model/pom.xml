@@ -24,10 +24,6 @@
 			<groupId>com.temenos.microservice.framework</groupId>
 			<artifactId>ms-framework-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.temenos.microservice.framework</groupId>
-			<artifactId>ms-inbox-outbox</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

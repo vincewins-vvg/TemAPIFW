@@ -22,10 +22,6 @@
 			<artifactId>ms-paymentorder-model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.temenos.microservice.framework</groupId>
-			<artifactId>ms-inbox-outbox</artifactId>
-		</dependency>
-		<dependency>
                <groupId>org.apache.camel</groupId>
                <artifactId>camel-core</artifactId>
                <version>2.22.1</version>

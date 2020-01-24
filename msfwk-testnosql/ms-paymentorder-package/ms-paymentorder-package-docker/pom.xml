@@ -29,6 +29,7 @@
 
 		<!-- Ingester App Name -->
 		<docker.ingester.app.name>ms-paymentorder-ingester.jar</docker.ingester.app.name>
+		<docker.inbox.app.name>ms-paymentorder-inboxoutbox.jar</docker.inbox.app.name>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 

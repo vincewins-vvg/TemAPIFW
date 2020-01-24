@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<application
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:application="http://java.sun.com/xml/ns/javaee/application_6.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd"
+	version="6">
+	<application-name>Payment_order_ear</application-name>
+	<module>
+		<web>
+			<web-uri>ms-payments-data-ingester.war</web-uri>
+			<context-root>ms-payments-data-ingester</context-root>
+		</web>
+	</module>
+	<module>
+		<web>
+			<web-uri>ms-payments-j2ee.war</web-uri>
+			<context-root>ms-payments-api</context-root>
+		</web>
+	</module>
+	<module>
+		<web>
+			<web-uri>ms-payments-inboxoutbox-app.war</web-uri>
+			<context-root>ms-payments-inboxoutbox-app</context-root>
+		</web>
+	</module>
+	<module>
+		<web>
+			<web-uri>ms-payments-command-ingester.war</web-uri>
+			<context-root>ms-payments-command-ingester</context-root>
+		</web>
+	</module>
+</application>

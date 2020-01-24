@@ -1,17 +1,13 @@
 package com.temenos.microservice.payments.dao;
 
-import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.DataAccessException;
-import com.temenos.microservice.framework.core.data.sql.SqlDbDao;
+import com.temenos.microservice.framework.core.data.sql.BaseSqlDao;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 
-public class PaymentOrderDao {
-
-	private static volatile PaymentOrderDao paymentOrderDao = null;
-	private static SqlDbDao<PaymentOrder> sqlDao = null;
+public class PaymentOrderDao<T>  extends BaseSqlDao<PaymentOrder> {
 
 	private PaymentOrderDao(Class clazz) throws DataAccessException {
-		sqlDao = DaoFactory.getSQLDao(clazz);
+		 super(clazz);
 	}
 
 	/**
@@ -21,21 +17,9 @@ public class PaymentOrderDao {
 	 * @return
 	 * @throws DataAccessException 
 	 */
-	public static PaymentOrderDao getInstance(Class clazz) throws DataAccessException {
-		if (paymentOrderDao == null) {
-			synchronized (PaymentOrderDao.class) {
-				if (paymentOrderDao == null) {
-					paymentOrderDao = new PaymentOrderDao(clazz);
-				}
-			}
-		}
-		return paymentOrderDao;
+	public static PaymentOrderDao<PaymentOrder> getInstance(Class clazz) throws DataAccessException {
+		
+		return new PaymentOrderDao<PaymentOrder>(clazz);
 	}
 
-	/**
-	 * @return the sqlDao
-	 */
-	public SqlDbDao<PaymentOrder> getSqlDao() {
-		return sqlDao;
-	}
 }
