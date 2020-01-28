@@ -81,7 +81,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 						"debitAccount", "eq", "string", "10995");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
 
 	}
@@ -144,7 +144,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 						"debitAccount", "eq", "string", "10995");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
 	}
 

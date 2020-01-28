@@ -52,12 +52,8 @@ public class GetPaymentOrderITTest extends ITTest {
 					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE"))
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		try {
-			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
-			assertTrue(getResponse.bodyToMono(String.class).block().contains(
-					"\"paymentStatus\":{\"paymentId\":\"PO~123~124~USD~100\",\"status\":\"INITIATED\",\"details\":\"PayDetails\""));
-		} catch (AssertionError e) {
-			assertNotNull(e);
-		}
+		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+		assertTrue(getResponse.bodyToMono(String.class).block().contains(
+				"\"paymentStatus\":{\"paymentId\":\"PO~123~124~USD~100\",\"status\":\"INITIATED\",\"details\":\"PayDetails\""));
 	}
 }

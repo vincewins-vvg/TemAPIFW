@@ -13,8 +13,6 @@ import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 
-	static Boolean lagResult = false;
-
 	private void callConsumer() {
 		String businessGroupId = Environment.getEnvironmentVariable("temn.ingester.business.group.id",
 				"msf-test-group-id");
@@ -22,17 +20,15 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 		boolean result = false;
 		for (int i = 0; i < 3; i++) {
 			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId);
-			if (result) {
-				lagResult = result;
+			if (!result) {
 				List<byte[]> lagResultList = new ArrayList<>();
-				lagResultList.add(lagResult.toString().getBytes());
+				lagResultList.add(new String("success").getBytes());
 				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
 				break;
 			}
-			if (i == 2 && result == false) {
-				lagResult = result;
+			if (i == 2 && result) {
 				List<byte[]> lagResultList = new ArrayList<>();
-				lagResultList.add(lagResult.toString().getBytes());
+				lagResultList.add(new String("failure").getBytes());
 				KafkaStreamProducer.postMessageToTopic("table-result", lagResultList);
 				break;
 			}
@@ -55,9 +51,7 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 	@Override
 	public void process(Context context) throws FunctionException {
 		// TODO Auto-generated method stub
-		
-	}
 
-	 
+	}
 
 }

@@ -55,12 +55,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
-		try {
-			assertNotNull(entry);
-			assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
-			assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
-		} catch (AssertionError e) {
-			assertNotNull(e);
-		}
+		assertNotNull(entry);
+		assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
+		assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
 	}
 }
