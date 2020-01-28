@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,6 +19,7 @@ import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -27,7 +27,7 @@ import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.streams.AvroProducer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
-
+@Ignore
 public class ConfigBasedMappingITTest extends ITTest {
 
 	@BeforeClass
