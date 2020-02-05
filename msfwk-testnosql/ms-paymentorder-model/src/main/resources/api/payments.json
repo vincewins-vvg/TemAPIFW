@@ -115,18 +115,17 @@ components:
     Card:
       properties:
         cardid:
-          type: number
-          format: biginteger
+          type: integer
+          format: int64
         cardname:
           type: string
         cardlimit:
           type: number
-          format: decimal
     PaymentMethod:
       properties:
         id:
-          type: number
-          format: biginteger
+          type: integer
+          format: int64
         name:
           type: string
         card:
@@ -135,13 +134,12 @@ components:
     ExchangeRate:
       properties:
         id:
-          type: number
-          format: biginteger
+          type: integer
+          format: int64
         name:
           type: string
         value:
           type: number
-          format: decimal
     PayeeDetails:
       properties:
         payeeName:
@@ -163,9 +161,9 @@ components:
           type: string
         amount:
           type: number
-          format: decimal
         expires:
-          type: number
+          type: integer
+          format: int64
         fileContent:
           type: string
           format: binary	
