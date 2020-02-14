@@ -22,7 +22,7 @@
 		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
 
 		<!-- Directory name inside the final Assembly -->
-		<assemblyOutputDirectory>ms-payments-j2ee</assemblyOutputDirectory>
+		<assemblyOutputDirectory>payments-j2ee</assemblyOutputDirectory>
 
 		<!-- Provider API WAR filename as it would be used as /context-root -->
 		<web.apiPackageFileName>ms-payments-j2ee.war</web.apiPackageFileName>

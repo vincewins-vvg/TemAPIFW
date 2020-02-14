@@ -1,0 +1,147 @@
+{
+  "key" : "payments-api",
+  "version" : "1.0.0",
+  "paths" : [ {
+    "method" : "POST",
+    "url" : "/party/account/accountClosure",
+    "resources" : [ {
+      "resourceType" : "Microservice",
+      "key" : "/1.0.0/payments/orders",
+      "requestPayload" : [ ],
+      "responsePayload" : [ ],
+      "simulation" : false,
+      "consentManaged" : false,
+      "productResponseSameAsRequest" : false,
+      "removeMapping" : false,
+      "createDynamicRoute" : false,
+      "requestPayloadIds" : [ ],
+      "responsePayloadIds" : [ ]
+    } ],
+    "operationId" : "CreateNewPaymentOrder",
+    "operationSecurity" : "Public",
+    "summary" : "Creates a new payment order",
+    "description" : " ",
+    "properties" : {
+      "apiDocName" : "payments.json"
+    }
+  }, {
+    "method" : "GET",
+    "url" : "/party/account/accountClosure",
+    "resources" : [ {
+      "resourceType" : "Microservice",
+      "key" : "/1.0.0/payments/orders",
+      "requestPayload" : [ ],
+      "responsePayload" : [ ],
+      "simulation" : false,
+      "consentManaged" : false,
+      "productResponseSameAsRequest" : false,
+      "removeMapping" : false,
+      "createDynamicRoute" : false,
+      "requestPayloadIds" : [ ],
+      "responsePayloadIds" : [ ]
+    } ],
+    "operationId" : "GetPaymentOrders",
+    "operationSecurity" : "Public",
+    "summary" : "Get all payment orders",
+    "description" : " ",
+    "properties" : {
+      "apiDocName" : "payments.json"
+    }
+  }, {
+    "method" : "PUT",
+    "url" : "/party/account/accountClosure",
+    "resources" : [ {
+      "resourceType" : "Microservice",
+      "key" : "/1.0.0/payments/orders/{paymentId}",
+      "selections" : [ {
+        "field" : "paymentId",
+        "operand" : "EQ",
+        "param" : "paymentId",
+        "type" : "string",
+        "required" : ""
+      } ],
+      "requestPayload" : [ ],
+      "responsePayload" : [ ],
+      "simulation" : false,
+      "consentManaged" : false,
+      "productResponseSameAsRequest" : false,
+      "removeMapping" : false,
+      "createDynamicRoute" : false,
+      "requestPayloadIds" : [ ],
+      "responsePayloadIds" : [ ]
+    } ],
+    "operationId" : "UpdatePaymentOrder",
+    "operationSecurity" : "Public",
+    "summary" : "Updates an existing payment order",
+    "description" : " ",
+    "properties" : {
+      "apiDocName" : "payments.json"
+    }
+  }, {
+    "method" : "GET",
+    "url" : "/party/account/accountClosure",
+    "resources" : [ {
+      "resourceType" : "Microservice",
+      "key" : "/1.0.0/payments/orders/{paymentId}",
+      "selections" : [ {
+        "field" : "paymentId",
+        "operand" : "EQ",
+        "param" : "paymentId",
+        "type" : "string",
+        "required" : ""
+      } ],
+      "requestPayload" : [ ],
+      "responsePayload" : [ ],
+      "simulation" : false,
+      "consentManaged" : false,
+      "productResponseSameAsRequest" : false,
+      "removeMapping" : false,
+      "createDynamicRoute" : false,
+      "requestPayloadIds" : [ ],
+      "responsePayloadIds" : [ ]
+    } ],
+    "operationId" : "GetPaymentOrder",
+    "operationSecurity" : "Public",
+    "summary" : "Get a payment order",
+    "description" : " ",
+    "properties" : {
+      "apiDocName" : "payments.json"
+    }
+  }, {
+    "method" : "GET",
+    "url" : "/party/account/accountClosure/holdings",
+    "resources" : [ {
+      "resourceType" : "Microservice",
+      "key" : "/1.0.0/payments/orders/invoke",
+      "selections" : [ {
+        "field" : "paymentStateId",
+        "operand" : "EQ",
+        "param" : "paymentStateId",
+        "type" : "string",
+        "required" : ""
+      } ],
+      "requestPayload" : [ ],
+      "responsePayload" : [ ],
+      "simulation" : false,
+      "consentManaged" : false,
+      "productResponseSameAsRequest" : false,
+      "removeMapping" : false,
+      "createDynamicRoute" : false,
+      "requestPayloadIds" : [ ],
+      "responsePayloadIds" : [ ]
+    } ],
+    "operationId" : "invokePaymentState",
+    "operationSecurity" : "Public",
+    "summary" : "Invoke State Ingester",
+    "description" : " ",
+    "properties" : {
+      "apiDocName" : "payments.json"
+    }
+  } ],
+  "title" : "Test Payments API",
+  "description" : "Test Payments API",
+  "basepath" : "/api",
+  "host" : "localhost",
+  "schemes" : [ "http", "https" ],
+  "createDynamicRoute" : false
+}

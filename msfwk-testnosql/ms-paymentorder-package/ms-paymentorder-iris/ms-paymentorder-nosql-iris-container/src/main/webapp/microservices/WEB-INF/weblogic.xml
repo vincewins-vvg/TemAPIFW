@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-web-app.xsd http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"> 
+
+    <container-descriptor>
+        <prefer-application-packages>
+            <package-name>javassist</package-name>
+            <package-name>net.minidev.json.*</package-name>
+            <package-name>org.springframework.*</package-name>
+        </prefer-application-packages>
+    </container-descriptor>
+    <!-- For TAFC Uncomment the resource-ref below.  -->
+    <!-- <resource-description> 
+        <res-ref-name>jca/t24ConnectionFactory</res-ref-name>
+        <jndi-name>jca/t24ConnectionFactory</jndi-name>
+    </resource-description> -->
+	<resource-description>
+		<res-ref-name>jms/jmsConnectionFactory</res-ref-name>
+        <!-- <jndi-name>jms/t24QueueCxFactory</jndi-name> -->
+		<jndi-name>jms/ConnectionFactory</jndi-name>
+	</resource-description>
+	<resource-description>
+		<res-ref-name>queue/t24IRISIntQueue</res-ref-name>
+		<jndi-name>jms/t24IRISIntQueue</jndi-name>
+	</resource-description>
+	<resource-description>
+		<res-ref-name>queue/t24IRISIntReplyQueue</res-ref-name>
+		<jndi-name>jms/t24IRISIntReplyQueue</jndi-name>
+	</resource-description>
+	<resource-description>
+        <res-ref-name>queue/t24IRISExtQueue</res-ref-name>
+        <jndi-name>jms/t24IRISExtQueue</jndi-name>
+    </resource-description>
+    <resource-description>
+        <res-ref-name>queue/t24IRISExtReplyQueue</res-ref-name>
+        <jndi-name>jms/t24IRISExtReplyQueue</jndi-name>
+    </resource-description>
+    
+	 <resource-description>
+        <res-ref-name>queue/t24AAIntQueue</res-ref-name>
+        <jndi-name>jms/t24AAIntQueue</jndi-name>
+    </resource-description>
+    <resource-description>
+        <res-ref-name>queue/t24AAIntReplyQueue</res-ref-name>
+        <jndi-name>jms/t24AAIntReplyQueue</jndi-name>         
+    </resource-description>
+    <resource-description>
+        <res-ref-name>queue/t24AAExtQueue</res-ref-name>
+        <jndi-name>jms/t24AAExtQueue</jndi-name>
+    </resource-description>
+    <resource-description>
+        <res-ref-name>queue/t24AAExtReplyQueue</res-ref-name>
+        <jndi-name>jms/t24AAExtReplyQueue</jndi-name>         
+    </resource-description>
+
+<!-- remove the comment if queue conf is available for IRISMETADATA  -->
+
+<!--     
+    <resource-description>
+        <res-ref-name>queue/t24IRISMetaDataQueue</res-ref-name>
+        <jndi-name>jms/t24IRISMetaDataQueue</jndi-name>
+    </resource-description>
+    <resource-description>
+        <res-ref-name>queue/t24IRISMetaDataReplyQueue</res-ref-name>
+        <jndi-name>jms/t24IRISMetaDataReplyQueue</jndi-name>         
+    </resource-description> -->
+	<jsp-descriptor>
+	
+		<encoding>utf-8</encoding>
+	</jsp-descriptor>
+	<container-descriptor> 
+        <prefer-web-inf-classes>true</prefer-web-inf-classes>  
+    </container-descriptor>  
+   
+</weblogic-web-app>
