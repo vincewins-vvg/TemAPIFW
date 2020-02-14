@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://camel.apache.org/schema/spring        http://camel.apache.org/schema/spring/camel-spring.xsd">
+	
+	<camelContext
+		xmlns="http://camel.apache.org/schema/spring"
+		id="holdings-accounts-holdings-accounts-service.service.v1.0.0">
+		<!-- <onException>
+			<exception>java.lang.Exception</exception>
+			<handled>
+				<constant>true</constant>
+			</handled>
+			<process ref="exceptionHandler" />
+		</onException> -->
+		<restConfiguration bindingMode="auto"
+			component="servlet" enableCORS="true" />
+		<rest id="holdings-accounts.service.restlet"
+			path="/v1.0.0/holdings/microservices/accounts"
+			produces="application/json">
+			<get id="getAccounts" uri="/">
+				<to uri="direct-vm:holdings-accounts.getAccounts" />
+			</get>
+
+		</rest>
+		<route id="direct-vm.holdings-accounts.getAccounts">
+			<from uri="direct-vm:holdings-accounts.getAccounts" />
+			<setProperty propertyName="operationId">
+				<constant>getAccounts</constant>
+			</setProperty>
+			<setProperty propertyName="target">
+				<constant>/v1.0.0/holdings/accounts</constant>
+			</setProperty>
+			<setProperty propertyName="selection1">
+				<constant>accountId&gt;&gt;account</constant>
+			</setProperty>
+			<setProperty propertyName="selection2">
+				<constant>customerId&gt;&gt;customer</constant>
+			</setProperty>
+			<setProperty propertyName="selection3">
+				<constant>productId&gt;&gt;product</constant>
+			</setProperty>
+			<setProperty propertyName="selection4">
+				<constant>currencyId&gt;&gt;currency</constant>
+			</setProperty>
+			<setProperty propertyName="selection5">
+				<constant>limitReference&gt;&gt;limitId</constant>
+			</setProperty>
+			<!-- <process ref="microservicesProcessor" /> -->
+			<setBody>
+				<simple>${body}Message at ${date:now:yyyy-MM-dd HH:mm:ss}</simple>
+			</setBody>
+		</route>
+	</camelContext>
+	
+</beans>
