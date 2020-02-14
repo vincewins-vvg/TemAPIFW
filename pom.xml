@@ -13,5 +13,6 @@
 	<modules>  
 		<module>msfwk-testnosql</module>
 		<module>msfwk-testsql</module>
+		<module>JMSConsumer</module>
   </modules>
 </project>
