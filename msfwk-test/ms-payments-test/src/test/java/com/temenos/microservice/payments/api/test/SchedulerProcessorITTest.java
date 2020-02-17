@@ -9,10 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.temenos.connect.config.Environment;
 import com.temenos.inboxoutbox.cache.InboxOutboxIgniteCacheImpl;
@@ -20,16 +17,15 @@ import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.Item;
 
+@Ignore
 public class SchedulerProcessorITTest extends ITTest {
 
 	static InboxOutboxIgniteCacheImpl inboxOutboxIgniteCacheImpl = null;
 
-	@Before
 	public void setUp() throws SQLException {
 		this.client = newWebClient();
 	}
 
-	@BeforeClass
 	public static void initializeData() throws InterruptedException {
 		System.getProperties().setProperty("tmn.ignite.host", "127.0.0.1");
 		System.getProperties().setProperty("tmn.ignite.port", "10800");
@@ -45,7 +41,6 @@ public class SchedulerProcessorITTest extends ITTest {
 		daoFacade.insertRecord(insertQuery);
 	}
 
-	@AfterClass
 	public static void clearData() {
 		List<Criterion> criterions = new ArrayList<Criterion>();
 		criterions.add(populateCriterian("eventid", "eq", "string", "1a316d88-3c7-4-ad7e-773961ac21"));
@@ -53,7 +48,6 @@ public class SchedulerProcessorITTest extends ITTest {
 		daoFacade.closeConnection();
 	}
 
-	@Test
 	public void testCachupProcessor() throws InterruptedException {
 		Item item = new Item();
 		item.setTableName("ms_inbox_events");
