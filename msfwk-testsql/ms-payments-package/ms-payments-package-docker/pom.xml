@@ -28,6 +28,7 @@
 		<!-- Ingester App Name -->
 		<docker.ingester.app.name>ms-payments-ingester.jar</docker.ingester.app.name>
 		<docker.inbox.app.name>ms-paymentorder-inboxoutbox.jar</docker.inbox.app.name>
+		<web.ms-framework-scheduler.name>ms-paymentorder-scheduler.jar</web.ms-framework-scheduler.name>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 
