@@ -30,4 +30,10 @@
 			<context-root>ms-paymentorder-command-ingester</context-root>
 		</web>
 	</module>
+	<module>
+		<web>
+			<web-uri>ms-paymentorder-scheduler-web.war</web-uri>
+			<context-root>ms-paymentorder-scheduler-web</context-root>
+		</web>
+	</module>
 </application>

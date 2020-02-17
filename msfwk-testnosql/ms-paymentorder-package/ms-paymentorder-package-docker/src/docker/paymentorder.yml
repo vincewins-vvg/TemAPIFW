@@ -125,7 +125,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: ms-paymentorder
+      temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -332,7 +332,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: ms-paymentorder
+      temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server
@@ -349,3 +349,34 @@ services:
       tmn.ignite.port: 10800
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
+      
+  catchupprocessorapp:
+    build:
+      context: ${CATCHUPPROCESSOR_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${CATCHUPPROCESSOR_BASE_IMAGE}
+        artifactid: ${catchupprocessor_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${CATCHUPPROCESSOR_IMAGE}
+    ports:
+      - "40515:40500"
+    environment:
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
+      temn.msf.name: PaymentOrder
+      temn.msf.security.authz.enabled: "false"
+      tmn.inbox.source.namespace: paymentorder-inbox
+      tmn.outbox.source.namespace: paymentorder-outbox
+      tmn.ignite.host: cache-service
+      tmn.ignite.port: 10800
+      tem.msf.timeDelay: 2
+      tem.msf.inboxSchedulerTime: 0/30 * * * * ?
+      tem.msf.outboxSchedulerTime: 0/30 * * * * ?
