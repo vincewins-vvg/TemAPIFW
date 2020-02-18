@@ -125,7 +125,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: ms-paymentorder
+      temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -332,7 +332,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: ms-paymentorder
+      temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server

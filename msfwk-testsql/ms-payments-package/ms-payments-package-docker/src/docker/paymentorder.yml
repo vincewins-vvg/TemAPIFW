@@ -63,6 +63,8 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       serviceadaptor.preprocessorimpl.class: com.temenos.microservice.sample.security.SampleTokenGenerator
+      temn.msf.stream.vendor: kafka
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
