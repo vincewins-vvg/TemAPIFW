@@ -62,28 +62,14 @@ public class IrisMSITTest extends ITTest {
 		assertNotNull(entry);
 		assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
 		assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
-		
-		ClientResponse getWithoutParameterResponse;
-		do {
-			getWithoutParameterResponse = this.client.get()
-					.uri("v1.0.0/party/account/accountClosure" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE"))
-					.exchange().block();
-		} while (getWithoutParameterResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		System.out.println("getWithoutParameterResponse.statusCode()");
-		assertTrue(getWithoutParameterResponse.statusCode().equals(HttpStatus.OK));
-		String bodyResponses = getWithoutParameterResponse.bodyToMono(String.class).block();
-		JSONObject jsonObjects = new JSONObject(bodyResponses);
-		System.out.println(jsonObjects);
-		JSONArray items = jsonObjects.getJSONArray("items");
-		assertTrue(1 == items.length());
 
 		ClientResponse updateResponse;
 		do {
 			updateResponse = this.client.put()
-					.uri("v1.0.0/party/account/accountClosure/" + "PO~123~124~USD~100" + ITTest.getCode("UPDATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("v1.0.0/party/account/accountClosure?" + "paymentId=PO~123~124~USD~100")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_UPDATE), String.class)).exchange().block();
 		} while (updateResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-
+		System.out.println("update response::" + updateResponse.statusCode());
 		Map<Integer, List<Attribute>> updatedRecords = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> updatedEntry = updatedRecords.get(1);
@@ -93,16 +79,15 @@ public class IrisMSITTest extends ITTest {
 
 		ClientResponse getResponse;
 		do {
-			getResponse = this.client.get().uri("v1.0.0/party/account/accountClosure/" + "PO~123~124~USD~100"
-					+ ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).exchange().block();
+			getResponse = this.client.get().uri("v1.0.0/party/account/accountClosure?" + "paymentId=PO~123~124~USD~100")
+					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		System.out.println(getResponse.statusCode());
+		System.out.println("getResponse tatus code::" + getResponse.statusCode());
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 		String bodyResponse = getResponse.bodyToMono(String.class).block();
 		JSONObject jsonObject = new JSONObject(bodyResponse);
 		String toAccount = jsonObject.getJSONObject("paymentOrder").getString("toAccount");
 		assertTrue("124".equals(toAccount));
 
-		
 	}
 }
