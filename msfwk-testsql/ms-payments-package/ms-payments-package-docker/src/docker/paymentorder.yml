@@ -353,38 +353,3 @@ services:
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
       VALIDATE_PAYMENT_ORDER: "false"
-
-  catchupprocessorapp:
-    build:
-      context: ${CATCHUPPROCESSOR_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        BASE_IMAGE: ${CATCHUPPROCESSOR_BASE_IMAGE}
-        artifactid: ${catchupprocessor_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
-    image: ${CATCHUPPROCESSOR_IMAGE}
-    ports:
-      - "40515:40500"    
-    environment:
-      DATABASE_KEY: sql
-      HOST: db-service
-      PORT: 3306
-      DATABASE_NAME: payments
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      DRIVER_NAME: com.mysql.jdbc.Driver
-      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
-      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
-      temn.msf.name: PaymentOrder
-      temn.msf.security.authz.enabled: "false"
-      tmn.inbox.source.namespace: paymentorder-inbox
-      tmn.outbox.source.namespace: paymentorder-outbox
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
-      tmn.inbox.thread.pool.count: 10
-      tmn.outbox.thread.pool.count: 10
-      VALIDATE_PAYMENT_ORDER: "false"
-      tem.msf.timeDelay: "00:02:00"
-      tem.msf.inboxSchedulerTime: 0/30 * * * * ?
-      tem.msf.outboxSchedulerTime: 0/30 * * * * ?
