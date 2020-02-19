@@ -42,13 +42,14 @@
 					<artifactId>ms-framework-gen</artifactId>
 					<executions>
 						<execution>
-							<id>generate-function</id>
+							<id>generate-api-AWS</id>
 							<phase>generate-sources</phase>
 							<goals>
-								<goal>generate-function</goal>
+								<goal>generate-api</goal>
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<targetPlatform>AWS</targetPlatform>
 								<enableInbox>true</enableInbox>
 							</configuration>
 						</execution>

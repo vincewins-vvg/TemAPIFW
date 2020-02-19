@@ -61,6 +61,9 @@ services:
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
+      tmn.ignite.host: cache-service
+      tmn.ignite.port: 10800
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
