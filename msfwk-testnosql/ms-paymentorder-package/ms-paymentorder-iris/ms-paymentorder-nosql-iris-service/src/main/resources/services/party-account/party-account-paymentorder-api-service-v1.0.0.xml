@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans    
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring.xsd">
+<camelContext xmlns="http://camel.apache.org/schema/spring" id="party-account-paymentorder-api.service.v1.0.0">
+    <onException>
+        <exception>java.lang.Exception</exception>
+        <handled>
+            <constant>true</constant>
+        </handled>
+        <process ref="exceptionHandler"/>
+    </onException>
+    <restConfiguration component="servlet" producerApiDoc="paymentorder-api-v1.0.0-swagger.json" bindingMode="auto" enableCORS="true"/>
+    <rest path="/v1.0.0/party/account" produces="application/json" id="party-account.service.restlet">
+        <get uri="/accountClosure" id="GetPaymentOrder">
+            <to uri="direct-vm:party-account.v1.0.0.GetPaymentOrder"/>
+        </get>
+        <post uri="/accountClosure" id="CreateNewPaymentOrder">
+            <to uri="direct-vm:party-account.v1.0.0.CreateNewPaymentOrder"/>
+        </post>
+        <put uri="/accountClosure" id="UpdatePaymentOrder">
+            <to uri="direct-vm:party-account.v1.0.0.UpdatePaymentOrder"/>
+        </put>
+    </rest>
+    <route id="direct-vm.party-account.v1.0.0.GetPaymentOrder">
+        <from uri="direct-vm:party-account.v1.0.0.GetPaymentOrder"/>
+        <setProperty propertyName="operationSecurity">
+            <constant>Public</constant>
+        </setProperty>
+        <setProperty propertyName="target">
+            <constant>/1.0.0/payments/orders/{paymentId}</constant>
+        </setProperty>
+        <setProperty propertyName="camelTarget">
+            <constant>direct-vm:system-paymentorder.GetPaymentOrder</constant>
+        </setProperty>
+        <setProperty propertyName="operationId">
+            <constant>GetPaymentOrder</constant>
+        </setProperty>
+        <setProperty propertyName="selection1">
+            <constant>paymentId&gt;&gt;paymentId</constant>
+        </setProperty>
+        <process ref="microservicesProcessor"/>
+    </route>
+    <route id="direct-vm.party-account.v1.0.0.CreateNewPaymentOrder">
+        <from uri="direct-vm:party-account.v1.0.0.CreateNewPaymentOrder"/>
+        <setProperty propertyName="operationSecurity">
+            <constant>Public</constant>
+        </setProperty>
+        <setProperty propertyName="target">
+            <constant>/1.0.0/payments/orders</constant>
+        </setProperty>
+        <setProperty propertyName="camelTarget">
+            <constant>direct-vm:system-paymentorder.CreateNewPaymentOrder</constant>
+        </setProperty>
+        <setProperty propertyName="operationId">
+            <constant>CreateNewPaymentOrder</constant>
+        </setProperty>
+        <process ref="microservicesProcessor"/>
+    </route>
+    <route id="direct-vm.party-account.v1.0.0.UpdatePaymentOrder">
+        <from uri="direct-vm:party-account.v1.0.0.UpdatePaymentOrder"/>
+        <setProperty propertyName="operationSecurity">
+            <constant>Public</constant>
+        </setProperty>
+        <setProperty propertyName="target">
+            <constant>/1.0.0/payments/orders/{paymentId}</constant>
+        </setProperty>
+        <setProperty propertyName="camelTarget">
+            <constant>direct-vm:system-paymentorder.UpdatePaymentOrder</constant>
+        </setProperty>
+        <setProperty propertyName="operationId">
+            <constant>UpdatePaymentOrder</constant>
+        </setProperty>
+        <setProperty propertyName="ignoreReplace">
+            <constant/>
+        </setProperty>
+        <setProperty propertyName="selection1">
+            <constant>paymentId&gt;&gt;paymentId</constant>
+        </setProperty>
+        <process ref="microservicesProcessor"/>
+    </route>
+    <route id="direct.mockResponder">
+        <from uri="direct:mockResponder"/>
+        <process ref="mockResponder"/>
+    </route>
+</camelContext>
+
+</beans>

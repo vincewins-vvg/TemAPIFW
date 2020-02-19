@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.temenos.microservice.payments</groupId>
+		<groupId>com.temenos.microservice.paymentorder</groupId>
 		<artifactId>ms-paymentorder</artifactId>
 		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
@@ -14,8 +14,10 @@
 	<properties>
 		<sonar.skip>true</sonar.skip>
 	</properties>
-<modules>  <module>ms-paymentorder-package-aws</module>
+<modules>
    <module>ms-paymentorder-package-docker</module>
-	<module>ms-paymentorder-package-j2ee</module>
+   <module>ms-paymentorder-package-aws</module>
+   <module>ms-paymentorder-package-j2ee</module>
+   <module>ms-paymentorder-iris</module>
   </modules>
 </project>

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.ingester.IngesterGenericEvent;
-import com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater;
+import com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater;
 
 public class PaymentOrderIngesterUnitTest {
 

@@ -9,15 +9,16 @@
 	</parent>
 	<artifactId>ms-payments-package</artifactId>
 	<packaging>pom</packaging>
-	<name>ms-paymentorder-package</name>
+	<name>ms-payments-package</name>
 	<description>Payment Order packaging project</description>
 
 	<properties>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 	<modules>
-		<module>ms-payments-package-aws</module>
+	    <module>ms-payments-package-aws</module>
 		 <module>ms-payments-package-docker</module>
 		<module>ms-payments-package-j2ee</module>
+		<module>ms-payments-iris</module>
 	</modules>
 </project>

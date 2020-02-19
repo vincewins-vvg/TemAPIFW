@@ -1,0 +1,310 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Test Payments API",
+    "description" : "Test Payments API",
+    "version" : "v1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost/api/v1.0.0/"
+  }, {
+    "url" : "https://localhost/api/v1.0.0/"
+  } ],
+  "paths" : {
+    "/party/account/accountClosure" : {
+      "summary" : "Creates a new payment order",
+      "description" : " ",
+      "get" : {
+        "summary" : " ",
+        "description" : "Get a payment order",
+        "operationId" : "GetPaymentOrder",
+        "responses" : {
+          "200" : {
+            "description" : "Get payment order",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentOrderStatus"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : " ",
+        "description" : "Updates an existing payment order",
+        "operationId" : "UpdatePaymentOrder",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentStatus"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Update payment order",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentStatus"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : " ",
+        "description" : "Creates a new payment order",
+        "operationId" : "CreateNewPaymentOrder",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentOrder"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created payment order",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/party/account/accountClosure/holdings" : {
+      "summary" : "Invoke State Ingester",
+      "description" : " ",
+      "get" : {
+        "summary" : " ",
+        "description" : "Invoke State Ingester",
+        "operationId" : "invokePaymentState",
+        "parameters" : [ {
+          "name" : "paymentStateId",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "paymentStateId",
+          "in" : "query",
+          "description" : "paymentStateId",
+          "required" : true,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "invokePaymentState",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentOrderStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ExchangeRate" : {
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Short title for the Account to be created"
+          },
+          "id" : {
+            "type" : "number",
+            "description" : "",
+            "format" : "biginteger"
+          },
+          "value" : {
+            "type" : "number",
+            "description" : "The value of the field on which the Alert criteria is based",
+            "format" : "decimal"
+          }
+        }
+      },
+      "PaymentOrder" : {
+        "properties" : {
+          "toAccount" : {
+            "type" : "string",
+            "description" : ""
+          },
+          "amount" : {
+            "type" : "number",
+            "description" : "This is the payment amount",
+            "format" : "decimal"
+          },
+          "expires" : {
+            "type" : "number",
+            "description" : ""
+          },
+          "payeeDetails" : {
+            "description" : "",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/PayeeDetails"
+            } ]
+          },
+          "paymentReference" : {
+            "type" : "string",
+            "description" : "Payment reference details"
+          },
+          "fromAccount" : {
+            "type" : "string",
+            "description" : ""
+          },
+          "paymentMethod" : {
+            "description" : "Method chosen to make the payment",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/PaymentMethod"
+            } ]
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "Indicates the type of currency to which the account belongs"
+          },
+          "exchangeRates" : {
+            "type" : "array",
+            "description" : "Contains the exchange rate returned from the system. i.e. For entries over foreign currency accounts, this contains the rate which used to convert the currency amount to the local equivalent at the time of the originating transaction.",
+            "items" : {
+              "$ref" : "#/components/schemas/ExchangeRate"
+            }
+          },
+          "paymentDetails" : {
+            "type" : "string",
+            "description" : "Indicates the payment details for the beneficiary to apply the payment."
+          },
+          "descriptions" : {
+            "type" : "array",
+            "description" : "",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "PayeeDetails" : {
+        "properties" : {
+          "payeeName" : {
+            "type" : "string",
+            "description" : ""
+          },
+          "payeeType" : {
+            "type" : "string",
+            "description" : ""
+          }
+        }
+      },
+      "PaymentMethod" : {
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Short title for the Account to be created"
+          },
+          "id" : {
+            "type" : "number",
+            "description" : "",
+            "format" : "biginteger"
+          },
+          "card" : {
+            "description" : "",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Card"
+            } ]
+          }
+        }
+      },
+      "PaymentOrderStatus" : {
+        "properties" : {
+          "paymentOrder" : {
+            "description" : "",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/PaymentOrder"
+            } ]
+          },
+          "paymentStatus" : {
+            "$ref" : "#/components/schemas/PaymentStatus"
+          }
+        }
+      },
+      "PaymentOrders" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/PaymentOrder"
+        }
+      },
+      "PaymentStatus" : {
+        "properties" : {
+          "debitAccount" : {
+            "type" : "string",
+            "description" : " Refers to the account which will be debited and funds moved out."
+          },
+          "paymentId" : {
+            "type" : "string",
+            "description" : "Indicates the unique reference number of the payment"
+          },
+          "paymentMethod" : {
+            "description" : "Method chosen to make the payment",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/PaymentMethod"
+            } ]
+          },
+          "details" : {
+            "type" : "string",
+            "description" : "Additional details"
+          },
+          "exchangeRates" : {
+            "type" : "array",
+            "description" : "Contains the exchange rate returned from the system. i.e. For entries over foreign currency accounts, this contains the rate which used to convert the currency amount to the local equivalent at the time of the originating transaction.",
+            "items" : {
+              "$ref" : "#/components/schemas/ExchangeRate"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Status identifier of the account. The values are 'DELETED' if the account is closed, 'BLOCKED' is there are any posting restrictions & 'ENABLED' for active accounts."
+          }
+        }
+      },
+      "Card" : {
+        "properties" : {
+          "cardname" : {
+            "type" : "string",
+            "description" : "Name of the Cardholder/Customer"
+          },
+          "cardid" : {
+            "type" : "number",
+            "description" : "",
+            "format" : "biginteger"
+          },
+          "cardlimit" : {
+            "type" : "number",
+            "description" : "",
+            "format" : "decimal"
+          }
+        }
+      }
+    }
+  }
+}

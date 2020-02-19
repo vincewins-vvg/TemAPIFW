@@ -1,0 +1,435 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "v1.0.0",
+    "title" : "Funds Transfer Published APIs",
+    "description": "These APIs are used to create and get FundsTransfer records."
+  },
+   "basePath" : "/api/v1.0.0",
+  "paths" : {
+    "/published/payments/{accountid}/statusreport" : {
+      "get" : {
+        "operationId" : "PublishedPaymentStatusReport",
+        "description": "Used to get the Funds Transfer records list of a particular account.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "accountid",
+          "in" : "path",
+          "description": "The field holds the reference of the underlying ACCOUNT application. This should just be the same as trying a new input on ACCOUNT application.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description": "The start date from which records in response should be displayed.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "endDate",
+          "in" : "query",
+          "description": "The end date upto which records in response should be displayed.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "noOfOrders",
+          "in" : "query",
+          "description": "The total number of records per page",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "listType",
+          "in" : "query",
+          "description": "Indicates the summary or detail of account. S-Summary, D-Detail.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "PublishedPaymentStatusReport",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentStatusReportResponse"
+            }
+          },
+          "404" : {
+            "description" : "PublishedPaymentStatusReportError",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentStatusReportErrorResponse"
+            }
+          }
+          
+        }
+      }
+    },
+    "/published/payments/transfer/initiation" : {
+      "post" : {
+        "operationId" : "PublishedPaymentTransferInitiation",
+        "description": "Used to create an unauthorized Funds Transfer record.To authorize, please use updatePaymentTransfer API",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "PublishedPaymentTransferInitiation Response",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentTransferInitiationExampleResponse"
+            }
+          },
+          "400" : {
+            "description" : "PublishedPaymentTransferInitiation error response",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentTransferInitiationErrorResponse"
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "in" : "body",
+        "name" : "payload",
+        "description": "payload to create payment",
+        "required" : true,
+        "schema" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferInitiation"
+        }
+      },{
+        "name": "function",
+        "in": "query",
+        "required": false,
+        "type": "string",
+        "description": "validate the payment"
+                } ]
+    },
+    "/published/payments/transfer/{id}/submission" : {
+      "post" : {
+        "operationId" : "PublishedPaymentTransferSubmission",
+        "description": "Used to authorize a Funds Transfer record.",
+        "produces" : [ "application/json" ],
+        "parameters" : [{
+          "name" : "id",
+          "in" : "path",
+          "description": "Identifies uniquely each Funds Transfer transaction. 12 character standard id. Explanation of Reference Number format: FTYYDDDNNNNN where FT-Application indicator - FT for the Funds Transfer Application, YY-Last two digits of year when transaction is processed, DDD-Julian day number within year when the F.T. is processed, NNNNN-Sequence number.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "PublishedPaymentTransferSubmission Response",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentTransferSubmissionExampleResponse"
+            }
+          },
+          "400" : {
+            "description" : "PublishedPaymentTransferSubmission 400 error response",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentTransfer400SubmissionErrorResponse"
+            }
+          },
+          "404":{
+            "description" : "PublishedPaymentTransferSubmission 404 error response",
+            "schema":{
+                "$ref" : "#/definitions/PublishedPaymentTransfer404SubmissionErrorResponse"
+            }
+          }
+        }
+      }
+    }
+    
+  },
+  "definitions" : {
+      "PublishedPaymentTransferSubmissionExampleResponse":{
+         "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferSubmissionExampleResponseBody"
+        }
+      }  
+      },
+      
+      "PublishedPaymentTransfer400SubmissionErrorResponse":{
+       "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransfer400SubmissionErrorResponseBody"
+        }
+      } 
+      },
+      "PublishedPaymentTransfer400SubmissionErrorResponseBody":{
+          "type":"object",
+          "properties":{
+              "published_errorMessage":{
+                  "type":"string"
+              },
+              "published_errorType":{
+                  "type":"string"
+              }
+          }
+      },
+      "PublishedPaymentStatusReportErrorResponse":{
+        "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentStatusReportErrorResponseBody"
+        }
+      }   
+      },
+      "PublishedPaymentStatusReportErrorResponseBody":{
+        "type":"object",
+        "properties":{
+            "published_errorMessage":{
+                "type":"string"
+            },
+            "published_errorType":{
+                "type":"string"
+            }
+        }  
+      },
+       "PublishedPaymentTransfer404SubmissionErrorResponse":{
+        "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferInitiationErrorResponseBody"
+        }
+      }  
+      },
+      "PublishedPaymentTransferSubmissionExampleResponseBody":{
+          "type":"array",
+          "items":{
+              "type":"object",
+              "properties":{
+                  "published_paymentTransferId":{
+                      "type":"string"
+                  },
+                  "published_paymentTransferStatus":{
+                      "type":"string"
+                  }
+              }
+          }
+      },
+
+    "PublishedPaymentTransferInitiationBody" : {
+      "type" : "object",
+      "properties" : {
+        "published_benAddressLine" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "published_beneficiaryAddressLine" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "published_chargeBearer" : {
+          "type" : "string"
+        },
+        "published_debitAccount" : {
+          "type" : "string"
+        },
+        "published_creditorAgentNationalCode" : {
+          "type" : "string"
+        },
+        "published_acctWithBk" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "published_creditorAgentBIC" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "published_creditReference" : {
+          "type" : "string"
+        },
+        "published_beneficiaryIBAN" : {
+          "type" : "string"
+        },
+        "published_executionDate" : {
+          "type" : "string"
+        },
+        "published_debitReference" : {
+          "type" : "string"
+        },
+        "published_paymentAmount" : {
+          "type" : "string"
+        },
+        "published_benTown" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "published_beneficiaryTown" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "published_inwardPayType" : {
+          "type" : "string"
+        },
+        "published_beneficiaryCountry" : {
+          "type" : "string"
+        },
+        "published_remittanceInformation" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "published_paymentDetails" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "published_beneficiaryAccount" : {
+          "type" : "string"
+        },
+        "published_benName" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "published_beneficiaryName" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "published_paymentCurrency" : {
+          "type" : "string"
+        }
+      }
+    },
+    "PublishedPaymentTransferInitiationErrorResponseBody" : {
+      "type" : "object",
+      "properties" : {
+        "published_error" : {
+          "type" : "object",
+          "properties" : {
+            "published_errordetails" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "published_fieldName" : {
+                    "type" : "string"
+                  },
+                  "published_message" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            },
+            "type" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    },
+    
+    "PublishedPaymentStatusReportResponse" : {
+      "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentStatusReportResponseBody"
+        }
+      }
+    },
+    "PublishedPaymentStatusReportResponseBody" : {
+      "type" : "array",
+      "items":{
+         "type":"object",
+         "properties" : {
+        "published_accountId" : {
+          "type" : "string"
+        },
+        "published_paymentTransferId" : {
+          "type" : "string"
+        },
+        "published_paymentTransferStatus" : {
+          "type" : "string"
+        },
+        "published_beneficiaryAccount" : {
+          "type" : "string"
+        },
+        "published_amount" : {
+          "type" : "string"
+        },
+        "published_debtorReference" : {
+          "type" : "string"
+        },
+        "published_creditorReference" : {
+          "type" : "string"
+        },
+        "published_paymentDetails" : {
+          "type" : "string"
+        },
+        "published_paymentStatus" : {
+          "type" : "string"
+        },
+        "published_accountIBAN" : {
+          "type" : "string"
+        },
+        "published_currency" : {
+          "type" : "string"
+        },
+        "published_id" : {
+          "type" : "string",
+          "maxLength" : 35
+        }
+      }
+      }
+    },
+    "PublishedPaymentTransferInitiation" : {
+      "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferInitiationBody"
+        }
+      }
+    },
+    "PublishedPaymentTransferInitiationExampleResponse" : {
+      "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferInitiationExampleResponseBody"
+        }
+      }
+    },
+    "PublishedPaymentTransferInitiationErrorResponse" : {
+      "properties" : {
+        "body" : {
+          "$ref" : "#/definitions/PublishedPaymentTransferInitiationErrorResponseBody"
+        }
+      }
+    },
+    "PublishedPaymentTransferInitiationExampleResponseBody" : {
+      "type" : "object",
+     "properties" : {
+        
+        "published_executionDate" : {
+          "type" : "string"
+        },
+        "published_id" : {
+          "type" : "string"
+        },
+        "published_exchangeRate" : {
+          "type" : "string"
+        },
+        "published_commissionDescription" : {
+          "type" : "string"
+        },
+        "published_commissionAmount" : {
+          "type" : "string"
+        },
+        "published_chargeDescription" : {
+          "type" : "string"
+        },
+        "published_chargeAmount" : {
+          "type" : "string"
+        },
+        "published_totalDebitAmount" : {
+          "type" : "string"
+        },
+        "published_creditValueDate" : {
+          "type" : "string"
+        }
+
+      }
+    }
+  }
+}

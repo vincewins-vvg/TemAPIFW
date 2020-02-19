@@ -1,6 +1,6 @@
 {
 	"name": "CreatePaymentEvent",
-	"javaPackage": "com.temenos.microservice.payments.event",
+	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"properties": [{
 			"name": "paymentOrderId",
 			"type": "string"

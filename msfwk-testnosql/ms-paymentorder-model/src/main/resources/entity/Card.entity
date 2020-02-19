@@ -1,6 +1,6 @@
 {
   "name": "Card",
-  "javaPackage": "com.temenos.microservice.payments.entity",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
   "tableName": "",
   "isExtendable": true,
   "properties": [

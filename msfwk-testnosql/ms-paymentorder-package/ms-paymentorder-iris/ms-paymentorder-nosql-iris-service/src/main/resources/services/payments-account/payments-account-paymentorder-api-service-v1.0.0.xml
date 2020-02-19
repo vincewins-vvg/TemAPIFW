@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans    
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring.xsd">
+<camelContext xmlns="http://camel.apache.org/schema/spring" id="payments-account-paymentorder-api.service.v1.0.0">
+    <onException>
+        <exception>java.lang.Exception</exception>
+        <handled>
+            <constant>true</constant>
+        </handled>
+        <process ref="exceptionHandler"/>
+    </onException>
+    <restConfiguration component="servlet" producerApiDoc="paymentorder-api-v1.0.0-swagger.json" bindingMode="auto" enableCORS="true"/>
+    <rest path="/v1.0.0/payments/account" produces="application/json" id="payments-account.service.restlet">
+        <get uri="/accountClosure/holdings" id="invokePaymentState">
+            <to uri="direct-vm:payments-account.v1.0.0.invokePaymentState"/>
+        </get>
+    </rest>
+    <route id="direct-vm.payments-account.v1.0.0.invokePaymentState">
+        <from uri="direct-vm:payments-account.v1.0.0.invokePaymentState"/>
+        <setProperty propertyName="operationSecurity">
+            <constant>Public</constant>
+        </setProperty>
+        <setProperty propertyName="target">
+            <constant>/1.0.0/payments/orders/invoke</constant>
+        </setProperty>
+        <setProperty propertyName="camelTarget">
+            <constant>direct-vm:system-paymentorder.invokePaymentState</constant>
+        </setProperty>
+        <setProperty propertyName="operationId">
+            <constant>invokePaymentState</constant>
+        </setProperty>
+        <setProperty propertyName="selection1">
+            <constant>paymentStateId&gt;&gt;paymentStateId</constant>
+        </setProperty>
+        <process ref="microservicesProcessor"/>
+    </route>
+    <route id="direct.mockResponder">
+        <from uri="direct:mockResponder"/>
+        <process ref="mockResponder"/>
+    </route>
+</camelContext>
+
+</beans>

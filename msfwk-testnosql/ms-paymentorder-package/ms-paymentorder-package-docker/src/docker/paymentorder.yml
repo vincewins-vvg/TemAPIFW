@@ -50,11 +50,11 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
-      className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
-      className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
-      className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
+      className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+      className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
+      className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+      className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
+      className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
@@ -93,11 +93,11 @@ services:
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
-      com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
+      com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-      PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+      PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
@@ -134,8 +134,8 @@ services:
       temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
       temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester
       temn.msf.exec.env: server
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      class.package.name: com.temenos.microservice.payments.function
+      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+      class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
@@ -178,7 +178,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.ingester.business.group.id: msf-test-group-id
       temn.ingester.business.topic: table-update-business
-      temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderStateIngester
+      temn.msf.ingest.generic.ingester:  com.temenos.microservice.paymentorder.ingester.PaymentOrderStateIngester
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
       temn.iris.fdata.enquiry.resource.path: system/metrics/dataEvents/pendings/itemCount
@@ -217,7 +217,7 @@ services:
       temn.msf.ingest.source.stream.consumergroup.id: msf-test-group-id
       temn.msf.ingest.sink.error.stream: error-paymentorder
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
-      temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderBusinessIngester
+      temn.msf.ingest.generic.ingester:  com.temenos.microservice.paymentorder.ingester.PaymentOrderBusinessIngester
       temn.msf.stream.outbox.topic: paymentorder-event-topic
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.is.avro.event.ingester: "false"
@@ -264,7 +264,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
-      PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+      PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
       
@@ -300,10 +300,10 @@ services:
       temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
       temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester
       temn.msf.exec.env: server
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      temn.msf.ingest.event.processor: com.temenos.microservice.payments.ingester.EventHandlerImpl
+      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+      temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
       # temn.msf.raise.received.event: "true"
-      class.package.name: com.temenos.microservice.payments.function
+      class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
@@ -337,8 +337,8 @@ services:
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server
       temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      class.package.name: com.temenos.microservice.payments.function
+      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+      class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
