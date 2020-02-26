@@ -52,14 +52,16 @@ public class PaymentOrderFunctionHelper {
 				}
 			} else {
 				HttpClientRequest request = new HttpClientRequest.Builder()
-						.basePath(Environment.getEnvironmentVariable("IRIS_BASE_URI", "http://10.92.17.106:9089/irf-provider-container/api/"))
+						.basePath(Environment.getEnvironmentVariable("IRIS_BASE_URI",
+								"http://10.92.17.106:9089/irf-provider-container/api/"))
 						.resourcePath("v2.0.0/holdings/PSD2/accounts/" + paymentOrder.getFromAccount() + "/balances")
 						.context(ctx).build();
 
 				Response<String> response = ServiceAdapterFactory.getServiceAdapter().get(request);
-				if(response.getStatus() != 200 ) {
+				if (response.getStatus() != 200) {
 					FunctionException exception = new FunctionException(response.getFailureMessages()) {
 						private static final long serialVersionUID = 1L;
+
 						@Override
 						public int getStatusCode() {
 							return response.getStatus();
@@ -77,11 +79,9 @@ public class PaymentOrderFunctionHelper {
 
 			java.math.BigDecimal availableBalance;
 			if (Environment.getEnvironmentVariable("VALIDATE_PAYMENT_ORDER", "").equalsIgnoreCase("false")) {
-				 availableBalance = new java.math.BigDecimal(
-						jsonBody.get("availableBalance").toString());
-			}else {
-				 availableBalance = new java.math.BigDecimal(
-						jsonBody.get("balanceAmount").toString());
+				availableBalance = new java.math.BigDecimal(jsonBody.get("availableBalance").toString());
+			} else {
+				availableBalance = new java.math.BigDecimal(jsonBody.get("balanceAmount").toString());
 			}
 
 			if (availableBalance.compareTo(paymentOrder.getAmount()) < 0) {
@@ -92,7 +92,8 @@ public class PaymentOrderFunctionHelper {
 		if (StringUtil.isNullOrEmpty(paymentOrder.getToAccount())) {
 			failureMessages.add(new FailureMessage("To Account is mandatory", "PAYM-PORD-A-2104"));
 		}
-		if (StringUtil.isNullOrEmpty(paymentOrder.getCurrency())) {
+		if (StringUtil
+				.isNullOrEmpty(paymentOrder.getCurrency() == null ? null : paymentOrder.getCurrency().toString())) {
 			failureMessages.add(new FailureMessage("Currency is mandatory", "PAYM-PORD-A-2105"));
 		}
 		if (!failureMessages.isEmpty()) {

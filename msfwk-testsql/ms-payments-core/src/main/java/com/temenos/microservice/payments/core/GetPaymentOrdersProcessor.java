@@ -14,6 +14,7 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
+import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrders;
 
@@ -43,7 +44,7 @@ public class GetPaymentOrdersProcessor {
 		for (com.temenos.microservice.payments.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
-			view.setCurrency(entity.getCurrency());
+			view.setCurrency(Enum.valueOf(EnumCurrency.class, entity.getCurrency()));
 			view.setFromAccount(entity.getDebitAccount());
 			view.setToAccount(entity.getCreditAccount());
 			views.add(view);
