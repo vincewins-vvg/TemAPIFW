@@ -73,6 +73,44 @@ services:
     depends_on:
       - db-service
     ports:
+      - "40518:40588"
+    environment:
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
+      temn.msf.name: PaymentOrder
+      temn.msf.stream.vendor: kafka
+      temn.msf.schema.registry.url: http://schema-registry:8081
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.source.stream: table-update
+      temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
+      temn.msf.ingest.sink.error.stream: error-paymentorder
+      temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+      temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+      PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+      temn.msf.security.authz.enabled: "false"
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.ingest.consumer.max.poll.records: "1"
+     
+  configavroingester:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}
+    depends_on:
+      - db-service
+    ports:
       - "40508:40500"
     environment:
       DATABASE_KEY: cassandra

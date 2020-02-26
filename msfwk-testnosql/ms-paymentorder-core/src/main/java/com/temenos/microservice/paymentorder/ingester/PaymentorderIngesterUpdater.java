@@ -1,29 +1,30 @@
 package com.temenos.microservice.paymentorder.ingester;
 
+import java.util.Map;
+
 import org.json.JSONObject;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.DataAccessException;
+import com.temenos.microservice.framework.core.data.Entity;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
-import com.temenos.microservice.framework.core.ingester.IngesterUpdater;
+import com.temenos.microservice.framework.core.ingester.BaseIngester;
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 
-public class PaymentorderIngesterUpdater implements IngesterUpdater {
+public class PaymentorderIngesterUpdater extends BaseIngester {
 	private JSONObject sourceRecord;
 	private PaymentOrder order;
 
-	public PaymentorderIngesterUpdater(JSONObject jsonObject) {
-		this.sourceRecord = jsonObject;
+	public PaymentorderIngesterUpdater() {
 	}
 
 	@Override
 	public void update() throws FunctionException {
-		transform();
 		saveOrUpdate();
 	}
 
-/**
+	/**
 	 * Insert/update the Payment order Event.
 	 * 
 	 * @throws DataAccessException
@@ -33,12 +34,11 @@ public class PaymentorderIngesterUpdater implements IngesterUpdater {
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		paymentOrderDao.saveEntity(order);
 	}
-	
-	/**
-	 * Transform the JSON event to Payment order Entity.
-	 */
-	private void transform() {
-		PaymentOrderRecord orderRecord = new PaymentOrderRecord(sourceRecord);
+
+	@Override
+	public void transform(JSONObject jsonObject) throws FunctionException {
+		// TODO Auto-generated method stub
+		PaymentOrderRecord orderRecord = new PaymentOrderRecord(jsonObject);
 		order = new PaymentOrder();
 		order.setAmount(orderRecord.getAmount());
 		order.setCreditAccount(orderRecord.getCreditAccount());
@@ -49,5 +49,11 @@ public class PaymentorderIngesterUpdater implements IngesterUpdater {
 		order.setPaymentOrderId(orderRecord.getPaymentOrderId());
 		order.setPaymentReference(orderRecord.getPaymentReference());
 		order.setStatus(orderRecord.getStatus());
+	}
+
+	@Override
+	public Map<String, Entity> setEntityMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

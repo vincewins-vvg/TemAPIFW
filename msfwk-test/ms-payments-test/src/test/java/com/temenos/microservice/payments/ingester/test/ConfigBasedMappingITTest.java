@@ -27,7 +27,7 @@ import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.streams.AvroProducer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
-@Ignore
+
 public class ConfigBasedMappingITTest extends ITTest {
 
 	@BeforeClass
@@ -43,6 +43,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 	@Test
 	public void testBinaryIngesterConfigBasedMapping() {
 		try {
+
 			List<byte[]> messageList = new ArrayList<>();
 			JSONObject object = new JSONObject();
 			object.put("schemaName", "PAYMENT_ORDEREvent");
@@ -74,6 +75,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 			assertNotNull("Product record should not be null", records);
 			assertNotNull("Key set should not be null", records.keySet().size());
 			assertNotNull("Values should not be null", records.values().size());
+
 			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 				removeForeignChecksAndDelete();
 			} else {
@@ -103,6 +105,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		con.createStatement().execute("TRUNCATE table PayeeDetails");
 		con.createStatement().execute("TRUNCATE table PaymentMethod_extension");
 		con.createStatement().execute("TRUNCATE table PaymentMethod");
+		con.createStatement().execute("TRUNCATE table PaymentOrder_extension");
 		con.createStatement().execute("TRUNCATE table ms_payment_order_ExchangeRate");
 		con.createStatement().execute("TRUNCATE table ms_payment_order");
 		con.createStatement().execute("SET FOREIGN_KEY_CHECKS = 1");

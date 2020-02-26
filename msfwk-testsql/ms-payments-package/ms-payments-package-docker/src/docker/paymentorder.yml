@@ -91,6 +91,41 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.source.stream: table-update
+      temn.msf.ingest.source.stream.consumergroup.id: msf-test-consumer
+      temn.msf.ingest.sink.error.stream: error-paymentorder
+      temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+      temn.msf.security.authz.enabled: "false"
+      temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+      PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
+      DATABASE_KEY: sql
+      
+  configavroingester:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}
+    depends_on:
+      - db-service
+    ports:
+      - "40509:40500"
+    environment:
+      HOST: db-service
+      PORT: 3306
+      DATABASE_NAME: payments
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DRIVER_NAME: com.mysql.jdbc.Driver
+      DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      temn.msf.name: PaymentOrder
+      temn.msf.stream.vendor: kafka
+      temn.msf.schema.registry.url: http://schema-registry:8081
+      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: table-update-paymentorder
       temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.stream: error-paymentorder
@@ -103,6 +138,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       temn.ingester.mapping.enabled: "true"
+  
   
   stateingester:
     build:
