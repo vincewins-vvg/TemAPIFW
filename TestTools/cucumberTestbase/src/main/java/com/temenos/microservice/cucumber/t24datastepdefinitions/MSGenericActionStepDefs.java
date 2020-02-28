@@ -156,6 +156,10 @@ public class MSGenericActionStepDefs implements En {
                 () ->   
         TimeUnit.SECONDS.sleep(30));
         
+        And("^set wait time of 10 seconds$",
+                () ->   
+        TimeUnit.SECONDS.sleep(10));
+        
         /* Examples:
          * And increment "systemDate" with value "15 days" in bundle 
          * And increment "systemDate" with value "11 months" in bundle 
@@ -241,29 +245,55 @@ public class MSGenericActionStepDefs implements En {
                 (String key, String values) -> setHeaderMultiValues(key, values));
 
         
-        //** Use the below step to input a OFS String/Message by passing uniquely generated ID
+        //** Use the below step to input a OFS String/Message by passing uniquely generated ID, use this to create a unique id
+        
         And(format("^(?:I ?)*post an OFS Message with record id as {0} and string {0}$", stepConfig.stringRegEx()),
                 (String RecordId, String OfsMessageWithId) ->{
                     ExecuteOFSString.testOFSStringWithRecordIdGenerated(cucumberInteractionSession.scenarioBundle().getString(RecordId),OfsMessageWithId);
                     DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordId));
         });
 
-      //** Use the below step to input a OFS String/Message
+      //** Use the below step to input a OFS String/Message , use this when ID is hardcoded in the OFS string/message.
         And(format("^(?:I ?)*post an OFS Message {0}$", stepConfig.stringRegEx()),
                 (String OfsMessage) -> ExecuteOFSString.testOFSString(OfsMessage));
         
-        //** Use the below step to input a OFS String/Message and store the ID generated in a key
+        //** Use the below step to input a OFS String/Message and store the ID generated in a key , use this when ID gets
+        // auto generated during runtime/ ofs string execution.
         And(format("^(?:I ?)*post an OFS Message and store record id in {0} and message {0}$", stepConfig.stringRegEx()),
                 (String RecordIdKey , String OfsString) -> { recordIdFromOFSString(RecordIdKey, OfsString);
         DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordIdKey));
                 });
 
 
-      //** Use the below step to check if the record id created is present in the F_DATA_EVENTS table
-        Then(format("^Verify the {0} in t24 table {0}$", stepConfig.stringRegEx()),
-                (String Id, String tableName) -> {
+      //** Use the below step to check if the record id created is present in any t24 table
+        Then(format("^verify if entry for {0} is present in t24 table {0}$", stepConfig.stringRegEx()),
+                (String id, String tableName) -> {
                     T24DAO t24DAO = new T24DAO();
-                    t24DAO.executeQuery(cucumberInteractionSession.scenarioBundle().getString(Id),tableName);
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(id);
+                    if (bundleValue != null)
+                    {
+                    t24DAO.executeQuery(cucumberInteractionSession.scenarioBundle().getString(id),tableName);
+                    }
+                    else{
+                        
+                        t24DAO.executeQuery(id,tableName);
+                    }
+                });
+        
+      //** Use the below step to check if the record id created is present in the F_DATA_EVENTS table has been processed
+        Then(format("^check if the {0} in t24 table {0} has been processed$", stepConfig.stringRegEx()),
+                (String id, String tableName) -> {
+                    T24DAO t24DAO = new T24DAO();
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(id);
+                    if (bundleValue != null)
+                    {
+                    t24DAO.checkFDataEventsEntryStatus(cucumberInteractionSession.scenarioBundle().getString(id),tableName);
+                    }
+                    else{
+                        
+                        t24DAO.checkFDataEventsEntryStatus(id,tableName);
+                    }
+                    
                 });
     }
 
@@ -477,11 +507,25 @@ public class MSGenericActionStepDefs implements En {
         return cucumberInteractionSession.scenarioBundle().put(key, uniqueIdentifier);
     }
     
-    //**Method to read Record Id from the OFS response
+    //**Method to read Record Id from the OFS response , for OFS which generates ID during run time.
     public Object recordIdFromOFSString(String key, String OFS) {
-
+     
+        Random random = new Random();
+        int threeNos = random.nextInt(900);
+        String responseContents = null;
         
-        String responseContents= JsonUtil.ExecuteOfsMessage(OFS);
+         if (OFS.contains("mnemonicvalue"))
+            
+        {
+            String ofsMsgWithGenValues = OFS.replace("mnemonicvalue", "CUS" + threeNos);
+            responseContents= JsonUtil.ExecuteOfsMessage(ofsMsgWithGenValues);
+         }
+        else
+        {
+            responseContents= JsonUtil.ExecuteOfsMessage(OFS);
+        }
+        
+        
       
          String  idFromResponseContent = responseContents.split("/")[0];
         
