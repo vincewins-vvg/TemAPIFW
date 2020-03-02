@@ -50,7 +50,7 @@ public class CreateNewPaymentOrderProcessor {
 		entity.setCreditAccount(view.getToAccount());
 		entity.setDebitAccount(view.getFromAccount());
 		entity.setPaymentDate(Date.from(Instant.now()));
-		entity.setCurrency(view.getCurrency());
+		entity.setCurrency(view.getCurrency().toString());
 		entity.setPaymentReference(view.getPaymentReference());
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
@@ -70,8 +70,9 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+
+		EventManager.raiseBusinessEvent(ctx,
+				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		return entity;
 	}
 
