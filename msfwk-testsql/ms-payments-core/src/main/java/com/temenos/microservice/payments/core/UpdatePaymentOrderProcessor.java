@@ -19,7 +19,7 @@ public class UpdatePaymentOrderProcessor {
 	  
 	public PaymentStatus invoke(Context ctx, UpdatePaymentOrderInput input) throws FunctionException {
 		PaymentStatus paymentStatus = input.getBody().get();
-		String paymentOrderId = input.getParams().get().getPaymentId().get(0);
+		String paymentOrderId = input.getParams().get().getPaymentIds().get(0);
 		String debitAccount = input.getBody().get().getDebitAccount();
 		 PaymentOrder paymentOrderOpt = (PaymentOrder)
 				PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().findById(paymentOrderId,
