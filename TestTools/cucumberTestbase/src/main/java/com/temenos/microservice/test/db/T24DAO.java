@@ -19,7 +19,7 @@ public class T24DAO {
    private String T24_DB_USER;
    private String T24_DB_PWD;
    private String T24_DB_URL;
-
+ 
     public T24DAO()throws Exception{
         getDBConnection();
     }
