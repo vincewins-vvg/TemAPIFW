@@ -270,5 +270,14 @@
 		</dependency>
 <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 
+<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
+            
+         </dependency>
+<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
+
 	</dependencies>
 </project>

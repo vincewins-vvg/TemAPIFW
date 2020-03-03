@@ -36,6 +36,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
@@ -269,8 +270,8 @@ public final class JsonUtil implements En {
 
             URL obj = new URL(servicePointUrlUpdated);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-            postConnection.setConnectTimeout(50000);
-            postConnection.setReadTimeout(50000);
+            postConnection.setConnectTimeout(100000);
+            postConnection.setReadTimeout(100000);
             postConnection.setRequestMethod("POST");
             // postConnection.setRequestProperty("User-Agent", userAgent);
             //   postConnection.setRequestProperty("password", passWord);
@@ -361,6 +362,7 @@ public final class JsonUtil implements En {
             String passWord = ofsMsgData.split(",")[2].split("/")[1];
             System.out.println(userAgent);
             System.out.println(passWord);
+            Random random = new Random();
             //String ofsMsgDataWithMnemonic = ofsMsgData.replace("RECID", RecrdId);
             if (serverURL.endsWith("/")) {
                 serverURL = serverURL.substring(0, serverURL.length() - 1);
@@ -371,8 +373,8 @@ public final class JsonUtil implements En {
 
             URL obj = new URL(servicePointUrlUpdated);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-            postConnection.setConnectTimeout(50000);
-            postConnection.setReadTimeout(50000);
+            postConnection.setConnectTimeout(300000);
+            postConnection.setReadTimeout(300000);
             postConnection.setRequestMethod("POST");
             // postConnection.setRequestProperty("User-Agent", userAgent);
             //   postConnection.setRequestProperty("password", passWord);
