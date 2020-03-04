@@ -16,8 +16,8 @@
 	</properties>
 <modules>
    <module>ms-paymentorder-package-docker</module>
-   <module>ms-paymentorder-package-aws</module>
+  <!--  <module>ms-paymentorder-package-aws</module>
    <module>ms-paymentorder-package-j2ee</module>
-   <module>ms-paymentorder-iris</module>
+   <module>ms-paymentorder-iris</module> -->
   </modules>
 </project>
