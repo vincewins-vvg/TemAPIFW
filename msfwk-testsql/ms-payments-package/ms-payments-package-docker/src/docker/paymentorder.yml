@@ -65,6 +65,9 @@ services:
       serviceadaptor.preprocessorimpl.class: com.temenos.microservice.sample.security.SampleTokenGenerator
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
+      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
+      tmn.ignite.host: cache-service
+      tmn.ignite.port: 10800
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
