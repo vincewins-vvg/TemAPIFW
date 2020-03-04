@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_inbox_events(
 eventId text
 , eventType text
 , eventDetails text
+, eventSourceId text
+, commandType text
 , payload text
 , creationTime timestamp
 , tenantId text
