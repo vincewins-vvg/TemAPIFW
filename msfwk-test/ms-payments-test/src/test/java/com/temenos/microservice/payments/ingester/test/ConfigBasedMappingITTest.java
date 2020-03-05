@@ -28,6 +28,7 @@ import com.temenos.microservice.framework.test.streams.AvroProducer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
+@Ignore
 public class ConfigBasedMappingITTest extends ITTest {
 
 	@BeforeClass

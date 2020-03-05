@@ -32,8 +32,8 @@
 	</module>
 	<module>
 		<web>
-			<web-uri>ms-paymentorder-scheduler-web.war</web-uri>
-			<context-root>ms-paymentorder-scheduler-web</context-root>
+			<web-uri>ms-payments-scheduler-web.war</web-uri>
+			<context-root>ms-payments-scheduler-web</context-root>
 		</web>
 	</module>
 </application>

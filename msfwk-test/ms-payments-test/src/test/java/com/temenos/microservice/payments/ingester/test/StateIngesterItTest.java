@@ -20,6 +20,7 @@ import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StateIngesterItTest extends ITTest {
 

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.des.eventtransformer.data.parse.data.DynamicArrayBuilder;
@@ -21,7 +22,7 @@ import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
-
+@Ignore
 public class IngesterITTest extends ITTest{
 
 	private static final RuntimeMarker MARKER = new TAFJMarker();

@@ -55,13 +55,14 @@
 					<artifactId>ms-framework-gen</artifactId>
 					<executions>
 						<execution>
-							<id>generate-function</id>
+							<id>generate-api-web</id>
 							<phase>generate-sources</phase>
 							<goals>
-								<goal>generate-function</goal>
+								<goal>generate-api</goal>
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<targetPlatform>Camel</targetPlatform>
 								<enableInbox>true</enableInbox>
 							</configuration>
 						</execution>
