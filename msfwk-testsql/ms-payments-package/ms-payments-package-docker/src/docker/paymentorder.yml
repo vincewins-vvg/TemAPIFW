@@ -82,6 +82,7 @@ services:
       - db-service
     ports:
       - "40509:40500"
+      - "8082:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -117,6 +118,7 @@ services:
       - db-service
     ports:
       - "40519:40500"
+      - "8083:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -157,6 +159,7 @@ services:
       - db-service
     ports:
       - "40511:40501"
+      - "8084:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -200,6 +203,7 @@ services:
       - db-service
     ports:
       - "40512:40504"
+      - "8085:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -239,6 +243,7 @@ services:
       - db-service
     ports:
       - "40510:40500"
+      - "8086:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -283,6 +288,7 @@ services:
       - db-service
     ports:
       - "40513:40500"
+      - "8087:8080"
     environment:
       DATABASE_KEY: sql
       HOST: db-service
@@ -324,6 +330,7 @@ services:
       - db-service
     ports:
       - "40516:40500"
+      - "8088:8080"
     environment:
       DATABASE_KEY: sql
       HOST: db-service
@@ -365,6 +372,7 @@ services:
       - cache-service
     ports:
       - "40514:40500"
+      - "8089:8080"
     environment:
       DATABASE_KEY: sql
       HOST: db-service
