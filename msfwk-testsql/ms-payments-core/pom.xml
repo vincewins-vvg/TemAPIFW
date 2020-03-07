@@ -68,5 +68,10 @@
 			<groupId>com.temenos.microservice.framework</groupId>
 			<artifactId>ms-sample_impl</artifactId>
 		</dependency>
+		 <dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-healthcheck</artifactId>
+			<version>DEV.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
