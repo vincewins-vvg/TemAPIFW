@@ -65,6 +65,16 @@
 								<enableInbox>true</enableInbox>
 							</configuration>
 						</execution>
+						<execution>
+							<id>generate-view</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-view</goal>
+							</goals>
+							<configuration>
+								<functionViewModelVersion>1.1</functionViewModelVersion>
+							</configuration>
+						</execution>
 					</executions>
 				</plugin>
 			</plugins>
