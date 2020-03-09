@@ -55,6 +55,7 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+      className_getHealthCheck: com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
@@ -77,6 +78,7 @@ services:
       - db-service
     ports:
       - "40518:40588"
+      - "8082:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -115,6 +117,7 @@ services:
       - db-service
     ports:
       - "40508:40500"
+      - "8083:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -156,6 +159,7 @@ services:
       - db-service
     ports:
       - "40510:40500"
+      - "8084:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -198,6 +202,7 @@ services:
       - db-service
     ports:
       - "40511:40501"
+      - "8085:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -240,6 +245,7 @@ services:
       - db-service
     ports:
       - "40512:40500"
+      - "8086:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -281,6 +287,7 @@ services:
       - db-service
     ports:
       - "40513:40500"
+      - "8087:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -322,6 +329,7 @@ services:
       - db-service
     ports:
       - "40516:40500"
+      - "8088:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
@@ -363,6 +371,7 @@ services:
       - cache-service
     ports:
       - "40514:40500"
+      - "8089:8080"
     environment:
       DATABASE_KEY: cassandra
       CASSANDRA_HOST: db-service
