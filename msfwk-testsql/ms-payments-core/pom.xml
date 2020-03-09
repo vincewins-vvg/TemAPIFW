@@ -63,6 +63,36 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.temenos.des</groupId>
+			<artifactId>stream-processor</artifactId>
+			<version>${des.stream.processor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.temenos.des.stream-vendor-io</groupId>
+			<artifactId>stream-vendor-io-core</artifactId>
+			<version>${des.stream.vendor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.temenos.des</groupId>
+			<artifactId>event-schemas</artifactId>
+			<version>${des.event.schema.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.temenos.des.stream-vendor-io</groupId>
+			<artifactId>stream-vendor-io-kafka</artifactId>
+			<version>${des.stream.vendor.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.temenos.des.stream-vendor-io</groupId>
+			<artifactId>stream-vendor-io-kinesis</artifactId>
+			<version>${des.stream.vendor.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.temenos.microservice.framework</groupId>
