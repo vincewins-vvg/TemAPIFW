@@ -22,6 +22,7 @@ import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
 import com.temenos.microservice.payments.function.UpdatePaymentOrder;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
+import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
@@ -39,7 +40,8 @@ public class PaymentOrderFunctionUnitTest {
 		System.getProperties().setProperty("DATABASE_NAME", "payments");
 		System.getProperties().setProperty("DB_USERNAME", "root");
 		System.getProperties().setProperty("DB_PASSWORD", "root");
-		System.getProperties().setProperty("class.outbox.dao", "com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
+		System.getProperties().setProperty("class.outbox.dao",
+				"com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
 	}
 
 	@Test
@@ -47,13 +49,14 @@ public class PaymentOrderFunctionUnitTest {
 		CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
 		PaymentOrder paymentOrder = new PaymentOrder();
 		paymentOrder.setAmount(new BigDecimal("100"));
-		paymentOrder.setCurrency("USD");
+		paymentOrder.setCurrency(EnumCurrency.USD);
 		paymentOrder.setExpires(Long.valueOf("1"));
 		paymentOrder.setFromAccount("70010");
 		paymentOrder.setToAccount("70012");
 		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
-			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()), createNewPaymentOrderInput);
+			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()),
+					createNewPaymentOrderInput);
 			Assert.assertNotNull(paymentStatus);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());

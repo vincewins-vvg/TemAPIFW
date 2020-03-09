@@ -19,8 +19,9 @@ public class PaymentOrderIngesterUnitTest {
 				"{\"recId\":\"12345\",\"DebitAccount\":\"12345\",\"OrderingReference\":\"Hello\",\"CreditAccount\":\"654321\",\"PaymentCurrency\":\"USD\",\"PaymentExecutionDate\":\"20180101\",\"PaymentSystemStatus\":\"IN_PROGRESS\",\"TotalDebitAmount\":\"100\"}");
 		record.put("payload", object);
 		 
-		PaymentorderIngesterUpdater paymentOrderIngester = new PaymentorderIngesterUpdater(record);
+		PaymentorderIngesterUpdater paymentOrderIngester = new PaymentorderIngesterUpdater();
 		try {
+			paymentOrderIngester.transform(record);
 			paymentOrderIngester.update();
 		} catch (FunctionException e) {
 			 Assert.fail(e.getMessage());

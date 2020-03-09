@@ -13,6 +13,7 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.function.GetPaymentOrderInput;
+import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
@@ -20,8 +21,7 @@ import com.temenos.microservice.payments.view.PaymentStatus;
 
 @Component
 public class GetPaymentOrderProcessor {
- 
-	
+
 	public PaymentOrderStatus invoke(Context ctx, GetPaymentOrderInput input) throws FunctionException {
 		validateInput(input);
 		GetPaymentOrderParams params = input.getParams().get();
@@ -34,7 +34,7 @@ public class GetPaymentOrderProcessor {
 		com.temenos.microservice.payments.entity.PaymentOrder paymentOrder = (com.temenos.microservice.payments.entity.PaymentOrder) PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.findById(params.getPaymentIds().get(0), com.temenos.microservice.payments.entity.PaymentOrder.class);
-		
+
 		if (paymentOrder != null) {
 
 			PaymentStatus paymentStatus = new PaymentStatus();
@@ -45,7 +45,7 @@ public class GetPaymentOrderProcessor {
 			PaymentOrderStatus paymentOrderStatus = new PaymentOrderStatus();
 			PaymentOrder order = new PaymentOrder();
 			order.setAmount(paymentOrder.getAmount());
-			order.setCurrency(paymentOrder.getCurrency());
+			order.setCurrency(Enum.valueOf(EnumCurrency.class, paymentOrder.getCurrency()));
 			order.setFromAccount(paymentOrder.getDebitAccount());
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
