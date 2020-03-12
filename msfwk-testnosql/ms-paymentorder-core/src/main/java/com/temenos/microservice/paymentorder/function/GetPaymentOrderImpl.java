@@ -61,7 +61,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			
 			
 			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
-			if(paymentOrder.getPaymentMethod()!=null) {
+			if(paymentOrder.getPaymentMethod()!=null && paymentOrder.getPaymentMethod().getCard() != null ) {
 			card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());
 			card.setCardname(paymentOrder.getPaymentMethod().getCard().getCardname());
 			card.setCardlimit(paymentOrder.getPaymentMethod().getCard().getCardlimit());
