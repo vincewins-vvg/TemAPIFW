@@ -15,28 +15,28 @@ services:
       - "10800:10800"
   db-service1:
     build:
-      context: ${DB_CONTEXT}
+      context: ${MONGO_DB_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo1'
     ports:
       - "30001:27017"
   db-service2:
     build:
-      context: ${DB_CONTEXT}
+      context: ${MONGO_DB_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo2'
     ports:
       - "30002:27017" 
   db-service3:
     build:
-      context: ${DB_CONTEXT}
+      context: ${MONGO_DB_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo3'
     ports:
       - "30003:27017"
@@ -46,7 +46,7 @@ services:
       context: ${MONGO_INIT_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     depends_on:
       - db-service1
       - db-service2
