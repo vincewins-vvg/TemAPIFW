@@ -56,7 +56,7 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
-      className_getHealthCheck: com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl
+      className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.name: PaymentOrder

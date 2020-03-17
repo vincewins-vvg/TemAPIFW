@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>com.temenos.microservice.paymentorder</groupId>
@@ -23,11 +22,6 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
 			<version>2.24.0</version>
-          </dependency>
-		 <dependency>
-			<groupId>com.temenos.microservice.framework</groupId>
-			<artifactId>ms-healthcheck</artifactId>
-			<version>DEV.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des</groupId>
@@ -59,6 +53,10 @@
 			<version>${des.stream.vendor.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>javax.jms-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

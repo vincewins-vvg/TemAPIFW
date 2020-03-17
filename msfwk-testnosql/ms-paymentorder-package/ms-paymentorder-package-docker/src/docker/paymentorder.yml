@@ -55,7 +55,7 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
-      className_getHealthCheck: com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl
+      className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
