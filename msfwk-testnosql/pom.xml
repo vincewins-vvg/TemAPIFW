@@ -30,6 +30,6 @@
 		<module>ms-paymentorder-model</module>
 		<module>ms-paymentorder-core</module>
 		<module>ms-paymentorder-package</module>
-    <module>ms_paymentorder_mongo</module>
+		
   </modules>
 </project>
