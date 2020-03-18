@@ -30,5 +30,6 @@
 		<module>ms-paymentorder-model</module>
 		<module>ms-paymentorder-core</module>
 		<module>ms-paymentorder-package</module>
-	</modules>
+		
+  </modules>
 </project>
