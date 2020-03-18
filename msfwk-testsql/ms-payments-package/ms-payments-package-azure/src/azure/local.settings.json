@@ -31,8 +31,6 @@
 		"VALIDATE_PAYMENT_ORDER":"false",
 		"class.outbox.dao":"com.temenos.microservice.framework.core.outbox.OutboxDaoImpl",
 		"class.inbox.dao":"com.temenos.microservice.framework.core.inbox.InboxDaoImpl",
-		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
-   		"AzureCosmosDBConnection": "<PRIMARY CONNECTION STRING for Cosmos DB from Azure Portal>",
-    	"FUNCTIONS_WORKER_RUNTIME": "java"
+		
 	}
 }
