@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-azure-nosql</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments-package-azure</artifactId>
+	<version>DEV.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>ms-payments-package-azure</name>
+	<description>Payments Azure packaging</description>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<!-- Enable code gen -->
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
+
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-payments-Azure</assemblyOutputDirectory>
+		<sonar.skip>true</sonar.skip>
+		<applicationName>paymentsapp</applicationName>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ms-payments-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.temenos.microservice.plugin</groupId>
+					<artifactId>ms-framework-gen</artifactId>
+					<executions>
+						<execution>
+							<id>generate-api-azure</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-api</goal>
+							</goals>
+							<configuration>
+								<modelDirectory>${modelDirectory}/api</modelDirectory>
+								<targetPlatform>Azure</targetPlatform>
+								<enableInbox>true</enableInbox>
+							</configuration>
+						</execution>
+						<execution>
+							<id>generate-view</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-view</goal>
+							</goals>
+							<configuration>
+								<functionViewModelVersion>1.1</functionViewModelVersion>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
