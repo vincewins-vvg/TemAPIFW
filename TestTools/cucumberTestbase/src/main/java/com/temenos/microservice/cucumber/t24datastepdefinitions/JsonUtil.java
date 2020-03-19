@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Throwables;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
 
 import cucumber.api.java8.En;
@@ -63,7 +64,10 @@ public final class JsonUtil implements En {
     
     private static final String DEFAULT_STREAM_KAFKA_BOOTSTRAP_SERVERS = "kafka:29092";
     public static String idFromResponseContents = null;
-
+    
+    //jBoss IP and port number will be passed here
+    public static String T24_APPSERVER_URL= Environment.getEnvironmentVariable("T24_APPSERVER_URL", "");
+    
     private static BiConsumer<String, String> CHECK_VALID_PATH_PART = (String pathPart, String propertyPath) -> {
         if (!isPropertyNameWithIndex(pathPart)) {
             throw new IllegalArgumentException(
@@ -254,17 +258,17 @@ public final class JsonUtil implements En {
        String ofsMsgData = ofsMsgWithId.replace("RECID", RecrdId).replace("CUS123","CUS" + RecrdId );
        System.out.println(ofsMsgData);
         
-        String serverURL = "http://localhost:9089";
+        //String T24_APPSERVER_URL = "http://localhost:9089";
         try {
             String userAgent = ofsMsgData.split(",")[2].split("/")[0]; 
             String passWord = ofsMsgData.split(",")[2].split("/")[1];
             System.out.println(userAgent);
             System.out.println(passWord);
 
-            if (serverURL.endsWith("/")) {
-                serverURL = serverURL.substring(0, serverURL.length() - 1);
+            if (T24_APPSERVER_URL.endsWith("/")) {
+                T24_APPSERVER_URL = T24_APPSERVER_URL.substring(0, T24_APPSERVER_URL.length() - 1);
             }
-            String servicePointUrlUpdated = serverURL + "/axis2/services/OFSConnectorServiceWS.OFSConnectorServiceWSHttpSoap11Endpoint";
+            String servicePointUrlUpdated = T24_APPSERVER_URL + "/axis2/services/OFSConnectorServiceWS.OFSConnectorServiceWSHttpSoap11Endpoint";
 
             System.out.println("UPDATED URL:::" + servicePointUrlUpdated);
 
@@ -355,8 +359,8 @@ public final class JsonUtil implements En {
     public static String ExecuteOfsMessage(String ofsMsgData) {
 
 
-        
-        String serverURL = "http://localhost:9089" ;
+         //String T24_APPSERVER_URL = Environment.getEnvironmentVariable("T24_APPSERVER_URL", "") ;
+        //String T24_APPSERVER_URL = "http://localhost:9089" ;
         try {
             String userAgent = ofsMsgData.split(",")[2].split("/")[0];
             String passWord = ofsMsgData.split(",")[2].split("/")[1];
@@ -364,10 +368,10 @@ public final class JsonUtil implements En {
             System.out.println(passWord);
             Random random = new Random();
             //String ofsMsgDataWithMnemonic = ofsMsgData.replace("RECID", RecrdId);
-            if (serverURL.endsWith("/")) {
-                serverURL = serverURL.substring(0, serverURL.length() - 1);
+            if (T24_APPSERVER_URL.endsWith("/")) {
+                T24_APPSERVER_URL = T24_APPSERVER_URL.substring(0, T24_APPSERVER_URL.length() - 1);
             }
-            String servicePointUrlUpdated = serverURL + "/axis2/services/OFSConnectorServiceWS.OFSConnectorServiceWSHttpSoap11Endpoint";
+            String servicePointUrlUpdated = T24_APPSERVER_URL + "/axis2/services/OFSConnectorServiceWS.OFSConnectorServiceWSHttpSoap11Endpoint";
 
             System.out.println("UPDATED URL:::" + servicePointUrlUpdated);
 
