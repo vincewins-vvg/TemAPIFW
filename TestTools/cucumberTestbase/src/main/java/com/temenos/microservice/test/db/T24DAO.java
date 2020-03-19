@@ -39,17 +39,9 @@ public class T24DAO {
                 
                 if (tableName.contains("DATA_EVENTS"))
                 {
+                    
                 cusRec = "select COUNT(*) as resultCount from " + tableName + " where XMLRECORD LIKE '%transactionRef=" + CusId + "%'";
-//                tafjVocCheck = "SELECT COUNT(*) as isAttributePresent FROM " + tableName + " where RECID ='" +CusId+ "'" ;
-//                
-//                ResultSet rs1 = stmt.executeQuery(tafjVocCheck);
-//                rs1.next();
-//                short attribCount = rs1.getShort("tafjVocCheck");
-//                if(attribCount==0){
-//                    
-//                    log.info("Allow attribute is not set to 'Y' in TAFJ_VOC table for the Record Id: {}", CusId );
-//                    
-//                }
+       
                 }
                 else{
                     
@@ -65,6 +57,21 @@ public class T24DAO {
                     //System.out.println(cusRec);
                     System.out.println("Entry for the created record " + CusId + " is present in " + tableName +  " table");
                     
+                    if (tableName.contains("RR_PARAM")){
+                    tafjVocCheck = "SELECT COUNT(*) as isOtherAttributeY FROM TAFJ_VOC where RECID ='" +CusId+ "'" + " and OTHERATTRIBUTES like '%Y%'" ;
+                    
+                    ResultSet rs1 = stmt.executeQuery(tafjVocCheck);
+                    rs1.next();
+                    short attribCount = rs1.getShort("isOtherAttributeY");
+                    if(attribCount>=1){
+                        
+                        log.info("OTHERATTRIBUTES column is set to 'Y' in TAFJ_VOC table for the Record Id: {}", CusId );
+                        
+                    }
+                    else {
+                        log.info("OTHERATTRIBUTES column is not set to 'Y' in TAFJ_VOC table for the Record Id: {}", CusId );
+                    }
+                    }
                     return;
                 }
 //                    else {
@@ -76,7 +83,7 @@ public class T24DAO {
                 fail("Error in executing select statement on t24 db: " + e);
             }
         }
-        fail("Timed out waiting to check if there is an entry for Record Id: " + CusId + "in table "+ tableName);
+        fail("Timed out waiting to check if there is an entry for Record Id: " + CusId + " in table "+ tableName);
     }
     
     public void checkFDataEventsEntryStatus(String CusId, String tableName){
