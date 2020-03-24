@@ -1,3 +1,4 @@
-Date				|	Jira Reference	|		Reason																		|
+Date					|	Jira Reference	|		Reason																		|
 28th February 2020(2)	|	MSF-1233		|		WhiteSource Report					|
-3th March 2020 | buildfailed | build failed|
+3th March 2020 			| buildfailed 		| 		build failed|
+24th March 2020 		| whitesource Report| 		Trigger build |
