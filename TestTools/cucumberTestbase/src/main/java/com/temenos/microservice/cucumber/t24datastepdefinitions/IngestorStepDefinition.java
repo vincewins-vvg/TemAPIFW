@@ -1,6 +1,5 @@
 package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
-
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
 import static com.temenos.microservice.test.util.ResourceHandler.readResource;
 import static org.junit.Assert.assertEquals;
@@ -45,6 +44,7 @@ public class IngestorStepDefinition {
     private DaoFacade daoFacade = DaoFactory.getInstance();
 
     private String apiName;
+   
     private TestCase testCase;
     private AvroProducer avroProducer;
     private ITestProducer t24Producer;
@@ -58,9 +58,9 @@ public class IngestorStepDefinition {
         }
     }
 
-    @Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG) API$")
+    @Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE) API$")
     public void setTestBackground(String apiName) throws Exception {
-        this.apiName = apiName;
+        this.apiName = apiName;   
     }
 
     @Given("^Set the Testcase id ([^\\s]+) for company ([^\\s]+)$")
@@ -126,7 +126,7 @@ public class IngestorStepDefinition {
         tableValues.forEach(tableValue -> {
             if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
                 if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null) {
-                    dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                     dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
@@ -148,9 +148,9 @@ public class IngestorStepDefinition {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
-        if (dataMap.size() >= 2) {
-            throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
-        }
+//        if (dataMap.size() >= 2) {
+//            throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
+//        }
         List<Attribute> data = dataMap.get(Integer.valueOf(1));
         List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
         tableValues.forEach(tableValue -> {
