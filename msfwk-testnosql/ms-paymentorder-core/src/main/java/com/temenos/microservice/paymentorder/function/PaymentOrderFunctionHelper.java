@@ -27,10 +27,10 @@ public class PaymentOrderFunctionHelper {
             failureMessages.add(new FailureMessage("From Account is mandatory", "PAYM-PORD-A-2102"));
         }
         if (StringUtil.isNullOrEmpty(paymentOrder.getToAccount())) {
-            failureMessages.add(new FailureMessage("To Account is mandatory", "PAYM-PORD-A-2103"));
+            failureMessages.add(new FailureMessage("To Account is mandatory", "PAYM-PORD-A-2104"));
         }
         if (StringUtil.isNullOrEmpty(paymentOrder.getCurrency())) {
-            failureMessages.add(new FailureMessage("Currency is mandatory", "PAYM-PORD-A-2104"));
+            failureMessages.add(new FailureMessage("Currency is mandatory", "PAYM-PORD-A-2103"));
         }
         if (!failureMessages.isEmpty()) {
             throw new InvalidInputException(failureMessages);

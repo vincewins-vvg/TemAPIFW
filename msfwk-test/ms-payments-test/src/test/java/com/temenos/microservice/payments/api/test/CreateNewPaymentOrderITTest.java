@@ -73,11 +73,9 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
-		if (Environment.getEnvironmentVariable("DB_VENDOR", "").toLowerCase().equals("cassandra")) {
-			assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
-			assertTrue(createResponse.bodyToMono(String.class).block()
-					.contains("[{\"message\":\"Amount is mandatory\",\"code\":\"PAYM-PORD-A-2101\"}]"));
-		}
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block()
+				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
 	}
 
 }
