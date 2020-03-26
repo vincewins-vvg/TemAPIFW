@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
@@ -68,11 +69,15 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
+					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
-		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
-		assertTrue(createResponse.bodyToMono(String.class).block().contains("[{\"message\":\"Amount is mandatory\",\"code\":\"PAYM-PORD-A-2101\"}]"));
+		if (Environment.getEnvironmentVariable("DB_VENDOR", "").toLowerCase().equals("cassandra")) {
+			assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+			assertTrue(createResponse.bodyToMono(String.class).block()
+					.contains("[{\"message\":\"Amount is mandatory\",\"code\":\"PAYM-PORD-A-2101\"}]"));
+		}
 	}
 
 }
