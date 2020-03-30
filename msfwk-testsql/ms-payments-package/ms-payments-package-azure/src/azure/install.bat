@@ -22,9 +22,9 @@ SET JAVA_OPTS="-Djava.net.preferIPv4Stack=true"
 SET defaultExecutablePath="D:\Program Files\Java\jdk1.8.0_25\jre\bin\java"
 SET AUTHZ_ENABLED="false"
 SET EVENT_HUB_NAME_SPACE="payments-Kafka"
-SET EVENT_HUB="payments"
+SET EVENT_HUB="paymentorder-outbox"
 SET eventHubConnection="TEST"
-SET INGEST_EVENT_INGESTER="com.temenos.microservice.framework.core.ingester.MicroserviceIngester"
+REM SET INGEST_EVENT_INGESTER="com.temenos.microservice.framework.core.ingester.MicroserviceIngester"
 SET ERROR_STREAM="error-paymentorder"
 SET MSF_NAME="PaymentOrder"
 SET REGISTRY_URL="IF.EVENTS.INTERFACE.TABLE,Data"
@@ -32,16 +32,19 @@ SET EXECUTION_ENV="TEST"
 SET VALIDATE_PAYMENT_ORDER="false"
 SET INBOX_DAO="com.temenos.microservice.framework.core.inbox.InboxDaoImpl"
 SET OUTBOX_DAO="com.temenos.microservice.framework.core.outbox.OutboxDaoImpl"
-SET INGEST_SOURCE_STREAM="payments"
+SET INGEST_SOURCE_STREAM="paymentorder-outbox"
 SET SINK_ERROR_STREAM="ms-paymentorder-inbox-error-topic"
-SET GENERIC_INGESTER="com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester"
+REM SET GENERIC_INGESTER="com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester"
+SET GENERIC_INGESTER="com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener"
 SET EXEC_ENV="serverless"
 SET OUTBOX_TOPIC="ms-paymentorder-outbox-topic"
 SET CreateNewPaymentOrder="com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl"
 SET PACKAGE_NAME="com.temenos.microservice.payments.function"
 SET AVRO_INGEST_EVENT="false"
-
-
+SET QUEUE_IMPL="kafka"
+SET KAFKA_SERVER="payments-kafka.servicebus.windows.net:9093"
+SET SSL_ENABLED="true"
+SET SASL_JASS_CONFIG="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://payments-kafka.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yUoa/1dlVqghGSUhf3YWUH5v7sbz9stw5ozyk8MaCx8=\";"
  
 
 rem Create a resource resourceGroupName
@@ -69,7 +72,6 @@ call az eventhubs namespace authorization-rule keys list --resource-group %RESOU
 set /p eventHubConnection=< out.txt
 del out.txt
 
+REM temn_msf_ingest_event_ingester=%INGEST_EVENT_INGESTER%
 rem Environment variable settings
-call az functionapp config appsettings set --name %APP_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings className_CreateNewPaymentOrder=%CREATEPAYMENT% className_GetPaymentOrders=%GETPAYMENTS% className_UpdatePaymentOrder=%UPDATEPAYMENT% className_GetPaymentOrder=%GETPAYMENT% className_invokePaymentState=%INVEPAYMENT% className_getHealthCheck=%HEATHCHECK%  DATABASE_NAME=%DATABASE_NAME% DB_CONNECTION_URL=%DB_CONNECTION_URL% DRIVER_NAME=%DRIVER_NAME% DIALECT=%DIALECT% DB_PASSWORD=%DB_PASSWORD% DB_USERNAME=%DB_USERNAME% JAVA_OPTS=%JAVA_OPTS% languageWorkers:java:defaultExecutablePath=%defaultExecutablePath% temn.msf.security.authz.enabled=%AUTHZ_ENABLED% WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_event_ingester=%INGEST_EVENT_INGESTER% temn_msf_ingest_sink_error_stream=%ERROR_STREAM% temn_msf_name=%MSF_NAME% temn_msf_schema_registry_url=%REGISTRY_URL% EXECUTION_ENV=%EXECUTION_ENV% eventHubConnection=%eventHubConnection% eventHubName=%EVENT_HUB% VALIDATE_PAYMENT_ORDER=%VALIDATE_PAYMENT_ORDER% class.outbox.dao=%OUTBOX_DAO% class.inbox.dao=%INBOX_DAO% DATABASE_KEY=sql temn.msf.ingest.source.stream=%INGEST_SOURCE_STREAM% temn.msf.ingest.sink.error.stream=%SINK_ERROR_STREAM%
-temn.msf.ingest.generic.ingester=%GENERIC_INGESTER% temn.exec.env=%EXEC_ENV% temn.msf.stream.outbox.topic=%OUTBOX_TOPIC% 
-class.package.name=%PACKAGE_NAME% temn.msf.function.class.CreateNewPaymentOrder=%CreateNewPaymentOrder% temn.msf.ingest.is.avro.event.ingester=%AVRO_INGEST_EVENT%
+call az functionapp config appsettings set --name %APP_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings className_CreateNewPaymentOrder=%CREATEPAYMENT% className_GetPaymentOrders=%GETPAYMENTS% className_UpdatePaymentOrder=%UPDATEPAYMENT% className_GetPaymentOrder=%GETPAYMENT% className_invokePaymentState=%INVEPAYMENT% className_getHealthCheck=%HEATHCHECK%  DATABASE_NAME=%DATABASE_NAME% DB_CONNECTION_URL=%DB_CONNECTION_URL% DRIVER_NAME=%DRIVER_NAME% DIALECT=%DIALECT% DB_PASSWORD=%DB_PASSWORD% DB_USERNAME=%DB_USERNAME% JAVA_OPTS=%JAVA_OPTS% languageWorkers:java:defaultExecutablePath=%defaultExecutablePath% temn.msf.security.authz.enabled=%AUTHZ_ENABLED% WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_sink_error_stream=%ERROR_STREAM% temn_msf_name=%MSF_NAME% temn_msf_schema_registry_url=%REGISTRY_URL% EXECUTION_ENV=%EXECUTION_ENV% eventHubConnection=%eventHubConnection% eventHubName=%EVENT_HUB% VALIDATE_PAYMENT_ORDER=%VALIDATE_PAYMENT_ORDER% class.outbox.dao=%OUTBOX_DAO% class.inbox.dao=%INBOX_DAO% DATABASE_KEY=sql temn.msf.ingest.source.stream=%INGEST_SOURCE_STREAM% temn.msf.ingest.sink.error.stream=%SINK_ERROR_STREAM% temn.msf.ingest.generic.ingester=%GENERIC_INGESTER% temn.exec.env=%EXEC_ENV% temn.msf.stream.outbox.topic=%OUTBOX_TOPIC% class.package.name=%PACKAGE_NAME% temn.msf.function.class.CreateNewPaymentOrder=%CreateNewPaymentOrder% temn.msf.ingest.is.avro.event.ingester=%AVRO_INGEST_EVENT% temn.queue.impl=%QUEUE_IMPL% temn.msf.stream.kafka.sasl.enabled=%SSL_ENABLED% temn.msf.stream.kafka.sasl.jaas.config=%SASL_JASS_CONFIG% temn.msf.stream.kafka.bootstrap.servers=%KAFKA_SERVER%
