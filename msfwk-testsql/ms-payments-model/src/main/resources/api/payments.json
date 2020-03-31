@@ -66,6 +66,12 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
           
     get:
       summary: Get a payment order
@@ -87,6 +93,12 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentOrderStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
                 
   /payments/orders/invoke:              
     get:
@@ -109,6 +121,12 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentOrderStatus" 
+        '400':
+          description: Invalid paymentStateId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
 
 components:
   schemas:
@@ -218,3 +236,13 @@ components:
         paymentStatus:
           $ref: "#/components/schemas/PaymentStatus"
           
+    FailureMessage:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ErrorSchema:
+      type: array
+      items:
+        $ref: "#/components/schemas/FailureMessage"

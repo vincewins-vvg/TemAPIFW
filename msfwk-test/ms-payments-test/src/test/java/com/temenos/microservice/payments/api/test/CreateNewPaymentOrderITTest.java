@@ -1,6 +1,7 @@
 package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_WRONG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
@@ -59,4 +61,21 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
 		assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
 	}
+
+	@Test
+	public void testBCreateNewPaymentOrderFunction() {
+		ClientResponse createResponse;
+
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
+					.block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block()
+				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
+	}
+
 }
