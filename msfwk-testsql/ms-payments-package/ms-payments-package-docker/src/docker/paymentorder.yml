@@ -159,7 +159,7 @@ services:
       - db-service
     ports:
       - "40511:40501"
-      - "8084:8080"
+      - "8085:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -203,7 +203,7 @@ services:
       - db-service
     ports:
       - "40512:40504"
-      - "8085:8080"
+      - "8086:8080"
     environment:
       HOST: db-service
       PORT: 3306
@@ -243,7 +243,7 @@ services:
       - db-service
     ports:
       - "40510:40500"
-      - "8086:8080"
+      - "8084:8080"
     environment:
       HOST: db-service
       PORT: 3306
