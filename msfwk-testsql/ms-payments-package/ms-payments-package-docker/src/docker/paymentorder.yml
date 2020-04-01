@@ -69,6 +69,12 @@ services:
       temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
+      IRIS_PROTOCOL: http
+      IRIS_HOST_IP: 10.92.14.71
+      IRIS_PORT: 9089
+      IRIS_PATH: irf-provider-container/api
+      IRIS_R18_PATH: irisR18/api
+      IRIS_VERSION: v1.0.0
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
