@@ -15,8 +15,8 @@ Feature: ToGetHealthCheckStatus
 
 	 When a 'GET' request is sent
    Then the response code should be 200
-   And property "status" should be equal to string "SUCCESS"
-   #And property "clientAPIHealthChecks(0)/status" should be equal to string "FAILURE"
+   And property "status" should be equal to string "FAILURE"
+   #And property "clientAPIHealthChecks(0)/status" should be equal to string "SUCCESS"
    And property "databaseHealthChecks(0)/status" should be equal to string "SUCCESS"
    And property "businessConditionHealthChecks(0)/status" should be equal to string "SUCCESS"
    
