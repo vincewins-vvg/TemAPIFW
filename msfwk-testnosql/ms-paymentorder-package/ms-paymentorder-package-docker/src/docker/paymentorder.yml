@@ -56,6 +56,7 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+      API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
@@ -109,7 +110,12 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.consumer.max.poll.records: "1"
-     
+      IRIS_PROTOCOL: http
+      IRIS_HOST_IP: 10.92.14.71
+      IRIS_PORT: 9089
+      IRIS_PATH: irf-provider-container/api
+      IRIS_R18_PATH: irisR18/api
+      IRIS_VERSION: v1.0.0
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -194,7 +200,13 @@ services:
       temn.msf.ingest.inbox.cache.namespace: paymentorder-inbox
       temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
       tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800      
+      tmn.ignite.port: 10800
+      IRIS_PROTOCOL: http
+      IRIS_HOST_IP: 10.92.14.71
+      IRIS_PORT: 9089
+      IRIS_PATH: irf-provider-container/api
+      IRIS_R18_PATH: irisR18/api
+      IRIS_VERSION: v1.0.0
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}

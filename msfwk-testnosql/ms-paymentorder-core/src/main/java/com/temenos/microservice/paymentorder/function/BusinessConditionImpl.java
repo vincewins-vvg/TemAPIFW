@@ -17,7 +17,7 @@ public class BusinessConditionImpl implements BusinessHealthIndicator {
 		((BusinessHealthCheck) businessHealthCheck).setCheckName("BusinessCondition");
 		((BusinessHealthCheck) businessHealthCheck).setStatus(Status.SUCCESS);
 		Map<String,String> businessInfo = new HashMap<String,String>();
-		businessInfo.put("BusinessInfo", "Default Business Info");
+		businessInfo.put("businessInfo", "Default Business Info");
 		((BusinessHealthCheck) businessHealthCheck).setMessage(businessInfo);
 		return businessHealthCheck;
 	}
