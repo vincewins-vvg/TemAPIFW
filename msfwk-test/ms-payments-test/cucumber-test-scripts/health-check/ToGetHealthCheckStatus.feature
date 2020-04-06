@@ -5,22 +5,22 @@
 Feature: ToGetHealthCheckStatus
 
 
-  #Below scripts cover the default status of API services - DB,ClientAPI,BusinessCondition
+  #Below scripts cover the default status of API services - DB,External API,BusinessCondition
   
 	 Scenario: To Get Health Check Status of API 
 
    Given create a new MS request with code ""
-   And set the request path as "healthz"
+   And set the request path as "health"
    And query parameter will be set to value ""
 
 	 When a 'GET' request is sent
    Then the response code should be 200
    And property "status" should be equal to string "FAILURE"
-   #And property "clientAPIHealthChecks(0)/status" should be equal to string "SUCCESS"
-   And property "databaseHealthChecks(0)/status" should be equal to string "SUCCESS"
-   And property "businessConditionHealthChecks(0)/status" should be equal to string "SUCCESS"
+   #And property "externalAPI(0)/status" should be equal to string "SUCCESS"
+   And property "database(0)/status" should be equal to string "SUCCESS"
+   And property "businessCondition(0)/status" should be equal to string "SUCCESS"
    
-   #Below scripts cover the default status of Ingester services - DB,Stream
+   #Below scripts cover the default status of Ingester services - DB,External API,Stream
     
 	 Scenario: To Get Health Check Status of Data Ingester
 	 
@@ -31,7 +31,7 @@ Feature: ToGetHealthCheckStatus
 
 	 When a 'GET' request is sent
    Then the response code should be 200
-   And property "status" should be equal to string "SUCCESS"
+   And property "status" should be equal to string "FAILURE"
    
 
 	 Scenario: To Get Health Check Status of Binary Ingester
@@ -43,13 +43,4 @@ Feature: ToGetHealthCheckStatus
 
 	 When a 'GET' request is sent
    Then the response code should be 200
-   And property "status" should be equal to string "SUCCESS"
-
-   
-   
-   
-   
-
-   
-   
-   
+   And property "status" should be equal to string "FAILURE"
