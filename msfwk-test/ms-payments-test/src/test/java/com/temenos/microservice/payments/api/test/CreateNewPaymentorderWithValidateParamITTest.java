@@ -18,12 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
-import com.temenos.microservice.framework.core.conf.Environment;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_WRONG;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_INVALIDPARAM;
+
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
 
-public class CreateNewPaymentOrderITTest extends ITTest {
+public class CreateNewPaymentorderWithValidateParamITTest extends ITTest {
 
 	@Before
 	public void setUp() throws SQLException {
@@ -34,6 +37,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	public static void initializeData() {
 		daoFacade.openConnection();
 		createReferenceDataRecord("ms_reference_data","type","string", "paymentref","value","string","PayRef","description","string","description");
+
 	}
 
 	@AfterClass
@@ -47,7 +51,6 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@Test
 	public void testCreateNewPaymentOrderFunction() {
 		ClientResponse createResponse;
-
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
@@ -71,13 +74,13 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
-					.block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_INVALIDPARAM), String.class))
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
+				.contains("[{\"message\":\"InvalidInputException"));
 	}
 
 }

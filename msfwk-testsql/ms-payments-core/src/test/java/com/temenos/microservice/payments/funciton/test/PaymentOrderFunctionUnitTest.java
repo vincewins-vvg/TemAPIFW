@@ -8,6 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.data.DaoFactory;
+import com.temenos.microservice.framework.core.data.DataAccessException;
+import com.temenos.microservice.framework.core.data.sql.ReferenceDataEntity;
+import com.temenos.microservice.framework.core.data.sql.ReferenceDataIdEntity;
 import com.temenos.microservice.framework.core.function.RequestContext;
 import com.temenos.microservice.framework.core.function.RequestImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
@@ -46,21 +50,28 @@ public class PaymentOrderFunctionUnitTest {
 
 	@Test
 	public void testCreateNewPaymentOrder() {
-		CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
-		PaymentOrder paymentOrder = new PaymentOrder();
-		paymentOrder.setAmount(new BigDecimal("100"));
-		paymentOrder.setCurrency(EnumCurrency.USD);
-		paymentOrder.setExpires(Long.valueOf("1"));
-		paymentOrder.setFromAccount("70010");
-		paymentOrder.setToAccount("70012");
-		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
+			ReferenceDataIdEntity idEntity = new ReferenceDataIdEntity("paymentref", "test");
+			ReferenceDataEntity refEntity = new ReferenceDataEntity();
+			refEntity.setReferenceDataIdEntity(idEntity);
+			refEntity.setDescription("description");
+			DaoFactory.getDao(ReferenceDataEntity.class).saveEntity(refEntity);
+
+			CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
+			PaymentOrder paymentOrder = new PaymentOrder();
+			paymentOrder.setAmount(new BigDecimal("100"));
+			paymentOrder.setCurrency(EnumCurrency.USD);
+			paymentOrder.setExpires(Long.valueOf("1"));
+			paymentOrder.setFromAccount("70010");
+			paymentOrder.setToAccount("70012");
+			paymentOrder.setPaymentReference("test");
+			CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()),
 					createNewPaymentOrderInput);
 			Assert.assertNotNull(paymentStatus);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
-		}
+		} 
 	}
 
 	@Test
