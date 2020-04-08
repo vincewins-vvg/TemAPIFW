@@ -33,14 +33,12 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
-		createReferenceDataRecord("ms_reference_data","type","string", "paymentref","value","string","PayRef","description","string","description");
 	}
 
 	@AfterClass
 	public static void clearData() {
 		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
 				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref","value","eq","string","PayRef");
 		daoFacade.closeConnection();
 	}
 
