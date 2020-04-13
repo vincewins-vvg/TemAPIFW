@@ -26,11 +26,11 @@
 
 		<!-- Provider API WAR filename as it would be used as /context-root -->
 		<docker.apiPackageFileName>ms-paymentorder-api.war</docker.apiPackageFileName>
-
 		<!-- Ingester App Name -->
 		<docker.ingester.app.name>ms-paymentorder-ingester.jar</docker.ingester.app.name>
 		<docker.inbox.app.name>ms-paymentorder-inboxoutbox.jar</docker.inbox.app.name>
 		<docker.ms-framework-scheduler.name>ms-paymentorder-scheduler.jar</docker.ms-framework-scheduler.name>
+
 		<sonar.skip>true</sonar.skip>
 	</properties>
 
@@ -58,6 +58,17 @@
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
 								<targetPlatform>Camel</targetPlatform>
 								<enableInbox>true</enableInbox>
+								<apiCamelVersion>1.1</apiCamelVersion>
+							</configuration>
+						</execution>
+						<execution>
+							<id>generate-view</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>generate-view</goal>
+							</goals>
+							<configuration>
+								<functionViewModelVersion>1.2</functionViewModelVersion>
 							</configuration>
 						</execution>
 					</executions>

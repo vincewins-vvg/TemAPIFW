@@ -173,6 +173,7 @@ components:
           type: string
         paymentReference:
           type: string
+          x-referencetype: paymentref
         paymentDetails:
           type: string
         currency:

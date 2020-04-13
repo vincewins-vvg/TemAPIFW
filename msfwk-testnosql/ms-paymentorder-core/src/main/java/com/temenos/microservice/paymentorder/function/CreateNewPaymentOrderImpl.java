@@ -85,8 +85,8 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				entity.getPaymentMethod().setCard(card);
 			}
 		}
-		if (view.getExchangeRatess() != null) {
-			for (ExchangeRate exchange : view.getExchangeRatess()) {
+		if (view.getExchangeRates() != null) {
+			for (ExchangeRate exchange : view.getExchangeRates()) {
 				exchangeRate = new com.temenos.microservice.paymentorder.entity.ExchangeRate();
 				exchangeRate.setId(exchange.getId());
 				exchangeRate.setName(exchange.getName());

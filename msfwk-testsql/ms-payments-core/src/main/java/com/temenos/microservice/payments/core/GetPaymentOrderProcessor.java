@@ -33,7 +33,7 @@ public class GetPaymentOrderProcessor {
 
 		com.temenos.microservice.payments.entity.PaymentOrder paymentOrder = (com.temenos.microservice.payments.entity.PaymentOrder) PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-				.findById(params.getPaymentIds().get(0), com.temenos.microservice.payments.entity.PaymentOrder.class);
+				.findById(params.getPaymentId().get(0), com.temenos.microservice.payments.entity.PaymentOrder.class);
 
 		if (paymentOrder != null) {
 
@@ -58,7 +58,7 @@ public class GetPaymentOrderProcessor {
 	}
 
 	private void validateParam(GetPaymentOrderParams params) throws InvalidInputException {
-		List<String> paymentIds = params.getPaymentIds();
+		List<String> paymentIds = params.getPaymentId();
 		if (paymentIds == null || paymentIds.isEmpty()) {
 			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
 		}

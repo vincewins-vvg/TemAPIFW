@@ -12,6 +12,12 @@ alternateKey text
 , alternateName text
 , PRIMARY KEY(alternateKey));
 
+CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_reference_data(
+type text
+, value text
+, description text
+, PRIMARY KEY(type,value));
+
 CREATE TYPE IF NOT EXISTS ms_paymentorder.PaymentMethod (
   id bigint,
   name text,
@@ -80,4 +86,6 @@ eventId text
 , creationTime timestamp
 , processedTime timestamp
 , PRIMARY KEY (eventId,eventType));
+
+
 

@@ -15,7 +15,7 @@ public class InvokePaymentOrderImpl implements InvokePaymentState {
 
 	@Override
 	public PaymentOrderStatus invoke(Context ctx, InvokePaymentStateInput input) throws FunctionException {
-		if (input.getParams().get().getPaymentStateIds().get(0).equals("prep")) {
+		if (input.getParams().get().getPaymentStateId().get(0).equals("prep")) {
 			List<byte[]> messageList = new ArrayList<>();
 			messageList.add(new String("prep").getBytes());
 			String stateTopic = Environment.getEnvironmentVariable("temn.msf.ingest.state.source.stream",

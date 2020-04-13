@@ -39,7 +39,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-				.getByPartitionKey(params.getPaymentIds().get(0));
+				.getByPartitionKey(params.getPaymentId().get(0));
 		if (paymentOrderOpt.isPresent()) {
 			com.temenos.microservice.paymentorder.entity.PaymentOrder paymentOrder = paymentOrderOpt.get();
 			PaymentStatus paymentStatus = new PaymentStatus();
@@ -90,7 +90,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 	}
 
 	private void validateParam(GetPaymentOrderParams params) throws InvalidInputException {
-		List<String> paymentIds = params.getPaymentIds();
+		List<String> paymentIds = params.getPaymentId();
 		if (paymentIds == null || paymentIds.isEmpty()) {
 			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
 		}
