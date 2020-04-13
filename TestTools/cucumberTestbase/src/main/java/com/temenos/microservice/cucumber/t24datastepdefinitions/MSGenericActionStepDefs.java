@@ -33,6 +33,7 @@ import org.apache.http.HttpHeaders;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.test.db.PartyDBFields;
 import com.temenos.microservice.test.db.T24DAO;
 import com.temenos.microservice.test.util.ExecuteOFSString;
@@ -261,7 +262,20 @@ public class MSGenericActionStepDefs implements En {
         // auto generated during runtime/ ofs string execution.
         And(format("^(?:I ?)*post an OFS Message and store record id in {0} and message {0}$", stepConfig.stringRegEx()),
                 (String RecordIdKey , String OfsString) -> { recordIdFromOFSString(RecordIdKey, OfsString);
-        DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordIdKey));
+                
+                //To differntiate between old and new party ms
+                String runnerClassName = Environment.getEnvironmentVariable("test", "");
+                if(runnerClassName.equals("MSE2ETests"))
+                {
+                    DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordIdKey));
+                }
+                
+                else if (runnerClassName.equals("MSEndToEndTest"))
+                {
+                    DbcolumnValues.put(PartyDBFields.OLD_PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordIdKey));
+                    
+                }
+                
                 });
 
 
