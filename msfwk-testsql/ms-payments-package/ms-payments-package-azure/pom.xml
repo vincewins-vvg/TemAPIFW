@@ -27,6 +27,7 @@
 		<assemblyOutputDirectory>ms-payments-Azure</assemblyOutputDirectory>
 		<sonar.skip>true</sonar.skip>
 		<applicationName>paymentsapp</applicationName>
+		<applicationListenerName>paymentsapplistener</applicationListenerName>
 	</properties>
 	<dependencies>
 		<dependency>
