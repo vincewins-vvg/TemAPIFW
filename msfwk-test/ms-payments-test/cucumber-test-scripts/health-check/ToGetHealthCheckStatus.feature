@@ -14,7 +14,7 @@ Feature: ToGetHealthCheckStatus
    And query parameter will be set to value ""
 
 	 When a 'GET' request is sent
-   Then the response code should be 200
+   Then the response code should be 409
    And property "status" should be equal to string "FAILURE"
    #And property "externalAPI(0)/status" should be equal to string "SUCCESS"
    And property "database(0)/status" should be equal to string "SUCCESS"
