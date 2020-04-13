@@ -23,7 +23,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
     @Override
 	public PaymentStatus invoke(Context ctx, UpdatePaymentOrderInput input) throws FunctionException {
 		PaymentStatus paymentStatus = input.getBody().get();
-		String paymentOrderId = input.getParams().get().getPaymentIds().get(0);
+		String paymentOrderId = input.getParams().get().getPaymentId().get(0);
 		String debitAccount = input.getBody().get().getDebitAccount();
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
@@ -45,7 +45,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 			paymentOrder.setPaymentMethod(paymentMethod);
 
 			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-			for (com.temenos.microservice.paymentorder.view.ExchangeRate erView : paymentStatus.getExchangeRatess()) {
+			for (com.temenos.microservice.paymentorder.view.ExchangeRate erView : paymentStatus.getExchangeRates()) {
 				ExchangeRate exchangeRate = new ExchangeRate();
 				exchangeRate.setId(erView.getId());
 				exchangeRate.setName(erView.getName());
