@@ -88,7 +88,7 @@ services:
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: 10.92.14.71
+      IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
@@ -128,7 +128,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.consumer.max.poll.records: "1"
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: 10.92.14.71
+      IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
@@ -211,7 +211,7 @@ services:
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: 10.92.14.71
+      IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
