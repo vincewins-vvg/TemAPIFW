@@ -22,25 +22,25 @@ Feature: ToGetHealthCheckStatus
    
    #Below scripts cover the default status of Ingester services - DB,External API,Stream
     
-	 Scenario: To Get Health Check Status of Data Ingester
+	 #Scenario: To Get Health Check Status of Data Ingester
 	 
-	 Given create a new request
-   And end-point uri is set to "http://localhost:8082"
-   And set the request path as "ingester/health"
-   And query parameter will be set to value ""
+	 #Given create a new request
+   #And end-point uri is set to "http://localhost:8082"
+   #And set the request path as "ingester/health"
+   #And query parameter will be set to value ""
 
-	 When a 'GET' request is sent
-   Then the response code should be 409
-   And property "status" should be equal to string "FAILURE"
+	 #When a 'GET' request is sent
+   #Then the response code should be 409
+   #And property "status" should be equal to string "FAILURE"
    
 
-	 Scenario: To Get Health Check Status of Binary Ingester
+	 #Scenario: To Get Health Check Status of Binary Ingester
 
-   Given create a new request
-   And end-point uri is set to "http://localhost:8084"
-   And set the request path as "ingester/health"
-   And query parameter will be set to value ""
+   #Given create a new request
+   #And end-point uri is set to "http://localhost:8084"
+   #And set the request path as "ingester/health"
+   #And query parameter will be set to value ""
 
-	 When a 'GET' request is sent
-   Then the response code should be 409
-   And property "status" should be equal to string "FAILURE"
+	 #When a 'GET' request is sent
+   #Then the response code should be 409
+   #And property "status" should be equal to string "FAILURE"
