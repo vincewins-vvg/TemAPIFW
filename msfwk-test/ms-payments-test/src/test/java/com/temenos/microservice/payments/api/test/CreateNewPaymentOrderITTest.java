@@ -48,7 +48,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@Test
 	public void testCreateNewPaymentOrderFunction() {
 		ClientResponse createResponse;
-
+		String paymentOrderId = null;
+		String paymentOrderValue = null;
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
@@ -61,8 +62,15 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
 		assertNotNull(entry);
-		assertEquals(entry.get(0).getName().toLowerCase(), "paymentorderid");
-		assertEquals(entry.get(0).getValue().toString(), "PO~123~124~USD~100");
+		for(Attribute attribute : entry) {
+			if(attribute.getName().equalsIgnoreCase("paymentOrderId")) {
+				paymentOrderId = attribute.getName().toLowerCase();
+				paymentOrderValue = attribute.getValue().toString();
+			}
+		}
+		assertEquals(paymentOrderId, "paymentorderid");
+		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
+		
 	}
 
 	@Test
