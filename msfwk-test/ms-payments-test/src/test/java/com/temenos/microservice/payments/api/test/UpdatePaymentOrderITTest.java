@@ -67,6 +67,7 @@ public class UpdatePaymentOrderITTest extends ITTest {
 			if(attribute.getName().equalsIgnoreCase("paymentOrderId")) {
 				paymentOrderId = attribute.getName().toLowerCase();
 				paymentOrderValue = attribute.getValue().toString();
+				break;
 			}
 		}
 		assertEquals(paymentOrderId, "paymentorderid");
