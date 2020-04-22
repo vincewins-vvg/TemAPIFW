@@ -35,6 +35,10 @@ mongo --host mongo1:27017 <<EOF
   rs.status();
   use ms_paymentorder
   db.createCollection("ms_payment_order");
+  db.createCollection("Card");
+  db.createCollection("ExchangeRate");
+  db.createCollection("PayeeDetails");
+  db.createCollection("PaymentMethod");
   db.createCollection("ms_inbox_events");
   db.createCollection("ms_outbox_events");
   db.createCollection("ms_reference_data");

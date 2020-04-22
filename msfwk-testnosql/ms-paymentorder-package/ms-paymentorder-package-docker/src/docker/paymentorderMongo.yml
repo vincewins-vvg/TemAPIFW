@@ -76,6 +76,7 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+      className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
