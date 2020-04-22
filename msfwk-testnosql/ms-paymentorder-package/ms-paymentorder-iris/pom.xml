@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <parent>
 		<groupId>com.temenos.microservice.paymentorder</groupId>
-		<artifactId>ms-paymentorder</artifactId>
+		<artifactId>ms-paymentorder-package</artifactId>
 		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>ms-paymentorder-iris</artifactId>
