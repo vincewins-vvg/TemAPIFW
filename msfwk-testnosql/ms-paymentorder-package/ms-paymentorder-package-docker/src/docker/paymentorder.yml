@@ -60,6 +60,7 @@ services:
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
