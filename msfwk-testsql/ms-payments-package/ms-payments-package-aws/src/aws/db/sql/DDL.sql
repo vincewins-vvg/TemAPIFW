@@ -12,3 +12,6 @@ CREATE TRIGGER INBOX_TRIGGER AFTER INSERT ON ms_inbox_events FOR EACH ROW BEGIN 
 
 DROP TRIGGER IF EXISTS OUTBOX_TRIGGER;
 CREATE TRIGGER OUTBOX_TRIGGER AFTER INSERT ON ms_outbox_events FOR EACH ROW BEGIN SELECT  NEW.eventId, NEW.eventname INTO @eventId, @eventname; CALL OUTBOX_PROCEDURE(@eventId , @eventname); END;
+
+CREATE TABLE IF NOT EXISTS ms_reference_data (type varchar(255), value varchar(255), description varchar(255),  PRIMARY KEY (type, value));
+INSERT INTO ms_reference_data(type,value,description) VALUES('paymentref','PayRef','desc');
