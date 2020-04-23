@@ -56,48 +56,15 @@
 							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:EntityName"
 							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
 					</Match>
-					<!-- <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
-						<AttributeDesignator
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
-							AttributeId="urn:oasis:names:tc:xacml:1.0:action:Method"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
-					</Match> -->
 				</AllOf>
 			</AnyOf>
 		</Target>
 		<Rule RuleId="permit-allowed-accounts" Effect="Permit">
-			<Description>Permit when at least one allowed accounts exist
-			</Description>
+			<Description>Permit when at least one allowed accounts exist</Description>
 			<Condition>
-				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than">
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag-size">
-						<AttributeDesignator
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts"
-							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
-					</Apply>
-					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">0</AttributeValue>
-				</Apply>
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and"/>
 			</Condition>
 			<ObligationExpressions>
-				<!-- <ObligationExpression ObligationId="filter-accounts"
-					FulfillOn="Permit">
-					<AttributeAssignmentExpression
-						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
-						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue>
-					</AttributeAssignmentExpression>
-					<AttributeAssignmentExpression
-						AttributeId="debitAccount"
-						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
-						<AttributeDesignator
-							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:allowedaccounts"
-							DataType="http://www.w3.org/2001/XMLSchema#string"
-							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-							MustBePresent="false" />
-					</AttributeAssignmentExpression>
-				</ObligationExpression> -->
 				<ObligationExpression ObligationId="filter-accounts"
 					FulfillOn="Permit">
 					<AttributeAssignmentExpression

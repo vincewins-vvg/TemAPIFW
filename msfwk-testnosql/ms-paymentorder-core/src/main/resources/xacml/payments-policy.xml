@@ -1,131 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PolicySet
-    xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-    xmlns:ns2="http://thalesgroup.com/authzforce/pdp/model/2014/12"
-    PolicySetId="default" Version="1.0"
-    PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable">
-    <Target />
-    <Policy PolicyId="permit-for-amount" Version="1.0"
-        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
-        <Target>
-            <AnyOf>
-                <AllOf>
-                    <Match
-                        MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <AttributeValue
-                            DataType="http://www.w3.org/2001/XMLSchema#string">CreateNewPaymentOrder</AttributeValue>
-                        <AttributeDesignator
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:OperationId"
-                            DataType="http://www.w3.org/2001/XMLSchema#string"
-                            MustBePresent="true" />
-                    </Match>                   
-                </AllOf>
-            </AnyOf>
-        </Target>
-        <Rule RuleId="permit-for-amount-less-than-x"
-            Effect="Permit">
-            <Description>Permit when at least one allowed accounts exist</Description>
-            <Condition>
-                <Apply
-                    FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
-                    <Apply
-                        FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only">
-                        <AttributeDesignator
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:amount"
-                            DataType="http://www.w3.org/2001/XMLSchema#integer"
-                            MustBePresent="true" />
-                    </Apply>
-                    <AttributeValue
-                        DataType="http://www.w3.org/2001/XMLSchema#integer">10000</AttributeValue>
-                </Apply>
-            </Condition>
-        </Rule>
-        <Rule RuleId="deny-otherwise" Effect="Deny" />
-    </Policy>
-    <Policy PolicyId="permit-only-allowed-accounts" Version="1.0"
-        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
-        <Target>
-            <AnyOf>
-                <AllOf>
-                    <Match
-                        MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <AttributeValue
-                            DataType="http://www.w3.org/2001/XMLSchema#string">GetPaymentOrders</AttributeValue>
-                        <AttributeDesignator
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:OperationId"
-                            DataType="http://www.w3.org/2001/XMLSchema#string"
-                            MustBePresent="true" />
-                    </Match>
-                    <Match
-                        MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <AttributeValue
-                            DataType="http://www.w3.org/2001/XMLSchema#string">PaymentOrder</AttributeValue>
-                        <AttributeDesignator
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:EntityName"
-                            DataType="http://www.w3.org/2001/XMLSchema#string"
-                            MustBePresent="false" />
-                    </Match> 
-                </AllOf>
-            </AnyOf>
-        </Target>
-        <Rule RuleId="permit-allowed-accounts" Effect="Permit">
-            <Description>Permit when at least one allowed accounts exist
-            </Description>
-            <Condition>
-                <Apply
-                    FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than">
-                    <Apply
-                        FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag-size">
-                        <AttributeDesignator
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:AllowedAccounts"
-                            DataType="http://www.w3.org/2001/XMLSchema#string"
-                            MustBePresent="true" />
-                    </Apply>
-                    <AttributeValue
-                        DataType="http://www.w3.org/2001/XMLSchema#integer">0</AttributeValue>
-                </Apply>
-            </Condition>
-            <ObligationExpressions>
-                <ObligationExpression
-                    ObligationId="filter-accounts" FulfillOn="Permit">
-                    <AttributeAssignmentExpression
-                        AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
-                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-                        <AttributeValue
-                            DataType="http://www.w3.org/2001/XMLSchema#string">filter_in</AttributeValue>
-                    </AttributeAssignmentExpression>
-                    <AttributeAssignmentExpression
-                        AttributeId="debitAccount"
-                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
-                        <AttributeDesignator
-                            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:AllowedAccounts"
-                            DataType="http://www.w3.org/2001/XMLSchema#string"
-                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-                            MustBePresent="false" />
-                    </AttributeAssignmentExpression>
-                </ObligationExpression>
-                <ObligationExpression
-                    ObligationId="filter-accounts" FulfillOn="Permit">
-                    <AttributeAssignmentExpression
-                        AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
-                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-                        <AttributeValue
-                            DataType="http://www.w3.org/2001/XMLSchema#string">filter_notEqual</AttributeValue>
-                    </AttributeAssignmentExpression>
-                    <AttributeAssignmentExpression
-                        AttributeId="paymentOrderId"
-                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
-                        <AttributeValue
-                        DataType="http://www.w3.org/2001/XMLSchema#string">PO/1237/4567/USD/3000</AttributeValue>
-                    </AttributeAssignmentExpression>
-                </ObligationExpression>                
-            </ObligationExpressions>
-        </Rule>
-        <Rule RuleId="deny-otherwise" Effect="Deny" />
-    </Policy>  
+<PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xmlns:ns2="http://thalesgroup.com/authzforce/pdp/model/2014/12"
+	PolicySetId="default" Version="1.0"
+	PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable">
+	<Target />
+	<Policy PolicyId="permit-for-amount" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CreateNewPaymentOrder</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:OperationId"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="permit-for-amount-less-than-x" Effect="Permit">
+			<Description>Permit when amount less than the specified value</Description>
+			<Condition>
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only">
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:amount"
+							DataType="http://www.w3.org/2001/XMLSchema#integer"
+							MustBePresent="true" />
+					</Apply>
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">10000</AttributeValue>
+				</Apply>
+			</Condition>
+		</Rule>
+		<Rule RuleId="deny-otherwise" Effect="Deny" />
+	</Policy>
+	<Policy PolicyId="permit-only-allowed-accounts" Version="1.0"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetPaymentOrders</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:OperationId"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PaymentOrder</AttributeValue>
+						<AttributeDesignator
+							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:EntityName"
+							DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="permit-allowed-accounts" Effect="Permit">
+			<Description>Permit when at least one allowed accounts exist</Description>
+			<Condition>
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and"/>
+			</Condition>
+			<ObligationExpressions>
+				<ObligationExpression ObligationId="filter-accounts"
+					FulfillOn="Permit">
+					<AttributeAssignmentExpression
+						AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_equal</AttributeValue>
+					</AttributeAssignmentExpression>
+					<AttributeAssignmentExpression
+						AttributeId="currency"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">USD</AttributeValue>
+					</AttributeAssignmentExpression>
+				</ObligationExpression>
+			</ObligationExpressions>
+		</Rule>
+		<Rule RuleId="deny-otherwise" Effect="Deny" />
+	</Policy>
 </PolicySet>
