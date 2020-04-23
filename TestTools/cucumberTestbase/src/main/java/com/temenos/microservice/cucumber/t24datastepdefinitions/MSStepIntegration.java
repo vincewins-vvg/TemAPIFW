@@ -1,4 +1,4 @@
-package com.temenos.microservice.cucumber.t24datastepdefinitions; 
+package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateAttribute;
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
@@ -42,6 +42,17 @@ public class MSStepIntegration implements En {
 			setDataforTable(data);
 		});
 
+		Given("^enter the tablename to update (.*)", (String tablename) -> {
+			item = new Item();
+			item.setTableName(tablename);
+		});
+
+		When("^enter data for table update", (DataTable inputData) -> {
+
+			List<Map<String, String>> data = inputData.asMaps(String.class, String.class);
+			updateDatainTable(data);
+		});
+
 		Given("^enter tablename to delete (.*)", (String tablename) -> {
 			deleteTableName = tablename;
 		});
@@ -51,6 +62,18 @@ public class MSStepIntegration implements En {
 			deleteDataFromTable(dataList);
 		});
 
+	}
+
+	private void updateDatainTable(List<Map<String, String>> inputList) {
+		List<Criterion> criterionList = new ArrayList<>();
+		IntStream.rangeClosed(0, inputList.size() - 1).forEach(index -> {
+			criterionList
+					.add(populateCriterian(inputList.get(index).get("Fields"), inputList.get(index).get("condition"),
+							inputList.get(index).get("type"), inputList.get(index).get("data")));
+		});
+		daoFacade.openConnection();
+		assertTrue(daoFacade.updateItem(item, criterionList));
+		daoFacade.closeConnection();
 	}
 
 	private void deleteDataFromTable(List<Map<String, String>> inputList) {
@@ -78,15 +101,16 @@ public class MSStepIntegration implements En {
 		assertTrue(daoFacade.deleteItems(deleteTableName, criterionList));
 		daoFacade.closeConnection();
 	}
-	   /**
-     * calculateSortKey method is used to calculate sort key for holdings
-     * 
-     * @param date
-     * @return long
-     */
-    private static long calculateSortKey(String date) {
-        return TestDbUtil.stringToDate(date).getTime()/1000;
-    }
+
+	/**
+	 * calculateSortKey method is used to calculate sort key for holdings
+	 * 
+	 * @param date
+	 * @return long
+	 */
+	private static long calculateSortKey(String date) {
+		return TestDbUtil.stringToDate(date).getTime() / 1000;
+	}
 
 	private void setDataforTable(List<Map<String, String>> inputList) {
 		List<Attribute> attributeList = new ArrayList<>();
