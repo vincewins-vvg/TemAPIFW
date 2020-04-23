@@ -73,7 +73,7 @@
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_equal</AttributeValue>
 					</AttributeAssignmentExpression>
 					<AttributeAssignmentExpression
-						AttributeId="PaymentOrders.payeeDetails.payeeName"
+						AttributeId="PaymentOrder.payeeDetails.payeeName"
 						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
 						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">BSNL</AttributeValue>
 					</AttributeAssignmentExpression>
