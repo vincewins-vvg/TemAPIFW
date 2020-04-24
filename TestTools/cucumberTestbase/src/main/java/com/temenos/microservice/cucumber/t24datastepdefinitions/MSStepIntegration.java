@@ -1,4 +1,4 @@
-package com.temenos.microservice.cucumber.t24datastepdefinitions; 
+package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateAttribute;
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
@@ -29,6 +29,8 @@ public class MSStepIntegration implements En {
 
 	private String deleteTableName;
 
+	private List<Criterion> criterionList;
+
 	public MSStepIntegration() {
 
 		Given("^enter the tablename (.*)", (String tablename) -> {
@@ -42,6 +44,18 @@ public class MSStepIntegration implements En {
 			setDataforTable(data);
 		});
 
+		When("^enter where condition for table update", (DataTable inputData) -> {
+			criterionList = new ArrayList<>();
+			List<Map<String, String>> data = inputData.asMaps(String.class, String.class);
+			updateCriterion(data);
+		});
+
+		When("^enter columns to be updated", (DataTable inputData) -> {
+			List<Map<String, String>> data = inputData.asMaps(String.class, String.class);
+			updateAttribute(data);
+			criterionList.clear();
+		});
+
 		Given("^enter tablename to delete (.*)", (String tablename) -> {
 			deleteTableName = tablename;
 		});
@@ -51,6 +65,29 @@ public class MSStepIntegration implements En {
 			deleteDataFromTable(dataList);
 		});
 
+	}
+
+	private void updateAttribute(List<Map<String, String>> inputList) {
+		List<Attribute> attributeList = new ArrayList<>();
+		IntStream.rangeClosed(0, inputList.size() - 1).forEach(index -> {
+			Attribute attribute = new Attribute();
+			attribute.setDataType(inputList.get(index).get("type"));
+			attribute.setName(inputList.get(index).get("Fields"));
+			attribute.setValue(inputList.get(index).get("data"));
+			attributeList.add(attribute);
+		});
+		daoFacade.openConnection();
+		item.setAttributes(attributeList);
+		daoFacade.updateItem(item, criterionList);
+		daoFacade.closeConnection();
+	}
+
+	private void updateCriterion(List<Map<String, String>> inputList) {
+		IntStream.rangeClosed(0, inputList.size() - 1).forEach(index -> {
+			criterionList
+					.add(populateCriterian(inputList.get(index).get("Fields"), inputList.get(index).get("condition"),
+							inputList.get(index).get("type"), inputList.get(index).get("data")));
+		});
 	}
 
 	private void deleteDataFromTable(List<Map<String, String>> inputList) {
@@ -78,15 +115,16 @@ public class MSStepIntegration implements En {
 		assertTrue(daoFacade.deleteItems(deleteTableName, criterionList));
 		daoFacade.closeConnection();
 	}
-	   /**
-     * calculateSortKey method is used to calculate sort key for holdings
-     * 
-     * @param date
-     * @return long
-     */
-    private static long calculateSortKey(String date) {
-        return TestDbUtil.stringToDate(date).getTime()/1000;
-    }
+
+	/**
+	 * calculateSortKey method is used to calculate sort key for holdings
+	 * 
+	 * @param date
+	 * @return long
+	 */
+	private static long calculateSortKey(String date) {
+		return TestDbUtil.stringToDate(date).getTime() / 1000;
+	}
 
 	private void setDataforTable(List<Map<String, String>> inputList) {
 		List<Attribute> attributeList = new ArrayList<>();
