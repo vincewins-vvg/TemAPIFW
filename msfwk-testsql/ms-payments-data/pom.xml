@@ -14,6 +14,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		 <sonar.skip>true</sonar.skip>
+		 <sqlMetaData.codegen.enabled>true</sqlMetaData.codegen.enabled>
+		 <entityPackagename>com.temenos.microservice.payments.entity</entityPackagename>
 	</properties>
 
 	<dependencies>
