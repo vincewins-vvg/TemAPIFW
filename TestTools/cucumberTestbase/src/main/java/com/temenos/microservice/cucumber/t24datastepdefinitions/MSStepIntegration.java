@@ -44,11 +44,6 @@ public class MSStepIntegration implements En {
 			setDataforTable(data);
 		});
 
-		Given("^enter the tablename to update (.*)", (String tablename) -> {
-			item = new Item();
-			item.setTableName(tablename);
-		});
-
 		When("^enter where condition for table update", (DataTable inputData) -> {
 			criterionList = new ArrayList<>();
 			List<Map<String, String>> data = inputData.asMaps(String.class, String.class);
@@ -83,7 +78,7 @@ public class MSStepIntegration implements En {
 		});
 		daoFacade.openConnection();
 		item.setAttributes(attributeList);
-		assertTrue(daoFacade.updateItem(item, criterionList));
+		daoFacade.updateItem(item, criterionList);
 		daoFacade.closeConnection();
 	}
 
