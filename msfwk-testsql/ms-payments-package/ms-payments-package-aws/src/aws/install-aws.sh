@@ -10,6 +10,9 @@ export MAVEN_OPTS="-Xmx2048m"
 aws kinesis create-stream --stream-name payment-inbox-topic --shard-count 1
 aws kinesis create-stream --stream-name payment-inbox-error-topic --shard-count 1
 aws kinesis create-stream --stream-name payment-outbox-topic --shard-count 1
+aws kinesis create-stream --stream-name table-update-paymentorder --shard-count 1
+aws kinesis create-stream --stream-name error-paymentorder --shard-count 1
+
 sleep 10
 
 
@@ -74,8 +77,14 @@ sleep 10
 aws lambda create-function --function-name outbox-sql-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.OutboxHandlerSql::handleRequest --description "Listen outbox table and deliver the events to designated queue" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,EXECUTION_ENV=TEST,temn_msf_name=PaymentOrderService,DATABASE_KEY=sql,OUTBOX_STREAM=payment-outbox-topic,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_exec_env=serverless,class_package_name=com.temenos.microservice.payments.function,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false"\}
 sleep 10
 
+aws lambda create-function --function-name payment-sql-configavro-ingester --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.KinesisEventProcessor::handleRequest --description "Ingester for payment-sql configavro Service" --timeout 120 --memory-size 512 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,DB_CONNECTION_URL=jdbc:mysql://paymentorderinstance.cdbrg3shwmrx.eu-west-2.rds.amazonaws.com:3306/payments,DATABASE_NAME=payments,DB_USERNAME=root,DB_PASSWORD=rootroot,EXECUTION_ENV=TEST,temn_msf_name=PaymentOrderService,temn_msf_security_authz_enabled=false,temn_msf_stream_kinesis_region=eu-west-2,temn_msf_stream_vendor=kinesis,temn_exec_env=serverless,temn_msf_ingest_sink_error_stream=error-paymentorder,temn_msf_ingest_event_ingester=com.temenos.microservice.framework.core.ingester.MicroserviceIngester,PAYMENT_ORDEREvent=com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater,temn_ingester_mapping_enabled=false,temn_msf_ingest_source_stream=table-update-paymentorder,EXECUTION_ENVIRONMENT=TEST,HOST=paymentorderinstance.cdbrg3shwmrx.eu-west-2.rds.amazonaws.com,PORT=3306,temn_msf_schema_registry_url=\"Data,PAYMENT.ORDER\",DATABASE_KEY=sql\}
+sleep 10
+
 # Create event source mapping
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-sql-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
+sleep 10
+
+aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/table-update-paymentorder --function-name payment-sql-configavro-ingester --enabled --batch-size 100 --starting-position LATEST
 sleep 10
 
 

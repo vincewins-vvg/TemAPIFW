@@ -29,6 +29,24 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ms-payments-core</artifactId>
 			<version>DEV.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.temenos.microservice.framework</groupId>
+					<artifactId>kafka-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.temenos.des.stream-vendor-io</groupId>
+	           		<artifactId>stream-vendor-io-core</artifactId>
+            	</exclusion>
+            	<exclusion>
+	            	<groupId>com.temenos.microservice.framework</groupId>
+					<artifactId>ms-sample_impl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
