@@ -12,10 +12,6 @@
 	<description>Payment order implementation</description>
 	<packaging>jar</packaging>
 
-	<properties>
-		<jackson-version>2.9.6</jackson-version>
-	</properties>
-
 	<dependencies>
 		<!-- Project depdendencies -->
 		<dependency>
@@ -41,7 +37,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>${com.fasterxml.jackson.version}</version>
+
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -50,7 +46,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${org.springframework.spring-test.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -65,31 +61,31 @@
 		<dependency>
 			<groupId>com.temenos.des</groupId>
 			<artifactId>stream-processor</artifactId>
-			<version>${des.stream.processor.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-core</artifactId>
-			<version>${des.stream.vendor.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des</groupId>
 			<artifactId>event-schemas</artifactId>
-			<version>${des.event.schema.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-kafka</artifactId>
-			<version>${des.stream.vendor.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-kinesis</artifactId>
-			<version>${des.stream.vendor.version}</version>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
