@@ -27,12 +27,14 @@ aws s3 rb s3://ms-payment-order-sql --force
 aws kinesis delete-stream --stream-name payment-inbox-topic
 aws kinesis delete-stream --stream-name payment-inbox-error-topic
 aws kinesis delete-stream --stream-name payment-outbox-topic
-
+aws kinesis delete-stream --stream-name table-update-paymentorder
+aws kinesis delete-stream --stream-name error-paymentorder
 
 # Delete Ingester
 aws lambda delete-function --function-name payment-sql-inbox-ingester
 aws lambda delete-function --function-name inbox-sql-handler
 aws lambda delete-function --function-name outbox-sql-handler
+aws lambda delete-function --function-name payment-sql-configavro-ingester
 
 
 # Delete payments API functions

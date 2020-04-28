@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.temenos.microservice.framework.test.dao.Item;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
@@ -87,6 +88,23 @@ public class ITTest {
 		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
 		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
 		return daoFacade.readItems(table, criterions);
+	}
+	
+	protected static void createReferenceDataRecord(String tableName, String... query) {
+		Item item = new Item();
+		item.setTableName(tableName);
+		List<Attribute> attributeList = new ArrayList<>();
+		int rowCount = 0;
+		int attributeCount = query.length/3;
+		for (int i = 0; i < attributeCount; i++) {
+			Attribute attribute = new Attribute();
+			attribute.setName(query[rowCount++]);
+			attribute.setDataType(query[rowCount++]);
+			attribute.setValue(query[rowCount++]);
+			attributeList.add(attribute);
+		}
+		item.setAttributes(attributeList);
+		daoFacade.createRecord(item);
 	}
 
 	protected static String readFromFile(String fileName) {

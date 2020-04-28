@@ -63,6 +63,7 @@
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
 								<targetPlatform>Camel</targetPlatform>
 								<enableInbox>true</enableInbox>
+								<apiCamelVersion>1.1</apiCamelVersion>
 							</configuration>
 						</execution>
 						<execution>
@@ -72,7 +73,7 @@
 								<goal>generate-view</goal>
 							</goals>
 							<configuration>
-								<functionViewModelVersion>1.1</functionViewModelVersion>
+								<functionViewModelVersion>1.2</functionViewModelVersion>
 							</configuration>
 						</execution>
 					</executions>
