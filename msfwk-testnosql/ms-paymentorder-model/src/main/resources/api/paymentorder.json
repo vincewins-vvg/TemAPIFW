@@ -192,8 +192,8 @@ components:
           type: string
         payeeType:
           type: string
-          
-    PaymentOrder:
+    
+    TransactionDetails:
       properties:
         fromAccount:
           type: string
@@ -204,6 +204,11 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
+    
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
         currency:
           type: string
         amount:

@@ -172,7 +172,7 @@ components:
         - USD
         - INR
         
-    PaymentOrder:
+    TransactionDetails:
       properties:
         fromAccount:
           type: string
@@ -183,6 +183,11 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
+      
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
         currency:
           allOf:
           - $ref: "#/components/schemas/EnumCurrency"
