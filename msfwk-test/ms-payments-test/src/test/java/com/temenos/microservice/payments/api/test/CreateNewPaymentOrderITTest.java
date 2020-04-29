@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
-import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
@@ -33,15 +32,16 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
-		createReferenceDataRecord("ms_reference_data","type","string", "paymentref","value","string","PayRef","description","string","description");
-
+		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "PayRef",
+				"description", "string", "description");
 	}
 
 	@AfterClass
 	public static void clearData() {
 		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
 				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref","value","eq","string","PayRef");
+		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+				"PayRef");
 		daoFacade.closeConnection();
 	}
 
@@ -62,8 +62,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
 		assertNotNull(entry);
-		for(Attribute attribute : entry) {
-			if(attribute.getName().equalsIgnoreCase("paymentOrderId")) {
+		for (Attribute attribute : entry) {
+			if (attribute.getName().equalsIgnoreCase("paymentOrderId")) {
 				paymentOrderId = attribute.getName().toLowerCase();
 				paymentOrderValue = attribute.getValue().toString();
 				break;
@@ -71,7 +71,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		}
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
-		
+
 	}
 
 	@Test
