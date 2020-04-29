@@ -4,7 +4,6 @@ import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_IN
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_UPDATE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Map;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -33,12 +31,16 @@ public class UpdatePaymentOrderITTest extends ITTest {
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
+		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "PayRef",
+				"description", "string", "description");
 	}
 
 	@AfterClass
 	public static void clearData() {
 		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
 				"debitAccount", "eq", "string", "123");
+		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+				"PayRef");
 		daoFacade.closeConnection();
 	}
 
@@ -63,8 +65,8 @@ public class UpdatePaymentOrderITTest extends ITTest {
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");
 		List<Attribute> entry = insertedRecord.get(1);
 		assertNotNull(entry);
-		for(Attribute attribute : entry) {
-			if(attribute.getName().equalsIgnoreCase("paymentOrderId")) {
+		for (Attribute attribute : entry) {
+			if (attribute.getName().equalsIgnoreCase("paymentOrderId")) {
 				paymentOrderId = attribute.getName().toLowerCase();
 				paymentOrderValue = attribute.getValue().toString();
 				break;

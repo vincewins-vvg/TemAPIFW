@@ -1,16 +1,13 @@
 package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -28,12 +25,16 @@ public class GetPaymentOrdersITTest extends ITTest {
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
+		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "PayRef",
+				"description", "string", "description");
 	}
 
 	@AfterClass
 	public static void clearData() {
 		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
 				"debitAccount", "eq", "string", "123");
+		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+				"PayRef");
 		daoFacade.closeConnection();
 	}
 
