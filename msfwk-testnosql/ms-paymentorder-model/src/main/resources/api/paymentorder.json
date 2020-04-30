@@ -213,7 +213,9 @@ components:
           format: int64
         fileContent:
           type: string
-          format: binary	
+          format: binary
+        extensionData:
+          type: object  	
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

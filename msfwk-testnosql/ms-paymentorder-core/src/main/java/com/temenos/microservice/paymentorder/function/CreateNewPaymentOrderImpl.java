@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
@@ -49,13 +50,14 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+
+		EventManager.raiseBusinessEvent(ctx,
+				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		return readStatus(entity);
 	}
 
-	private com.temenos.microservice.paymentorder.entity.PaymentOrder createEntity(String paymentOrderId, PaymentOrder view)
-			throws FunctionException {
+	private com.temenos.microservice.paymentorder.entity.PaymentOrder createEntity(String paymentOrderId,
+			PaymentOrder view) throws FunctionException {
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = new com.temenos.microservice.paymentorder.entity.PaymentOrder();
 		com.temenos.microservice.paymentorder.entity.PaymentMethod method = new com.temenos.microservice.paymentorder.entity.PaymentMethod();
 		com.temenos.microservice.paymentorder.entity.ExchangeRate exchangeRate = null;
@@ -71,7 +73,8 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
-		if(view.getFileContent()!=null) {
+		entity.setExtensionData((Map<String, String>) view.getExtensionData());
+		if (view.getFileContent() != null) {
 			entity.setFileContent(view.getFileContent());
 		}
 		if (view.getPaymentMethod() != null) {

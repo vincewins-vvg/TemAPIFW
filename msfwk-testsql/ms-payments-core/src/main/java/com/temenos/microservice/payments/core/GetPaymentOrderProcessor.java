@@ -1,8 +1,12 @@
 package com.temenos.microservice.payments.core;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +54,7 @@ public class GetPaymentOrderProcessor {
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
+			order.setExtensionData(paymentOrder.getExtensionData());
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;

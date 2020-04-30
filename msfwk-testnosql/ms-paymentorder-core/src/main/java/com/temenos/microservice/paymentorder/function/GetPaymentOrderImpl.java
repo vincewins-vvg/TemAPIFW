@@ -56,7 +56,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
-			
+			order.setExtensionData(paymentOrder.getExtensionData());
 			order.setFileContent(paymentOrder.getFileContent());
 			
 			
