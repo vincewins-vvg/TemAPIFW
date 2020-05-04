@@ -23,11 +23,10 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 
 	@Override
 	public void update() throws FunctionException {
-		PaymentsIngesterProcessor paymentsIngesterProcessor 
-		= (PaymentsIngesterProcessor) com.temenos.microservice.framework.core.SpringContextInitializer
+		PaymentsIngesterProcessor paymentsIngesterProcessor = (PaymentsIngesterProcessor) com.temenos.microservice.framework.core.SpringContextInitializer
 				.instance().getBean(PaymentsIngesterProcessor.class);
 		Iterator<Entity> iterator = entityMap.values().iterator();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			PaymentOrder paymentOrder = (PaymentOrder) iterator.next();
 			paymentsIngesterProcessor.ingestPaymentOrder(paymentOrder);
 		}
@@ -45,12 +44,12 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		} catch (DataAccessException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		if (order == null) {
 			order = new PaymentOrder();
-			order.setPaymentOrderId(orderRecord.getPaymentOrderId());	
+			order.setPaymentOrderId(orderRecord.getPaymentOrderId());
 		}
-		
+
 		order.setAmount(orderRecord.getAmount());
 		order.setCreditAccount(orderRecord.getCreditAccount());
 		order.setCurrency(orderRecord.getCurrency());
@@ -63,14 +62,14 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 
 	@Override
 	public void transform(JSONObject jsonObject) throws FunctionException {
-		 
+
 		checkAndBuild(jsonObject);
 	}
 
 	@Override
 	public Map<String, Entity> setEntityMap() {
 		entityMap = new HashMap<String, Entity>();
-		entityMap.put("PaymentOrder", order);
+		entityMap.put("com.temenos.microservice.payments.entity.PaymentOrder", order);
 		return entityMap;
 	}
 }
