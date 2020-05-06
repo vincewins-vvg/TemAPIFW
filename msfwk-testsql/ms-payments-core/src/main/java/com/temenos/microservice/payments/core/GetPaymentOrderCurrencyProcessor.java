@@ -1,5 +1,9 @@
 package com.temenos.microservice.payments.core;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,30 +14,26 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
-import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
-import com.temenos.microservice.payments.view.EnumCurrency;
-import com.temenos.microservice.payments.view.ExchangeRate;
+import com.temenos.microservice.payments.function.GetPaymentOrderCurrencyInput;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrders;
+import com.temenos.microservice.payments.view.EnumCurrency;
+import com.temenos.microservice.payments.view.ExchangeRate;
 
 @Component
-public class GetPaymentOrdersProcessor {
+public class GetPaymentOrderCurrencyProcessor {
 
 	public static Charset charset = Charset.forName("UTF-8");
 	public static CharsetEncoder encoder = charset.newEncoder();
 
-	public PaymentOrders invoke(Context ctx, GetPaymentOrdersInput input) throws FunctionException {
-
+	public PaymentOrders invoke(Context ctx, GetPaymentOrderCurrencyInput input) throws FunctionException {
 		CriteriaBuilder criteriaBuilder = PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().getEntityManager()
 				.getCriteriaBuilder();
@@ -43,9 +43,13 @@ public class GetPaymentOrdersProcessor {
 				.from(com.temenos.microservice.payments.entity.PaymentOrder.class);
 		criteriaQuery.select(root);
 
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(criteriaBuilder
+				.and(criteriaBuilder.equal(root.get("currency"), input.getParams().get().getCurrency().get(0))));
+
 		List<com.temenos.microservice.payments.entity.PaymentOrder> entities = PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
+				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
 						com.temenos.microservice.payments.entity.PaymentOrder.class);
 
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
@@ -78,14 +82,13 @@ public class GetPaymentOrdersProcessor {
 				paymentMethod.setName(entity.getPaymentMethod().getName());
 				paymentMethod.setCard(card);
 				view.setPaymentMethod(paymentMethod);
-			}
-			if (entity.getExchangeRates() != null && !entity.getExchangeRates().isEmpty()) {
+
 				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-				for (com.temenos.microservice.payments.entity.ExchangeRate exchangeEntity : entity.getExchangeRates()) {
+				for (com.temenos.microservice.payments.entity.ExchangeRate erEntity : entity.getExchangeRates()) {
 					ExchangeRate exchangeRate = new ExchangeRate();
-					exchangeRate.setId(exchangeEntity.getId());
-					exchangeRate.setName(exchangeEntity.getName());
-					exchangeRate.setValue(exchangeEntity.getValue());
+					exchangeRate.setId(erEntity.getId());
+					exchangeRate.setName(erEntity.getName());
+					exchangeRate.setValue(erEntity.getValue());
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);

@@ -16,7 +16,7 @@ import javax.persistence.MapKeyColumn;
 public class ExchangeRate implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
-	private int id;
+	private long id;
 
 	private String name;
 
@@ -29,11 +29,11 @@ public class ExchangeRate implements com.temenos.microservice.framework.core.dat
 	@CollectionTable(name = "ExchangeRate_extension", joinColumns = @JoinColumn(name = "ExchangeRate_id"))
 	Map<String, String> extensionData = new HashMap<String, String>();
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

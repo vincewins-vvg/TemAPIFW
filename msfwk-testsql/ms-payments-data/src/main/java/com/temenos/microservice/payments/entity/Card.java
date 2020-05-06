@@ -18,7 +18,7 @@ import com.temenos.microservice.framework.core.data.JPAEntity;
 public class Card implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
-	private int cardid;
+	private long cardid;
 
 	private String cardname;
 
@@ -31,11 +31,11 @@ public class Card implements com.temenos.microservice.framework.core.data.Entity
 	@CollectionTable(name = "Card_extension", joinColumns = @JoinColumn(name = "Card_cardid"))
 	Map<String, String> extensionData = new HashMap<String, String>();
 
-	public int getCardid() {
+	public long getCardid() {
 		return cardid;
 	}
 
-	public void setCardid(int cardid) {
+	public void setCardid(long cardid) {
 		this.cardid = cardid;
 	}
 
