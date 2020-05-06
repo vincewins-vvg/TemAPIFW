@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
+import com.temenos.microservice.framework.core.conf.Environment;
+
 import reactor.core.publisher.Mono;
 
 public class GetPaymentOrdersITTest extends ITTest {
@@ -31,10 +33,14 @@ public class GetPaymentOrdersITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
-				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
-				"PayRef");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")))  {
+			clearRecords("PO~123~124~USD~100", "123");
+		} else {
+			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
+					"debitAccount", "eq", "string", "123");
+			deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+					"PayRef");
+		}
 		daoFacade.closeConnection();
 	}
 
