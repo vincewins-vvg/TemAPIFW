@@ -191,8 +191,14 @@ components:
         payeeName:
           type: string
         payeeType:
-          type: string
-    
+          type: string                  
+    EnumCurrency:
+      type: string
+      x-deprictionallowed: true
+      enum:
+        - USD
+        - INR
+        
     TransactionDetails:
       properties:
         fromAccount:
@@ -210,7 +216,8 @@ components:
         - $ref: "#/components/schemas/TransactionDetails"
       properties:
         currency:
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/EnumCurrency"
         amount:
           type: number
         expires:
@@ -218,7 +225,10 @@ components:
           format: int64
         fileContent:
           type: string
-          format: binary	
+          format: binary
+        paymentDate:
+          type: string
+          format: date
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

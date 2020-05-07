@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.text.ParseException;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
@@ -13,11 +14,16 @@ import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.framework.core.util.DataTypeConverter;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.entity.Card;
+import com.temenos.microservice.paymentorder.entity.PayeeDetails;
 import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.FailureMessage;
 
 /**
  * CreateNewPaymentOrderImpl.
@@ -26,6 +32,7 @@ import com.temenos.microservice.paymentorder.view.PaymentStatus;
  *
  */
 public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	@Override
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
@@ -49,13 +56,14 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+
+		EventManager.raiseBusinessEvent(ctx,
+				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		return readStatus(entity);
 	}
 
-	private com.temenos.microservice.paymentorder.entity.PaymentOrder createEntity(String paymentOrderId, PaymentOrder view)
-			throws FunctionException {
+	private com.temenos.microservice.paymentorder.entity.PaymentOrder createEntity(String paymentOrderId,
+			PaymentOrder view) throws FunctionException {
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = new com.temenos.microservice.paymentorder.entity.PaymentOrder();
 		com.temenos.microservice.paymentorder.entity.PaymentMethod method = new com.temenos.microservice.paymentorder.entity.PaymentMethod();
 		com.temenos.microservice.paymentorder.entity.ExchangeRate exchangeRate = null;
@@ -65,13 +73,24 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setAmount(view.getAmount());
 		entity.setCreditAccount(view.getToAccount());
 		entity.setDebitAccount(view.getFromAccount());
-		entity.setPaymentDate(Date.from(Instant.now()));
-		entity.setCurrency(view.getCurrency());
+		try {
+			if (view.getPaymentDate() != null) {
+				entity.setPaymentDate(DataTypeConverter.toDate(view.getPaymentDate(), DATE_FORMAT));
+			} else {
+				entity.setPaymentDate(Date.from(Instant.now()));
+			}
+		} catch (ParseException e) {
+			throw new InvalidInputException(
+					new FailureMessage("Error while parsing date. Check the inputted date format",
+							MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		}
+
+		entity.setCurrency(view.getCurrency().toString());
 		entity.setPaymentReference(view.getPaymentReference());
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
-		if(view.getFileContent()!=null) {
+		if (view.getFileContent() != null) {
 			entity.setFileContent(view.getFileContent());
 		}
 		if (view.getPaymentMethod() != null) {
@@ -94,6 +113,14 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				exchangeRates.add(exchangeRate);
 			}
 		}
+
+		if (view.getPayeeDetails() != null) {
+			PayeeDetails payeeDetails = new PayeeDetails();
+			payeeDetails.setPayeeName(view.getPayeeDetails().getPayeeName());
+			payeeDetails.setPayeeType(view.getPayeeDetails().getPayeeType());
+			entity.setPayeeDetails(payeeDetails);
+		}
+
 		entity.setExchangeRates(exchangeRates);
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);

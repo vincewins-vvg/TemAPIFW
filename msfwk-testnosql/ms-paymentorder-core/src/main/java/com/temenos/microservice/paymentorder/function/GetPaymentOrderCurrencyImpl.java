@@ -1,5 +1,7 @@
 package com.temenos.microservice.paymentorder.function;
 
+import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
+import com.temenos.microservice.paymentorder.view.EnumCurrency;
 
 import com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
@@ -40,14 +43,14 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 				.getByIndexes(criteria);
 
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
-
 		for (com.temenos.microservice.paymentorder.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
-			view.setCurrency(entity.getCurrency());
+			view.setCurrency(Enum.valueOf(EnumCurrency.class, entity.getCurrency()));
 			view.setFromAccount(entity.getDebitAccount());
 			view.setToAccount(entity.getCreditAccount());
 			view.setFileContent(entity.getFileContent());
+			view.setPaymentDate(formatDate(entity.getPaymentDate()));
 
 			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
 			if (entity.getPaymentMethod() != null) {
