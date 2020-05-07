@@ -82,13 +82,6 @@ public class ITTest {
 		daoFacade.deleteItems(table, criterions);
 	}
 
-	protected static void deleteRecords(String table, String... query) {
-		List<Criterion> criterions = new ArrayList<Criterion>();
-		int pos = 0;
-		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
-		daoFacade.deleteItems(table, criterions);
-	}
-
 	protected static void deleteAllRecords(String table) {
 		List<Criterion> criterions = new ArrayList<Criterion>();
 		daoFacade.deleteItems(table, criterions);
