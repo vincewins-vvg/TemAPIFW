@@ -59,7 +59,6 @@ services:
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
-      temn.msf.security.authz.enabled: "false"
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -74,6 +73,8 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

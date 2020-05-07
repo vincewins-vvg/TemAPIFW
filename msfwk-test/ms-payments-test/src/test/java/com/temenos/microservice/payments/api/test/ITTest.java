@@ -82,6 +82,11 @@ public class ITTest {
 		daoFacade.deleteItems(table, criterions);
 	}
 
+	protected static void deleteAllRecords(String table) {
+		List<Criterion> criterions = new ArrayList<Criterion>();
+		daoFacade.deleteItems(table, criterions);
+	}
+
 	protected static Map<Integer, List<Attribute>> readPaymentOrderRecord(String table, String... query) {
 		List<Criterion> criterions = new ArrayList<Criterion>();
 		int pos = 0;
@@ -89,13 +94,13 @@ public class ITTest {
 		criterions.add(populateCriterian(query[pos++], query[pos++], query[pos++], query[pos++]));
 		return daoFacade.readItems(table, criterions);
 	}
-	
+
 	protected static void createReferenceDataRecord(String tableName, String... query) {
 		Item item = new Item();
 		item.setTableName(tableName);
 		List<Attribute> attributeList = new ArrayList<>();
 		int rowCount = 0;
-		int attributeCount = query.length/3;
+		int attributeCount = query.length / 3;
 		for (int i = 0; i < attributeCount; i++) {
 			Attribute attribute = new Attribute();
 			attribute.setName(query[rowCount++]);
@@ -131,5 +136,18 @@ public class ITTest {
 				}
 		}
 		return sb.toString();
+	}
+
+	public static void clearRecords(String paymentOrderId, String debitAccount) {
+		deleteAllRecords("ms_payment_order_ExchangeRate");
+		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", paymentOrderId, "debitAccount",
+				"eq", "string", debitAccount);
+		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+				"PayRef");
+		deleteAllRecords("ms_payment_order_ExchangeRate");
+		deleteAllRecords("ExchangeRate");
+		deleteAllRecords("PaymentMethod");
+		deleteAllRecords("Card");
+		deleteAllRecords("PayeeDetails");
 	}
 }

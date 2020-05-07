@@ -20,56 +20,59 @@ import com.temenos.microservice.framework.core.FunctionException;
 
 public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 
-    @Override
+	@Override
 	public PaymentStatus invoke(Context ctx, UpdatePaymentOrderInput input) throws FunctionException {
 		PaymentStatus paymentStatus = input.getBody().get();
 		String paymentOrderId = input.getParams().get().getPaymentId().get(0);
 		String debitAccount = input.getBody().get().getDebitAccount();
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-		Optional<PaymentOrder> paymentOrderOpt = paymentOrderDao.getByPartitionKeyAndSortKey(
-				paymentOrderId, debitAccount);
+		Optional<PaymentOrder> paymentOrderOpt = paymentOrderDao.getByPartitionKeyAndSortKey(paymentOrderId,
+				debitAccount);
 		if (paymentOrderOpt.isPresent()) {
 			PaymentOrder paymentOrder = paymentOrderOpt.get();
 			paymentOrder.setStatus(paymentStatus.getStatus());
-			
-			Card card = new Card();
-			card.setCardid(paymentStatus.getPaymentMethod().getCard().getCardid());
-			card.setCardname(paymentStatus.getPaymentMethod().getCard().getCardname());
-			card.setCardlimit(paymentStatus.getPaymentMethod().getCard().getCardlimit());
-			
-			PaymentMethod paymentMethod = new PaymentMethod();
-			paymentMethod.setId(paymentStatus.getPaymentMethod().getId());
-			paymentMethod.setName(paymentStatus.getPaymentMethod().getName());
-			paymentMethod.setCard(card);
-			paymentOrder.setPaymentMethod(paymentMethod);
+			if (paymentStatus.getPaymentMethod() != null) {
+				Card card = new Card();
+				card.setCardid(paymentStatus.getPaymentMethod().getCard().getCardid());
+				card.setCardname(paymentStatus.getPaymentMethod().getCard().getCardname());
+				card.setCardlimit(paymentStatus.getPaymentMethod().getCard().getCardlimit());
 
-			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-			for (com.temenos.microservice.paymentorder.view.ExchangeRate erView : paymentStatus.getExchangeRates()) {
-				ExchangeRate exchangeRate = new ExchangeRate();
-				exchangeRate.setId(erView.getId());
-				exchangeRate.setName(erView.getName());
-				exchangeRate.setValue(erView.getValue());
-				exchangeRates.add(exchangeRate);
+				PaymentMethod paymentMethod = new PaymentMethod();
+				paymentMethod.setId(paymentStatus.getPaymentMethod().getId());
+				paymentMethod.setName(paymentStatus.getPaymentMethod().getName());
+				paymentMethod.setCard(card);
+				paymentOrder.setPaymentMethod(paymentMethod);
 			}
-			paymentOrder.setExchangeRates(exchangeRates);
-			
+			if (paymentStatus.getExchangeRates() != null) {
+				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
+				for (com.temenos.microservice.paymentorder.view.ExchangeRate erView : paymentStatus
+						.getExchangeRates()) {
+					ExchangeRate exchangeRate = new ExchangeRate();
+					exchangeRate.setId(erView.getId());
+					exchangeRate.setName(erView.getName());
+					exchangeRate.setValue(erView.getValue());
+					exchangeRates.add(exchangeRate);
+				}
+				paymentOrder.setExchangeRates(exchangeRates);
+			}
 			paymentOrderDao.saveEntity(paymentOrder);
 		}
-		return readStatus(debitAccount, paymentOrderId);
+		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}
-    
-    private PaymentStatus readStatus(String debitAccount, String paymentOrderId) throws FunctionException {
-        NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
-                .getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-        Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-                .getByPartitionKeyAndSortKey(paymentOrderId, debitAccount);
-        PaymentStatus paymentStatus = new PaymentStatus();
+
+	private PaymentStatus readStatus(String debitAccount, String paymentOrderId, String pymtStatus)
+			throws FunctionException {
+		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
+				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+		Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
+				.getByPartitionKeyAndSortKey(paymentOrderId, debitAccount);
+		PaymentStatus paymentStatus = new PaymentStatus();
 		if (paymentOrderOpt.isPresent()) {
 			PaymentOrder paymentOrder = paymentOrderOpt.get();
 			paymentStatus.setPaymentId(paymentOrderId);
-			paymentStatus.setStatus(paymentOrder.getStatus());
+			paymentStatus.setStatus(pymtStatus);
 		}
-        return paymentStatus;
-    }
+		return paymentStatus;
+	}
 }

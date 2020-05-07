@@ -11,12 +11,14 @@ import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.paymentorder.view.EnumCurrency;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 
 import com.temenos.microservice.paymentorder.view.GetPaymentOrderParams;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
 
 /**
  * GetPaymentOrderImpl.
@@ -47,19 +49,17 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			paymentStatus.setStatus(paymentOrder.getStatus());
 			paymentStatus.setDetails(paymentOrder.getPaymentDetails());
 			
-
 			PaymentOrderStatus paymentOrderStatus = new PaymentOrderStatus();
 			PaymentOrder order = new PaymentOrder();
 			order.setAmount(paymentOrder.getAmount());
-			order.setCurrency(paymentOrder.getCurrency());
+			order.setCurrency(Enum.valueOf(EnumCurrency.class, paymentOrder.getCurrency()));
 			order.setFromAccount(paymentOrder.getDebitAccount());
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
-			order.setPaymentReference(paymentOrder.getPaymentReference());
-			
-			order.setFileContent(paymentOrder.getFileContent());
-			
-			
+			order.setPaymentReference(paymentOrder.getPaymentReference());			
+			order.setFileContent(paymentOrder.getFileContent());						
+			order.setPaymentDate(formatDate(paymentOrder.getPaymentDate()));
+						
 			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
 			if(paymentOrder.getPaymentMethod()!=null && paymentOrder.getPaymentMethod().getCard() != null ) {
 			card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());

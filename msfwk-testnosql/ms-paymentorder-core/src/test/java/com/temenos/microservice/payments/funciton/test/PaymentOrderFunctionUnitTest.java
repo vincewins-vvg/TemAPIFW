@@ -42,6 +42,7 @@ import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
 import com.temenos.microservice.paymentorder.view.PaymentOrders;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
+import com.temenos.microservice.paymentorder.view.EnumCurrency;
 
 public class PaymentOrderFunctionUnitTest {
 
@@ -80,7 +81,7 @@ public class PaymentOrderFunctionUnitTest {
         exchangeRates.add(exchangeRate1);
         exchangeRates.add(exchangeRate2);
 		paymentOrder.setAmount(new BigDecimal("100"));
-		paymentOrder.setCurrency("USD");
+		paymentOrder.setCurrency(EnumCurrency.USD);
 		paymentOrder.setExpires(Long.valueOf("1"));
 		paymentOrder.setFromAccount("70010");
 		paymentOrder.setToAccount("70012");

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" Version="1.0" PolicySetId="ADMIN" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit">
+   <Description />
+   <Target>
+      <AnyOf>
+         <AllOf>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ADMIN</AttributeValue>
+               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:roleId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" MustBePresent="true" />
+            </Match>
+         </AllOf>
+      </AnyOf>
+   </Target>
+   <Policy PolicyId="permit-postPaymentOrders" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CreateNewPaymentOrder</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-for-amount-less-than-x" Effect="Permit">
+         <Description>Permit when amount less than the specified value</Description>
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+               <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only">
+                  <AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" AttributeId="urn:oasis:names:tc:xacml:1.0:resource:amount" DataType="http://www.w3.org/2001/XMLSchema#integer" MustBePresent="true" />
+               </Apply>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">500</AttributeValue>
+            </Apply>
+         </Condition>
+      </Rule>
+      <Rule RuleId="deny-otherwise" Effect="Deny" />
+   </Policy>
+   <Policy PolicyId="permit-getPaymentOrder" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetPaymentOrder</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-getPaymentOrder" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   <Policy PolicyId="permit-putPaymentOrders" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">UpdatePaymentOrder</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-putPaymentOrders" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   <Policy PolicyId="permit-getPaymentOrderCurrency" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetPaymentOrderCurrency</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-getPaymentOrderCurrency" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   <Policy PolicyId="permit-invokePaymentOrder" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">invokePaymentState</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-invokePaymentOrder" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   <Policy PolicyId="permit-getPaymentOrders" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetPaymentOrders</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-allowed-accounts" Effect="Permit">
+        <Description>Permit when at least one allowed accounts exist</Description>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PaymentOrder</AttributeValue>
+						<AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" AttributeId="urn:oasis:names:tc:xacml:1.0:resource:EntityName" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+         <ObligationExpressions>
+            <ObligationExpression ObligationId="filter-accounts" FulfillOn="Permit">
+               <AttributeAssignmentExpression AttributeId="urn:oasis:names:tc:xacml:1.0:action:Operation" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" Issuer="issuer">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_equal</AttributeValue>
+               </AttributeAssignmentExpression>
+               <AttributeAssignmentExpression AttributeId="paymentReference" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Issuer="issuer">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PayRef</AttributeValue>
+               </AttributeAssignmentExpression>
+            </ObligationExpression>
+         </ObligationExpressions>
+      </Rule>
+	  <Rule RuleId="permit-getPaymentOrders" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+
+</PolicySet>

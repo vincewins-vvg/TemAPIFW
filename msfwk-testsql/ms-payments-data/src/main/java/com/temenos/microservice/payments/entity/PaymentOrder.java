@@ -13,6 +13,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -43,7 +44,7 @@ public class PaymentOrder implements ExtendableEntity {
 	private String currency;
 
 	private String status;
-
+		
 	@OneToOne(cascade = CascadeType.ALL)
 	private PaymentMethod paymentMethod;
 
@@ -75,6 +76,10 @@ public class PaymentOrder implements ExtendableEntity {
 	@Column(name = "value")
 	@CollectionTable(name = "PaymentOrder_extension", joinColumns = @JoinColumn(name = "PaymentOrder_paymentOrderId"))
 	Map<String, String> extensionData = new HashMap<String, String>();
+	
+	@Lob
+	@Column	
+	private String fileContent;
 
 	public String getPaymentOrderId() {
 		return paymentOrderId;
@@ -164,6 +169,14 @@ public class PaymentOrder implements ExtendableEntity {
 	@Override
 	public void setExtensionData(Map<String, String> extensionData) {
 		this.extensionData = extensionData;
+	}
+	
+	public String getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(String fileContent) {
+		this.fileContent = fileContent;
 	}
 
 }
