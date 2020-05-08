@@ -211,7 +211,7 @@
                   <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">filter_equal</AttributeValue>
                </AttributeAssignmentExpression>
                <AttributeAssignmentExpression AttributeId="paymentReference" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Issuer="issuer">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PayRef2</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PayRef</AttributeValue>
                </AttributeAssignmentExpression>
             </ObligationExpression>
          </ObligationExpressions>
