@@ -21,6 +21,7 @@ public class GetPaymentOrdersITTest extends ITTest {
 
 	@Before
 	public void setUp() throws SQLException {
+		System.setProperty("temn.msf.security.authz.enabled", "false");
 		this.client = newWebClient();
 	}
 
