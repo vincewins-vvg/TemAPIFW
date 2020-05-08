@@ -58,7 +58,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
@@ -86,7 +86,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).header("roleId", "ADMIN").exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
