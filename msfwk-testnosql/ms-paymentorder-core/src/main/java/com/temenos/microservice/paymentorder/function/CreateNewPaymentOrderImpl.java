@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.text.ParseException;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
@@ -49,6 +50,16 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 	private PaymentStatus executePaymentOrder(Context ctx, PaymentOrder paymentOrder) throws FunctionException {
 		String paymentOrderId = ("PO~" + paymentOrder.getFromAccount() + "~" + paymentOrder.getToAccount() + "~"
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
+		if (paymentOrderId != null) {
+			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
+					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+			Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
+					.getByPartitionKey(paymentOrderId);
+			if (paymentOrderOpt.isPresent()) {
+				throw new InvalidInputException(
+						new FailureMessage("Records already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			}
+		}
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
 		// Business event raised from payment order microservice
 		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
@@ -91,14 +102,15 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
-		entity.setExtensionData((Map<String, String>)view.getExtensionData());
+		entity.setExtensionData((Map<String, String>) view.getExtensionData());
 		if (view.getFileContent() != null) {
 			entity.setFileContent(view.getFileContent());
 		}
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());
 			entity.getPaymentMethod().setName(view.getPaymentMethod().getName());
-			entity.getPaymentMethod().setExtensionData((Map<String, String>)view.getPaymentMethod().getExtensionData());
+			entity.getPaymentMethod()
+					.setExtensionData((Map<String, String>) view.getPaymentMethod().getExtensionData());
 			if (view.getPaymentMethod().getCard() != null) {
 				Card card = new Card();
 				card.setCardid(view.getPaymentMethod().getCard().getCardid());
@@ -110,7 +122,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		if (view.getExchangeRates() != null) {
 			for (ExchangeRate exchange : view.getExchangeRates()) {
 				exchangeRate = new com.temenos.microservice.paymentorder.entity.ExchangeRate();
-				exchangeRate.setId(exchange.getId());
+//				exchangeRate.setId(exchange.getId());
 				exchangeRate.setName(exchange.getName());
 				exchangeRate.setValue(exchange.getValue());
 				exchangeRates.add(exchangeRate);

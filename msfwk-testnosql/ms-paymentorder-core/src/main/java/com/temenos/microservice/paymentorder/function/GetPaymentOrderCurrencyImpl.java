@@ -27,20 +27,20 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 
 	@Override
 	public PaymentOrders invoke(Context ctx, GetPaymentOrderCurrencyInput input) throws FunctionException {
-		validateInput(input);
-		GetPaymentOrderCurrencyParams params = input.getParams().get();
-		validateParam(params);
-
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-
-		Criteria criteria = new Criteria();
-		Criterion<Object> criterion = new CriterionImpl("currency", input.getParams().get().getCurrency().get(0),
-				Operator.equal);
-		criteria.add(criterion);
-
-		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = paymentOrderDao
-				.getByIndexes(criteria);
+		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = null;
+		if (input.getParams().get() != null) {
+			GetPaymentOrderCurrencyParams params = input.getParams().get();
+			validateParam(params);
+			Criteria criteria = new Criteria();
+			Criterion<Object> criterion = new CriterionImpl("currency", input.getParams().get().getCurrency().get(0),
+					Operator.equal);
+			criteria.add(criterion);
+			entities = paymentOrderDao.getByIndexes(criteria);
+		} else {
+			entities = paymentOrderDao.get();
+		}
 
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
 		for (com.temenos.microservice.paymentorder.entity.PaymentOrder entity : entities) {
@@ -51,6 +51,7 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 			view.setToAccount(entity.getCreditAccount());
 			view.setFileContent(entity.getFileContent());
 			view.setPaymentDate(formatDate(entity.getPaymentDate()));
+			view.setExtensionData(entity.getExtensionData());
 
 			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
 			if (entity.getPaymentMethod() != null) {
@@ -75,6 +76,13 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
+				
+				com.temenos.microservice.paymentorder.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorder.view.PayeeDetails();
+				if (entity.getPayeeDetails() != null) {
+					payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
+					payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
+					view.setPayeeDetails(payeeDtls);
+				}
 			}
 			views.add(view);
 		}
@@ -85,9 +93,6 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 
 	private void validateParam(GetPaymentOrderCurrencyParams params) throws InvalidInputException {
 		List<String> currencyId = params.getCurrency();
-		if (currencyId == null || currencyId.isEmpty()) {
-			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
-		}
 		if (currencyId.size() != 1) {
 			throw new InvalidInputException(
 					new FailureMessage("Invalid CurrencyId param. Only one CurrencyId expected", "PAYM-PORD-A-2002"));
@@ -95,12 +100,6 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 		if (currencyId.get(0).isEmpty()) {
 			throw new InvalidInputException(
 					new FailureMessage("Invalid CurrencyId param. CurrencyId is empty", "PAYM-PORD-A-2003"));
-		}
-	}
-
-	private void validateInput(GetPaymentOrderCurrencyInput input) throws InvalidInputException {
-		if (!input.getParams().isPresent()) {
-			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
 		}
 	}
 
