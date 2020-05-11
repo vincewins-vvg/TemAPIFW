@@ -61,6 +61,6 @@ public class GetPaymentOrderITTest extends ITTest {
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 		assertTrue(getResponse.bodyToMono(String.class).block().contains(
-				"\"paymentStatus\":{\"paymentId\":\"PO~123~124~USD~100\",\"status\":\"INITIATED\",\"details\":\"PayDetails\""));
+				"\"extensionData\":{\"array_BusDayCentres\":[\"India\",\"Aus\"],\"paymentOrderProduct\":\"Temenos\",\"array_NonOspiType\":[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]}"));
 	}
 }

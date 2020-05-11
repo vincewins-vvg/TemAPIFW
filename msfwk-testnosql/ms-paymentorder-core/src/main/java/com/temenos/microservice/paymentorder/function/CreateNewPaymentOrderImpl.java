@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.text.ParseException;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
@@ -90,12 +91,14 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		entity.setPaymentDetails(view.getPaymentDetails());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
+		entity.setExtensionData((Map<String, String>)view.getExtensionData());
 		if (view.getFileContent() != null) {
 			entity.setFileContent(view.getFileContent());
 		}
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());
 			entity.getPaymentMethod().setName(view.getPaymentMethod().getName());
+			entity.getPaymentMethod().setExtensionData((Map<String, String>)view.getPaymentMethod().getExtensionData());
 			if (view.getPaymentMethod().getCard() != null) {
 				Card card = new Card();
 				card.setCardid(view.getPaymentMethod().getCard().getCardid());

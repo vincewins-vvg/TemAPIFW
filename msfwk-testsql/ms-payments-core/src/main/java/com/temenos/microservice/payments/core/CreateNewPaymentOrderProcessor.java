@@ -2,11 +2,15 @@ package com.temenos.microservice.payments.core;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.ParseException;
 
+import org.json.JSONArray;
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
@@ -76,6 +80,7 @@ public class CreateNewPaymentOrderProcessor {
 		entity.setCurrency(view.getCurrency().toString());
 		entity.setPaymentReference(view.getPaymentReference());
 		entity.setPaymentDetails(view.getPaymentDetails());
+		entity.setExtensionData((Map<String, String>) view.getExtensionData());
 		entity.setStatus("INITIATED");
 		entity.setPaymentMethod(method);
 

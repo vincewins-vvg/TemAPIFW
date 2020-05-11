@@ -140,6 +140,9 @@ public class ITTest {
 
 	public static void clearRecords(String paymentOrderId, String debitAccount) {
 		deleteAllRecords("ms_payment_order_ExchangeRate");
+		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "array_BusDayCentres");
+		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "paymentOrderProduct");
+		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "array_NonOspiType");
 		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", paymentOrderId, "debitAccount",
 				"eq", "string", debitAccount);
 		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",

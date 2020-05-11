@@ -76,6 +76,11 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		}
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			validateSQLExtensionData();
+		} else {
+			validateNoSQLExtensionData(entry);
+		}
 
 	}
 
@@ -94,5 +99,52 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
 	}
+	
+	public void validateSQLExtensionData() {
+		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_BusDayCentres");
+		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "paymentOrderProduct");
+		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_NonOspiType");
+		List<Attribute> extensioneEntry = insertedExtensionRecord.get(1);
+		List<Attribute> arrayExtensionEntry = insertedArrayExtensionRecord.get(1);
+		List<Attribute> multivalueArrayExtensionEntry = insertedAssoMultiValueArrayExtensionRecord.get(1);
+		assertNotNull(extensioneEntry);
+		assertNotNull(arrayExtensionEntry);
+		assertNotNull(multivalueArrayExtensionEntry);
+		assertEquals(arrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(arrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(arrayExtensionEntry.get(1).getName(), "value");
+		assertEquals(arrayExtensionEntry.get(1).getValue(), "[\"India\",\"Aus\"]");
+		assertEquals(arrayExtensionEntry.get(2).getName(), "name");
+		assertEquals(arrayExtensionEntry.get(2).getValue(), "array_BusDayCentres");
+		assertEquals(extensioneEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(extensioneEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(extensioneEntry.get(1).getName(), "value");
+		assertEquals(extensioneEntry.get(1).getValue(), "Temenos");
+		assertEquals(extensioneEntry.get(2).getName(), "name");
+		assertEquals(extensioneEntry.get(2).getValue(), "paymentOrderProduct");
+		assertEquals(multivalueArrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getName(), "value");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(), "[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
+		assertEquals(multivalueArrayExtensionEntry.get(2).getName(), "name");
+		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
+	}
+	
+	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
+		String extensionName = "",extensionValue="";
+		for (Attribute attribute : listEntry) {
+			if (attribute.getName().equalsIgnoreCase("extensionData")) {
+				extensionName = attribute.getName().toLowerCase();
+				extensionValue = attribute.getValue().toString();
+				break;
+			}
+		}
+		assertEquals(extensionName, "extensiondata");
+		assertEquals(extensionValue, "{array_BusDayCentres=[\"India\",\"Aus\"], array_NonOspiType=[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}], paymentOrderProduct=Temenos}");
+	}
+
 
 }

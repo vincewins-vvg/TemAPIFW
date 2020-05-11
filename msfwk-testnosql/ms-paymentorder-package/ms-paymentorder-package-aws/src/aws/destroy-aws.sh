@@ -44,5 +44,6 @@ aws lambda delete-function --function-name payment-inbox-ingester
 aws lambda delete-function --function-name payment-api-handler
 aws lambda delete-function --function-name inbox-handler
 aws lambda delete-function --function-name outbox-handler
-
+aws lambda delete-function --function-name get-payment-api-handler
+aws lambda delete-function --function-name paymentorder-ingester
 sleep 60

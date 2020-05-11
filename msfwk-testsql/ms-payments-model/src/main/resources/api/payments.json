@@ -240,6 +240,8 @@ components:
         payeeDetails:
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
+        extensionData:
+          type: object
         descriptions:
           type: array
           items:

@@ -3,6 +3,7 @@ package com.temenos.microservice.paymentorder.function;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -56,7 +57,8 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			order.setFromAccount(paymentOrder.getDebitAccount());
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
-			order.setPaymentReference(paymentOrder.getPaymentReference());			
+			order.setPaymentReference(paymentOrder.getPaymentReference());	
+			order.setExtensionData(paymentOrder.getExtensionData());
 			order.setFileContent(paymentOrder.getFileContent());						
 			order.setPaymentDate(formatDate(paymentOrder.getPaymentDate()));
 						
@@ -69,6 +71,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			com.temenos.microservice.paymentorder.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.view.PaymentMethod();
 			paymentMethod.setId(paymentOrder.getPaymentMethod().getId());
 			paymentMethod.setName(paymentOrder.getPaymentMethod().getName());
+			paymentMethod.setExtensionData((Map<String,String>)paymentOrder.getPaymentMethod().getExtensionData());
 			paymentMethod.setCard(card);
 			order.setPaymentMethod(paymentMethod);
 

@@ -59,7 +59,7 @@ public class GetPaymentOrderProcessor {
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
-
+			order.setExtensionData(paymentOrder.getExtensionData());
 			if (paymentOrder.getFileContent() != null) {
 				ByteBuffer byteBuffer;
 				try {

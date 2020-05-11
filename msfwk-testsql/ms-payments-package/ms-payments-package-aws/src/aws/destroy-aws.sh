@@ -35,6 +35,7 @@ aws lambda delete-function --function-name payment-sql-inbox-ingester
 aws lambda delete-function --function-name inbox-sql-handler
 aws lambda delete-function --function-name outbox-sql-handler
 aws lambda delete-function --function-name payment-sql-configavro-ingester
+aws lambda delete-function --function-name payment-sql-get
 
 
 # Delete payments API functions
