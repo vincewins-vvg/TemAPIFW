@@ -228,6 +228,8 @@ components:
         fileContent:
           type: string
           format: binary
+        extensionData:
+          type: object  	
         paymentDate:
           type: string
           format: date
