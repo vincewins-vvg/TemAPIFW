@@ -4,11 +4,11 @@
 	"emittedTime": 157,
 	"companyTable": null,
 	"entityId": {
-		"string": "PI19107122J61FC9"
+		"string": "PI19107122J61FC99"
 	},
 	"processingTime": 124,
 	"application": {
-		"string": "PI19107122J61FC9"
+		"string": "PI19107122J61FC99"
 	},
 	"dataEventSize": 1,
 	"payload": {
@@ -81,7 +81,9 @@
 		"RequestedCurrency": null,
 		"InstructionCodeText": null,
 		"BeneficiaryOtId": null,
-		"OrderingReference": null,
+		"OrderingReference": {
+			"string": "PayRef"
+		},
 		"RecordStatus": null,
 		"OrderingOtId": null,
 		"AcFundsAuthid": null,
@@ -201,7 +203,9 @@
 		"StatusReasonCode": {
 			"string": "MS03"
 		},
-		"PaymentSystemStatus": null,
+		"PaymentSystemStatus": {
+			"string": "NEW"
+		},
 		"InitialProduct": null,
 		"BeneficiarySchIssur": null,
 		"EndToEndreference": {
@@ -351,7 +355,9 @@
 		},
 		"UltimateCreditorBrcountry": null,
 		"BeneficiarySchmeCde": null,
-		"TotalDebitAmount": null,
+		"TotalDebitAmount": {
+			"string": "10000"
+		},
 		"AcctWithBankcountry": null,
 		"StockSeriesId": null,
 		"ARRAY_BenPostSwiftaddr": [],
@@ -383,7 +389,9 @@
 		"IntermedBankPostaladdrtype": null,
 		"UltimateDebtorCountry": null,
 		"ManualPaymentStatus": null,
-		"CreditAccount": null,
+		"CreditAccount":  {
+			"string": "898789"
+		},
 		"BenBankClearingcode": null,
 		"ARRAY_Signatory": [],
 		"PaymentCategorypurpPrty": null,
@@ -426,7 +434,9 @@
 		"InitOtherIdtype": null,
 		"TapEventId": null,
 		"LocalInstrCode": null,
-		"PaymentExecutionDate": null,
+		"PaymentExecutionDate": {
+			"string": "20200502"
+		},
 		"AcctWithBankpostaddrtype": null,
 		"UltimateCreditorOtid": null,
 		"CustomerConsent": null,

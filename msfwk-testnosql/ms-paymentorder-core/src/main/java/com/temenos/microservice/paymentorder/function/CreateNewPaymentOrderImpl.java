@@ -80,6 +80,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());
 			entity.getPaymentMethod().setName(view.getPaymentMethod().getName());
+			entity.getPaymentMethod().setExtensionData((Map<String, String>) view.getPaymentMethod().getExtensionData());
 			if (view.getPaymentMethod().getCard() != null) {
 				Card card = new Card();
 				card.setCardid(view.getPaymentMethod().getCard().getCardid());

@@ -7,17 +7,16 @@
 			"dataEventId": "paymentMethod.card.extensionData.eventId",
 			"processingTime": "paymentMethod.card.extensionData.application",
 			"payload": {
-				"OrderingCompany": "extensionData.orderingCompany",
-				"OrderingCustName": "extensionData.Id",
-				"ARRAY_Inputter": {
+				"OrderingCompany": "paymentMethod.extensionData.orderingCompany",
+				"OrderingCustName": "paymentMethod.extensionData.Id",
+				"ARRAY_OrderingPostAddrline": {
 					"*": {
-						"Inputter": "exchangeRates.[&1].id",
-						"#id,name": "exchangeRates.[&1].arrayKey",
-						"AUTHOR": "exchangeRates.[&1].name",
-						"ExtensionData_ARRAY": {
-							"key": "exchangeRates.[&2].extensionData.key",
-							"value": "exchangeRates.[&2].extensionData.name"
-						}
+						"OrderingPostAddrline": "paymentMethod.extensionData.numbers"
+					}
+				},
+				"ARRAY_StateHist": {
+					"*": {
+						"$": "extensionData.test.[&1].id"
 					}
 				}
 			}
