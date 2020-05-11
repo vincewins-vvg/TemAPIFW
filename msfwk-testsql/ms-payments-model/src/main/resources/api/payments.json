@@ -127,6 +127,34 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/orders/currency/{currency}:
+    get:
+      summary: Get a payment order currency
+      operationId: GetPaymentOrderCurrency
+      tags:
+        - Payments
+      parameters:
+      - name: currency
+        in: path
+        description: Currency ID
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"                 
 
 components:
   schemas:
@@ -172,7 +200,7 @@ components:
         - USD
         - INR
         
-    PaymentOrder:
+    TransactionDetails:
       properties:
         fromAccount:
           type: string
@@ -183,6 +211,11 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
+      
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
         currency:
           allOf:
           - $ref: "#/components/schemas/EnumCurrency"
@@ -191,6 +224,12 @@ components:
         expires:
           type: integer
           format: int64
+        fileContent:
+          type: string
+          format: binary
+        paymentDate:
+          type: string
+          format: date  
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

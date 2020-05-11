@@ -1,7 +1,6 @@
 package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -34,29 +33,30 @@ public class GetPaymentOrderITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
-			deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100","name", "eq", "string", "array_BusDayCentres");
-			deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100","name", "eq", "string", "paymentOrderProduct");
-			deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100","name", "eq", "string", "array_NonOspiType");
-		} 
-		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
-				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
-				"PayRef");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")))  {
+			clearRecords("PO~123~124~USD~100", "123");
+		} else {
+			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
+					"debitAccount", "eq", "string", "123");
+			deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+					"PayRef");
+		}
 		daoFacade.closeConnection();
 	}
 
 	@Test
 	public void testGetPaymentOrderFunction() {
 		ClientResponse createResponse, getResponse;
+
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+
 		do {
 			getResponse = this.client.get()
-					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE"))
+					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("roleId", "ADMIN")
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));

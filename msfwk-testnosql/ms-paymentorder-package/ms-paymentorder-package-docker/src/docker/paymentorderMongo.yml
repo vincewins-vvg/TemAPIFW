@@ -80,12 +80,12 @@ services:
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
-      temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
@@ -94,6 +94,8 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

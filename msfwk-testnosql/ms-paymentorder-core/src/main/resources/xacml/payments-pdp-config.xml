@@ -3,6 +3,9 @@
 	version="7.1">
 	<policyProvider id="rootPolicyProvider"
 		xsi:type="StaticPolicyProvider">
-		<policyLocation>classpath:xacml/payments-policy.xml</policyLocation>
+		<policyLocation>classpath:xacml/root-policy.xml</policyLocation>
+		<policyLocation>classpath:xacml/payments-admin-policy.xml</policyLocation>
+		<policyLocation>classpath:xacml/payments-user-policy.xml</policyLocation>
 	</policyProvider>
+	<rootPolicyRef policySet="true">default</rootPolicyRef>	
 </pdp>
