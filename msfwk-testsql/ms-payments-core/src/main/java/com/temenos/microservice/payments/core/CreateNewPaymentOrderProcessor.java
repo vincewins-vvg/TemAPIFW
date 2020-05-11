@@ -38,12 +38,9 @@ public class CreateNewPaymentOrderProcessor {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
-
 		PaymentOrderFunctionHelper.validateInput(input);
-
 		PaymentOrder paymentOrder = input.getBody().get();
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
-
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		return paymentStatus;
 	}
@@ -51,7 +48,15 @@ public class CreateNewPaymentOrderProcessor {
 	private PaymentStatus executePaymentOrder(Context ctx, PaymentOrder paymentOrder) throws FunctionException {
 		String paymentOrderId = ("PO~" + paymentOrder.getFromAccount() + "~" + paymentOrder.getToAccount() + "~"
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
-
+		if (paymentOrderId != null) {
+			com.temenos.microservice.payments.entity.PaymentOrder paymentsOrder = (com.temenos.microservice.payments.entity.PaymentOrder) PaymentOrderDao
+					.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
+					.findById(paymentOrderId, com.temenos.microservice.payments.entity.PaymentOrder.class);
+			if (paymentsOrder != null && paymentsOrder.getPaymentOrderId() != null) {
+				throw new InvalidInputException(
+						new FailureMessage("Record already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			}
+		}
 		com.temenos.microservice.payments.entity.PaymentOrder entity = createEntity(ctx, paymentOrderId, paymentOrder);
 		// return readStatus(paymentOrder.getFromAccount(), paymentOrderId);
 		return readStatus(entity);
@@ -115,7 +120,6 @@ public class CreateNewPaymentOrderProcessor {
 			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
 			for (com.temenos.microservice.payments.view.ExchangeRate exchangeRt : view.getExchangeRates()) {
 				ExchangeRate exchangeRate = new ExchangeRate();
-				exchangeRate.setId(exchangeRt.getId());
 				exchangeRate.setName(exchangeRt.getName());
 				exchangeRate.setValue(exchangeRt.getValue());
 				exchangeRates.add(exchangeRate);

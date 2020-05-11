@@ -124,17 +124,40 @@ public class PaymentOrderFunctionUnitTest {
 	}
 
 	@Test
-	public void testUpdatePaymentOrders() {
-		UpdatePaymentOrder updatePaymentOrder = new UpdatePaymentOrderImpl();
-		UpdatePaymentOrderParams orderParams = new UpdatePaymentOrderParams();
-		orderParams.setPaymentId(Arrays.asList("70010"));
-		PaymentStatus paymentStatus = new PaymentStatus();
-		paymentStatus.setDebitAccount("70010");
-		paymentStatus.setDetails("Test");
-		paymentStatus.setPaymentId("12355");
-		paymentStatus.setStatus("test");
-		UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
+	public void testUpdatePaymentOrders() throws Exception {
 		try {
+			ReferenceDataIdEntity idEntity = new ReferenceDataIdEntity("paymentref", "test");
+			ReferenceDataEntity refEntity = new ReferenceDataEntity();
+			refEntity.setReferenceDataIdEntity(idEntity);
+			refEntity.setDescription("description");
+			DaoFactory.getDao(ReferenceDataEntity.class).saveEntity(refEntity);
+
+			CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
+			PaymentOrder paymentOrder = new PaymentOrder();
+			paymentOrder.setAmount(new BigDecimal("100"));
+			paymentOrder.setCurrency(EnumCurrency.USD);
+			paymentOrder.setExpires(Long.valueOf("1"));
+			paymentOrder.setFromAccount("70011");
+			paymentOrder.setToAccount("70012");
+			paymentOrder.setPaymentReference("test");
+			String fileContent = "R2FuZXNhbW9vcnRoaQ==";
+			ByteBuffer byteBuffer = encoder.encode(CharBuffer.wrap(fileContent));
+			paymentOrder.setFileContent(byteBuffer);
+
+			CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
+			PaymentStatus PymtStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()),
+					createNewPaymentOrderInput);
+
+			UpdatePaymentOrder updatePaymentOrder = new UpdatePaymentOrderImpl();
+			UpdatePaymentOrderParams orderParams = new UpdatePaymentOrderParams();
+//			orderParams.setPaymentId(Arrays.asList("70010"));
+			orderParams.setPaymentId(Arrays.asList(PymtStatus.getPaymentId()));
+			PaymentStatus paymentStatus = new PaymentStatus();
+			paymentStatus.setDebitAccount("70011");
+			paymentStatus.setDetails("Test");
+//			paymentStatus.setPaymentId("12355");
+			paymentStatus.setStatus("test");
+			UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
 			PaymentStatus status = updatePaymentOrder.invoke(null, paymentOrderInput);
 			Assert.assertNotNull(status);
 		} catch (FunctionException e) {

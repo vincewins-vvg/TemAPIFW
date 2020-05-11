@@ -93,7 +93,12 @@ public class GetPaymentOrderProcessor {
 				}
 				order.setExchangeRates(exchangeRates);
 			}
-
+			com.temenos.microservice.payments.view.PayeeDetails payeeDtls = new com.temenos.microservice.payments.view.PayeeDetails();
+			if (paymentOrder.getPayeeDetails() != null) {
+				payeeDtls.setPayeeName(paymentOrder.getPayeeDetails().getPayeeName());
+				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
+				order.setPayeeDetails(payeeDtls);
+			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;
