@@ -86,6 +86,7 @@ public class GetPaymentOrderCurrencyProcessor {
 				paymentMethod.setName(entity.getPaymentMethod().getName());
 				paymentMethod.setCard(card);
 				view.setPaymentMethod(paymentMethod);
+				view.setExtensionData(entity.getExtensionData());
 
 				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
 				for (com.temenos.microservice.payments.entity.ExchangeRate erEntity : entity.getExchangeRates()) {

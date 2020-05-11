@@ -65,6 +65,7 @@ public class GetPaymentOrdersProcessor {
 				}
 			}
 			view.setPaymentDate(formatDate(entity.getPaymentDate()));
+			view.setExtensionData(entity.getExtensionData());
 
 			com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
 			if (entity.getPaymentMethod() != null) {
