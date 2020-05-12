@@ -24,7 +24,21 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 	public PaymentOrders invoke(Context ctx, GetPaymentOrdersInput input) throws FunctionException {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = paymentOrderDao.get();
+		
+		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = null;
+        
+        if(input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null){ 
+        	int[] pageDetails = new int[2];
+        	if(input.getParams().get().getPageNumber() != null)
+    	    	pageDetails[0] = input.getParams().get().getPageNumber().get(0);
+        	if(input.getParams().get().getPageSize() != null)
+    	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
+            entities = paymentOrderDao.get(pageDetails);
+        }
+        else{
+      	    entities = paymentOrderDao.get();
+        }
+		
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
 		for (com.temenos.microservice.paymentorder.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();

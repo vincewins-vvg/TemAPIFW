@@ -33,6 +33,7 @@ import com.temenos.microservice.payments.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
+import com.temenos.microservice.payments.view.GetPaymentOrdersParams;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
 import com.temenos.microservice.payments.view.PaymentOrders;
@@ -100,11 +101,13 @@ public class PaymentOrderFunctionUnitTest {
 		}
 	}
 
+
 	@Test
 	public void testGetPaymentOrders() {
 		MSTransaction transaction = null;
 		GetPaymentOrders getPaymentOrders = new GetPaymentOrdersImpl();
-		GetPaymentOrdersInput getPaymentOrdersInput = new GetPaymentOrdersInput();
+		GetPaymentOrdersParams params = new GetPaymentOrdersParams();
+		GetPaymentOrdersInput getPaymentOrdersInput = new GetPaymentOrdersInput(params);
 		try {
 			transaction = beginTransaction();
 			PaymentOrders paymentOrders = getPaymentOrders.invoke(null, getPaymentOrdersInput);

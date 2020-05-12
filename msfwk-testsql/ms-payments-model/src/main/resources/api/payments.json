@@ -32,6 +32,22 @@ paths:
       operationId: GetPaymentOrders
       tags:
         - Payments
+      parameters:
+      - name: pageNumber
+        in: query
+        description: PageNumber
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        description: PageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+          
       responses:
         '200':
           description: Get payment order
