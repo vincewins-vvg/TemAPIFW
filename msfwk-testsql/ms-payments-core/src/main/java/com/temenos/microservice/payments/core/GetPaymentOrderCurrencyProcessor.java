@@ -34,6 +34,7 @@ public class GetPaymentOrderCurrencyProcessor {
 	public static CharsetEncoder encoder = charset.newEncoder();
 
 	public PaymentOrders invoke(Context ctx, GetPaymentOrderCurrencyInput input) throws FunctionException {
+		List<com.temenos.microservice.payments.entity.PaymentOrder> entities = null;
 		CriteriaBuilder criteriaBuilder = PaymentOrderDao
 				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().getEntityManager()
 				.getCriteriaBuilder();
@@ -42,15 +43,18 @@ public class GetPaymentOrderCurrencyProcessor {
 		Root<com.temenos.microservice.payments.entity.PaymentOrder> root = criteriaQuery
 				.from(com.temenos.microservice.payments.entity.PaymentOrder.class);
 		criteriaQuery.select(root);
-
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		predicates.add(criteriaBuilder
-				.and(criteriaBuilder.equal(root.get("currency"), input.getParams().get().getCurrency().get(0))));
-
-		List<com.temenos.microservice.payments.entity.PaymentOrder> entities = PaymentOrderDao
-				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
-						com.temenos.microservice.payments.entity.PaymentOrder.class);
+		if (input.getParams().get().getCurrency().get(0) != null) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(criteriaBuilder
+					.and(criteriaBuilder.equal(root.get("currency"), input.getParams().get().getCurrency().get(0))));
+			entities = PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
+							com.temenos.microservice.payments.entity.PaymentOrder.class);
+		} else {
+			entities = PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
+							com.temenos.microservice.payments.entity.PaymentOrder.class);
+		}
 
 		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
 		for (com.temenos.microservice.payments.entity.PaymentOrder entity : entities) {
@@ -82,6 +86,7 @@ public class GetPaymentOrderCurrencyProcessor {
 				paymentMethod.setName(entity.getPaymentMethod().getName());
 				paymentMethod.setCard(card);
 				view.setPaymentMethod(paymentMethod);
+				view.setExtensionData(entity.getExtensionData());
 
 				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
 				for (com.temenos.microservice.payments.entity.ExchangeRate erEntity : entity.getExchangeRates()) {
@@ -92,6 +97,12 @@ public class GetPaymentOrderCurrencyProcessor {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
+			}
+			com.temenos.microservice.payments.view.PayeeDetails payeeDtls = new com.temenos.microservice.payments.view.PayeeDetails();
+			if (entity.getPayeeDetails() != null) {
+				payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
+				payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
+				view.setPayeeDetails(payeeDtls);
 			}
 			views.add(view);
 		}

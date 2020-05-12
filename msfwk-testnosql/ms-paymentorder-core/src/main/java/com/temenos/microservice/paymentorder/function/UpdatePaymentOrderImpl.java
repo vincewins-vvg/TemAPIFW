@@ -3,6 +3,8 @@ package com.temenos.microservice.paymentorder.function;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.ExchangeRate;
 import com.temenos.microservice.paymentorder.entity.PaymentMethod;
@@ -11,7 +13,7 @@ import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrder;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
-
+import com.temenos.microservice.framework.core.function.FailureMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,16 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 		Optional<PaymentOrder> paymentOrderOpt = paymentOrderDao.getByPartitionKeyAndSortKey(paymentOrderId,
 				debitAccount);
 		if (paymentOrderOpt.isPresent()) {
+			if (paymentOrderOpt.get().getPaymentOrderId() != null && paymentStatus.getPaymentId() != null
+					&& !paymentOrderOpt.get().getPaymentOrderId().equalsIgnoreCase(paymentStatus.getPaymentId())) {
+				throw new InvalidInputException(new FailureMessage("Invalid Payment order Id Entered in Json Body",
+						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			}
+			if (paymentOrderOpt.get().getDebitAccount() != null && debitAccount != null
+					&& !paymentOrderOpt.get().getDebitAccount().equalsIgnoreCase(debitAccount)) {
+				throw new InvalidInputException(new FailureMessage("Invalid Debit Account Entered",
+						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			}
 			PaymentOrder paymentOrder = paymentOrderOpt.get();
 			paymentOrder.setStatus(paymentStatus.getStatus());
 			if (paymentStatus.getPaymentMethod() != null) {
@@ -49,7 +61,9 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				for (com.temenos.microservice.paymentorder.view.ExchangeRate erView : paymentStatus
 						.getExchangeRates()) {
 					ExchangeRate exchangeRate = new ExchangeRate();
-					exchangeRate.setId(erView.getId());
+					if (erView.getId() != null) {
+						exchangeRate.setId(erView.getId());
+					}
 					exchangeRate.setName(erView.getName());
 					exchangeRate.setValue(erView.getValue());
 					exchangeRates.add(exchangeRate);
@@ -57,6 +71,9 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				paymentOrder.setExchangeRates(exchangeRates);
 			}
 			paymentOrderDao.saveEntity(paymentOrder);
+		} else {
+			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
+					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}

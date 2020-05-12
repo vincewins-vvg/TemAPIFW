@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
@@ -16,6 +17,7 @@ import javax.persistence.MapKeyColumn;
 public class ExchangeRate implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
+	@GeneratedValue
 	private long id;
 
 	private String name;

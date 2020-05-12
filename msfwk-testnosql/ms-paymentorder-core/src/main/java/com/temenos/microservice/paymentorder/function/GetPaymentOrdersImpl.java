@@ -34,6 +34,8 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 			view.setToAccount(entity.getCreditAccount());
 			view.setFileContent(entity.getFileContent());
 			view.setPaymentDate(formatDate(entity.getPaymentDate()));
+			view.setPaymentDetails(entity.getPaymentDetails());
+			view.setExtensionData(entity.getExtensionData());
 
 			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
 			if (entity.getPaymentMethod() != null) {
@@ -58,6 +60,13 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
+				
+				com.temenos.microservice.paymentorder.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorder.view.PayeeDetails();
+				if (entity.getPayeeDetails() != null) {
+					payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
+					payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
+					view.setPayeeDetails(payeeDtls);
+				}
 			}
 			views.add(view);
 		}

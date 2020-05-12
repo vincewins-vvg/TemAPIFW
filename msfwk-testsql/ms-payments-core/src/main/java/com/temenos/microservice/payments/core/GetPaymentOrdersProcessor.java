@@ -65,6 +65,7 @@ public class GetPaymentOrdersProcessor {
 				}
 			}
 			view.setPaymentDate(formatDate(entity.getPaymentDate()));
+			view.setExtensionData(entity.getExtensionData());
 
 			com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
 			if (entity.getPaymentMethod() != null) {
@@ -89,6 +90,12 @@ public class GetPaymentOrdersProcessor {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
+			}
+			com.temenos.microservice.payments.view.PayeeDetails payeeDtls = new com.temenos.microservice.payments.view.PayeeDetails();
+			if (entity.getPayeeDetails() != null) {
+				payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
+				payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
+				view.setPayeeDetails(payeeDtls);
 			}
 			views.add(view);
 		}

@@ -1,6 +1,5 @@
 package com.temenos.microservice.payments.funciton.test;
 
-
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -46,16 +45,15 @@ import com.temenos.microservice.paymentorder.view.EnumCurrency;
 
 public class PaymentOrderFunctionUnitTest {
 
-	
 	@Before
 	public void setup() {
-		System.getProperties().setProperty("class.outbox.dao", "com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
-		System.getProperties().setProperty("class.inbox.dao", "com.temenos.microservice.framework.core.inbox.InboxDaoImpl");
+		System.getProperties().setProperty("class.outbox.dao",
+				"com.temenos.microservice.framework.core.outbox.OutboxDaoImpl");
+		System.getProperties().setProperty("class.inbox.dao",
+				"com.temenos.microservice.framework.core.inbox.InboxDaoImpl");
 		System.getProperties().setProperty("class.package.name", "com.temenos.microservice.payments.function");
-
 	}
 
-	
 	@Test
 	public void testCreateNewPaymentOrder() {
 		CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
@@ -66,37 +64,37 @@ public class PaymentOrderFunctionUnitTest {
 		card.setCardlimit(BigDecimal.valueOf(5000));
 		PaymentMethod method = new PaymentMethod();
 		method.setId(1L);
-        method.setName("Cash");
-        method.setCard(card);
-        paymentOrder.setPaymentMethod(method);
-        List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-        ExchangeRate exchangeRate1 = new ExchangeRate();
-        exchangeRate1.setId(1L);
+		method.setName("Cash");
+		method.setCard(card);
+		paymentOrder.setPaymentMethod(method);
+		List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
+		ExchangeRate exchangeRate1 = new ExchangeRate();
+		exchangeRate1.setId(1L);
 		exchangeRate1.setName("USDINR");
 		exchangeRate1.setValue(BigDecimal.valueOf(65));
-        ExchangeRate exchangeRate2 = new ExchangeRate();
-        exchangeRate2.setId(2L);
+		ExchangeRate exchangeRate2 = new ExchangeRate();
+		exchangeRate2.setId(2L);
 		exchangeRate2.setName("EURINR");
 		exchangeRate2.setValue(BigDecimal.valueOf(80));
-        exchangeRates.add(exchangeRate1);
-        exchangeRates.add(exchangeRate2);
+		exchangeRates.add(exchangeRate1);
+		exchangeRates.add(exchangeRate2);
 		paymentOrder.setAmount(new BigDecimal("100"));
 		paymentOrder.setCurrency(EnumCurrency.USD);
 		paymentOrder.setExpires(Long.valueOf("1"));
 		paymentOrder.setFromAccount("70010");
 		paymentOrder.setToAccount("70012");
-		String fileContent ="R2FuZXNhbW9vcnRoaQ==";
+		String fileContent = "R2FuZXNhbW9vcnRoaQ==";
 		paymentOrder.setFileContent(ByteBuffer.wrap(fileContent.getBytes()));
 		CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
 		try {
 			CamelContext ctx = new DefaultCamelContext();
-	        Exchange exchange = new DefaultExchange(ctx);
-			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer("CreateNewPaymentOrder", exchange);
+			Exchange exchange = new DefaultExchange(ctx);
+			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer(
+					"CreateNewPaymentOrder", exchange);
 			HttpRequest<String> httpRequest = httpRequestTransformer.transform();
 			HttpRequestContext context = FunctionInputBuilder.buildContext(httpRequest);
 			PaymentStatus paymentStatus = createNewPaymentOrder.invoke(context, createNewPaymentOrderInput);
 			Assert.assertNotNull(paymentStatus);
-
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -116,7 +114,7 @@ public class PaymentOrderFunctionUnitTest {
 		}
 	}
 
-	//@Test
+	// @Test
 	public void testGetPaymentOrders() {
 		GetPaymentOrders getPaymentOrders = new GetPaymentOrdersImpl();
 		GetPaymentOrdersInput getPaymentOrdersInput = new GetPaymentOrdersInput();
@@ -131,17 +129,53 @@ public class PaymentOrderFunctionUnitTest {
 
 	@Test
 	public void testUpdatePaymentOrders() {
-		UpdatePaymentOrder updatePaymentOrder = new UpdatePaymentOrderImpl();
-		UpdatePaymentOrderParams orderParams = new UpdatePaymentOrderParams();
-		orderParams.setPaymentId(Arrays.asList("70010"));
-		PaymentStatus paymentStatus = new PaymentStatus();
-		paymentStatus.setDebitAccount("70010");
-		paymentStatus.setDetails("Test");
-		paymentStatus.setPaymentId("12355");
-		paymentStatus.setStatus("test");
-		UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(
-				orderParams, paymentStatus);
 		try {
+			CreateNewPaymentOrder createNewPaymentOrder = new CreateNewPaymentOrderImpl();
+			PaymentOrder paymentOrder = new PaymentOrder();
+			Card card = new Card();
+			card.setCardid(101L);
+			card.setCardname("DEBIT");
+			card.setCardlimit(BigDecimal.valueOf(5000));
+			PaymentMethod method = new PaymentMethod();
+			method.setId(1L);
+			method.setName("Cash");
+			method.setCard(card);
+			paymentOrder.setPaymentMethod(method);
+			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
+			ExchangeRate exchangeRate1 = new ExchangeRate();
+			exchangeRate1.setId(1L);
+			exchangeRate1.setName("USDINR");
+			exchangeRate1.setValue(BigDecimal.valueOf(65));
+			ExchangeRate exchangeRate2 = new ExchangeRate();
+			exchangeRate2.setId(2L);
+			exchangeRate2.setName("EURINR");
+			exchangeRate2.setValue(BigDecimal.valueOf(80));
+			exchangeRates.add(exchangeRate1);
+			exchangeRates.add(exchangeRate2);
+			paymentOrder.setAmount(new BigDecimal("100"));
+			paymentOrder.setCurrency(EnumCurrency.USD);
+			paymentOrder.setExpires(Long.valueOf("1"));
+			paymentOrder.setFromAccount("70011");
+			paymentOrder.setToAccount("70012");
+			String fileContent = "R2FuZXNhbW9vcnRoaQ==";
+			paymentOrder.setFileContent(ByteBuffer.wrap(fileContent.getBytes()));
+			CreateNewPaymentOrderInput createNewPaymentOrderInput = new CreateNewPaymentOrderInput(paymentOrder);
+			CamelContext ctx = new DefaultCamelContext();
+			Exchange exchange = new DefaultExchange(ctx);
+			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer(
+					"CreateNewPaymentOrder", exchange);
+			HttpRequest<String> httpRequest = httpRequestTransformer.transform();
+			HttpRequestContext context = FunctionInputBuilder.buildContext(httpRequest);
+			PaymentStatus pymtStatus = createNewPaymentOrder.invoke(context, createNewPaymentOrderInput);
+
+			UpdatePaymentOrder updatePaymentOrder = new UpdatePaymentOrderImpl();
+			UpdatePaymentOrderParams orderParams = new UpdatePaymentOrderParams();
+			orderParams.setPaymentId(Arrays.asList(pymtStatus.getPaymentId()));
+			PaymentStatus paymentStatus = new PaymentStatus();
+			paymentStatus.setDebitAccount("70011");
+			paymentStatus.setDetails("Test");
+			paymentStatus.setStatus("test");
+			UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
 			PaymentStatus status = updatePaymentOrder.invoke(null, paymentOrderInput);
 			Assert.assertNotNull(status);
 		} catch (FunctionException e) {

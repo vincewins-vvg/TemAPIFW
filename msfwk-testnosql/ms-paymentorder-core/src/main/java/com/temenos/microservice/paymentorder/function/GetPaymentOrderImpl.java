@@ -49,7 +49,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 			paymentStatus.setStatus(paymentOrder.getStatus());
 			paymentStatus.setDetails(paymentOrder.getPaymentDetails());
-			
+
 			PaymentOrderStatus paymentOrderStatus = new PaymentOrderStatus();
 			PaymentOrder order = new PaymentOrder();
 			order.setAmount(paymentOrder.getAmount());
@@ -57,33 +57,41 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 			order.setFromAccount(paymentOrder.getDebitAccount());
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
-			order.setPaymentReference(paymentOrder.getPaymentReference());	
+			order.setPaymentReference(paymentOrder.getPaymentReference());
 			order.setExtensionData(paymentOrder.getExtensionData());
-			order.setFileContent(paymentOrder.getFileContent());						
+			order.setFileContent(paymentOrder.getFileContent());
 			order.setPaymentDate(formatDate(paymentOrder.getPaymentDate()));
-						
-			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
-			if(paymentOrder.getPaymentMethod()!=null && paymentOrder.getPaymentMethod().getCard() != null ) {
-			card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());
-			card.setCardname(paymentOrder.getPaymentMethod().getCard().getCardname());
-			card.setCardlimit(paymentOrder.getPaymentMethod().getCard().getCardlimit());
-			
-			com.temenos.microservice.paymentorder.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.view.PaymentMethod();
-			paymentMethod.setId(paymentOrder.getPaymentMethod().getId());
-			paymentMethod.setName(paymentOrder.getPaymentMethod().getName());
-			paymentMethod.setExtensionData((Map<String,String>)paymentOrder.getPaymentMethod().getExtensionData());
-			paymentMethod.setCard(card);
-			order.setPaymentMethod(paymentMethod);
 
-			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-			for (com.temenos.microservice.paymentorder.entity.ExchangeRate erEntity : paymentOrder.getExchangeRates()) {
-				ExchangeRate exchangeRate = new ExchangeRate();
-				exchangeRate.setId(erEntity.getId());
-				exchangeRate.setName(erEntity.getName());
-				exchangeRate.setValue(erEntity.getValue());
-				exchangeRates.add(exchangeRate);
+			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
+			if (paymentOrder.getPaymentMethod() != null && paymentOrder.getPaymentMethod().getCard() != null) {
+				card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());
+				card.setCardname(paymentOrder.getPaymentMethod().getCard().getCardname());
+				card.setCardlimit(paymentOrder.getPaymentMethod().getCard().getCardlimit());
+
+				com.temenos.microservice.paymentorder.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.view.PaymentMethod();
+				paymentMethod.setId(paymentOrder.getPaymentMethod().getId());
+				paymentMethod.setName(paymentOrder.getPaymentMethod().getName());
+				paymentMethod
+						.setExtensionData((Map<String, String>) paymentOrder.getPaymentMethod().getExtensionData());
+				paymentMethod.setCard(card);
+				order.setPaymentMethod(paymentMethod);
+
+				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
+				for (com.temenos.microservice.paymentorder.entity.ExchangeRate erEntity : paymentOrder
+						.getExchangeRates()) {
+					ExchangeRate exchangeRate = new ExchangeRate();
+					exchangeRate.setId(erEntity.getId());
+					exchangeRate.setName(erEntity.getName());
+					exchangeRate.setValue(erEntity.getValue());
+					exchangeRates.add(exchangeRate);
+				}
+				order.setExchangeRates(exchangeRates);
 			}
-			order.setExchangeRates(exchangeRates);
+			com.temenos.microservice.paymentorder.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorder.view.PayeeDetails();
+			if (paymentOrder.getPayeeDetails() != null) {
+				payeeDtls.setPayeeName(paymentOrder.getPayeeDetails().getPayeeName());
+				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
+				order.setPayeeDetails(payeeDtls);
 			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
