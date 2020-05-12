@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.ingester.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -126,6 +127,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 			System.out.println("input for avro data" + inputAvroReader);
 			producer.sendGenericEvent(inputAvroReader, "PAYMENT_ORDEREvent");
 			Map<Integer, List<Attribute>> records = null;
+		
 			int maxDBReadRetryCount = 3;
 			int retryCount = 0;
 			do {
@@ -134,16 +136,19 @@ public class ConfigBasedMappingITTest extends ITTest {
 				System.out.println("Reading record back from db, try=" + (retryCount + 1));
 				records = readPaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string",
 						"PI19107122J61FC9", "debitAccount", "eq", "string", "10995");
+				
 				System.out.println(records);
 				retryCount = retryCount + 1;
-			} while (records == null && retryCount < maxDBReadRetryCount);
+			} while ((records == null || records.isEmpty()) && retryCount < maxDBReadRetryCount);
 			assertTrue(!records.isEmpty());
 			assertNotNull("Product record should not be null", records);
 			assertNotNull("Key set should not be null", records.keySet().size());
 			assertNotNull("Values should not be null", records.values().size());
 			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+				validateSQLExtensionData();
 				removeForeignChecksAndDelete();
 			} else {
+				validateNoSQLExtensionData(records.get(1));
 				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC9",
 						"debitAccount", "eq", "string", "10995");
 			}
@@ -163,5 +168,39 @@ public class ConfigBasedMappingITTest extends ITTest {
 
 		return result.toString(StandardCharsets.UTF_8.name());
 
+	}
+	
+	public void validateSQLExtensionData() {
+		Map<Integer, List<Attribute>> extensionRecords = readPaymentOrderRecord("Card_extension", "Card_cardid", "eq", "string",
+				"124", "name", "eq", "string", "eventId");
+		Map<Integer, List<Attribute>> extensionArrayRecords = readPaymentOrderRecord("PaymentMethod_extension", "PaymentMethod_id", "eq", "string",
+				"157", "name", "eq", "string", "numbers");
+		Map<Integer, List<Attribute>> extensionMultiArrayRecords = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string",
+				"PI19107122J61FC9", "name", "eq", "string", "test");
+		assertTrue(!extensionRecords.isEmpty());
+		assertNotNull("Product record should not be null", extensionRecords);
+		assertNotNull("Key set should not be null", extensionRecords.keySet().size());
+		assertNotNull("Values should not be null", extensionRecords.values().size());
+		assertTrue(!extensionArrayRecords.isEmpty());
+		assertNotNull("Product record should not be null", extensionArrayRecords);
+		assertNotNull("Key set should not be null", extensionArrayRecords.keySet().size());
+		assertNotNull("Values should not be null", extensionArrayRecords.values().size());
+		assertTrue(!extensionMultiArrayRecords.isEmpty());
+		assertNotNull("Product record should not be null", extensionMultiArrayRecords);
+		assertNotNull("Key set should not be null", extensionMultiArrayRecords.keySet().size());
+		assertNotNull("Values should not be null", extensionMultiArrayRecords.values().size());
+	}
+	
+	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
+		String extensionName = "",extensionValue="";
+		for (Attribute attribute : listEntry) {
+			if (attribute.getName().equalsIgnoreCase("extensionData")) {
+				extensionName = attribute.getName().toLowerCase();
+				extensionValue = attribute.getValue().toString();
+				break;
+			}
+		}
+		assertTrue(!extensionValue.isEmpty());
+		assertNotNull("Product record should not be null", extensionValue);
 	}
 }

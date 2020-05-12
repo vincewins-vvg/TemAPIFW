@@ -32,6 +32,22 @@ paths:
       operationId: GetPaymentOrders
       tags:
         - Payments
+      parameters:
+      - name: pageNumber
+        in: query
+        description: PageNumber
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        description: PageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+          
       responses:
         '200':
           description: Get payment order
@@ -128,7 +144,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
                 
-  /payments/orders/currency/{currency}:
+  /payments/orders/currency:
     get:
       summary: Get a payment order currency
       operationId: GetPaymentOrderCurrency
@@ -136,7 +152,7 @@ paths:
         - Payments
       parameters:
       - name: currency
-        in: path
+        in: query
         description: Currency ID
         required: true
         schema:
@@ -174,6 +190,8 @@ components:
           format: int64
         name:
           type: string
+        extensionData:
+          type: object  
         card:
           allOf:
           - $ref: "#/components/schemas/Card"
@@ -191,9 +209,15 @@ components:
         payeeName:
           type: string
         payeeType:
-          type: string
-          
-    PaymentOrder:
+          type: string                  
+    EnumCurrency:
+      type: string
+      x-deprictionallowed: true
+      enum:
+        - USD
+        - INR
+        
+    TransactionDetails:
       properties:
         fromAccount:
           type: string
@@ -204,8 +228,14 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
+    
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
         currency:
-          type: string
+          allOf:
+          - $ref: "#/components/schemas/EnumCurrency"
         amount:
           type: number
         expires:
@@ -213,7 +243,12 @@ components:
           format: int64
         fileContent:
           type: string
-          format: binary	
+          format: binary
+        extensionData:
+          type: object  	
+        paymentDate:
+          type: string
+          format: date
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

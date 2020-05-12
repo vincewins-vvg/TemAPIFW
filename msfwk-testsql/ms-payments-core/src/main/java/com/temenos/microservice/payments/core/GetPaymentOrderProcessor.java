@@ -1,7 +1,14 @@
 package com.temenos.microservice.payments.core;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +21,7 @@ import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.function.GetPaymentOrderInput;
 import com.temenos.microservice.payments.view.EnumCurrency;
+import com.temenos.microservice.payments.view.ExchangeRate;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
@@ -21,6 +29,8 @@ import com.temenos.microservice.payments.view.PaymentStatus;
 
 @Component
 public class GetPaymentOrderProcessor {
+	public static Charset charset = Charset.forName("UTF-8");
+	public static CharsetEncoder encoder = charset.newEncoder();
 
 	public PaymentOrderStatus invoke(Context ctx, GetPaymentOrderInput input) throws FunctionException {
 		validateInput(input);
@@ -36,7 +46,6 @@ public class GetPaymentOrderProcessor {
 				.findById(params.getPaymentId().get(0), com.temenos.microservice.payments.entity.PaymentOrder.class);
 
 		if (paymentOrder != null) {
-
 			PaymentStatus paymentStatus = new PaymentStatus();
 			paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 			paymentStatus.setStatus(paymentOrder.getStatus());
@@ -50,6 +59,46 @@ public class GetPaymentOrderProcessor {
 			order.setToAccount(paymentOrder.getCreditAccount());
 			order.setPaymentDetails(paymentOrder.getPaymentDetails());
 			order.setPaymentReference(paymentOrder.getPaymentReference());
+			order.setExtensionData(paymentOrder.getExtensionData());
+			if (paymentOrder.getFileContent() != null) {
+				ByteBuffer byteBuffer;
+				try {
+					byteBuffer = encoder.encode(CharBuffer.wrap((paymentOrder.getFileContent())));
+					order.setFileContent(byteBuffer);
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage());
+				}
+			}
+			order.setPaymentDate(formatDate(paymentOrder.getPaymentDate()));
+
+			com.temenos.microservice.payments.view.Card card = new com.temenos.microservice.payments.view.Card();
+			if (paymentOrder.getPaymentMethod() != null && paymentOrder.getPaymentMethod().getCard() != null) {
+				card.setCardid(paymentOrder.getPaymentMethod().getCard().getCardid());
+				card.setCardname(paymentOrder.getPaymentMethod().getCard().getCardname());
+				card.setCardlimit(paymentOrder.getPaymentMethod().getCard().getCardlimit());
+
+				com.temenos.microservice.payments.view.PaymentMethod paymentMethod = new com.temenos.microservice.payments.view.PaymentMethod();
+				paymentMethod.setId(paymentOrder.getPaymentMethod().getId());
+				paymentMethod.setName(paymentOrder.getPaymentMethod().getName());
+				paymentMethod.setCard(card);
+				order.setPaymentMethod(paymentMethod);
+
+				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
+				for (com.temenos.microservice.payments.entity.ExchangeRate erEntity : paymentOrder.getExchangeRates()) {
+					ExchangeRate exchangeRate = new ExchangeRate();
+					exchangeRate.setId(erEntity.getId());
+					exchangeRate.setName(erEntity.getName());
+					exchangeRate.setValue(erEntity.getValue());
+					exchangeRates.add(exchangeRate);
+				}
+				order.setExchangeRates(exchangeRates);
+			}
+			com.temenos.microservice.payments.view.PayeeDetails payeeDtls = new com.temenos.microservice.payments.view.PayeeDetails();
+			if (paymentOrder.getPayeeDetails() != null) {
+				payeeDtls.setPayeeName(paymentOrder.getPayeeDetails().getPayeeName());
+				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
+				order.setPayeeDetails(payeeDtls);
+			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;

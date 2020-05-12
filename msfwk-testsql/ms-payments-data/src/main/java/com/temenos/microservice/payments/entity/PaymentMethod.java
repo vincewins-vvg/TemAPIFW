@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 public class PaymentMethod implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
-	private int id;
+	private long id;
 
 	private String name;
 
@@ -31,11 +31,11 @@ public class PaymentMethod implements com.temenos.microservice.framework.core.da
 	@CollectionTable(name = "PaymentMethod_extension", joinColumns = @JoinColumn(name = "PaymentMethod_id"))
 	Map<String, String> extensionData = new HashMap<String, String>();
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

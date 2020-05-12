@@ -32,6 +32,22 @@ paths:
       operationId: GetPaymentOrders
       tags:
         - Payments
+      parameters:
+      - name: pageNumber
+        in: query
+        description: PageNumber
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        description: PageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+          
       responses:
         '200':
           description: Get payment order
@@ -127,6 +143,34 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/orders/currency:
+    get:
+      summary: Get a payment order currency
+      operationId: GetPaymentOrderCurrency
+      tags:
+        - Payments
+      parameters:
+      - name: currency
+        in: query
+        description: Currency ID
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"                 
 
 components:
   schemas:
@@ -172,7 +216,7 @@ components:
         - USD
         - INR
         
-    PaymentOrder:
+    TransactionDetails:
       properties:
         fromAccount:
           type: string
@@ -183,6 +227,11 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
+      
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
         currency:
           allOf:
           - $ref: "#/components/schemas/EnumCurrency"
@@ -191,6 +240,12 @@ components:
         expires:
           type: integer
           format: int64
+        fileContent:
+          type: string
+          format: binary
+        paymentDate:
+          type: string
+          format: date  
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
@@ -201,6 +256,8 @@ components:
         payeeDetails:
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
+        extensionData:
+          type: object
         descriptions:
           type: array
           items:

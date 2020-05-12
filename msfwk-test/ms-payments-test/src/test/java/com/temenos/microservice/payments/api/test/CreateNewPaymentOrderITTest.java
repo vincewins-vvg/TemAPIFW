@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 import reactor.core.publisher.Mono;
@@ -38,10 +39,14 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
-				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
-				"PayRef");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			clearRecords("PO~123~124~USD~100", "123");
+		} else {
+			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
+					"debitAccount", "eq", "string", "123");
+			deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+					"PayRef");
+		}
 		daoFacade.closeConnection();
 	}
 
@@ -53,7 +58,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
@@ -71,6 +76,11 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		}
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			validateSQLExtensionData();
+		} else {
+			validateNoSQLExtensionData(entry);
+		}
 
 	}
 
@@ -81,7 +91,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).header("roleId", "ADMIN").exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
@@ -89,5 +99,52 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
 	}
+	
+	public void validateSQLExtensionData() {
+		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_BusDayCentres");
+		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "paymentOrderProduct");
+		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
+				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_NonOspiType");
+		List<Attribute> extensioneEntry = insertedExtensionRecord.get(1);
+		List<Attribute> arrayExtensionEntry = insertedArrayExtensionRecord.get(1);
+		List<Attribute> multivalueArrayExtensionEntry = insertedAssoMultiValueArrayExtensionRecord.get(1);
+		assertNotNull(extensioneEntry);
+		assertNotNull(arrayExtensionEntry);
+		assertNotNull(multivalueArrayExtensionEntry);
+		assertEquals(arrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(arrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(arrayExtensionEntry.get(1).getName(), "value");
+		assertEquals(arrayExtensionEntry.get(1).getValue(), "[\"India\",\"Aus\"]");
+		assertEquals(arrayExtensionEntry.get(2).getName(), "name");
+		assertEquals(arrayExtensionEntry.get(2).getValue(), "array_BusDayCentres");
+		assertEquals(extensioneEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(extensioneEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(extensioneEntry.get(1).getName(), "value");
+		assertEquals(extensioneEntry.get(1).getValue(), "Temenos");
+		assertEquals(extensioneEntry.get(2).getName(), "name");
+		assertEquals(extensioneEntry.get(2).getValue(), "paymentOrderProduct");
+		assertEquals(multivalueArrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getName(), "value");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(), "[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
+		assertEquals(multivalueArrayExtensionEntry.get(2).getName(), "name");
+		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
+	}
+	
+	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
+		String extensionName = "",extensionValue="";
+		for (Attribute attribute : listEntry) {
+			if (attribute.getName().equalsIgnoreCase("extensionData")) {
+				extensionName = attribute.getName().toLowerCase();
+				extensionValue = attribute.getValue().toString();
+				break;
+			}
+		}
+		assertEquals(extensionName, "extensiondata");
+		assertEquals(extensionValue, "{array_BusDayCentres=[\"India\",\"Aus\"], array_NonOspiType=[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}], paymentOrderProduct=Temenos}");
+	}
+
 
 }

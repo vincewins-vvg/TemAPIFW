@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
+import com.temenos.microservice.framework.core.conf.Environment;
+
 import reactor.core.publisher.Mono;
 
 public class GetPaymentOrderITTest extends ITTest {
@@ -31,10 +33,14 @@ public class GetPaymentOrderITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
-				"debitAccount", "eq", "string", "123");
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
-				"PayRef");
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")))  {
+			clearRecords("PO~123~124~USD~100", "123");
+		} else {
+			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
+					"debitAccount", "eq", "string", "123");
+			deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+					"PayRef");
+		}
 		daoFacade.closeConnection();
 	}
 
@@ -45,16 +51,16 @@ public class GetPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
 			getResponse = this.client.get()
-					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE"))
+					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("roleId", "ADMIN")
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 		assertTrue(getResponse.bodyToMono(String.class).block().contains(
-				"\"paymentStatus\":{\"paymentId\":\"PO~123~124~USD~100\",\"status\":\"INITIATED\",\"details\":\"PayDetails\""));
+				"\"extensionData\":{\"array_BusDayCentres\":[\"India\",\"Aus\"],\"paymentOrderProduct\":\"Temenos\",\"array_NonOspiType\":[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]}"));
 	}
 }
