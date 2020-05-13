@@ -23,13 +23,13 @@ public class PaymentOrderTester {
 	private static final String DEFAULT_STREAM_KAFKA_BOOTSTRAP_SERVERS = "kafka:29092";
 
 	public static void main(String[] args) throws IOException {
-		StreamProducer<byte[]> producer = createStreamProducer("itest", "kafka");
+		StreamProducer producer = createStreamProducer("itest", "kafka");
 		String content = new String(Files.readAllBytes(Paths.get("src/test/resources/CreatePayment.json")));
 		producer.batch().add("ms-paymentorder-inbox-topic", "1",
 				new String(content).getBytes());
 		try {
 			producer.batch().send();
-		} catch (StreamProducerException | InterruptedException e) {
+		} catch (StreamProducerException e) {
 			e.printStackTrace();
 		}
 	}
@@ -41,7 +41,7 @@ public class PaymentOrderTester {
 	 * @param streamVendor
 	 * @return
 	 */
-	private static StreamProducer<byte[]> createStreamProducer(String producerName, String streamVendor) {
+	private static StreamProducer createStreamProducer(String producerName, String streamVendor) {
 		if ("kinesis".equals(streamVendor)) {
 			return new KinesisStreamProducer.Builder().setAggregationEnabled(true).setKinesisPort(443)
 					.setRegionName(Environment.getAwsRegion().getName()).producer();
