@@ -1,27 +1,31 @@
 package com.temenos.microservice.test.producer;
 
+import java.io.IOException;
+
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.JsonDecoder;
+
 import com.temenos.des.schema.exception.EventSchemaParseException;
-import com.temenos.des.serializer.exception.AvroSerializationException;
-import com.temenos.des.serializer.exception.SchemaRegistryException;
-import com.temenos.des.serializer.serialize.*;
+import com.temenos.des.serializer.serialize.AvroBinarySchemaRegistrySerializer;
+import com.temenos.des.serializer.serialize.AvroSerializer;
+import com.temenos.des.serializer.serialize.OutgoingConsumerAvro;
+import com.temenos.des.serializer.serialize.SchemaRegistry;
+import com.temenos.des.serializer.serialize.exception.AvroSerializationException;
+import com.temenos.des.serializer.serialize.exception.SchemaRegistryException;
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
 import com.temenos.des.streamvendorio.core.stream.produce.StreamProducer;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
 import com.temenos.microservice.framework.core.ingester.SchemaRegistryProvider;
 import com.temenos.microservice.framework.test.streams.T24EventSchemaProvider;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericDatumReader;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.*;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import java.io.IOException;
-import java.util.Properties;
 
 public class AvroProducer {
 
-    private StreamProducer<byte[]> streamProducer;
+    private StreamProducer streamProducer;
     private SchemaRegistry schemaRegistry;
     private AvroSerializer<byte[]> avroSerializer;
     private String streamVendor;
@@ -45,8 +49,8 @@ public class AvroProducer {
     }
 
     public void sendGenericEvent(String jsonMessage, String applicationName)
-            throws IOException, StreamProducerException, InterruptedException, AvroSerializationException, EventSchemaParseException, SchemaRegistryException {
-        Schema schema = schemaProvider.getSchema(applicationName).getAvroSchema();
+            throws IOException, StreamProducerException, InterruptedException, EventSchemaParseException, SchemaRegistryException, AvroSerializationException {
+        Schema schema = schemaProvider.getSchema(applicationName);
         System.out.println(schema.toString());
         GenericRecord payload = getGenericRecordFromJson(schema, jsonMessage);
         streamProducer.batch().add(Topic,"1", getSerializedMessage

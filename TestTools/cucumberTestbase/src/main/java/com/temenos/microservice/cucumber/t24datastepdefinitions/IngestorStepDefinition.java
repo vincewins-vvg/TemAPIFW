@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.temenos.des.schema.exception.EventSchemaParseException;
-import com.temenos.des.serializer.exception.AvroSerializationException;
-import com.temenos.des.serializer.exception.SchemaRegistryException;
+import com.temenos.des.serializer.serialize.exception.AvroSerializationException;
+import com.temenos.des.serializer.serialize.exception.SchemaRegistryException;
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
@@ -111,7 +111,7 @@ public class IngestorStepDefinition {
                     avroProducer.sendGenericEvent(testCase.getT24Payload(),
                             tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
                 } catch (IOException | StreamProducerException | InterruptedException |
-                        AvroSerializationException | EventSchemaParseException | SchemaRegistryException e) {
+                        AvroSerializationException |  EventSchemaParseException | SchemaRegistryException e) {
                     throw new RuntimeException(e);
                 }
             }
