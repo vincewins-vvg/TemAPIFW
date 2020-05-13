@@ -29,10 +29,14 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
         
         if(input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null){ 
         	int[] pageDetails = new int[2];
-        	if(input.getParams().get().getPageNumber() != null)
+        	if(input.getParams().get().getPageNumber() != null) {
+        		if(input.getParams().get().getPageNumber().get(0) != null) 
     	    	pageDetails[0] = input.getParams().get().getPageNumber().get(0);
-        	if(input.getParams().get().getPageSize() != null)
+        	}
+        	if(input.getParams().get().getPageSize() != null) {
+        		if(input.getParams().get().getPageSize().get(0) != null) 
     	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
+        	}
             entities = paymentOrderDao.get(pageDetails);
         }
         else{
