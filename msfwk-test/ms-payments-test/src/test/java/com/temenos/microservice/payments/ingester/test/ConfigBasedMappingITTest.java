@@ -1,6 +1,5 @@
 package com.temenos.microservice.payments.ingester.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -19,9 +18,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.ClientResponse;
 
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
@@ -30,20 +34,30 @@ import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
 @Ignore
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConfigBasedMappingITTest extends ITTest {
 
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
+		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "GB0010001",
+				"description", "string", "description");
+	}
+	
+	@Before
+	public void setUp() throws SQLException {
+		this.client = newWebClient();
 	}
 
 	@AfterClass
 	public static void clearData() {
+		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
+				"GB0010001");
 		daoFacade.closeConnection();
 	}
 
 	@Test
-	public void testBinaryIngesterConfigBasedMapping() {
+	public void testCBinaryIngesterConfigBasedMapping() {
 		try {
 
 			List<byte[]> messageList = new ArrayList<>();
@@ -146,11 +160,10 @@ public class ConfigBasedMappingITTest extends ITTest {
 			assertNotNull("Values should not be null", records.values().size());
 			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 				validateSQLExtensionData();
-				removeForeignChecksAndDelete();
+				validateAltKeyData("MsAltKey");
 			} else {
 				validateNoSQLExtensionData(records.get(1));
-				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC9",
-						"debitAccount", "eq", "string", "10995");
+				validateAltKeyData("ms_altkey");
 			}
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
@@ -202,5 +215,41 @@ public class ConfigBasedMappingITTest extends ITTest {
 		}
 		assertTrue(!extensionValue.isEmpty());
 		assertNotNull("Product record should not be null", extensionValue);
+	}
+	
+	public void validateAltKeyData(String tableName) {
+		Map<Integer, List<Attribute>> altKeyRecords = readPaymentOrderRecord(tableName, "alternateName", "eq", "string",
+				"OrderingPostAddrline", "alternateKey", "eq", "string", "1 COCA-COLA PLAZA");
+		assertNotNull("AltKey table record should not be null", altKeyRecords);
+		assertTrue(!altKeyRecords.isEmpty());
+	}
+	
+	@Test
+	public void testBGetPaymentOrderWithAltKey() {
+		ClientResponse getResponse;
+
+		try {
+			do {
+				getResponse = this.client.get()
+						.uri("/payments/orders/" + "1 COCA-COLA PLAZA" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")
+								+ "&alternatekeys=paymentId&alternatenames=OrderingPostAddrline")
+						.header("roleId", "ADMIN").exchange().block();
+			} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+			String apiResponse = getResponse.bodyToMono(String.class).block();
+			System.out.println("body response from ConfigBasedMappingITTest.java::"+apiResponse);
+			assertTrue(apiResponse.contains(
+					"\"fromAccount\":\"10995\",\"toAccount\":\"898789\",\"paymentReference\":\"GB0010001\",\"paymentDetails\":\"Funds transfer\",\"currency\":\"USD\""));
+			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+				removeForeignChecksAndDelete();
+			} else {
+				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC9",
+						"debitAccount", "eq", "string", "10995");
+				deletePaymentOrderRecord("ms_altkey", "alternateName", "eq", "string",
+							"OrderingPostAddrline", "alternateKey", "eq", "string", "1 COCA-COLA PLAZA");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

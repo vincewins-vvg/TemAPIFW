@@ -38,4 +38,5 @@ mongo --host mongo1:27017 <<EOF
   db.createCollection("ms_inbox_events");
   db.createCollection("ms_outbox_events");
   db.createCollection("ms_reference_data");
+  db.createCollection("ms_altkey");
 EOF
