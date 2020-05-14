@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
@@ -80,6 +81,7 @@ public class GetPaymentOrderProcessor {
 				com.temenos.microservice.payments.view.PaymentMethod paymentMethod = new com.temenos.microservice.payments.view.PaymentMethod();
 				paymentMethod.setId(paymentOrder.getPaymentMethod().getId());
 				paymentMethod.setName(paymentOrder.getPaymentMethod().getName());
+				paymentMethod.setExtensionData((Map<String, String>) paymentOrder.getPaymentMethod().getExtensionData());
 				paymentMethod.setCard(card);
 				order.setPaymentMethod(paymentMethod);
 
