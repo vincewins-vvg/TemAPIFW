@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class ProducerFactory {
 
-    public static StreamProducer<byte[]> createStreamProducer(String producerName, String streamVendor) {
+    public static StreamProducer createStreamProducer(String producerName, String streamVendor) {
         if ("kinesis".equals(streamVendor)) {
             return (new com.temenos.des.streamvendorio.kinesis.producer.KinesisStreamProducer.Builder()).setAggregationEnabled(true).setKinesisPort(443L).setRegionName(Environment.getAwsRegion().getName()).producer();
         } else {
