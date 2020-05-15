@@ -1,8 +1,7 @@
 {
-	"dataEventId": "U000021_37b9cacf-5c85-4862-9894-91a61b7d5177005uB_0001",
+	"eventId": "U000021_37b9cacf-5c85-4862-9894-91a61b7d5177005uB_0001",
 	"metadata": null,
 	"emittedTime": 157,
-	"companyTable": null,
 	"entityId": {
 		"string": "PI19107122J61FC99"
 	},
@@ -10,7 +9,7 @@
 	"application": {
 		"string": "PI19107122J61FC99"
 	},
-	"dataEventSize": 1,
+	"eventSize": 1,
 	"payload": {
 		"OrderingCustomerBic": null,
 		"DebtorAgentAddrtype": null,
