@@ -47,10 +47,14 @@ public class GetPaymentOrdersProcessor {
 		
         if( input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null){ 
             int[] pageDetails = new int[2];
-            if(input.getParams().get().getPageNumber() != null)
-        	    	pageDetails[0] = input.getParams().get().getPageNumber().get(0);
-            if(input.getParams().get().getPageSize() != null)
-        	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
+    		if(input.getParams().get().getPageNumber() != null) {
+    			if(input.getParams().get().getPageNumber().get(0) != null && input.getParams().get().getPageNumber().get(0) > 0)
+    			pageDetails[0] = input.getParams().get().getPageNumber().get(0);
+    		}
+        	if(input.getParams().get().getPageSize() != null) {
+        		if(input.getParams().get().getPageSize().get(0) != null && input.getParams().get().getPageSize().get(0) > 0)
+    	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
+        	}
             entities = PaymentOrderDao
     				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
     				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
