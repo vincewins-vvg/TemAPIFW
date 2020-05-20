@@ -1,0 +1,16 @@
+ [
+	{
+		"operation": "shift",
+		"spec": {
+			"payload": {
+				"recId": "altKeyRecords.[].entityId",
+				"ARRAY_OrderingPostAddrline": {
+					"*": {
+						"OrderingPostAddrline": "altKeyRecords.[&1].alternateKey",
+						"#OrderingPostAddrline": "altKeyRecords.[&1].alternateName"
+					}
+				}
+			}
+		}
+	}
+]

@@ -143,7 +143,12 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			}
 		}
 		assertEquals(extensionName, "extensiondata");
-		assertEquals(extensionValue, "{array_BusDayCentres=[\"India\",\"Aus\"], array_NonOspiType=[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}], paymentOrderProduct=Temenos}");
+	    assertTrue(extensionValue.contains("array_BusDayCentres"));
+        assertTrue(extensionValue.contains("India"));
+        assertTrue(extensionValue.contains("array_NonOspiType"));
+        assertTrue(extensionValue.contains("NonOspiType"));
+        assertTrue(extensionValue.contains("paymentOrderProduct"));
+        assertTrue(extensionValue.contains("Temenos"));
 	}
 
 
