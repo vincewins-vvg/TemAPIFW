@@ -10,7 +10,7 @@ Feature: ToGetHealthCheckStatus
 	 Scenario: To Get Health Check Status of API 
 
    Given create a new MS request with code ""
-   And set the request path as "v1.0.0/health"
+   And set the request path as "health"
    And query parameter will be set to value ""
 
 	 When a 'GET' request is sent
