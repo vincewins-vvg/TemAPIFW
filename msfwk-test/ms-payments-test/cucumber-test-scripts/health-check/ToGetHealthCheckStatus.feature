@@ -10,7 +10,7 @@ Feature: ToGetHealthCheckStatus
 	 Scenario: To Get Health Check Status of API 
 
    Given create a new MS request with code ""
-   And set the request path as "health"
+   And set the request path as "v1.0.0/health"
    And query parameter will be set to value ""
 
 	 When a 'GET' request is sent
@@ -26,7 +26,7 @@ Feature: ToGetHealthCheckStatus
 	 
 	 #Given create a new request
    #And end-point uri is set to "http://localhost:8082"
-   #And set the request path as "ingester/health"
+   #And set the request path as "ingester/v1.0.0/health"
    #And query parameter will be set to value ""
 
 	 #When a 'GET' request is sent
@@ -38,7 +38,7 @@ Feature: ToGetHealthCheckStatus
 
    #Given create a new request
    #And end-point uri is set to "http://localhost:8084"
-   #And set the request path as "ingester/health"
+   #And set the request path as "ingester/v1.0.0/health"
    #And query parameter will be set to value ""
 
 	 #When a 'GET' request is sent
