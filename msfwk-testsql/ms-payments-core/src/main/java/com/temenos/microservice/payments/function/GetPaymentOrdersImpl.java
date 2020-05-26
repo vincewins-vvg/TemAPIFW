@@ -4,7 +4,9 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.core.GetPaymentOrdersProcessor;
 import com.temenos.microservice.payments.core.SpringContextInitializer;
-import com.temenos.microservice.payments.view.PaymentOrders;
+import com.temenos.microservice.paymentsorder.function.GetPaymentOrders;
+import com.temenos.microservice.paymentsorder.function.GetPaymentOrdersInput;
+import com.temenos.microservice.paymentsorder.view.PaymentOrders;
 
 
 public class GetPaymentOrdersImpl implements GetPaymentOrders {
