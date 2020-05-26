@@ -1,0 +1,176 @@
+openapi: "3.0.0"
+info:
+  title: Test Payments API
+  description: Test Payments API
+  version: 1.0.0
+
+tags:
+- name: Payments
+  description: A collection of Payments APIs
+  
+paths:
+  /payments/orders:
+     get:
+      summary: Get all payment orders
+      operationId: GetPaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: pageNumber
+        in: query
+        description: PageNumber
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        description: PageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+          
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
+
+
+components:
+  schemas:
+    Card:
+      properties:
+        cardid:
+          type: integer
+          format: int64
+        cardname:
+          type: string
+        cardlimit:
+          type: number
+    PaymentMethod:
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        extensionData:
+          type: object
+        card:
+          allOf:
+          - $ref: "#/components/schemas/Card"
+    ExchangeRate:
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        value:
+          type: number
+    PayeeDetails:
+      properties:
+        payeeName:
+          type: string
+        payeeType:
+          type: string
+          
+    EnumCurrency:
+      type: string
+      x-deprictionallowed: true
+      enum:
+        - USD
+        - INR
+        
+    TransactionDetails:
+      properties:
+        fromAccount:
+          type: string
+        toAccount:
+          type: string
+        paymentReference:
+          type: string
+          x-referencetype: paymentref
+        paymentDetails:
+          type: string
+      
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
+        currency:
+          allOf:
+          - $ref: "#/components/schemas/EnumCurrency"
+        amount:
+          type: number
+        expires:
+          type: integer
+          format: int64
+        fileContent:
+          type: string
+          format: binary
+        paymentDate:
+          type: string
+          format: date  
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+        payeeDetails:
+          allOf:
+          - $ref: '#/components/schemas/PayeeDetails'
+        extensionData:
+          type: object
+        descriptions:
+          type: array
+          items:
+            type: string
+          
+    PaymentOrders:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentOrder"
+        
+    PaymentStatus:
+      properties:
+        debitAccount:
+          type: string
+        paymentId:
+          type: string
+        status:
+          type: string
+        details:
+          type: string
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+          
+    PaymentOrderStatus:
+      properties:
+        paymentOrder:
+          allOf: 
+          - $ref: "#/components/schemas/PaymentOrder"
+        paymentStatus:
+          $ref: "#/components/schemas/PaymentStatus"
+          
+    FailureMessage:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ErrorSchema:
+      type: array
+      items:
+        $ref: "#/components/schemas/FailureMessage"
