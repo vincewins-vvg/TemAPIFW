@@ -648,16 +648,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.temenos.irf</groupId>
-			<artifactId>irf-consent-management-demo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.temenos.irf</groupId>
 			<artifactId>irf-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.temenos.irf</groupId>
-			<artifactId>irf-consent-management</artifactId>
-			<version>${irf-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.irf</groupId>
@@ -740,11 +731,6 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-http4</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-http</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring-javaconfig</artifactId>
