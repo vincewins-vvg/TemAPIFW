@@ -2,7 +2,9 @@ package com.temenos.microservice.payments.ingester;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -18,8 +20,9 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 				"msf-test-group-id");
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
+		Map<String, List<String>> headersMap = new HashMap<>();
 		for (int i = 0; i < 3; i++) {
-			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId);
+			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId, headersMap);
 			if (!result) {
 				List<byte[]> lagResultList = new ArrayList<>();
 				lagResultList.add(new String("success").getBytes());
