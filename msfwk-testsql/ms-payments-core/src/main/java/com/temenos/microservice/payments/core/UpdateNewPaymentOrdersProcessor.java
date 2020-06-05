@@ -26,10 +26,16 @@ import com.temenos.microservice.payments.view.PaymentStatusList;
 public class UpdateNewPaymentOrdersProcessor {
 	
 	public AllPaymentStatus invoke(Context ctx, UpdateNewPaymentOrdersInput input) throws FunctionException {
-		if(input.getBody() ==null && input.getBody().get().getPaymentStatus() == null) {
-			throw new InvalidInputException(new FailureMessage("The Length of the Payment Ids and the requests are not Same"));
+		if(input.getBody() == null) {
+			throw new InvalidInputException(new FailureMessage("Body is Null"));
+		}
+		if(input.getBody().get().getPaymentStatus() == null) {
+			throw new InvalidInputException(new FailureMessage("Payment Status are Null"));
 		}
 		AllPaymentStatus listOfPaymentStatus = input.getBody().get().getPaymentStatus();
+		if(listOfPaymentStatus.getItems() == null) {
+			throw new InvalidInputException(new FailureMessage("Payment Status items are Null"));
+		}
 		PaymentStatus[] paymentStatusArray = listOfPaymentStatus.getItems();
 		if(paymentStatusArray == null) {
 			throw new InvalidInputException(new FailureMessage("The items are empty"));
@@ -37,6 +43,9 @@ public class UpdateNewPaymentOrdersProcessor {
 		String[] paymentOrderArray = new String[paymentStatusArray.length];
 		List<com.temenos.microservice.payments.entity.PaymentOrder> paymentOrderOoutputList = new ArrayList<com.temenos.microservice.payments.entity.PaymentOrder>();
 		for(int i = 0;i<paymentStatusArray.length;i++) {
+		if(paymentStatusArray[i].getPaymentId() == null || listOfPaymentStatus.getItems()[i].getDebitAccount() == null) {	
+			throw new InvalidInputException(new FailureMessage("The one or more items are not having PaymentId or DebitAccount "));
+		}
 		String paymentOrderId = paymentStatusArray[i].getPaymentId();
 		paymentOrderArray[i] = paymentOrderId;
 		String debitAccount = listOfPaymentStatus.getItems()[i].getDebitAccount();

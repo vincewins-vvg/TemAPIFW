@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class PaymentMethod implements com.temenos.microservice.framework.core.data.Entity {
 
@@ -22,6 +25,7 @@ public class PaymentMethod implements com.temenos.microservice.framework.core.da
 	private String name;
 
 	@OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Card card;
 
 	// maps from attribute name to value

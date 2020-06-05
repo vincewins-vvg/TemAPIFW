@@ -19,6 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
@@ -46,6 +49,7 @@ public class PaymentOrder implements ExtendableEntity {
 	private String status;
 		
 	@OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private PaymentMethod paymentMethod;
 
 	public PaymentMethod getPaymentMethod() {

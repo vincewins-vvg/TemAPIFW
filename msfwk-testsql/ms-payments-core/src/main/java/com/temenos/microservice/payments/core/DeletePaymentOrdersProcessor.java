@@ -29,25 +29,16 @@ public class DeletePaymentOrdersProcessor {
 				}
 				String[] paymentId = input.getParams().get().getPaymentIds().get(0).split(",");
 				List<Object> poList = new ArrayList<Object>();
-				List<Object> exchangeListList = new ArrayList<Object>();
 				for(int i =0;i<paymentId.length;i++) {					
 					PaymentOrder paymentOrderOpt = (PaymentOrder) PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().findById(paymentId[i], com.temenos.microservice.payments.entity.PaymentOrder.class);						
 					if(paymentOrderOpt != null) {
-					poList.add(paymentOrderOpt);
-					for(int j=0;j<paymentOrderOpt.getExchangeRates().size();j++) {
-					exchangeListList.add(paymentOrderOpt.getExchangeRates().get(j));
-					}
+					poList.add(paymentOrderOpt);				
 					}
 					else {
 						throw new InvalidInputException(new FailureMessage("One or more Invalid Payment Order Ids Entered"));
 					}
 				}					
-				if(poList.size() > 1){
-				PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.ExchangeRate.class).getSqlDao().deleteByIdList(exchangeListList);	
-				PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().deleteByIdList(poList);	
-				} else {
-					PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().deleteById(poList.get(0));
-				}
+				PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().deleteByIdList(poList);
 				AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
 				PaymentStatus[] paymentStatuses = new PaymentStatus[paymentId.length];
 				for(int i=0;i<paymentId.length;i++) {
