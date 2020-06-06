@@ -45,12 +45,16 @@ public class CreateNewPaymentOrdersProcessor {
 	
 			if(input.getBody().get().getPaymentOrders() != null) {
 					PaymentOrders PaymentOrders = input.getBody().get().getPaymentOrders();
+					if(PaymentOrders.getItems() != null && PaymentOrders.getItems().length > 0) {
 					for(int i=0;i<PaymentOrders.getItems().length;i++){
 					PaymentOrderFunctionHelper.validatePaymentOrder(PaymentOrders.getItems()[i], ctx);
 					}
 					allPaymentStatus = executePaymentOrders(ctx, PaymentOrders.getItems());	
+					} else {
+						throw new InvalidInputException(new FailureMessage("Input items are empty or invalid", "PAYM-PORD-A-2002"));
+					}
 			} else {
-				throw new InvalidInputException(new FailureMessage("Input body items are empty", "PAYM-PORD-A-2002"));
+				throw new InvalidInputException(new FailureMessage("Input body is invalid", "PAYM-PORD-A-2002"));
 			}	
 		return allPaymentStatus;
 	}

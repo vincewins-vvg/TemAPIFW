@@ -3,11 +3,15 @@ package com.temenos.microservice.payments.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataIdEntity;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
+import com.temenos.microservice.payments.entity.Card;
+import com.temenos.microservice.payments.entity.PaymentMethod;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 import com.temenos.microservice.payments.function.DeletePaymentOrdersInput;
 import com.temenos.microservice.payments.view.AllPaymentStatus;
@@ -28,22 +32,31 @@ public class DeletePaymentOrdersProcessor {
 					throw new InvalidInputException(new FailureMessage("The Parameters of Payment Ids are not present"));
 				}
 				String[] paymentId = input.getParams().get().getPaymentIds().get(0).split(",");
-				List<Object> poList = new ArrayList<Object>();
-				for(int i =0;i<paymentId.length;i++) {					
-					PaymentOrder paymentOrderOpt = (PaymentOrder) PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().findById(paymentId[i], com.temenos.microservice.payments.entity.PaymentOrder.class);						
+				// To Remove Duplicates
+				Set<String> paymentIdSet = new HashSet<String>(Arrays.asList(paymentId));
+				ArrayList<String> paymentIdList = new ArrayList<String>(paymentIdSet);
+				List<Object> poList = new ArrayList<Object>();								
+				for(int i =0;i<paymentIdList.size();i++) {					
+					PaymentOrder paymentOrderOpt = (PaymentOrder) PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().findById(paymentIdList.get(i), com.temenos.microservice.payments.entity.PaymentOrder.class);						
 					if(paymentOrderOpt != null) {
-					poList.add(paymentOrderOpt);				
+					// Set Method as null as it is the foreign key constraint
+					if(paymentOrderOpt.getPaymentMethod() != null) {
+						PaymentMethod paymentMethod = new PaymentMethod();
+ 						paymentOrderOpt.setPaymentMethod(null);
+ 						PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().saveOrMergeEntity(paymentOrderOpt, false);
+					}
+					poList.add(paymentOrderOpt);	
 					}
 					else {
 						throw new InvalidInputException(new FailureMessage("One or more Invalid Payment Order Ids Entered"));
 					}
-				}					
+				}								        
 				PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().deleteByIdList(poList);
 				AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
-				PaymentStatus[] paymentStatuses = new PaymentStatus[paymentId.length];
-				for(int i=0;i<paymentId.length;i++) {
+				PaymentStatus[] paymentStatuses = new PaymentStatus[paymentIdList.size()];
+				for(int i=0;i<paymentIdList.size();i++) {
 					PaymentStatus paymentStatus = new PaymentStatus();
-					paymentStatus.setStatus("Deleted this PaymentId	: "+paymentId[i]);
+					paymentStatus.setStatus("Deleted this PaymentId	: "+paymentIdList.get(i));
 					paymentStatuses[i] = paymentStatus;
 				}
 				allPaymentStatus.addItems(paymentStatuses);

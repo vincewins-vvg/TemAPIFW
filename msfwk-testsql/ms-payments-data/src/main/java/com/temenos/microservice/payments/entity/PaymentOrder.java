@@ -49,7 +49,6 @@ public class PaymentOrder implements ExtendableEntity {
 	private String status;
 		
 	@OneToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
 	private PaymentMethod paymentMethod;
 
 	public PaymentMethod getPaymentMethod() {
