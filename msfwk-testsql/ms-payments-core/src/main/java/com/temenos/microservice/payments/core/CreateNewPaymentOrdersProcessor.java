@@ -145,17 +145,20 @@ public class CreateNewPaymentOrdersProcessor {
 			}
 			entity.setExchangeRates(exchangeRates);
 		}
-		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
-		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
-		paymentOrderEvent.setAmount(entity.getAmount());
-		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
-		paymentOrderEvent.setCurrency(entity.getCurrency());
-		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		EventManager.raiseBusinessEvent(ctx,new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
 		entityarrayList.add(entity);
 		entityarray[i] = entity;
 		}
-	    PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().saveOrMergeEntityList(entityarrayList, false);    
+	    PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao().saveOrMergeEntityList(entityarrayList, false); 
+		for(int j=0;j<entityarrayList.size();j++) {
+			CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+			paymentOrderEvent.setPaymentOrderId(entityarrayList.get(j).getPaymentOrderId());
+			paymentOrderEvent.setAmount(entityarrayList.get(j).getAmount());
+			paymentOrderEvent.setCreditAccount(entityarrayList.get(j).getCreditAccount());
+			paymentOrderEvent.setCurrency(entityarrayList.get(j).getCurrency());
+			paymentOrderEvent.setDebitAccount(entityarrayList.get(j).getDebitAccount());
+			EventManager.raiseBusinessEvent(ctx,new GenericEvent("PaymentOrderCreated", paymentOrderEvent));
+		}
+		
 		return entityarray;
 	}
 
