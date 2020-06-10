@@ -27,6 +27,72 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
+                
+  /payments/allorders:
+    post:
+      summary: Creates all the payment orders in a list (Bulk)
+      operationId: CreateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentOrdersItems"
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
+  /payments/allorders/update:
+    put:
+      summary: updates all the payment orders in a list (Bulk)
+      operationId: UpdateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatusList"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/allorders/delete/{paymentIds}:
+    delete:
+      summary: Deletes all the payment orders in a list (Bulk)
+      operationId: DeletePaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: paymentIds
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
   /payments/orders/{paymentId}:
     put:
       summary: Updates an existing payment order 
@@ -36,7 +102,7 @@ paths:
       parameters:
       - name: paymentId
         in: path
-        description: Payment ID
+        description: Payment IDs
         required: true
         schema:
           type: string
@@ -242,6 +308,12 @@ components:
       items:
         $ref: "#/components/schemas/PaymentOrder"
         
+    PaymentOrdersItems:
+      properties:
+        paymentOrders:
+          allOf:
+          - $ref: '#/components/schemas/PaymentOrders'
+        
     PaymentStatus:
       properties:
         debitAccount:
@@ -259,6 +331,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExchangeRate"
+           
+    AllPaymentStatus:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentStatus"
+        
+    PaymentStatusList:
+      properties:
+        paymentStatus:
+          allOf:
+          - $ref: "#/components/schemas/AllPaymentStatus"
           
     PaymentOrderStatus:
       properties:

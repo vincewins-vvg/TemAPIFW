@@ -51,9 +51,12 @@ services:
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
+      className_CreateNewPaymentOrders: com.temenos.microservice.payments.function.CreateNewPaymentOrdersImpl
+      className_UpdateNewPaymentOrders: com.temenos.microservice.payments.function.UpdateNewPaymentOrdersImpl
       VALIDATE_PAYMENT_ORDER: "false"
       className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
       className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
+      className_DeletePaymentOrders: com.temenos.microservice.payments.function.DeletePaymentOrdersImpl
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.payments.function.GetPaymentOrderCurrencyImpl
