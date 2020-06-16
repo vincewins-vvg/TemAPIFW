@@ -1,0 +1,38 @@
+{
+    "paymentOrder": {
+        "fromAccount": "100-CBE",
+        "toAccount": "123-ABC",
+        "paymentReference": "paytest",
+        "paymentDetails": "Success",
+        "currency": "USD",
+        
+        
+        "extensionData": {},
+        "paymentDate": "2024-05-05",
+        "paymentMethod": {
+            "id": 100100,
+            "name": "HDFC",
+            "extensionData": {},
+            "card": {
+                "cardid": 723,
+                "cardname": "Diners",
+                "cardlimit": 120000.11
+            }
+        },
+        "exchangeRates": [
+            {
+                "name": "USD",
+                "value": 78.12
+            }
+        ],
+        "payeeDetails": {
+            "payeeName": "MSTester",
+            "payeeType": "temp"
+        }
+    },
+    "paymentStatus": {
+        "paymentId": "PO~100-CBE~123-ABC~USD~485",
+        "status": "INITIATED",
+        "details": "Success"
+    }
+}

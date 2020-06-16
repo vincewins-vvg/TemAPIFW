@@ -1,0 +1,39 @@
+{
+    "paymentOrder": {
+        "fromAccount": "100-CBE",
+        "toAccount": "222-VVG",
+        "paymentReference": "paytest",
+        "paymentDetails": "Success",
+        "currency": "USD",
+        
+        
+        "extensionData": {},
+        "paymentDate": "2024-05-05",
+        "paymentMethod": {
+            "id": 22,
+            "name": "MSTester",
+            "extensionData": {},
+            "card": {
+                "cardid": 11,
+                "cardname": "Diners",
+                "cardlimit": 11.11
+            }
+        },
+        "exchangeRates": [
+            {
+                "id": 30,
+                "name": "INR",
+                "value": 22.22
+            }
+        ],
+        "payeeDetails": {
+            "payeeName": "MSTester",
+            "payeeType": "temp"
+        }
+    },
+    "paymentStatus": {
+        "paymentId": "PO~100-CBE~222-VVG~USD~433",
+        "status": "changed",
+        "details": "Success"
+    }
+}

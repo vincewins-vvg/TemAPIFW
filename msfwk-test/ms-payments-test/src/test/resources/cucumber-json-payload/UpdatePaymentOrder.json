@@ -1,0 +1,22 @@
+{
+  "debitAccount": "100-CBE",
+  "paymentId": "PO~100-CBE~222-VVG~USD~433",
+  "status": "changed",
+  "details": "changed",
+  "paymentMethod": {
+    "id": 22,
+    "name": "MSTester",
+    "card": {
+      "cardid": 11,
+      "cardname": "Diners",
+      "cardlimit": 11.11
+    }
+  },
+  "exchangeRates": [
+    {
+      "id": 30,
+      "name": "INR",
+      "value": 22.22
+    }
+  ]
+}
