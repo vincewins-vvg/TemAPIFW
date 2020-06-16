@@ -1,0 +1,2 @@
+PaymentId_1 = PO~100-CBE~123-ABC~USD~485
+PaymentId_Extension = PO~111-ACD~321-ZXC~INR~125

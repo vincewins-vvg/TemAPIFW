@@ -1,0 +1,75 @@
+{
+    "fromAccount": "111-ACD",
+    "toAccount": "321-ZXC",
+    "paymentReference": "paytest",
+    "paymentDetails": "extension",
+    "currency": "INR",
+    "amount": 125,
+    "expires": 1,
+    "fileContent": "Ynl0ZWJ1ZmZlcg==",
+    "extensionData": {
+            "array_BusDayCentres": [
+                "India",
+                "Aus"
+            ],
+            "paymentOrderProduct": "Temenos",
+            "array_NonOspiType": [
+                {
+                    "NonOspiType": "DebitCard",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "UPI",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "DebitCard",
+                    "NonOspiId": "3163"
+                }
+            ]
+        },
+    "paymentMethod": {
+      "id": 1,
+      "name": "paymentmethod",
+       "extensionData": {
+            "array_BusDayCentres": [
+                "India",
+                "Aus"
+            ],
+            "paymentOrderProduct": "Temenos",
+            "array_NonOspiType": [
+                {
+                    "NonOspiType": "DebitCardinPayment",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "UPIinPayment",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "DebitCardinPayment",
+                    "NonOspiId": "3163"
+                }
+            ]
+        },
+      "card": {
+        "cardid": 1,
+        "cardname": "allwin",
+        "cardlimit": 1.11
+      }
+    },
+    "exchangeRates": [
+      {
+        "id": 1,
+        "name": "allwin",
+        "value": 1.11
+      }
+    ],
+    "payeeDetails": {
+      "payeeName": "paydetail",
+      "payeeType": "visa"
+    },
+    "descriptions": [
+      "data"
+    ]
+}
