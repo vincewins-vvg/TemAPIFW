@@ -15,4 +15,3 @@ copy %DOCKER_ENV_LOCATION%\ENV.env .env > NUL
 
 REM Now run Docker Compose
 docker-compose -f kafka.yml -f paymentordercassandra.yml %*
-	
