@@ -14,12 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.temenos.microservice.framework.test.dao.Item;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
 import com.temenos.microservice.framework.test.dao.DaoFactory;
+import com.temenos.microservice.framework.test.dao.Item;
 
 import io.netty.util.internal.StringUtil;
 
@@ -140,13 +140,9 @@ public class ITTest {
 
 	public static void clearRecords(String paymentOrderId, String debitAccount) {
 		deleteAllRecords("ms_payment_order_ExchangeRate");
-		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "array_BusDayCentres");
-		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "paymentOrderProduct");
-		deletePaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", paymentOrderId,"name", "eq", "string", "array_NonOspiType");
-		deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", paymentOrderId, "debitAccount",
-				"eq", "string", debitAccount);
-		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
-				"PayRef");
+		deleteAllRecords("PaymentOrder_extension");
+		deleteAllRecords("ms_payment_order");
+		deleteAllRecords("ms_reference_data");
 		deleteAllRecords("ms_payment_order_ExchangeRate");
 		deleteAllRecords("ExchangeRate");
 		deleteAllRecords("PaymentMethod");
