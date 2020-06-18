@@ -13,4 +13,4 @@ jar uf $INGESTER_ENV_LOCATION/ms-paymentorder-ingester.jar -C $INGESTER_ENV_LOCA
 cp -f ${DOCKER_ENV_LOCATION}/ENV.env .env
 
 # Now run Docker Compose
-docker-compose -f kafka.yml -f paymentorder.yml $@
+docker-compose -f kafka.yml -f paymentordercassandra.yml $@
