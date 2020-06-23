@@ -75,6 +75,6 @@
 	<import resource="classpath*:/services/**/provider-*-v*.*.*.xml" />
     <import resource="classpath*:/services/**/publish-*-v*.*.*.xml" />
     <import resource="classpath*:/config/**/spring-*.xml" />
-
+	<import resource="classpath*:*infra-v1.0.0.xml" />
 	<import resource="classpath*:/services/**/*-service-v*.*.*.xml" />
 </beans>
