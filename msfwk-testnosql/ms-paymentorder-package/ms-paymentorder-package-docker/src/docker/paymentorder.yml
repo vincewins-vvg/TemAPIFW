@@ -87,7 +87,7 @@ services:
     depends_on:
       - db-service
     ports:
-      - "40518:40588"
+      - "40518:40500"
       - "8082:8080"
     environment:
       DATABASE_KEY: cassandra
@@ -119,6 +119,9 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
