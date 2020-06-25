@@ -1,5 +1,7 @@
 package com.temenos.microservice.paymentorder.ingester;
 
+import static com.temenos.microservice.framework.core.logger.constants.LoggerConstants.FUNCTION_DIAGNOSTIC;
+
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.EventProcessor;
 import com.temenos.microservice.framework.core.data.DaoFactory;
@@ -18,10 +20,14 @@ public class EventHandlerImpl implements EventProcessor {
 		PaymentOrder paymentOrder = null;
 		String paymentOrderId = "";
 
-		noSqlDao = DaoFactory.getNoSQLDao(PaymentOrder.class);
-		paymentOrderId = JsonUtil.readField(event.getPayload(), "paymentOrderId");
-		paymentOrder = noSqlDao.getByPartitionKey(paymentOrderId).get();
-		paymentOrder.setStatus("Completed");
-		noSqlDao.saveEntity(paymentOrder);
+		if ("POAccepted".equalsIgnoreCase(eventType)) {
+			FUNCTION_DIAGNOSTIC.prepareInfo("Received POAccepted event!").log();
+		} else {
+			noSqlDao = DaoFactory.getNoSQLDao(PaymentOrder.class);
+			paymentOrderId = JsonUtil.readField(event.getPayload(), "paymentOrderId");
+			paymentOrder = noSqlDao.getByPartitionKey(paymentOrderId).get();
+			paymentOrder.setStatus("Completed");
+			noSqlDao.saveEntity(paymentOrder);
+		}
 	}
 }
