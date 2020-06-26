@@ -43,14 +43,27 @@
 	<jpa:repositories
 		base-package="com.temenos.microservice.payments.entity" />
 
-	<bean name="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<!-- ${db.host.url} -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="poolName" value="springHikariCP" />
+		<property name="jdbcUrl"
+			value="#{dbProperties['connectionurl']}" />
 		<property name="driverClassName"
-			value="#{dbProperties['driver']}" />
-		<property name="url" value="#{dbProperties['connectionurl']}" />
-		<property name="username" value="#{dbProperties['username']}" />
-		<property name="password" value="#{dbProperties['password']}" />
+			value="#{dbProperties['driver']}"/>
+		<property name="username"
+			value="#{dbProperties['username']}" />
+		<property name="password"
+			value="#{dbProperties['password']}" />
+		<property name="maximumPoolSize"
+			value="#{dbProperties['maxpoolsize']}" />
+		<property name="minimumIdle"
+			value="#{dbProperties['minpoolsize']}" />
+		<property name="leakDetectionThreshold" value="100" />		
+	</bean>
+
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
 	</bean>
 
 	<bean name="hibernateJpaVendorAdapter"
@@ -58,6 +71,7 @@
 		<property name="generateDdl" value="true" />
 		<property name="showSql" value="true" />
 	</bean>
+
 	<!-- EntityManagerFactory -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
@@ -83,7 +97,6 @@
 			</props>
 		</property>
 	</bean>
-
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
 	<bean id="transactionManager"
