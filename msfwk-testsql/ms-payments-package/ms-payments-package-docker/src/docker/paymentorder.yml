@@ -50,6 +50,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
       className_CreateNewPaymentOrders: com.temenos.microservice.payments.function.CreateNewPaymentOrdersImpl
       className_UpdateNewPaymentOrders: com.temenos.microservice.payments.function.UpdateNewPaymentOrdersImpl
@@ -104,6 +106,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -148,6 +152,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -189,6 +195,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -233,6 +241,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -272,7 +282,9 @@ services:
       DB_PASSWORD: root
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
-      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments 
+      DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10        
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -325,6 +337,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -367,6 +381,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -409,6 +425,8 @@ services:
       DRIVER_NAME: com.mysql.jdbc.Driver
       DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
+      MAX_POOL_SIZE: 150
+      MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
