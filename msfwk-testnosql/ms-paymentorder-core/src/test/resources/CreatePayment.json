@@ -1,7 +1,7 @@
 {
 	"eventId": "4316e8-3ca-9-b-8728",
 	"dateTime": "2019-10-21T00:49:35",
-	"eventType": "PaymentOrder.createNewPaymentOrder",
+	"eventType": "ms-paymentorder.createNewPaymentOrder",
 	"payload": {
 		"body": {
 			"fromAccount": "1733",
