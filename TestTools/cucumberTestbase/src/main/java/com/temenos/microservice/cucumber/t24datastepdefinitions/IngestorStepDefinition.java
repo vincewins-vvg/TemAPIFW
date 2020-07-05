@@ -94,6 +94,16 @@ public class IngestorStepDefinition {
         testCase.setT24Payload(readResource("/" + resourcePath));
         avroProducer.sendGenericEvent(testCase.getT24Payload(), applicationName);
     }
+    
+    //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
+    @When("^Send Data to Topic (.*) from file ([^\\s]+) for Application ([^\\s]+)$")
+    public void sendDataToMentionedTopic(String topicName,String resourcePath, String applicationName) throws Exception {
+        System.setProperty("temn.msf.ingest.sink.stream", topicName);
+        avroProducer = new AvroProducer("table-update-holdings", Environment
+                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+        testCase.setT24Payload(readResource("/" + resourcePath));
+        avroProducer.sendGenericEvent(testCase.getT24Payload(), applicationName);
+    }
 
     @When("^Send Data to Topic for following records$")
     public void sendDataToTopic(DataTable dataTable) throws Exception {
@@ -144,7 +154,7 @@ public class IngestorStepDefinition {
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")
     public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(60, () -> {
+      dataMap = RetryUtil.getWithRetry(60, () -> {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
@@ -165,7 +175,47 @@ public class IngestorStepDefinition {
             }
         });
     }
+    
+    //To check if an entry is not present in DB
+    @Then("^Validate if below details not present in db table ([^\\s]+)$")
+    public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
+//      dataMap = RetryUtil.getWithRetry(60, () -> {
+            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+            System.out.println("map content"+dataMap);
+            System.out.println("map size" +dataMap.size());
 
+        if (dataMap.size() > 0) {
+            throw new Exception("a record in table " + tableName + " is present for this transaction");
+        }
+    }
+
+    //To check entries in DB table and also the no of rows for the mentioned criteria/condition
+    @Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
+    public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable) throws Exception {
+      dataMap = RetryUtil.getWithRetry(60, () -> {
+            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+            return (dataMap.size() != 0 ? dataMap : null);
+        }, " Getting DB records from table: " + tableName);
+        if (dataMap.size() != recordCount) {
+            throw new Exception("record(s) in table " + tableName + " is not equal to no of records "+recordCount+" specified in step");
+        }
+        List<Attribute> data = dataMap.get(Integer.valueOf(1));
+        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+        tableValues.forEach(tableValue -> {
+            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                data.forEach(attribute -> {
+                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+                        assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
+                    }
+                });
+            }
+        });
+    }
+
+    
+    
     private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
         return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: "
                 + tableName + " for column" + columnName.toString() + " expected value: " + expected.toString() + " actual value: " + actual.toString();
