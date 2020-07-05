@@ -337,6 +337,7 @@ public class MS_RestAssuredCucumberSteps {
         String bundleValueStore = cucumberInteractionSession.scenarioBundle()
                 .getString(bundleValue.replace("{", "").replace("}", ""));
         request.header(headerName, bundleValueStore);
+        
     }
 
     @Given("^the MS request body is set to the contents of \"(.*)\"$")
@@ -1196,13 +1197,19 @@ public class MS_RestAssuredCucumberSteps {
      System.out.println(expectedResponse);
      //Lenient mode will ignore any missing fields in JSON
      //JSONAssert.assertEquals(expected, data, false);
-     assertThat(
-             actualJSONResponse ,
-             sameJSONAs(expectedResponse) 
-                 .allowingExtraUnexpectedFields()
-                 .allowingAnyArrayOrdering());
+     assertThat(actualJSONResponse,sameJSONAs(expectedResponse).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
     
      }
+     
+     //To check if response complies with the JSON schema
+//     @Then("^check if response complies with schema from file path \"(.*)\"$")
+//     public void checkResponseMatchesSchema(String
+//     schemaPath) throws Throwable {
+//    
+//     File poSchema = new File(schemaPath);
+//     response.then().assertThat().body(matchesJsonSchema(poSchema));
+//    
+//     }
 
     private <T extends Object> void checkType(T object) {
         if (object instanceof Integer)
