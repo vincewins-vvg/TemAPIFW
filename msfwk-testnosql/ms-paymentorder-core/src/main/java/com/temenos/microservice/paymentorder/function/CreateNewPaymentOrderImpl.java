@@ -3,12 +3,16 @@ package com.temenos.microservice.paymentorder.function;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.text.ParseException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.temenos.inboxoutbox.core.GenericCommand;
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -17,13 +21,15 @@ import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
+import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
-import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
+import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 
@@ -62,15 +68,15 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		}
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
 		// Business event raised from payment order microservice
-		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
-		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
-		paymentOrderEvent.setAmount(entity.getAmount());
-		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
-		paymentOrderEvent.setCurrency(entity.getCurrency());
-		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
+		POAcceptedEvent poAcceptedEvent = new POAcceptedEvent();
+		poAcceptedEvent.setPaymentOrderId(entity.getPaymentOrderId());
+		poAcceptedEvent.setAmount(entity.getAmount());
+		poAcceptedEvent.setCreditAccount(entity.getCreditAccount());
+		poAcceptedEvent.setCurrency(entity.getCurrency());
+		poAcceptedEvent.setDebitAccount(entity.getDebitAccount());
 
-		EventManager.raiseBusinessEvent(ctx,
-				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", poAcceptedEvent));
+		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
 	}
 
@@ -152,4 +158,30 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		return paymentStatus;
 	}
 
+	public void raiseCommandEvent(Context ctx, com.temenos.microservice.paymentorder.entity.PaymentOrder entity) {
+		GenericCommand updateCommand = new GenericCommand();
+
+		updateCommand.setDateTime(new Date());
+		updateCommand.setEventId(UUID.randomUUID().toString());
+		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
+		updateCommand.setStatus("New");
+
+		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
+		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
+
+		PaymentStatus paymentStatus = new PaymentStatus();
+		paymentStatus.setDebitAccount("1111");
+		paymentStatus.setDetails("Payment order updated");
+		paymentStatus.setPaymentId("1111~1112~USD~100");
+
+		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
+
+		try {
+			updateCommand.setPayload(JsonUtil.writeValueAsString(input));
+		} catch (JsonProcessingException e) {
+
+		}
+
+		EventManager.raiseCommandEvent(ctx, updateCommand);
+	}
 }

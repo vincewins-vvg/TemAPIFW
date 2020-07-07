@@ -596,6 +596,13 @@
 									</includes>
 									<targetPath>WEB-INF/classes/properties</targetPath>
 								</resource>
+								<resource>
+									<directory>${project.build.directory}/tmp/msEar/msWar/WEB-INF/classes/</directory>
+									<includes>
+										<include>infra-v1.0.0.xml</include>
+									</includes>
+									<targetPath>WEB-INF/classes</targetPath>
+								</resource>
 							</webResources>
 							<archive>
 								<manifest>
