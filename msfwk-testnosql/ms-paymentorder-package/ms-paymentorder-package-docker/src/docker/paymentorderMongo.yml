@@ -4,15 +4,6 @@
 
 version: '3.6'
 services:
-  cache-service:
-    build:
-      context: ${CACHE_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        CACHE_BASE_IMAGE: ${CACHE_BASE_IMAGE}
-    image: ${CACHE_BASE_IMAGE}
-    ports:
-      - "10800:10800"
   db-service1:
     build:
       context: ${MONGO_DB_CONTEXT}
@@ -84,10 +75,7 @@ services:
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
+      temn.queue.impl: kafka
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
@@ -130,6 +118,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.consumer.max.poll.records: "1"
+      temn.queue.impl: kafka
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
@@ -146,7 +135,6 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
     depends_on:
-      - cache-service
       - db-service1
       - db-service2
       - db-service3      
@@ -169,9 +157,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       tmn.inbox.source.namespace: paymentorder-inbox
       tmn.outbox.source.namespace: paymentorder-outbox
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
+      temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10  
   ingesterbinary:
@@ -201,7 +187,7 @@ services:
       temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic
       temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
-      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester
+      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
       temn.msf.exec.env: server
       temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
       class.package.name: com.temenos.microservice.paymentorder.function
@@ -209,10 +195,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
-      temn.msf.ingest.inbox.cache.namespace: paymentorder-inbox
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
+      temn.queue.impl: kafka
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
