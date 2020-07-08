@@ -283,6 +283,11 @@ components:
         fileContent:
           type: string
           format: binary
+        fileReadWrite:
+          type: string
+          format: binary
+        fileOverWrite:
+          type: boolean
         paymentDate:
           type: string
           format: date  
@@ -324,6 +329,9 @@ components:
           type: string
         details:
           type: string
+        fileReadWrite:
+          type: string
+          format: binary
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

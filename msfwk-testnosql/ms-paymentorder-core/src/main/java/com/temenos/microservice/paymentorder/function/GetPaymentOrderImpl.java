@@ -1,14 +1,24 @@
 package com.temenos.microservice.paymentorder.function;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
+
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
+import com.temenos.microservice.framework.core.file.reader.FileReader;
+import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
+import com.temenos.microservice.framework.core.file.reader.FileReaderException;
+import com.temenos.microservice.framework.core.file.reader.FileReaderFactory;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
@@ -92,6 +102,22 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 				payeeDtls.setPayeeName(paymentOrder.getPayeeDetails().getPayeeName());
 				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
 				order.setPayeeDetails(payeeDtls);
+			}
+			try {
+				String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
+				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
+				if(StorageUrl != null && STORAGE_HOME != null) {
+						FileReader ap = FileReaderFactory.getFileReaderInstance();
+						InputStream is = ap.getFileAsInputStream(StorageUrl);
+						byte[] bytes = IOUtils.toByteArray(is);
+						ByteBuffer bbp = ByteBuffer.wrap(bytes);
+						paymentStatus.setFileReadWrite(bbp);		
+				}
+				} catch (FileReaderException e ) {
+					throw new InvalidInputException(e.getFailureMessages());
+				}
+				catch (IOException e) {
+					throw new InvalidInputException(e.getMessage());
 			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);

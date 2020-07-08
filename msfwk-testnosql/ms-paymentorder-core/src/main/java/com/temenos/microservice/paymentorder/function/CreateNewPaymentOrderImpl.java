@@ -1,5 +1,8 @@
 package com.temenos.microservice.paymentorder.function;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -9,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.apache.commons.io.IOUtils;
+
 import java.text.ParseException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +24,13 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
+import com.temenos.microservice.framework.core.file.reader.FileReader;
+import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
+import com.temenos.microservice.framework.core.file.reader.FileReaderException;
+import com.temenos.microservice.framework.core.file.reader.FileReaderFactory;
+import com.temenos.microservice.framework.core.file.writer.FileWriter;
+import com.temenos.microservice.framework.core.file.writer.FileWriterException;
+import com.temenos.microservice.framework.core.file.writer.FileWriterFactory;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
@@ -41,6 +54,8 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
  */
 public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	private boolean isCreated;
+	private String storageURL = "FILE_STORAGE_URL";
 
 	@Override
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
@@ -48,6 +63,27 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		PaymentOrder paymentOrder = input.getBody().get();
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
+		
+		try {
+			if(paymentOrder.getFileReadWrite() != null) {
+				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
+				if(StorageUrl != null) {
+					FileWriter ap = FileWriterFactory.getFileWriterInstance();				
+						byte[] arr = new byte[paymentOrder.getFileReadWrite().remaining()];
+						paymentOrder.getFileReadWrite().get(arr);
+						InputStream myInputStream = new ByteArrayInputStream(arr); 
+						if(paymentOrder.getFileOverWrite() == true) {
+						ap.uploadFileAsInputStream(StorageUrl, myInputStream,true);		
+						}
+						else {
+						ap.uploadFileAsInputStream(StorageUrl, myInputStream,false);	
+						}
+						isCreated = true;
+				}	
+			}
+			} catch (FileWriterException e) {
+				throw new InvalidInputException(e.getMessage());
+			}
 
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		return paymentStatus;
@@ -155,6 +191,25 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 		paymentStatus.setStatus(paymentOrder.getStatus());
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
+		try {
+			if(isCreated) {
+			String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
+			String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
+			if(StorageUrl != null) {
+					FileReader ap = FileReaderFactory.getFileReaderInstance();
+					InputStream is = ap.getFileAsInputStream(StorageUrl);
+					byte[] bytes = IOUtils.toByteArray(is);
+					ByteBuffer bbp = ByteBuffer.wrap(bytes);
+					paymentStatus.setFileReadWrite(bbp);		
+					isCreated = false;
+			}
+			}
+			} catch (FileReaderException e ) {
+				throw new InvalidInputException(e.getFailureMessages());
+			}
+			catch (IOException e) {
+				throw new InvalidInputException(e.getMessage());
+			}
 		return paymentStatus;
 	}
 
@@ -163,7 +218,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		updateCommand.setDateTime(new Date());
 		updateCommand.setEventId(UUID.randomUUID().toString());
-		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
+		updateCommand.setEventType(Environment.getMSName() + "UpdatePaymentOrder");
 		updateCommand.setStatus("New");
 
 		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
