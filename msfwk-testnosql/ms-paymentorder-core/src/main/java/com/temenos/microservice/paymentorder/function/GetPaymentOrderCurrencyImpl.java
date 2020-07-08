@@ -41,8 +41,7 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 		} else {
 			entities = paymentOrderDao.get();
 		}
-
-		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
+		PaymentOrders orders = new PaymentOrders();
 		for (com.temenos.microservice.paymentorder.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
@@ -76,7 +75,7 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
-				
+
 				com.temenos.microservice.paymentorder.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorder.view.PayeeDetails();
 				if (entity.getPayeeDetails() != null) {
 					payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
@@ -84,10 +83,8 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 					view.setPayeeDetails(payeeDtls);
 				}
 			}
-			views.add(view);
+			orders.add(view);
 		}
-		PaymentOrders orders = new PaymentOrders();
-		orders.addItems(views.toArray(new PaymentOrder[0]));
 		return orders;
 	}
 
