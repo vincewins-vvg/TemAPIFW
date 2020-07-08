@@ -79,6 +79,8 @@ services:
       className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
+      className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+      className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
