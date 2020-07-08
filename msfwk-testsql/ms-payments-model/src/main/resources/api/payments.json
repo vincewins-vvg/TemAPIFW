@@ -8,6 +8,9 @@ tags:
 - name: Payments
   description: A collection of Payments APIs
   
+servers:
+- url: http://localhost:8090/ms-payments-api/api
+  
 paths:
   /payments/orders:
     post:
@@ -27,7 +30,47 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
-                
+  /payments/upload:
+    post:
+      tags:
+      - Payments
+      summary: "uploads an document"
+      description: ""
+      operationId: "FileUpload"
+      requestBody:
+        description: "file to upload"
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FileUploadRequest"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/download/{fileName}:
+    get:
+      tags:
+      - Payments
+      parameters:
+      - name: fileName
+        in: path
+        description: FileName
+        required: true
+        schema:
+          type: string
+      summary: "downloads an document"
+      description: ""
+      operationId: "FileDownload"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/octet-stream:
+              schema:
+                 $ref: '#/components/schemas/UploadApiResponse'
   /payments/allorders:
     post:
       summary: Creates all the payment orders in a list (Bulk)
@@ -361,3 +404,54 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/FailureMessage"
+    DocumentDetails:
+      type: "object"
+      properties:
+        documentId:
+          type: string
+        documentName:
+          type: string
+    ApiResponse:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        type:
+          type: "string"
+        message:
+          type: "string"
+    FileUploadRequest:
+      type: object
+      properties:
+        documentDetails:
+          allOf:
+          - $ref: '#/components/schemas/DocumentDetails'
+        documentFile:
+          type: array
+          items:
+            type: string
+            format: binary
+    BinaryContent:
+     type: "object"
+     properties:
+      documentFile:
+        type: string
+        format: binary
+      filename:
+        type: string
+    UploadApiResponse:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        type:
+          type: "string"
+        message:
+          type: "string"
+        binaryfile:
+          type: array
+          items:
+            $ref: '#/components/schemas/BinaryContent'
+       

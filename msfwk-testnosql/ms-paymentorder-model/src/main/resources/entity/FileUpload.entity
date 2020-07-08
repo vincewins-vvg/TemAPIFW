@@ -1,0 +1,28 @@
+{
+  "name": "FileUpload",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "tableName": "ms_file_upload",
+  "isExtendable": true,
+  "properties": [
+    {
+      "name": "name",
+      "type": "string",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]  
+    },
+    {
+      "name": "mimetype",
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "type": "string"
+    },
+    {
+      "name": "documentdetails",
+      "type": "userdefined",
+      "childentity": "DocumentDetails"
+    }
+  ]
+}

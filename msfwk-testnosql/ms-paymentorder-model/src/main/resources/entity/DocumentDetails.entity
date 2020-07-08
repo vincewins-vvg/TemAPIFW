@@ -1,0 +1,20 @@
+{
+  "name": "DocumentDetails",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "tableName": "",
+  "isExtendable": true,
+  "properties": [
+    {
+      "name": "id",
+      "type": "string"     
+    },
+    {
+      "name": "documentId",
+      "type": "string"
+    },
+    {
+      "name": "documentName",
+      "type": "string"
+    }
+  ]
+}
