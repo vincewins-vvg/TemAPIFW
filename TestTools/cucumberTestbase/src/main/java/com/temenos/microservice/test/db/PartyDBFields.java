@@ -3,7 +3,7 @@ package com.temenos.microservice.test.db;
 public enum PartyDBFields {
 
 OLD_PARTY_ID("partyid"),
-PARTY_ID("identifierNumber"),
+PARTY_ID("identityNumber"),
 LEGAL_ENTITY_ID("legalentityid");
 
     private String name;

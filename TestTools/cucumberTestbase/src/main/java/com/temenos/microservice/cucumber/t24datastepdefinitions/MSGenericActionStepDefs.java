@@ -177,15 +177,6 @@ public class MSGenericActionStepDefs implements En {
         And(format("^set bundle {0} with unique identifier value$", stepConfig.stringRegEx()),
                 (String key) -> setBundleStringValue(key));
         
-
-        //ExecuteOFSString.testOFSStringWithRecordId(cucumberInteractionSession.scenarioBundle().getString(RecordId),OfsMessageWithId);
-        //DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),cucumberInteractionSession.scenarioBundle().getString(RecordId));
-        
-            /* Examples:
-         * And set bundle "uniqID" with "4" characters "alphabet" unique identifier value 
-         * And set bundle "uniqID" with "7" characters "alphanumeric" unique identifier value 
-         * And set bundle "uniqID" with "2" characters "numeric" unique identifier value 
-         */
         
         And(format("^set bundle {0} with {0} characters {0} unique identifier value$", stepConfig.stringRegEx()),
                 (String key, String number, String type) -> setBundleUniqueValue(key, number, type));
@@ -277,6 +268,28 @@ public class MSGenericActionStepDefs implements En {
                 }
                 
                 });
+        
+     // ** Use the below step to input a OFS String/Message and store the customer id
+        // and company code in a key , use this when customer id and company code gets
+        // auto generated during runtime/ ofs string execution. - delivered and used by Infinity team
+        And(format("^(?:I ?)*post an OFS Message and then store customer id and company code in {0} and message {0}$",
+                stepConfig.stringRegEx()), (String customerIdKey, String OfsString) -> {
+                    CompanyIdandCustomerIdFromOFSString(customerIdKey, OfsString);
+
+                    // To differntiate between old and new party ms
+                    String runnerClassName = Environment.getEnvironmentVariable("test", "");
+                    if (runnerClassName.equals("MSE2ETests")) {
+                        DbcolumnValues.put(PartyDBFields.PARTY_ID.getName(),
+                                cucumberInteractionSession.scenarioBundle().getString(customerIdKey));
+                    }
+
+            else if (runnerClassName.equals("MSEndToEndTest")) {
+                        DbcolumnValues.put(PartyDBFields.OLD_PARTY_ID.getName(),
+                                cucumberInteractionSession.scenarioBundle().getString(customerIdKey));
+
+                    }
+
+                });
 
 
       //** Use the below step to check if the record id created is present in any t24 table
@@ -308,6 +321,35 @@ public class MSGenericActionStepDefs implements En {
                         t24DAO.checkFDataEventsEntryStatus(id,tableName);
                     }
                     
+                });
+        
+        
+        // ** Use the below step to check if the customer id created is present in the
+        // F_DATA_EVENTS table has been processed - delivered and used by Infinity team
+        Then(format("^check if the customer id value without company code {0} in t24 table {0} has been processed$",
+                stepConfig.stringRegEx()), (String id, String tableName) -> {
+                    T24DAO t24DAO = new T24DAO();
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(id);
+                    String idSplitValue = bundleValue.split("-")[1];
+//                    System.out.println("Removing company code" + idSplitValue);
+                    
+                    t24DAO.checkFDataEventsEntryStatus(idSplitValue, tableName);
+                   
+
+                });
+        
+     // ** Use the below step to check if the customer id created is present in any
+        // t24 table - delivered and used by Infinity team
+        Then(format(
+                "^verify if entry for customer id value without company code {0} is present in t24 table {0}$",
+                stepConfig.stringRegEx()), (String id, String tableName) -> {
+                    T24DAO t24DAO = new T24DAO();
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(id);
+                    String idSplitValue = bundleValue.split("-")[1];
+                    //System.out.println("Removing company code" + idSplitValue);
+                    
+                    t24DAO.executeQuery(idSplitValue, tableName);
+                
                 });
     }
 
@@ -545,6 +587,35 @@ public class MSGenericActionStepDefs implements En {
         
         System.out.println("Record Id in OFS message is" + idFromResponseContent);
         return cucumberInteractionSession.scenarioBundle().put(key, idFromResponseContent);
+    }
+    //For returning a comnbination of Customer Id and Company Code as Id - delivered and used by Infinity team
+    public Object CompanyIdandCustomerIdFromOFSString(String cusKey, String OFS) {
+
+        Random random = new Random();
+        int threeNos = random.nextInt(900);
+        String responseContents = null;
+
+        if (OFS.contains("mnemonicvalue"))
+
+        {
+            String ofsMsgWithGenValues = OFS.replace("mnemonicvalue", "CUS" + threeNos);
+            responseContents = JsonUtil.ExecuteOfsMessage(ofsMsgWithGenValues);
+        } else {
+            responseContents = JsonUtil.ExecuteOfsMessage(OFS);
+        }
+
+        String cusidFromResponseContent = responseContents.split("/")[0];
+        System.out.println("Customer Id in OFS message is" + cusidFromResponseContent);
+
+        String compidFromResponseContent = responseContents.split(",")[33].split("/")[0];
+        System.out.println("Company Id in OFS message is" + compidFromResponseContent);
+
+        String idFromResponseContent = compidFromResponseContent + "-" + cusidFromResponseContent;
+        String CuscompidFromResponseContent = idFromResponseContent.substring(12, 28);
+
+        System.out.println("Record Id in OFS message is" + CuscompidFromResponseContent);
+        return cucumberInteractionSession.scenarioBundle().put(cusKey, CuscompidFromResponseContent);
+
     }
     
     public Object currentSystemDate(String key) {
