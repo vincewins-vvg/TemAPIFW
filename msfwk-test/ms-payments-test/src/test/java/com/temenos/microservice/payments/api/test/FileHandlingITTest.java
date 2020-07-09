@@ -29,7 +29,6 @@ import com.temenos.microservice.framework.core.conf.Environment;
 
 import junit.framework.Assert;
 
-@Ignore
 public class FileHandlingITTest extends ITTest {
 
 	@Before
@@ -54,7 +53,6 @@ public class FileHandlingITTest extends ITTest {
 
 	@Test
 	public void testAFileUpload() {
-		System.out.println("Started !! ");
 		String uri = getUri();
 		uri = uri + "/payments/upload" + ITTest.getCode("FILE_UPLOAD_AUTH_CODE");
 		final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
@@ -69,7 +67,6 @@ public class FileHandlingITTest extends ITTest {
 			final Response response = target.request().header("roleId", "ADMIN")
 					.post(Entity.entity(multipart, multipart.getMediaType()));
 			assertNotNull(response);
-			System.out.println("End !! " + response);
 
 			formDataMultiPart.close();
 			multipart.close();
@@ -93,7 +90,7 @@ public class FileHandlingITTest extends ITTest {
 			while ((str = reader.readLine()) != null) {
 				sb.append(str);
 			}
-			System.out.println("download : "+sb.toString());
+			System.out.println("Response : "+sb.toString());
 			assertTrue(sb.toString().contains("The multipart/byteranges content type"));
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
