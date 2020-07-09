@@ -198,6 +198,9 @@ public class MSGenericActionStepDefs implements En {
         
         And(format("^(?:I ?)*set current system date value to bundle {0}$", stepConfig.stringRegEx()),
                 (String key) -> currentSystemDate(key));
+				
+		And(format("^(?:I ?)*set formatted current system date value to bundle {0}$", stepConfig.stringRegEx()),
+                (String key) -> currentSystemDateFormat(key));
 
         And(format("^(?:I ?)*set business working day value to bundle {0}$", stepConfig.stringRegEx()),
                 (String key) -> businessWorkingDays(key));
@@ -627,7 +630,16 @@ public class MSGenericActionStepDefs implements En {
         return cucumberInteractionSession.scenarioBundle().put(key, currentSystemDate);
 
     }
+	
+	public Object currentSystemDateFormat(String key) {
 
+        LocalDate date = LocalDate.now();
+
+        String systemDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(date);
+        String currentSystemDateFormat = systemDate.replace("/", "-");
+        return cucumberInteractionSession.scenarioBundle().put(key, currentSystemDateFormat);
+
+    }
     public Object businessWorkingDays(String key) {
 
         LocalDate date = LocalDate.now();
