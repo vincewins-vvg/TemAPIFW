@@ -13,44 +13,19 @@ services:
     image: ${CACHE_BASE_IMAGE}
     ports:
       - "10800:10800"
-  db-service1:
+  db-service:
     build:
-      context: ${MONGO_DB_CONTEXT}
+      context: ${DB_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    container_name: 'mongo1'
+        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+    image: ${DB_IMAGE}
+    shm_size: '1gb'
     ports:
-      - "30001:27017"
-  db-service2:
-    build:
-      context: ${MONGO_DB_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    container_name: 'mongo2'
-    ports:
-      - "30002:27017" 
-  db-service3:
-    build:
-      context: ${MONGO_DB_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    container_name: 'mongo3'
-    ports:
-      - "30003:27017"
-  mongosetup:
-    container_name: 'mongoinit'
-    build:
-      context: ${MONGO_INIT_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - "9047:9042" 
+    environment:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+  
   api:
     build:
       context: ${API_CONTEXT}
@@ -61,16 +36,20 @@ services:
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "8090:8080"
       - "40509:40500"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
       className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
       className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
@@ -78,20 +57,18 @@ services:
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
-      className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
-      className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: localhost
+      IRIS_HOST_IP: 10.92.14.71
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
@@ -108,16 +85,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
-      - "40518:40500"
+      - "40518:40588"
       - "8082:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -133,14 +114,11 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.consumer.max.poll.records: "1"
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: localhost
+      IRIS_HOST_IP: 10.92.14.71
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
-      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
-      temn.msf.pdp.resource.type: API
-      temn.msf.pdp.resource.manager: PAYMENT
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -151,16 +129,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40508:40500"
       - "8083:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -189,16 +171,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40510:40500"
       - "8084:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -219,7 +205,7 @@ services:
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
-      IRIS_HOST_IP: localhost
+      IRIS_HOST_IP: 10.92.14.71
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
@@ -234,16 +220,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40511:40501"
       - "8085:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD:
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -273,16 +263,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40512:40500"
       - "8086:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD:
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -300,6 +294,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
+
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -310,16 +305,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40513:40500"
       - "8087:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD:
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -337,6 +336,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
+      
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -347,16 +347,20 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+      - db-service
     ports:
       - "40516:40500"
       - "8088:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -374,6 +378,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
+
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -385,16 +390,19 @@ services:
     image: ${INBOXOUTBOX_IMAGE}
     depends_on:
       - cache-service
-      - db-service1
-      - db-service2
-      - db-service3      
     ports:
       - "40514:40500"
       - "8089:8080"
     environment:
-      DATABASE_KEY: mongodb
-      MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      DATABASE_KEY: cassandra
+      CASSANDRA_HOST: db-service
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASS:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+      CASSANDRA_SSL: 
+      CASSANDRA_KEYSTORE_FILE_PATH:
+      CASSANDRA_KEYSTORE_PASSWORD: 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -411,4 +419,4 @@ services:
       tmn.ignite.host: cache-service
       tmn.ignite.port: 10800
       tmn.inbox.thread.pool.count: 10
-      tmn.outbox.thread.pool.count: 10  
+      tmn.outbox.thread.pool.count: 10

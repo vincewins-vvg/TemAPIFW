@@ -313,7 +313,7 @@
          </Condition>
       </Rule>
    </Policy>
-   <Policy PolicyId="permit-fileUpload" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+   <Policy PolicyId="permit-getHealthCheck" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />
       <PolicyDefaults>
          <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -326,7 +326,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">FileUpload</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">getHealthCheck</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -336,13 +336,14 @@
             </AllOf>
          </AnyOf>
       </Target>
-      <Rule RuleId="permit-fileUpload" Effect="Permit">
+      <Rule RuleId="permit-getHealthCheck" Effect="Permit">
          <Description />
          <Condition>
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
          </Condition>
       </Rule>
    </Policy>
+
    <Policy PolicyId="permit-fileDownload" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />
       <PolicyDefaults>
@@ -367,6 +368,36 @@
          </AnyOf>
       </Target>
       <Rule RuleId="permit-fileDownload" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   
+    <Policy PolicyId="permit-fileUpload" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">FileUpload</AttributeValue>
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-fileUpload" Effect="Permit">
          <Description />
          <Condition>
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
