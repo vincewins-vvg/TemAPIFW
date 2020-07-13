@@ -1203,11 +1203,13 @@ public class MS_RestAssuredCucumberSteps {
      
      //To check if response complies with the JSON schema
 //     @Then("^check if response complies with schema from file path \"(.*)\"$")
-//     public void checkResponseMatchesSchema(String
-//     schemaPath) throws Throwable {
+//     public void checkResponseMatchesSchema(String schemaPath) throws Throwable {
 //    
 //     File poSchema = new File(schemaPath);
-//     response.then().assertThat().body(matchesJsonSchema(poSchema));
+//     
+//     System.out.println("Schema is: "+poSchema.toString());
+//     System.out.println("response :"+response.body().asString());
+//     response.then().body(matchesJsonSchema(poSchema));
 //    
 //     }
 
