@@ -1,6 +1,7 @@
 package com.temenos.microservice.paymentorder.function;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -13,7 +14,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.ws.rs.InternalServerErrorException;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.kafka.common.errors.InvalidConfigurationException;
 
 import java.text.ParseException;
 
@@ -63,29 +67,47 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		PaymentOrder paymentOrder = input.getBody().get();
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
-		
+		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
 			if(paymentOrder.getFileReadWrite() != null) {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
 				if(StorageUrl != null) {
-					FileWriter ap = FileWriterFactory.getFileWriterInstance();				
-						byte[] arr = new byte[paymentOrder.getFileReadWrite().remaining()];
-						paymentOrder.getFileReadWrite().get(arr);
-						InputStream myInputStream = new ByteArrayInputStream(arr); 
+					FileWriter fileWriter = FileWriterFactory.getFileWriterInstance();				
+						byte[] dst = new byte[paymentOrder.getFileReadWrite().remaining()];
+						paymentOrder.getFileReadWrite().get(dst);
+						InputStream content = new ByteArrayInputStream(dst); 
 						if(paymentOrder.getFileOverWrite() == true) {
-						ap.uploadFileAsInputStream(StorageUrl, myInputStream,true);		
+							fileWriter.uploadFileAsInputStream(StorageUrl, content,true);		
 						}
 						else {
-						ap.uploadFileAsInputStream(StorageUrl, myInputStream,false);	
+							fileWriter.uploadFileAsInputStream(StorageUrl, content,false);	
 						}
 						isCreated = true;
 				}	
 			}
-			} catch (FileWriterException e) {
-				throw new InvalidInputException(e.getMessage());
+			if(isCreated) {
+				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
+				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
+				if(StorageUrl != null && STORAGE_HOME != null) {
+					FileReader fileReader = FileReaderFactory.getFileReaderInstance();
+					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
+					byte[] bytes = IOUtils.toByteArray(is);
+					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
+					paymentStatus.setFileReadWrite(fileReadWrite);		
+					isCreated = false;
+				}
 			}
-
-		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
+			} catch (FileWriterException e) {
+				throw new InvalidConfigurationException(e.getMessage().toString(),e);
+			}  catch(InternalServerErrorException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			} catch (FileNotFoundException e ) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			} catch (IOException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			} catch (FileReaderException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			}
 		return paymentStatus;
 	}
 
@@ -191,25 +213,6 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 		paymentStatus.setStatus(paymentOrder.getStatus());
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
-		try {
-			if(isCreated) {
-			String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
-			String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
-			if(StorageUrl != null) {
-					FileReader ap = FileReaderFactory.getFileReaderInstance();
-					InputStream is = ap.getFileAsInputStream(StorageUrl);
-					byte[] bytes = IOUtils.toByteArray(is);
-					ByteBuffer bbp = ByteBuffer.wrap(bytes);
-					paymentStatus.setFileReadWrite(bbp);		
-					isCreated = false;
-			}
-			}
-			} catch (FileReaderException e ) {
-				throw new InvalidInputException(e.getFailureMessages());
-			}
-			catch (IOException e) {
-				throw new InvalidInputException(e.getMessage());
-			}
 		return paymentStatus;
 	}
 

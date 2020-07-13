@@ -1,5 +1,6 @@
 package com.temenos.microservice.paymentorder.function;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -22,6 +23,7 @@ import com.temenos.microservice.framework.core.file.reader.FileReaderFactory;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.EnumCurrency;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 
@@ -107,18 +109,19 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 				String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
 				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
 				if(StorageUrl != null && STORAGE_HOME != null) {
-						FileReader ap = FileReaderFactory.getFileReaderInstance();
-						InputStream is = ap.getFileAsInputStream(StorageUrl);
-						byte[] bytes = IOUtils.toByteArray(is);
-						ByteBuffer bbp = ByteBuffer.wrap(bytes);
-						paymentStatus.setFileReadWrite(bbp);		
+					FileReader fileReader = FileReaderFactory.getFileReaderInstance();
+					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
+					byte[] bytes = IOUtils.toByteArray(is);
+					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
+					paymentStatus.setFileReadWrite(fileReadWrite);
 				}
-				} catch (FileReaderException e ) {
-					throw new InvalidInputException(e.getFailureMessages());
+				} catch (FileNotFoundException e ) {
+					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				} catch (IOException e) {
+					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				} catch (FileReaderException e) {
+					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				}
-				catch (IOException e) {
-					throw new InvalidInputException(e.getMessage());
-			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;
