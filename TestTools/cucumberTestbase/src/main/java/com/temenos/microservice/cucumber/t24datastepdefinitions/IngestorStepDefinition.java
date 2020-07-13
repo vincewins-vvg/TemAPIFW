@@ -5,6 +5,8 @@ import static com.temenos.microservice.test.util.ResourceHandler.readResource;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import com.temenos.des.schema.exception.EventSchemaParseException;
 import com.temenos.des.serializer.serialize.exception.AvroSerializationException;
 import com.temenos.des.serializer.serialize.exception.SchemaRegistryException;
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
+import com.temenos.des.streamvendorio.core.stream.produce.StreamProducer;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
@@ -25,6 +28,7 @@ import com.temenos.microservice.framework.test.streams.ITestProducer;
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
 import com.temenos.microservice.test.producer.AvroProducer;
+import com.temenos.microservice.test.producer.ProducerFactory;
 import com.temenos.microservice.test.util.BuildRequest;
 import com.temenos.microservice.test.util.ResourceHandler;
 import com.temenos.microservice.test.util.RetryUtil;
@@ -47,6 +51,7 @@ public class IngestorStepDefinition {
    
     private TestCase testCase;
     private AvroProducer avroProducer;
+    private ProducerFactory createStreamProducer;
     private ITestProducer t24Producer;
     private List<Criterion> dataCriterions = null;
     Map<Integer, List<Attribute>> dataMap = null;
@@ -96,13 +101,54 @@ public class IngestorStepDefinition {
     }
     
     //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
-    @When("^Send Data to Topic (.*) from file ([^\\s]+) for Application ([^\\s]+)$")
+    @When("^Send Data to Topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
     public void sendDataToMentionedTopic(String topicName,String resourcePath, String applicationName) throws Exception {
+        
+        if(topicName.equals("ms-paymentorder-inbox-topic")==true || topicName.equals("paymentorder-event-topic")==true)
+        
+        {  
+           StreamProducer producer = ProducerFactory.createStreamProducer("itest", Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
+            System.out.println("content:" + content);
+            producer.batch().add(topicName, new String(content).getBytes());
+            try {
+                producer.batch().send();
+            } catch (StreamProducerException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            throw new Exception("Topic name: "+topicName+" is incorrect");
+        }
+
+        
+        
+   
+    }
+    
+  //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
+    @When("^Send Data to Topic ([^\\s]+) for following records$")
+    public void sendDataToMentionedTopics(String topicName,DataTable dataTable) throws Exception {
         System.setProperty("temn.msf.ingest.sink.stream", topicName);
         avroProducer = new AvroProducer("table-update-holdings", Environment
                 .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
-        testCase.setT24Payload(readResource("/" + resourcePath));
-        avroProducer.sendGenericEvent(testCase.getT24Payload(), applicationName);
+        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+        tableValues.forEach(tableValue -> {
+            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                try {
+                    testCase.setT24Payload(readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    avroProducer.sendGenericEvent(testCase.getT24Payload(),
+                            tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
+                } catch (IOException | StreamProducerException | InterruptedException |
+                        AvroSerializationException |  EventSchemaParseException | SchemaRegistryException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @When("^Send Data to Topic for following records$")
@@ -196,6 +242,8 @@ public class IngestorStepDefinition {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
+//      System.out.println(dataMap.toString());
+//      System.out.println("data map size:"+dataMap.size());
         if (dataMap.size() != recordCount) {
             throw new Exception("record(s) in table " + tableName + " is not equal to no of records "+recordCount+" specified in step");
         }
