@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.funciton.test;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +21,9 @@ import com.temenos.microservice.framework.core.data.DataAccessException;
 import com.temenos.microservice.framework.core.data.MSTransaction;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataEntity;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataIdEntity;
+import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.RequestContext;
 import com.temenos.microservice.framework.core.function.RequestImpl;
-import com.temenos.microservice.framework.core.function.camel.BinaryData;
 import com.temenos.microservice.payments.core.FileDownloadProcessor;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl;
@@ -53,7 +55,7 @@ import com.temenos.microservice.payments.view.ApiResponse;
 import com.temenos.microservice.payments.view.DocumentDetails;
 import com.temenos.microservice.payments.view.FileDownloadParams;
 import com.temenos.microservice.payments.function.FileDownloadInput;
-import com.temenos.microservice.payments.view.UploadApiResponse;
+import com.temenos.microservice.payments.view.DownloadApiResponse;
 
 public class PaymentOrderFunctionUnitTest {
 	public static Charset charset = Charset.forName("UTF-8");
@@ -186,11 +188,14 @@ public class PaymentOrderFunctionUnitTest {
 	@Test
 	public void testAFileUpload() throws Exception {
 		try {
+			ClassLoader classLoader = getClass().getClassLoader();
+			File f = new File(classLoader.getResource("FileUploadTestFile.txt").getFile());
+			byte[] fileContent = FileUtils.readFileToByteArray(f);
 			String textFile = "data";
 			BinaryData binaryData = new BinaryData();
-			binaryData.setFilename("testresult.txt");
+			binaryData.setFilename("FileUploadTestFile.txt");
 			binaryData.setMimetype("text/plain");
-			binaryData.setData(textFile.getBytes());
+			binaryData.setData(fileContent);
 			List<BinaryData> list = new ArrayList<>();
 			list.add(binaryData);
 			DocumentDetails documentDetails = new DocumentDetails();
@@ -214,13 +219,13 @@ public class PaymentOrderFunctionUnitTest {
 	public void testFileDownload() throws Exception {
 		try {
 			List<String> list = new ArrayList<>();
-			list.add("testresult.txt");
+			list.add("FileUploadTestFile.txt");
 			FileDownloadParams fileDownParams = new FileDownloadParams();
 			fileDownParams.setFileName(list);
 			FileDownloadInput input = new FileDownloadInput(fileDownParams);
 			FileDownload fileDownload = new FileDownloadImpl();
-			UploadApiResponse uploadApiResponse = fileDownload.invoke(null, input);
-			Assert.assertNotNull(uploadApiResponse);
+			DownloadApiResponse apiResponse = fileDownload.invoke(null, input);
+			Assert.assertNotNull(apiResponse);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}

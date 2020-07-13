@@ -15,11 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.FunctionInputBuilder;
 import com.temenos.microservice.framework.core.function.HttpRequest;
 import com.temenos.microservice.framework.core.function.HttpRequestContext;
 import com.temenos.microservice.framework.core.function.HttpRequestTransformer;
-import com.temenos.microservice.framework.core.function.camel.BinaryData;
 import com.temenos.microservice.framework.core.function.camel.CamelHttpRequestTransformer;
 import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrder;
 import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl;
@@ -48,11 +48,10 @@ import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
 import com.temenos.microservice.paymentorder.view.EnumCurrency;
 import com.temenos.microservice.paymentorder.view.FileDownloadParams;
-import com.temenos.microservice.paymentorder.view.UploadApiResponse;
+import com.temenos.microservice.paymentorder.view.DownloadApiResponse;
 import com.temenos.microservice.paymentorder.view.ApiResponse;
 import com.temenos.microservice.paymentorder.view.DocumentDetails;
 import com.temenos.microservice.paymentorder.view.FileUploadRequest;
-import com.temenos.microservice.framework.core.function.camel.BinaryData;
 import com.temenos.microservice.paymentorder.function.FileUpload;
 import com.temenos.microservice.paymentorder.function.FileUploadImpl;
 
@@ -230,7 +229,7 @@ public class PaymentOrderFunctionUnitTest {
 			params.setFileName(list);
 			FileDownloadInput input = new FileDownloadInput(params);
 			FileDownload filedownload = new FileDownloadImpl();
-			UploadApiResponse upiResponse = filedownload.invoke(null, input);
+			DownloadApiResponse upiResponse = filedownload.invoke(null, input);
 			Assert.assertNotNull(upiResponse);
 		} catch (Exception e) {
 			e.printStackTrace();

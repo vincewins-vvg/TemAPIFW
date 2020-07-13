@@ -70,7 +70,7 @@ paths:
           content:
             application/octet-stream:
               schema:
-                 $ref: '#/components/schemas/UploadApiResponse'
+                 $ref: '#/components/schemas/DownloadApiResponse'
   /payments/allorders:
     post:
       summary: Creates all the payment orders in a list (Bulk)
@@ -440,7 +440,7 @@ components:
         format: binary
       filename:
         type: string
-    UploadApiResponse:
+    DownloadApiResponse:
       type: "object"
       properties:
         code:
