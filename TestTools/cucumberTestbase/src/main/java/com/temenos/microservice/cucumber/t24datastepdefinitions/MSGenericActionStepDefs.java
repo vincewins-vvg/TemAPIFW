@@ -610,7 +610,7 @@ public class MSGenericActionStepDefs implements En {
         String cusidFromResponseContent = responseContents.split("/")[0];
         System.out.println("Customer Id in OFS message is" + cusidFromResponseContent);
 
-        String compidFromResponseContent = responseContents.split(",")[33].split("/")[0];
+        String compidFromResponseContent = responseContents.split(",")[32].split("/")[0];
         System.out.println("Company Id in OFS message is" + compidFromResponseContent);
 
         String idFromResponseContent = compidFromResponseContent + "-" + cusidFromResponseContent;
