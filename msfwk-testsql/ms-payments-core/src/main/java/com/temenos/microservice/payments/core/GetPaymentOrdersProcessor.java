@@ -44,30 +44,28 @@ public class GetPaymentOrdersProcessor {
 		criteriaQuery.select(root);
 
 		List<com.temenos.microservice.payments.entity.PaymentOrder> entities = null;
-		
-        if( input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null){ 
-            int[] pageDetails = new int[2];
-    		if(input.getParams().get().getPageNumber() != null) {
-    			if(input.getParams().get().getPageNumber().get(0) != null && input.getParams().get().getPageNumber().get(0) > 0)
-    			pageDetails[0] = input.getParams().get().getPageNumber().get(0);
-    		}
-        	if(input.getParams().get().getPageSize() != null) {
-        		if(input.getParams().get().getPageSize().get(0) != null && input.getParams().get().getPageSize().get(0) > 0)
-    	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
-        	}
-            entities = PaymentOrderDao
-    				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-    				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
-    						com.temenos.microservice.payments.entity.PaymentOrder.class,pageDetails);
-        }
-        else{
-      	    entities = PaymentOrderDao
-    				.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-    				.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
-    						com.temenos.microservice.payments.entity.PaymentOrder.class);
-        }
 
-		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
+		if (input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null) {
+			int[] pageDetails = new int[2];
+			if (input.getParams().get().getPageNumber() != null) {
+				if (input.getParams().get().getPageNumber().get(0) != null
+						&& input.getParams().get().getPageNumber().get(0) > 0)
+					pageDetails[0] = input.getParams().get().getPageNumber().get(0);
+			}
+			if (input.getParams().get().getPageSize() != null) {
+				if (input.getParams().get().getPageSize().get(0) != null
+						&& input.getParams().get().getPageSize().get(0) > 0)
+					pageDetails[1] = input.getParams().get().getPageSize().get(0);
+			}
+			entities = PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
+							com.temenos.microservice.payments.entity.PaymentOrder.class, pageDetails);
+		} else {
+			entities = PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
+							com.temenos.microservice.payments.entity.PaymentOrder.class);
+		}
+		PaymentOrders orders = new PaymentOrders();
 		for (com.temenos.microservice.payments.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
@@ -116,10 +114,8 @@ public class GetPaymentOrdersProcessor {
 				payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
 				view.setPayeeDetails(payeeDtls);
 			}
-			views.add(view);
+			orders.add(view);
 		}
-		PaymentOrders orders = new PaymentOrders();
-		orders.addItems(views.toArray(new PaymentOrder[0]));
 		return orders;
 	}
 }
