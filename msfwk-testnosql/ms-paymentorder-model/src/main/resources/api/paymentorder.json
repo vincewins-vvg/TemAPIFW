@@ -8,7 +8,28 @@ tags:
 - name: Payments
   description: A collection of Payments APIs
   
+servers:
+- url: http://localhost:8090/ms-payments-api/api
+  
 paths:
+  /payments/orders:
+    post:
+      summary: Creates a new payment order 
+      operationId: CreateNewPaymentOrder
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentOrder"
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
   /payments/upload:
     post:
       tags:
@@ -50,24 +71,71 @@ paths:
             application/octet-stream:
               schema:
                  $ref: '#/components/schemas/DownloadApiResponse'
-  /payments/orders:
+  /payments/allorders:
     post:
-      summary: Creates a new payment order 
-      operationId: CreateNewPaymentOrder
+      summary: Creates all the payment orders in a list (Bulk)
+      operationId: CreateNewPaymentOrders
       tags:
         - Payments
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PaymentOrder"
+              $ref: "#/components/schemas/PaymentOrdersItems"
       responses:
         '201':
           description: Created payment order
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/PaymentStatus"
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
+  /payments/allorders/update:
+    put:
+      summary: updates all the payment orders in a list (Bulk)
+      operationId: UpdateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatusList"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/allorders/delete/{paymentIds}:
+    delete:
+      summary: Deletes all the payment orders in a list (Bulk)
+      operationId: DeletePaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: paymentIds
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
   /payments/orders/{paymentId}:
     put:
       summary: Updates an existing payment order 
@@ -77,7 +145,7 @@ paths:
       parameters:
       - name: paymentId
         in: path
-        description: Payment ID
+        description: Payment IDs
         required: true
         schema:
           type: string
@@ -183,7 +251,7 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/ErrorSchema"                
+                $ref: "#/components/schemas/ErrorSchema"                 
 
 components:
   schemas:
@@ -204,7 +272,7 @@ components:
         name:
           type: string
         extensionData:
-          type: object  
+          type: object
         card:
           allOf:
           - $ref: "#/components/schemas/Card"
@@ -222,7 +290,8 @@ components:
         payeeName:
           type: string
         payeeType:
-          type: string                  
+          type: string
+          
     EnumCurrency:
       type: string
       x-deprictionallowed: true
@@ -241,7 +310,7 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
-    
+      
     PaymentOrder:
       allOf:
         - $ref: "#/components/schemas/TransactionDetails"
@@ -257,11 +326,14 @@ components:
         fileContent:
           type: string
           format: binary
-        extensionData:
-          type: object  	
+        fileReadWrite:
+          type: string
+          format: binary
+        fileOverWrite:
+          type: boolean
         paymentDate:
           type: string
-          format: date
+          format: date  
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
@@ -272,6 +344,8 @@ components:
         payeeDetails:
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
+        extensionData:
+          type: object
         descriptions:
           type: array
           items:
@@ -282,6 +356,12 @@ components:
       items:
         $ref: "#/components/schemas/PaymentOrder"
         
+    PaymentOrdersItems:
+      properties:
+        paymentOrders:
+          allOf:
+          - $ref: '#/components/schemas/PaymentOrders'
+        
     PaymentStatus:
       properties:
         debitAccount:
@@ -290,6 +370,9 @@ components:
           type: string
         status:
           type: string
+        fileReadWrite:
+          type: string
+          format: binary
         details:
           type: string
         paymentMethod:
@@ -299,6 +382,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExchangeRate"
+           
+    AllPaymentStatus:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentStatus"
+        
+    PaymentStatusList:
+      properties:
+        paymentStatus:
+          allOf:
+          - $ref: "#/components/schemas/AllPaymentStatus"
           
     PaymentOrderStatus:
       properties:
@@ -307,7 +401,7 @@ components:
           - $ref: "#/components/schemas/PaymentOrder"
         paymentStatus:
           $ref: "#/components/schemas/PaymentStatus"
-    
+          
     FailureMessage:
       properties:
         code:
@@ -328,11 +422,6 @@ components:
     ApiResponse:
       type: "object"
       properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
         message:
           type: "string"
     FileUploadRequest:
@@ -346,26 +435,7 @@ components:
           items:
             type: string
             format: binary
-    BinaryContent:
-      type: "object"
-      properties:
-       documentFile:
-         type: string
-         format: binary
-       filename:
-         type: string
     DownloadApiResponse:
       type: "object"
-      properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
-        message:
-          type: "string"
-        binaryfile:
-          type: array
-          items:
-            $ref: '#/components/schemas/BinaryContent'
+
        

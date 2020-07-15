@@ -283,10 +283,6 @@
          </Condition>
       </Rule>
    </Policy>
-<<<<<<< HEAD
-=======
-   
-   
    <Policy PolicyId="permit-getHealthCheck" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />
       <PolicyDefaults>
@@ -317,6 +313,4 @@
          </Condition>
       </Rule>
    </Policy>
-
->>>>>>> b35a470673817dfdc91dc38ca61fe02e110ca666
 </PolicySet>

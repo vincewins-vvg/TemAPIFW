@@ -326,6 +326,11 @@ components:
         fileContent:
           type: string
           format: binary
+        fileReadWrite:
+          type: string
+          format: binary
+        fileOverWrite:
+          type: boolean
         paymentDate:
           type: string
           format: date  
@@ -365,6 +370,9 @@ components:
           type: string
         status:
           type: string
+        fileReadWrite:
+          type: string
+          format: binary
         details:
           type: string
         paymentMethod:
@@ -414,11 +422,6 @@ components:
     ApiResponse:
       type: "object"
       properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
         message:
           type: "string"
     FileUploadRequest:
@@ -432,26 +435,5 @@ components:
           items:
             type: string
             format: binary
-    BinaryContent:
-     type: "object"
-     properties:
-      documentFile:
-        type: string
-        format: binary
-      filename:
-        type: string
     DownloadApiResponse:
       type: "object"
-      properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
-        message:
-          type: "string"
-        binaryfile:
-          type: array
-          items:
-            $ref: '#/components/schemas/BinaryContent'
-       

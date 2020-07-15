@@ -17,15 +17,13 @@ import javax.persistence.Entity;
 
 @Entity
 @Table(name = "ms_file_upload")
-public class FileUpload implements com.temenos.microservice.framework.core.data.Entity{
+public class FileDetails implements com.temenos.microservice.framework.core.data.Entity{
 
 	@Id
 	private String name;
 
 	private String mimeType;
 
-	private Blob data;
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DocumentDetails documentDetails;
 	
@@ -51,14 +49,6 @@ public class FileUpload implements com.temenos.microservice.framework.core.data.
 
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
-	}
-
-	public Blob getData() {
-		return data;
-	}
-
-	public void setData(Blob data) {
-		this.data = data;
 	}
 
 }

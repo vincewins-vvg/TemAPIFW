@@ -1,5 +1,5 @@
 {
-  "name": "FileUpload",
+  "name": "FileDetails",
   "javaPackage": "com.temenos.microservice.paymentorder.entity",
   "tableName": "ms_file_upload",
   "isExtendable": true,
@@ -13,10 +13,6 @@
     },
     {
       "name": "mimetype",
-      "type": "string"
-    },
-    {
-      "name": "data",
       "type": "string"
     },
     {
