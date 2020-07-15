@@ -42,6 +42,20 @@ sleep 10
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
 
 
+aws lambda create-function --function-name create-reference-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.CreateReferenceDataFunctionAWS::invoke --description "Handler for SQL Get Reference Data Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_createReferenceData=com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl,DATABASE_KEY=sql\}
+sleep 10
+
+aws lambda create-function --function-name get-reference-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.GetReferenceDataFunctionAWS::invoke --description "Handler for SQL POST Reference Data Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_getReferenceData=com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl,DATABASE_KEY=sql\}
+sleep 10
+
+aws lambda create-function --function-name create-reference-value-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.AddReferenceDataFunctionAWS::invoke --description "Handler for SQL POST Reference Value Impl to " --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_addReferenceData=com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl,DATABASE_KEY=sql\}
+sleep 10
+
+aws lambda create-function --function-name update-reference-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.UpdateReferenceDataFunctionAWS::invoke --description "Handler for SQL PUT Reference Data Impl to " --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_updateReferenceData=com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl,DATABASE_KEY=sql\}
+sleep 10
+
+aws lambda create-function --function-name delete-reference-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.UpdateReferenceDataFunctionAWS::invoke --description "Handler for SQL PUT Reference Data Impl to " --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_deleteReferenceData=com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl,DATABASE_KEY=sql\}
+sleep 10
 
 aws lambda create-event-source-mapping --function-name inbox-handler --batch-size 500 --starting-position LATEST --event-source-arn $inboxSourceArn
 
@@ -68,6 +82,43 @@ export paymentorderId=$(aws apigateway create-resource --rest-api-id $restAPIId 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $paymentorderId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2 
 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $paymentorderId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-payment-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Create version resource and get id - /v1.0.0
+export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v1.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+echo "----------------------------------"
+echo $versionResourceId
+
+
+# Create Reference resource and get id - /v1.0.0/reference
+export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+echo "----------------------------------"
+echo $referenceResourceId
+echo "----------------------------------"
+
+# POST API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:create-reference-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:create-reference-value-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# GET API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-reference-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# PUT API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:update-reference-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# DELETE API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method DELETE --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $referenceResourceId --http-method DELETE --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:delete-reference-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
 
 aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"
 
