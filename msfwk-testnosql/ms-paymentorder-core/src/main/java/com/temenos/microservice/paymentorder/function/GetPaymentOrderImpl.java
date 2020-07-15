@@ -23,7 +23,6 @@ import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapterF
 import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
-import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.EnumCurrency;
@@ -32,6 +31,7 @@ import com.temenos.microservice.paymentorder.view.GetPaymentOrderParams;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import com.temenos.microservice.paymentorder.exception.StorageException;
 
 /**
  * GetPaymentOrderImpl.
@@ -116,25 +116,11 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 					paymentStatus.setFileReadWrite(fileReadWrite);
 				}
 				} catch (FileNotFoundException e ) {
-					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-					throw new FunctionInvocationException(new FunctionException(failureMessage) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public int getStatusCode() {
-							return 404;
-						}
-					});
+					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				} catch (IOException e) {
 					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				} catch (StorageReadException e) {
-					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-					throw new FunctionInvocationException(new FunctionException(failureMessage) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public int getStatusCode() {
-							return 404;
-						}
-					});
+					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);

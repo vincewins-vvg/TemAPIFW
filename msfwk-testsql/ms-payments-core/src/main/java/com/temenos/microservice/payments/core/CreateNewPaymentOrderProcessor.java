@@ -30,11 +30,11 @@ import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapter
 import com.temenos.microservice.framework.core.file.writer.StorageWriteException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
-import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
@@ -90,26 +90,11 @@ public class CreateNewPaymentOrderProcessor {
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {
-				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-				throw new FunctionInvocationException(new FunctionException(failureMessage) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public int getStatusCode() {
-						return 404;
-					}
-				});
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (IOException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			} catch (StorageReadException e) {
-				//throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-				throw new FunctionInvocationException(new FunctionException(failureMessage) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public int getStatusCode() {
-						return 404;
-					}
-				});
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}
 		return paymentStatus;
 	}

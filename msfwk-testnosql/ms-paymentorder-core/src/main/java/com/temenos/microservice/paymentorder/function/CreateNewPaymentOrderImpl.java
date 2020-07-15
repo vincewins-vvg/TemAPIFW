@@ -45,6 +45,7 @@ import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
 import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
+import com.temenos.microservice.paymentorder.exception.StorageException;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
@@ -102,25 +103,11 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {
-				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-				throw new FunctionInvocationException(new FunctionException(failureMessage) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public int getStatusCode() {
-						return 404;
-					}
-				});
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (IOException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			} catch (StorageReadException e) {
-				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-				throw new FunctionInvocationException(new FunctionException(failureMessage) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public int getStatusCode() {
-						return 404;
-					}
-				});
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}
 		return paymentStatus;
 	}
