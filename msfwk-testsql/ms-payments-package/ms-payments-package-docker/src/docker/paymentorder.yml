@@ -36,6 +36,8 @@ services:
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
+    volumes:
+      - 'c:\testing:/usr/local/tomcat/temp'
     depends_on:
       - db-service
     ports:
@@ -62,7 +64,9 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.payments.function.GetPaymentOrderCurrencyImpl
-      className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl      
+      className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl  
+      className_FileUpload: com.temenos.microservice.payments.function.FileUploadImpl
+      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl   
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
@@ -83,6 +87,8 @@ services:
       IRIS_VERSION: v1.0.0
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.storage.home: ${MS_STORAGE_HOME}
+      FILE_STORAGE_URL: ${FILE_STORAGE_URL}
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

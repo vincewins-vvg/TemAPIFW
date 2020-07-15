@@ -60,6 +60,8 @@ services:
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
+    volumes:
+      - 'c:\testing:/usr/local/tomcat/temp'
     depends_on:
       - db-service1
       - db-service2
@@ -78,6 +80,8 @@ services:
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+      className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+      className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -96,6 +100,8 @@ services:
       IRIS_VERSION: v1.0.0
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.storage.home: ${MS_STORAGE_HOME}
+      FILE_STORAGE_URL: ${FILE_STORAGE_URL}
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

@@ -8,6 +8,9 @@ tags:
 - name: Payments
   description: A collection of Payments APIs
   
+servers:
+- url: http://localhost:8090/ms-payments-api/api
+  
 paths:
   /payments/orders:
     post:
@@ -27,6 +30,112 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
+  /payments/upload:
+    post:
+      tags:
+      - Payments
+      summary: "uploads an document"
+      description: ""
+      operationId: "FileUpload"
+      requestBody:
+        description: "file to upload"
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FileUploadRequest"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/download/{fileName}:
+    get:
+      tags:
+      - Payments
+      parameters:
+      - name: fileName
+        in: path
+        description: FileName
+        required: true
+        schema:
+          type: string
+      summary: "downloads an document"
+      description: ""
+      operationId: "FileDownload"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/octet-stream:
+              schema:
+                 $ref: '#/components/schemas/DownloadApiResponse'
+  /payments/allorders:
+    post:
+      summary: Creates all the payment orders in a list (Bulk)
+      operationId: CreateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentOrdersItems"
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
+  /payments/allorders/update:
+    put:
+      summary: updates all the payment orders in a list (Bulk)
+      operationId: UpdateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatusList"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/allorders/delete/{paymentIds}:
+    delete:
+      summary: Deletes all the payment orders in a list (Bulk)
+      operationId: DeletePaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: paymentIds
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
   /payments/orders/{paymentId}:
     put:
       summary: Updates an existing payment order 
@@ -36,7 +145,7 @@ paths:
       parameters:
       - name: paymentId
         in: path
-        description: Payment ID
+        description: Payment IDs
         required: true
         schema:
           type: string
@@ -149,7 +258,7 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/ErrorSchema"                
+                $ref: "#/components/schemas/ErrorSchema"                 
 
 components:
   schemas:
@@ -170,7 +279,7 @@ components:
         name:
           type: string
         extensionData:
-          type: object  
+          type: object
         card:
           allOf:
           - $ref: "#/components/schemas/Card"
@@ -188,7 +297,8 @@ components:
         payeeName:
           type: string
         payeeType:
-          type: string                  
+          type: string
+          
     EnumCurrency:
       type: string
       x-deprictionallowed: true
@@ -207,7 +317,7 @@ components:
           x-referencetype: paymentref
         paymentDetails:
           type: string
-    
+      
     PaymentOrder:
       allOf:
         - $ref: "#/components/schemas/TransactionDetails"
@@ -229,10 +339,10 @@ components:
         fileOverWrite:
           type: boolean
         extensionData:
-          type: object  	
+          type: object
         paymentDate:
           type: string
-          format: date
+          format: date  
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
@@ -252,6 +362,12 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/PaymentOrder"
+        
+    PaymentOrdersItems:
+      properties:
+        paymentOrders:
+          allOf:
+          - $ref: '#/components/schemas/PaymentOrders'
         
     PaymentStatus:
       properties:
@@ -273,6 +389,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExchangeRate"
+           
+    AllPaymentStatus:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentStatus"
+        
+    PaymentStatusList:
+      properties:
+        paymentStatus:
+          allOf:
+          - $ref: "#/components/schemas/AllPaymentStatus"
           
     PaymentOrderStatus:
       properties:
@@ -281,7 +408,7 @@ components:
           - $ref: "#/components/schemas/PaymentOrder"
         paymentStatus:
           $ref: "#/components/schemas/PaymentStatus"
-    
+          
     FailureMessage:
       properties:
         code:
@@ -292,3 +419,30 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/FailureMessage"
+    DocumentDetails:
+      type: "object"
+      properties:
+        documentId:
+          type: string
+        documentName:
+          type: string
+    ApiResponse:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+    FileUploadRequest:
+      type: object
+      properties:
+        documentDetails:
+          allOf:
+          - $ref: '#/components/schemas/DocumentDetails'
+        documentFile:
+          type: array
+          items:
+            type: string
+            format: binary
+    DownloadApiResponse:
+      type: "object"
+
+       
