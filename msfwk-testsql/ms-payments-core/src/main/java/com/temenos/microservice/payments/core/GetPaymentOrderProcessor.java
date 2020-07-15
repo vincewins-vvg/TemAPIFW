@@ -28,6 +28,7 @@ import com.temenos.microservice.framework.core.function.FunctionInvocationExcept
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
+import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.function.GetPaymentOrderInput;
 import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.ExchangeRate;
@@ -121,25 +122,11 @@ public class GetPaymentOrderProcessor {
 					paymentStatus.setFileReadWrite(fileReadWrite);
 				}
 				} catch (FileNotFoundException e ) {
-					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-					throw new FunctionInvocationException(new FunctionException(failureMessage) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public int getStatusCode() {
-							return 404;
-						}
-					});
+					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				} catch (IOException e) {
 					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				} catch (StorageReadException e) {
-					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
-					throw new FunctionInvocationException(new FunctionException(failureMessage) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public int getStatusCode() {
-							return 404;
-						}
-					});
+					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
