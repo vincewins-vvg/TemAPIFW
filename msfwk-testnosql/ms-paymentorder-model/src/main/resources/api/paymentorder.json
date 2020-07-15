@@ -87,6 +87,13 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
+        '404':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
                 
   /payments/orders/invoke:              
     get:
@@ -216,6 +223,11 @@ components:
         fileContent:
           type: string
           format: binary
+        fileReadWrite:
+          type: string
+          format: binary
+        fileOverWrite:
+          type: boolean
         extensionData:
           type: object  	
         paymentDate:
@@ -249,6 +261,9 @@ components:
           type: string
         status:
           type: string
+        fileReadWrite:
+          type: string
+          format: binary
         details:
           type: string
         paymentMethod:
