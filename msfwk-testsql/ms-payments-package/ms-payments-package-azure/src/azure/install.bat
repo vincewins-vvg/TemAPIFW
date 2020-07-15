@@ -52,7 +52,7 @@ SET CREATE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referenc
 SET ADD_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl"
 SET UPDATE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl"
 SET GET_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl"
-SET DELETE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl"
+SET DELETE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl"
 
 rem Create a resource resourceGroupName
 call az group create --name %RESOURCE_GROUP_NAME%   --location %LOCATION%
