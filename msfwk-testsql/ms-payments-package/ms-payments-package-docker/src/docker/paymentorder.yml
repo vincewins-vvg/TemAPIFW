@@ -67,7 +67,7 @@ services:
       className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
       className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
       className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
-      className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl      
+      className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl      
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
