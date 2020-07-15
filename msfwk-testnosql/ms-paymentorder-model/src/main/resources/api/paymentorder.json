@@ -331,6 +331,8 @@ components:
           format: binary
         fileOverWrite:
           type: boolean
+        extensionData:
+          type: object
         paymentDate:
           type: string
           format: date  
@@ -344,8 +346,6 @@ components:
         payeeDetails:
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
-        extensionData:
-          type: object
         descriptions:
           type: array
           items:
