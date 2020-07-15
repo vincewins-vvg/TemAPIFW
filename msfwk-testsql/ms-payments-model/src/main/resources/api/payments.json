@@ -381,9 +381,6 @@ components:
           format: binary
         details:
           type: string
-        fileReadWrite:
-          type: string
-          format: binary
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
