@@ -1,54 +1,49 @@
 package com.temenos.microservice.payments.core;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.ws.rs.InternalServerErrorException;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.kafka.common.errors.InvalidConfigurationException;
-import org.json.JSONArray;
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
-import com.temenos.microservice.framework.core.file.reader.FileReader;
 import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
-import com.temenos.microservice.framework.core.file.reader.FileReaderException;
-import com.temenos.microservice.framework.core.file.reader.FileReaderFactory;
-import com.temenos.microservice.framework.core.file.writer.FileWriter;
-import com.temenos.microservice.framework.core.file.writer.FileWriterException;
-import com.temenos.microservice.framework.core.file.writer.FileWriterFactory;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapter;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapterFactory;
+import com.temenos.microservice.framework.core.file.reader.StorageReadException;
+import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapter;
+import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapterFactory;
+import com.temenos.microservice.framework.core.file.writer.StorageWriteException;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.framework.core.util.DataTypeConverter;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
+import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
 import com.temenos.microservice.payments.event.CreatePaymentEvent;
-import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentStatus;
-import com.temenos.microservice.framework.core.function.InvalidInputException;
-import com.temenos.microservice.framework.core.function.FailureMessage;
-import com.temenos.microservice.framework.core.util.DataTypeConverter;
-import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 
 @Component
 public class CreateNewPaymentOrderProcessor {
@@ -65,7 +60,7 @@ public class CreateNewPaymentOrderProcessor {
 			if(paymentOrder.getFileReadWrite() != null) {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
 				if(StorageUrl != null) {
-					FileWriter fileWriter = FileWriterFactory.getFileWriterInstance();				
+					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();				
 						byte[] dst = new byte[paymentOrder.getFileReadWrite().remaining()];
 						paymentOrder.getFileReadWrite().get(dst);
 						InputStream content = new ByteArrayInputStream(dst); 
@@ -82,7 +77,7 @@ public class CreateNewPaymentOrderProcessor {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
 				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
 				if(StorageUrl != null && STORAGE_HOME != null) {
-					FileReader fileReader = FileReaderFactory.getFileReaderInstance();
+					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
 					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
 					byte[] bytes = IOUtils.toByteArray(is);
 					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
@@ -90,16 +85,31 @@ public class CreateNewPaymentOrderProcessor {
 					isCreated = false;
 				}
 			}
-			} catch (FileWriterException e) {
+			} catch (StorageWriteException e) {
 				throw new InvalidConfigurationException(e.getMessage().toString(),e);
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
+				throw new FunctionInvocationException(new FunctionException(failureMessage) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public int getStatusCode() {
+						return 404;
+					}
+				});
 			} catch (IOException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-			} catch (FileReaderException e) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			} catch (StorageReadException e) {
+				//throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
+				throw new FunctionInvocationException(new FunctionException(failureMessage) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public int getStatusCode() {
+						return 404;
+					}
+				});
 			}
 		return paymentStatus;
 	}

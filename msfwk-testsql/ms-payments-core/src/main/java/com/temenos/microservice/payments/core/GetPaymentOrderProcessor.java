@@ -1,5 +1,7 @@
 package com.temenos.microservice.payments.core;
 
+import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,23 +12,19 @@ import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
-import com.temenos.microservice.framework.core.data.DaoFactory;
-import com.temenos.microservice.framework.core.file.reader.FileReader;
 import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
-import com.temenos.microservice.framework.core.file.reader.FileReaderException;
-import com.temenos.microservice.framework.core.file.reader.FileReaderFactory;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapter;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapterFactory;
+import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
@@ -116,18 +114,32 @@ public class GetPaymentOrderProcessor {
 				String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
 				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
 				if(StorageUrl != null && STORAGE_HOME != null) {
-					FileReader fileReader = FileReaderFactory.getFileReaderInstance();
+					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
 					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
 					byte[] bytes = IOUtils.toByteArray(is);
 					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
 					paymentStatus.setFileReadWrite(fileReadWrite);
 				}
 				} catch (FileNotFoundException e ) {
-					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
+					throw new FunctionInvocationException(new FunctionException(failureMessage) {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public int getStatusCode() {
+							return 404;
+						}
+					});
 				} catch (IOException e) {
 					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-				} catch (FileReaderException e) {
-					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				} catch (StorageReadException e) {
+					FailureMessage failureMessage = new FailureMessage(e.getMessage(), "404");
+					throw new FunctionInvocationException(new FunctionException(failureMessage) {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public int getStatusCode() {
+							return 404;
+						}
+					});
 				}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);

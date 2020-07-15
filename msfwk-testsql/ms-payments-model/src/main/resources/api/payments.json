@@ -153,6 +153,12 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
+        '404':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
                 
   /payments/orders/invoke:              
     get:
