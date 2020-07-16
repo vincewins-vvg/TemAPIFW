@@ -100,11 +100,15 @@ public class FileUploadProcessor {
 	 */
 	private void writeFileContent(BinaryData binaryData) throws FunctionException{
 		try {
-			String StorageUrl = File.separator+binaryData.getFilename();
-			if (StorageUrl != null) {
-				MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
-				InputStream myInputStream = new ByteArrayInputStream(binaryData.getData());
-				fileWriter.uploadFileAsInputStream(StorageUrl, myInputStream, true);
+			if (!"".equalsIgnoreCase(binaryData.getFilename())) {
+				String StorageUrl = File.separator + binaryData.getFilename();
+				if (StorageUrl != null) {
+					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
+					InputStream myInputStream = new ByteArrayInputStream(binaryData.getData());
+					fileWriter.uploadFileAsInputStream(StorageUrl, myInputStream, true);
+				}
+			} else {
+				throw new InvalidInputException(new FailureMessage("No Attachment Found","PAYM-PORD-A-2005"));
 			}
 		} catch (StorageWriteException e) {
 			throw new InvalidInputException(e.getMessage());

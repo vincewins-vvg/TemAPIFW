@@ -22,9 +22,12 @@ import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.FileUploadDao;
 import com.temenos.microservice.payments.entity.FileDetails;
+import com.temenos.microservice.payments.exception.NoDataFoundException;
 import com.temenos.microservice.payments.function.FileDownloadInput;
 import com.temenos.microservice.payments.view.DownloadApiResponse;
 import com.temenos.microservice.payments.view.FileDownloadParams;
@@ -34,20 +37,19 @@ public class FileDownloadProcessor {
 	public DownloadApiResponse invoke(Context ctx, FileDownloadInput input) throws FunctionException {
 		DownloadApiResponse apiResponse = new DownloadApiResponse();
 		BinaryData binarydata = new BinaryData();
-		List<BinaryData> binaryDataList = new ArrayList<>();
 		String fileName = input.getParams().get().getFileName().get(0);
 		validateParam(input.getParams().get());
 		List<com.temenos.microservice.payments.entity.FileDetails> entities = getFileContent(fileName);
 		if (entities == null || entities.isEmpty()) {
-			throw new InvalidInputException(new FailureMessage("No Data Found", "PAYM-PORD-A-2005"));
+			FailureMessage failureMessage = new FailureMessage("No Data Found", "PAYM-PORD-A-2005");
+			throw new NoDataFoundException(failureMessage);
 		} else {
 			FileDetails fileDetails = entities.get(0);
 			binarydata.setFilename(fileDetails.getName());
 			binarydata.setMimetype(fileDetails.getMimeType());
 			byte[] fileContentBytes = readFileContent(fileDetails.getName());
 			binarydata.setData(fileContentBytes);
-			binaryDataList.add(binarydata);
-			apiResponse.setAttachments(binaryDataList);
+			apiResponse.setAttachment(binarydata);
 		}
 		return apiResponse;
 	}

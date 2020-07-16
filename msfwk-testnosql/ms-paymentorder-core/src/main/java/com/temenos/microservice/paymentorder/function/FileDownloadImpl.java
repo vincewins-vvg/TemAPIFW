@@ -21,9 +21,11 @@ import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.FileDownloadParams;
+import com.temenos.microservice.paymentorder.exception.NoDataFoundException;
 import com.temenos.microservice.paymentorder.view.DownloadApiResponse;
 import com.temenos.microservice.framework.core.conf.Environment;
 
@@ -33,7 +35,6 @@ public class FileDownloadImpl implements FileDownload {
 	public DownloadApiResponse invoke(Context ctx, FileDownloadInput input) throws FunctionException {
 		BinaryData binarydata = new BinaryData();
 		DownloadApiResponse apiResponse = new DownloadApiResponse();
-		List<BinaryData> binaryDataList = new ArrayList<>();
 		
 		validate(input);
 		
@@ -47,10 +48,10 @@ public class FileDownloadImpl implements FileDownload {
 			
 			binarydata.setData(readFileContent(fileDetails));
 			
-			binaryDataList.add(binarydata);
-			apiResponse.setAttachments(binaryDataList);
+			apiResponse.setAttachment(binarydata);
 		} else {
-			throw new InvalidInputException(new FailureMessage("No Data Found", "PAYM-PORD-A-2005"));
+			FailureMessage failureMessage = new FailureMessage("No Data Found", "PAYM-PORD-A-2005");
+			throw new NoDataFoundException(failureMessage);
 		}
 		return apiResponse;
 	}

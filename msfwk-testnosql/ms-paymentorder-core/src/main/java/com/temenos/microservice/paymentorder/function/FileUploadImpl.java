@@ -25,7 +25,6 @@ import com.temenos.microservice.paymentorder.view.FileUploadRequest;
 
 public class FileUploadImpl implements FileUpload{
 
-	public static final Diagnostic apiDiagnostic = Logger.forDiagnostic().forComp("API");
 
 	@Override
 	public ApiResponse invoke(Context ctx, FileUploadInput input) throws FunctionException {
@@ -60,11 +59,15 @@ public class FileUploadImpl implements FileUpload{
 	 */
 	private void writeFileContent(BinaryData binaryData) throws FunctionException{
 		try {
-			String StorageUrl = File.separator+binaryData.getFilename();
-			if (StorageUrl != null) {
-				MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
-				InputStream myInputStream = new ByteArrayInputStream(binaryData.getData());
-				fileWriter.uploadFileAsInputStream(StorageUrl, myInputStream, true);
+			if (!"".equalsIgnoreCase(binaryData.getFilename())) {
+				String StorageUrl = File.separator + binaryData.getFilename();
+				if (StorageUrl != null) {
+					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
+					InputStream myInputStream = new ByteArrayInputStream(binaryData.getData());
+					fileWriter.uploadFileAsInputStream(StorageUrl, myInputStream, true);
+				}
+			} else {
+				throw new InvalidInputException(new FailureMessage("No Attachment Found","PAYM-PORD-A-2005"));
 			}
 		} catch (StorageWriteException e) {
 			throw new InvalidInputException(e.getMessage());

@@ -102,6 +102,7 @@ services:
       temn.msf.pdp.resource.manager: PAYMENT
       temn.msf.storage.home: ${MS_STORAGE_HOME}
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
+      temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
