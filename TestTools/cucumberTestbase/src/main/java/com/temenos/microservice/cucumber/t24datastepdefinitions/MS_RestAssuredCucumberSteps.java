@@ -278,6 +278,11 @@ public class MS_RestAssuredCucumberSteps {
     public void givenRequestHeader(String headerName, String headerValue) throws Throwable {
         request.header(headerName, headerValue);
     }
+    
+//    @Given("^MS request form-data \"([^\"]*)\" is set to \"(.*)\"$")
+//    public void setFormData(String formDataKey, String formDataValue) throws Throwable {
+//        request.multiPart(formDataKey, formDataValue);
+//    }
 
     @Given("^I set the MS request header values for X-Kony-ReportingParams$")
     public void givenRequestHeaderReportingParams() throws Throwable {
@@ -1212,6 +1217,15 @@ public class MS_RestAssuredCucumberSteps {
 //     response.then().body(matchesJsonSchema(poSchema));
 //    
 //     }
+     
+//     @Then("^check full response with expected json content from file path \"(.*)\"$")
+//     public void uploadFile(String controlName, String filePath) throws Throwable {
+//     String actualJSONResponse = response.asString();
+//    
+//     File fileToBeUploaded = new File(System.getProperty("user.dir") + "/" +filePath);
+//     request = request.multiPart(controlName, filePath);
+//    
+//     }
 
     private <T extends Object> void checkType(T object) {
         if (object instanceof Integer)
@@ -1244,7 +1258,7 @@ public class MS_RestAssuredCucumberSteps {
         // AWS
         String apiKey = System.getProperty("API_KEY");
         if (apiKey != null) {
-            headerStepDefs.setHeader("x-api-Key", apiKey);
+            request.header("x-api-Key", apiKey);
         }
     }
 
