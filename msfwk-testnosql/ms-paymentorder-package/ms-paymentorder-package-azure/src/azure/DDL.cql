@@ -12,4 +12,5 @@ CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_reference_data(
 type text
 , value text
 , description text
+, softDeleteFlag Boolean
 , PRIMARY KEY(type,value));
