@@ -279,14 +279,15 @@ public class MS_RestAssuredCucumberSteps {
         request.header(headerName, headerValue);
     }
     
-//    @Given("^MS request form-data \"([^\"]*)\" is set to \"(.*)\"$")
-//    public void setFormData(String formDataKey, String formDataValue) throws Throwable {
-//        request.multiPart(formDataKey, formDataValue);
-//    }
+    @Given("^MS request form-data \"([^\"]*)\" is set to \"(.*)\"$")
+    public void setFormData(String formDataKey, String formDataValue) throws Throwable {
+        request.multiPart(formDataKey, formDataValue);
+    }
 
     @Given("^I set the MS request header values for X-Kony-ReportingParams$")
     public void givenRequestHeaderReportingParams() throws Throwable {
-
+        
+      
         request.header("X-Kony-ReportingParams",
                 "{\"os\":\"71\",\"dm\":\"\",\"did\":\"1544592656431-5e10-a1f1-7b6f\",\"ua\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\",\"aid\":\"KonyOLB\",\"aname\":\"Customer360\",\"chnl\":\"Mobile\",\"plat\":\"windows\",\"aver\":\"1.0.0\",\"atype\":\"spa\",\"stype\":\"b2c\",\"kuid\":\"admin2\",\"mfaid\":\"61cffb74-340f-497f-b637-ff553e93dae5\",\"mfbaseid\":\"92b54bcc-e43e-4a62-bbd9-f7d1ca009391\",\"mfaname\":\"KonyBankingAdminConsole\",\"sdkversion\":\"8.3.5\",\"sdktype\":\"js\",\"fid\":\"frmLogin\",\"rsid\":\"1544972285376-6808-1496-9004\",\"svcid\":\"login_KonyBankingAdminConsoleIdentityService\"}");
     }
@@ -1218,14 +1219,36 @@ public class MS_RestAssuredCucumberSteps {
 //    
 //     }
      
-//     @Then("^check full response with expected json content from file path \"(.*)\"$")
-//     public void uploadFile(String controlName, String filePath) throws Throwable {
-//     String actualJSONResponse = response.asString();
-//    
-//     File fileToBeUploaded = new File(System.getProperty("user.dir") + "/" +filePath);
-//     request = request.multiPart(controlName, filePath);
-//    
-//     }
+     @Then("^upload document with key \"(.*)\" from file path \"(.*)\"$")
+     public void uploadFile(String controlName, String filePath) throws Throwable {
+         
+     File fileToBeUploaded = new File(System.getProperty("user.dir") + "/" +filePath);
+     request = request.multiPart(controlName, fileToBeUploaded);
+    
+     }
+     
+     @Then("^check if file download is successful and size is equal to file uploaded from file path \"(.*)\"$")
+     public void verifyFileDownload(String uploadedFilePath) throws Exception  {
+         
+         int uploadedFileSize;
+         File uploadedFile =  new File (System.getProperty("user.dir")+ "/" +uploadedFilePath);
+         
+         uploadedFileSize = (int)uploadedFile.length();
+         
+         byte[] downloadedFile = response.asByteArray();
+          //assertEquals(fileSize, downloadedFile.length);
+         if(uploadedFileSize==downloadedFile.length)
+         {
+             System.out.println("File download is successful and file size is same");
+         }
+         else{
+             
+             System.out.println("The uploaded file length is: "+uploadedFileSize);
+             System.out.println("---------------------------------------");
+             System.out.println("The downloaded file length is: "+downloadedFile.length);
+             throw new Exception("Mismatch in downloaded file size/content or download did not happen correctly");
+         }
+        }
 
     private <T extends Object> void checkType(T object) {
         if (object instanceof Integer)
