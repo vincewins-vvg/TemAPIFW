@@ -119,7 +119,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 			Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-					.getByPartitionKey(paymentOrderId);
+					.getByPartitionKeyAndSortKey(paymentOrderId,paymentOrder.getFromAccount());
 			if (paymentOrderOpt.isPresent()) {
 				throw new InvalidInputException(
 						new FailureMessage("Records already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));

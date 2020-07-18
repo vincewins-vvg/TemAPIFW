@@ -116,7 +116,7 @@ public class PaymentOrderFunctionUnitTest {
 	public void testGetPaymentOrder() {
 		GetPaymentOrder getPaymentOrder = new GetPaymentOrderImpl();
 		GetPaymentOrderParams getPaymentOrderParams = new GetPaymentOrderParams();
-		getPaymentOrderParams.setPaymentId(Arrays.asList("70010"));
+		getPaymentOrderParams.setPaymentId(Arrays.asList("PO~11544~100245~INR~600"));
 		GetPaymentOrderInput getPaymentOrderInput = new GetPaymentOrderInput(getPaymentOrderParams);
 		try {
 			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(null, getPaymentOrderInput);

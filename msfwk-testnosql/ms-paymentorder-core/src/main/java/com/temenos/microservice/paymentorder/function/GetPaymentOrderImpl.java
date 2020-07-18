@@ -53,8 +53,14 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 	private PaymentOrderStatus executeGetPaymentOrder(GetPaymentOrderParams params) throws FunctionException {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+		String sortKey = null;
+		String  paymentOrderId = null;
+		if(params.getPaymentId() != null && params.getPaymentId().get(0) != null) {
+			paymentOrderId = params.getPaymentId().get(0).replace("PO~","");
+			sortKey = paymentOrderId.substring(0,paymentOrderId.indexOf("~"));
+		}
 		Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-				.getByPartitionKey(params.getPaymentId().get(0));
+		.getByPartitionKeyAndSortKey(params.getPaymentId().get(0),sortKey);
 		if (paymentOrderOpt.isPresent()) {
 			com.temenos.microservice.paymentorder.entity.PaymentOrder paymentOrder = paymentOrderOpt.get();
 			PaymentStatus paymentStatus = new PaymentStatus();
