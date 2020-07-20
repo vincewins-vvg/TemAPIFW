@@ -55,8 +55,7 @@ public class GetPaymentOrderCurrencyProcessor {
 					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, null,
 							com.temenos.microservice.payments.entity.PaymentOrder.class);
 		}
-
-		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
+		PaymentOrders orders = new PaymentOrders();
 		for (com.temenos.microservice.payments.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
@@ -104,10 +103,9 @@ public class GetPaymentOrderCurrencyProcessor {
 				payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
 				view.setPayeeDetails(payeeDtls);
 			}
-			views.add(view);
+			orders.add(view);
 		}
-		PaymentOrders orders = new PaymentOrders();
-		orders.addItems(views.toArray(new PaymentOrder[0]));
+
 		return orders;
 	}
 }

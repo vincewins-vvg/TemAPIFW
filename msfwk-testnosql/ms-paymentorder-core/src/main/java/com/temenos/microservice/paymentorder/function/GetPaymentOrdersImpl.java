@@ -24,26 +24,26 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 	public PaymentOrders invoke(Context ctx, GetPaymentOrdersInput input) throws FunctionException {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-		
+
 		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = null;
-        
-        if(input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null){ 
-        	int[] pageDetails = new int[2];
-        	if(input.getParams().get().getPageNumber() != null) {
-        		if(input.getParams().get().getPageNumber().get(0) != null && input.getParams().get().getPageNumber().get(0) > 0) 
-    	    	pageDetails[0] = input.getParams().get().getPageNumber().get(0);
-        	}
-        	if(input.getParams().get().getPageSize() != null) {
-        		if(input.getParams().get().getPageSize().get(0) != null && input.getParams().get().getPageSize().get(0) > 0) 
-    	    	pageDetails[1] = input.getParams().get().getPageSize().get(0);
-        	}
-            entities = paymentOrderDao.get(pageDetails);
-        }
-        else{
-      	    entities = paymentOrderDao.get();
-        }
-		
-		List<PaymentOrder> views = new ArrayList<PaymentOrder>();
+
+		if (input.getParams().get().getPageNumber() != null || input.getParams().get().getPageSize() != null) {
+			int[] pageDetails = new int[2];
+			if (input.getParams().get().getPageNumber() != null) {
+				if (input.getParams().get().getPageNumber().get(0) != null
+						&& input.getParams().get().getPageNumber().get(0) > 0)
+					pageDetails[0] = input.getParams().get().getPageNumber().get(0);
+			}
+			if (input.getParams().get().getPageSize() != null) {
+				if (input.getParams().get().getPageSize().get(0) != null
+						&& input.getParams().get().getPageSize().get(0) > 0)
+					pageDetails[1] = input.getParams().get().getPageSize().get(0);
+			}
+			entities = paymentOrderDao.get(pageDetails);
+		} else {
+			entities = paymentOrderDao.get();
+		}
+		PaymentOrders orders = new PaymentOrders();
 		for (com.temenos.microservice.paymentorder.entity.PaymentOrder entity : entities) {
 			PaymentOrder view = new PaymentOrder();
 			view.setAmount(entity.getAmount());
@@ -78,7 +78,7 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 					exchangeRates.add(exchangeRate);
 				}
 				view.setExchangeRates(exchangeRates);
-				
+
 				com.temenos.microservice.paymentorderschema.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorderschema.view.PayeeDetails();
 				if (entity.getPayeeDetails() != null) {
 					payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
@@ -86,10 +86,8 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 					view.setPayeeDetails(payeeDtls);
 				}
 			}
-			views.add(view);
+			orders.add(view);
 		}
-		PaymentOrders orders = new PaymentOrders();
-		orders.addItems(views.toArray(new PaymentOrder[0]));
 		return orders;
 	}
 }
