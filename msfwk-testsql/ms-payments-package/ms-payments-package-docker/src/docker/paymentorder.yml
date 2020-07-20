@@ -88,6 +88,7 @@ services:
       IRIS_VERSION: v1.0.0
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.security.authz.enabled: "false"
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
