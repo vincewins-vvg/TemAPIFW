@@ -41,7 +41,6 @@ public class FileUploadProcessor {
 	public static final Diagnostic apiDiagnostic = Logger.forDiagnostic().forComp("API");
 
 	public ApiResponse invoke(Context ctx, FileUploadInput input) throws FunctionException {
-		apiDiagnostic.prepareInfo("Invoke Method Called").log();
 		Optional<FileUploadRequest> fileUploadRequestOpt = input.getBody();
 		FileUploadRequest fileUploadRequest = fileUploadRequestOpt.get();
 		DocumentDetails documentDetails = fileUploadRequest.getDocumentDetails();
@@ -81,6 +80,13 @@ public class FileUploadProcessor {
 		if (fileUploadRequest.getAttachments().isEmpty()) {
 			throw new InvalidInputException(new FailureMessage("No Attachment Found!!", "PAYM-PORD-A-2005"));
 		}
+		DocumentDetails documentDetails = fileUploadRequest.getDocumentDetails();
+		if(documentDetails.getDocumentId() == null || "".equalsIgnoreCase(documentDetails.getDocumentId())) {
+			throw new InvalidInputException(new FailureMessage("DocumentId Empty or Null", "PAYM-PORD-A-2007"));
+		}
+		if(documentDetails.getDocumentName() == null || "".equalsIgnoreCase(documentDetails.getDocumentName())) {
+			throw new InvalidInputException(new FailureMessage("DocumentName Empty or Null", "PAYM-PORD-A-2008"));
+		}	
 		for (com.temenos.microservice.framework.core.function.BinaryData binaryData : fileUploadRequest
 				.getAttachments()) {
 			List<String> fileNames = getFileNameList();
