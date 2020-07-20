@@ -106,6 +106,11 @@ public class ITTest {
 			attribute.setName(query[rowCount++]);
 			attribute.setDataType(query[rowCount++]);
 			attribute.setValue(query[rowCount++]);
+//			if (attribute.getDataType().equalsIgnoreCase("boolean"))
+//				if (attribute.getValue().toString().equalsIgnoreCase("false"))
+//					attribute.setValue(false);
+//				else 
+//					attribute.setValue(true);
 			attributeList.add(attribute);
 		}
 		item.setAttributes(attributeList);
