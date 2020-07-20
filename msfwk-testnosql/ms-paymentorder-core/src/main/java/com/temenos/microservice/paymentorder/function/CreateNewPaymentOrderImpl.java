@@ -18,7 +18,6 @@ import java.util.UUID;
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.kafka.common.errors.InvalidConfigurationException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.temenos.inboxoutbox.core.GenericCommand;
