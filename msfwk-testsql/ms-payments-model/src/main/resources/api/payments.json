@@ -182,6 +182,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: getFromStorageFile
+        in: query
+        description: getFromStorageFile
+        required: false
+        schema:
+          type: string
           
       responses:
         '200':
