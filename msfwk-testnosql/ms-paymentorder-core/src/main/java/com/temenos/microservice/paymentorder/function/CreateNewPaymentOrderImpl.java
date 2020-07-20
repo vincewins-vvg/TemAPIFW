@@ -99,7 +99,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				}
 			}
 			} catch (StorageWriteException e) {
-				throw new InvalidConfigurationException(e.getMessage().toString(),e);
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {
