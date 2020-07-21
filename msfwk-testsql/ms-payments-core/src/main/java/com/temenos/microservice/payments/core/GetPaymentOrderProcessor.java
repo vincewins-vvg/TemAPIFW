@@ -110,8 +110,8 @@ public class GetPaymentOrderProcessor {
 				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
 				order.setPayeeDetails(payeeDtls);
 			}
+			if(params.getGetFromStorageFile()!= null && params.getGetFromStorageFile().get(0) != null) {
 			try {
-
 				String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
 				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
 				if(StorageUrl != null && STORAGE_HOME != null) {
@@ -128,6 +128,7 @@ public class GetPaymentOrderProcessor {
 				} catch (StorageReadException e) {
 					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				}
+			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
 			return paymentOrderStatus;

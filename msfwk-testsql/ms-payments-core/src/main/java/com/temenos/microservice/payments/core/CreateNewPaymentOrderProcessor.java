@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.kafka.common.errors.InvalidConfigurationException;
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
@@ -86,7 +85,7 @@ public class CreateNewPaymentOrderProcessor {
 				}
 			}
 			} catch (StorageWriteException e) {
-				throw new InvalidConfigurationException(e.getMessage().toString(),e);
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {

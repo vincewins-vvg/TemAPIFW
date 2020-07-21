@@ -18,7 +18,6 @@ import java.util.UUID;
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.kafka.common.errors.InvalidConfigurationException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.temenos.inboxoutbox.core.GenericCommand;
@@ -99,7 +98,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				}
 			}
 			} catch (StorageWriteException e) {
-				throw new InvalidConfigurationException(e.getMessage().toString(),e);
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			} catch (FileNotFoundException e ) {
