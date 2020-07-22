@@ -8,6 +8,9 @@ tags:
 - name: Payments
   description: A collection of Payments APIs
   
+servers:
+- url: http://localhost:8090/ms-payments-api/api
+  
 paths:
   /payments/orders:
     post:
@@ -27,7 +30,47 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
-                
+  /payments/upload:
+    post:
+      tags:
+      - Payments
+      summary: "uploads an document"
+      description: ""
+      operationId: "FileUpload"
+      requestBody:
+        description: "file to upload"
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FileUploadRequest"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/download/{fileName}:
+    get:
+      tags:
+      - Payments
+      parameters:
+      - name: fileName
+        in: path
+        description: FileName
+        required: true
+        schema:
+          type: string
+      summary: "downloads an document"
+      description: ""
+      operationId: "FileDownload"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/octet-stream:
+              schema:
+                 $ref: '#/components/schemas/DownloadApiResponse'
   /payments/allorders:
     post:
       summary: Creates all the payment orders in a list (Bulk)
@@ -139,6 +182,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: getFromStorageFile
+        in: query
+        description: getFromStorageFile
+        required: false
+        schema:
+          type: string
           
       responses:
         '200':
@@ -148,6 +197,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/PaymentOrderStatus"
         '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+        '404':
           description: Invalid paymentId
           content:
             application/json:    
@@ -283,6 +338,11 @@ components:
         fileContent:
           type: string
           format: binary
+        fileReadWrite:
+          type: string
+          format: binary
+        fileOverWrite:
+          type: boolean
         paymentDate:
           type: string
           format: date  
@@ -322,6 +382,9 @@ components:
           type: string
         status:
           type: string
+        fileReadWrite:
+          type: string
+          format: binary
         details:
           type: string
         paymentMethod:
@@ -361,3 +424,28 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/FailureMessage"
+    DocumentDetails:
+      type: "object"
+      properties:
+        documentId:
+          type: string
+        documentName:
+          type: string
+    ApiResponse:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+    FileUploadRequest:
+      type: object
+      properties:
+        documentDetails:
+          allOf:
+          - $ref: '#/components/schemas/DocumentDetails'
+        documentFile:
+          type: array
+          items:
+            type: string
+            format: binary
+    DownloadApiResponse:
+      type: "object"

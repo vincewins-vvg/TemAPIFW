@@ -1,6 +1,11 @@
 package com.temenos.microservice.paymentorder.function;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.text.ParseException;
+
+import javax.ws.rs.InternalServerErrorException;
+
+import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.temenos.inboxoutbox.core.GenericCommand;
@@ -18,7 +26,17 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
+import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapter;
+import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapterFactory;
+import com.temenos.microservice.framework.core.file.reader.StorageReadException;
+import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapter;
+import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapterFactory;
+import com.temenos.microservice.framework.core.file.writer.StorageWriteException;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.FunctionInvocationException;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.JsonUtil;
@@ -26,12 +44,11 @@ import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
 import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
+import com.temenos.microservice.paymentorder.exception.StorageException;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
-import com.temenos.microservice.framework.core.function.InvalidInputException;
-import com.temenos.microservice.framework.core.function.FailureMessage;
 
 /**
  * CreateNewPaymentOrderImpl.
@@ -41,6 +58,8 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
  */
 public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	private boolean isCreated;
+	private String storageURL = "FILE_STORAGE_URL";
 
 	@Override
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
@@ -48,8 +67,47 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		PaymentOrder paymentOrder = input.getBody().get();
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
-
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
+		try {
+			if(paymentOrder.getFileReadWrite() != null) {
+				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
+				if(StorageUrl != null) {
+					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();				
+						byte[] dst = new byte[paymentOrder.getFileReadWrite().remaining()];
+						paymentOrder.getFileReadWrite().get(dst);
+						InputStream content = new ByteArrayInputStream(dst); 
+						if(paymentOrder.getFileOverWrite() == true) {
+							fileWriter.uploadFileAsInputStream(StorageUrl, content,true);		
+						}
+						else {
+							fileWriter.uploadFileAsInputStream(StorageUrl, content,false);	
+						}
+						isCreated = true;
+				}	
+			}
+			if(isCreated) {
+				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
+				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
+				if(StorageUrl != null && STORAGE_HOME != null) {
+					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
+					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
+					byte[] bytes = IOUtils.toByteArray(is);
+					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
+					paymentStatus.setFileReadWrite(fileReadWrite);		
+					isCreated = false;
+				}
+			}
+			} catch (StorageWriteException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			}  catch(InternalServerErrorException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			} catch (FileNotFoundException e ) {
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			} catch (IOException e) {
+				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			} catch (StorageReadException e) {
+				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			}
 		return paymentStatus;
 	}
 
@@ -60,7 +118,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 			Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-					.getByPartitionKey(paymentOrderId);
+					.getByPartitionKeyAndSortKey(paymentOrderId,paymentOrder.getFromAccount());
 			if (paymentOrderOpt.isPresent()) {
 				throw new InvalidInputException(
 						new FailureMessage("Records already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
