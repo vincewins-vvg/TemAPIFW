@@ -18,7 +18,8 @@ aws s3 rb s3://ms-payment-order --force
 sleep 30
 
 # Delete tables
-export inboxSourceArn=$(aws dynamodb ms_paymentorderdelete-table --table-name PaymentOrder.ms_inbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
+export inboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
+
 aws dynamodb delete-table --table-name ms_payment_order
 
 export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
@@ -42,9 +43,11 @@ aws lambda delete-event-source-mapping --uuid inboxingesteruuid
 
 # Delete lambdas
 aws lambda delete-function --function-name payment-inbox-ingester
-aws lambda delete-function --function-name payment-api-handler
+aws lambda delete-function --function-name payment-post-api-handler
+aws lambda delete-function --function-name payment-getall-api-handler
+aws lambda delete-function --function-name payment-get-api-handler
+aws lambda delete-function --function-name payment-put-api-handler
 aws lambda delete-function --function-name inbox-handler
 aws lambda delete-function --function-name outbox-handler
-aws lambda delete-function --function-name get-payment-api-handler
 aws lambda delete-function --function-name paymentorder-ingester
 sleep 60

@@ -221,7 +221,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		updateCommand.setDateTime(new Date());
 		updateCommand.setEventId(UUID.randomUUID().toString());
-		updateCommand.setEventType(Environment.getMSName() + "UpdatePaymentOrder");
+		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
 		updateCommand.setStatus("New");
 
 		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
