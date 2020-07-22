@@ -71,6 +71,7 @@ public class MSGenericActionStepDefs implements En {
     private static String inputValue;
     private static int currentTime;
     private static String uniqueIdentifier;
+    private static String compidFromResponseContent;
     private static final String METHOD_EXCEPTION_MSG = "Link method not available {0}. Exception: {1}";
         
     public MSGenericActionStepDefs(StepDefinitionConfiguration stepConfig, EndPointConfiguration endPointConfig, StringEvaluator stringEvaluator) {
@@ -608,17 +609,31 @@ public class MSGenericActionStepDefs implements En {
         }
 
         String cusidFromResponseContent = responseContents.split("/")[0];
-        System.out.println("Customer Id in OFS message is" + cusidFromResponseContent);
+        System.out.println("Customer Id in OFS message is " + cusidFromResponseContent);
 
-        String compidFromResponseContent = responseContents.split(",")[32].split("/")[0];
-        System.out.println("Company Id in OFS message is" + compidFromResponseContent);
+        if (responseContents.contains("CO.CODE:1:1")) { //returns true
+               Integer n = responseContents.indexOf("CO.CODE:1:1"); //find the position of C to start the trimming of string
+        /*CO.CODE:1:1=GB0010001, has 22 characters including comma. Take the position of , to trim the ending part of string. Since the length of the string 
+        is 22 hence took 25 in for loop for safer side. this iterates starring from the position of C in cocode till the end of the string that ends with , */
 
-        String idFromResponseContent = compidFromResponseContent + "-" + cusidFromResponseContent;
-        String CuscompidFromResponseContent = idFromResponseContent.substring(12, 28);
+               for(int i=n;i<=n+25;i++) {
+                      if(responseContents.charAt(i)==',') { //finds the position of ,
+                      compidFromResponseContent = responseContents.substring(n, i);//Trims the string CO.CODE:1:1=GB0010001 from the full ofs response
+               }
+               }
 
-        System.out.println("Record Id in OFS message is" + CuscompidFromResponseContent);
-        return cucumberInteractionSession.scenarioBundle().put(cusKey, CuscompidFromResponseContent);
-
+        }
+        String idsFromResponseContent = compidFromResponseContent + "-" + cusidFromResponseContent; //Appends the customer with CO.CODE:1:1=GB0010001
+        System.out.println("Company code appended with customer id is " + idsFromResponseContent); //CO.CODE:1:1=GB0010001-190301
+        Integer num = idsFromResponseContent.indexOf("="); //Find the position of = to seperate the contents after = in the string CO.CODE:1:1=GB0010001-190301
+        
+        Integer idsFromResponseContentLength = idsFromResponseContent.length(); //Find the length of the string -CO.CODE:1:1=GB0010001-190301 which is 28 
+        
+        /*Trim the string from the = position which is 11(variable n) until the customer number ending posiion which is 28
+        position of = is 11 string trimming should start from after = hence num+1*/
+        String compAndCusIdFromResponseContent = idsFromResponseContent.substring(num+1, idsFromResponseContentLength); 
+        System.out.println("CompanyIdandCustomerId is " + compAndCusIdFromResponseContent); //GB0010001-190301
+        return cucumberInteractionSession.scenarioBundle().put(cusKey, compAndCusIdFromResponseContent);
     }
     
     public Object currentSystemDate(String key) {
