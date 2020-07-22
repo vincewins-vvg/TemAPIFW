@@ -24,36 +24,36 @@ import com.temenos.microservice.framework.core.function.camel.CamelHttpRequestTr
 import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrder;
 import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl;
 import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderInput;
+import com.temenos.microservice.paymentorder.function.FileDownload;
+import com.temenos.microservice.paymentorder.function.FileDownloadImpl;
+import com.temenos.microservice.paymentorder.function.FileDownloadInput;
+import com.temenos.microservice.paymentorder.function.FileUpload;
+import com.temenos.microservice.paymentorder.function.FileUploadImpl;
+import com.temenos.microservice.paymentorder.function.FileUploadInput;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrder;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrderInput;
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrders;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl;
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrdersInput;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrder;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderInput;
-import com.temenos.microservice.paymentorder.function.FileDownload;
-import com.temenos.microservice.paymentorder.function.FileDownloadInput;
-import com.temenos.microservice.paymentorder.function.FileUploadInput;
-import com.temenos.microservice.paymentorder.function.FileDownloadImpl;
+import com.temenos.microservice.paymentorder.view.ApiResponse;
 import com.temenos.microservice.paymentorder.view.Card;
+import com.temenos.microservice.paymentorder.view.DocumentDetails;
+import com.temenos.microservice.paymentorder.view.DownloadApiResponse;
+import com.temenos.microservice.paymentorder.view.EnumCurrency;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
+import com.temenos.microservice.paymentorder.view.FileDownloadParams;
+import com.temenos.microservice.paymentorder.view.FileUploadRequest;
 import com.temenos.microservice.paymentorder.view.GetPaymentOrderParams;
 import com.temenos.microservice.paymentorder.view.PaymentMethod;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
-import com.temenos.microservice.paymentorderschema.view.PaymentOrders;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
-import com.temenos.microservice.paymentorder.view.EnumCurrency;
-import com.temenos.microservice.paymentorder.view.FileDownloadParams;
-import com.temenos.microservice.paymentorder.view.DownloadApiResponse;
-import com.temenos.microservice.paymentorder.view.ApiResponse;
-import com.temenos.microservice.paymentorder.view.DocumentDetails;
-import com.temenos.microservice.paymentorder.view.FileUploadRequest;
-import com.temenos.microservice.paymentorder.function.FileUpload;
-import com.temenos.microservice.paymentorder.function.FileUploadImpl;
+import com.temenos.microservice.paymentorderschema.function.GetPaymentOrders;
+import com.temenos.microservice.paymentorderschema.function.GetPaymentOrdersInput;
+import com.temenos.microservice.paymentorderschema.view.PaymentOrders;
 
 public class PaymentOrderFunctionUnitTest {
 
@@ -194,7 +194,7 @@ public class PaymentOrderFunctionUnitTest {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void testFileUpload() {
 		try {
@@ -219,20 +219,37 @@ public class PaymentOrderFunctionUnitTest {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void testFileDownload() {
 		try {
+			String data = "data";
+			FileUploadRequest fileUploadRequest = new FileUploadRequest();
+			DocumentDetails documentDetails = new DocumentDetails();
+			documentDetails.setDocumentId("123456");
+			documentDetails.setDocumentName("data");
+			fileUploadRequest.setDocumentDetails(documentDetails);
+			BinaryData binary = new BinaryData();
+			binary.setFilename("fileresult.txt");
+			binary.setData(data.getBytes());
+			binary.setMimetype("text/plain");
+			List<BinaryData> binaryData = new ArrayList<>();
+			binaryData.add(binary);
+			fileUploadRequest.setAttachments(binaryData);
+			FileUploadInput fileUploadInput = new FileUploadInput(fileUploadRequest);
+			FileUpload upload = new FileUploadImpl();
+			ApiResponse apiresponse = upload.invoke(null, fileUploadInput);
+
 			List<String> list = new ArrayList<>();
 			list.add("fileresult.txt");
-			FileDownloadParams params =  new FileDownloadParams();
+			FileDownloadParams params = new FileDownloadParams();
 			params.setFileName(list);
 			FileDownloadInput input = new FileDownloadInput(params);
 			FileDownload filedownload = new FileDownloadImpl();
 			DownloadApiResponse upiResponse = filedownload.invoke(null, input);
 			Assert.assertNotNull(upiResponse);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
 	}
 }
