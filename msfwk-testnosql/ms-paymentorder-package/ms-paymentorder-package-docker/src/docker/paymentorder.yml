@@ -4,15 +4,6 @@
 
 version: '3.6'
 services:
-  cache-service:
-    build:
-      context: ${CACHE_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        CACHE_BASE_IMAGE: ${CACHE_BASE_IMAGE}
-    image: ${CACHE_BASE_IMAGE}
-    ports:
-      - "10800:10800"
   db-service1:
     build:
       context: ${MONGO_DB_CONTEXT}
@@ -60,6 +51,8 @@ services:
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
+    volumes:
+      - 'c:\testing:/usr/local/tomcat/temp'
     depends_on:
       - db-service1
       - db-service2
@@ -78,21 +71,16 @@ services:
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
-      className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
-      className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
-      className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
-      className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
-      className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl    
+      className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+      className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
+      temn.queue.impl: kafka
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
@@ -101,6 +89,9 @@ services:
       IRIS_VERSION: v1.0.0
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.storage.home: ${MS_STORAGE_HOME}
+      FILE_STORAGE_URL: ${FILE_STORAGE_URL}
+      temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -122,6 +113,7 @@ services:
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
       temn.msf.name: PaymentOrder
+      temn.queue.impl: kafka
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -166,6 +158,7 @@ services:
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
+      temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: table-update-paymentorder
@@ -209,7 +202,7 @@ services:
       temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic
       temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
-      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester
+      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
       temn.msf.exec.env: server
       temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
       class.package.name: com.temenos.microservice.paymentorder.function
@@ -217,10 +210,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
-      temn.msf.ingest.inbox.cache.namespace: paymentorder-inbox
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
+      temn.queue.impl: kafka
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
       IRIS_PORT: 9089
@@ -266,6 +256,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       EXECUTION_ENVIRONMENT: TEST
+      temn.queue.impl: kafka
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -303,6 +294,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
+      temn.queue.impl: kafka
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -340,6 +332,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
+      temn.queue.impl: kafka
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -367,7 +360,7 @@ services:
       temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
       temn.msf.ingest.sink.error.enabled: "false"
       temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
-      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandBinaryIngester
+      temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
       temn.msf.exec.env: server
       temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
       temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
@@ -377,6 +370,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
+      temn.queue.impl: kafka
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -387,7 +381,6 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
     depends_on:
-      - cache-service
       - db-service1
       - db-service2
       - db-service3      
@@ -410,8 +403,6 @@ services:
       temn.msf.security.authz.enabled: "false"
       tmn.inbox.source.namespace: paymentorder-inbox
       tmn.outbox.source.namespace: paymentorder-outbox
-      temn.msf.ingest.outbox.cache.namespace: paymentorder-outbox
-      tmn.ignite.host: cache-service
-      tmn.ignite.port: 10800
+      temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10  
