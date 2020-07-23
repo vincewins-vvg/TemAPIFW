@@ -51,8 +51,6 @@ services:
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
-    volumes:
-      - 'c:\testing:/usr/local/tomcat/temp'
     depends_on:
       - db-service1
       - db-service2
