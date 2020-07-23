@@ -50,4 +50,9 @@ aws lambda delete-function --function-name payment-put-api-handler
 aws lambda delete-function --function-name inbox-handler
 aws lambda delete-function --function-name outbox-handler
 aws lambda delete-function --function-name paymentorder-ingester
+aws lambda delete-function --function-name create-reference-api-handler
+aws lambda delete-function --function-name get-reference-api-handler
+aws lambda delete-function --function-name create-reference-value-api-handler
+aws lambda delete-function --function-name update-reference-api-handler
+aws lambda delete-function --function-name delete-reference-api-handler
 sleep 60
