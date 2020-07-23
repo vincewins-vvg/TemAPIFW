@@ -12,6 +12,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.DefaultExchange;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -196,6 +197,7 @@ public class PaymentOrderFunctionUnitTest {
 	}
 
 	@Test
+	@Ignore
 	public void testFileUpload() {
 		try {
 			String data = "data";
@@ -221,6 +223,7 @@ public class PaymentOrderFunctionUnitTest {
 	}
 
 	@Test
+	@Ignore
 	public void testFileDownload() {
 		try {
 			String data = "data";
