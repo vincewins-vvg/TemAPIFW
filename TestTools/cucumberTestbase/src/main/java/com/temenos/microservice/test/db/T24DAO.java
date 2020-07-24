@@ -52,7 +52,7 @@ public class T24DAO {
                 if (rs.next()){
                     short rowCount = rs.getShort("resultCount");
                     
-                    if(rowCount == 1){
+                    if(rowCount > 0){
                     //System.out.print(rowCount);
                     //System.out.println(cusRec);
                     System.out.println("Entry for the created record " + CusId + " is present in " + tableName +  " table");
@@ -99,7 +99,7 @@ public class T24DAO {
                 
                 if (rs.next()){
                     short rowcCount1 = rs.getShort("resultCounts");
-                    if(rowcCount1 == 1){
+                    if(rowcCount1 > 0){
                     
                     //System.out.print(rowcCount1);
                     System.out.println("Entry for the created record " + CusId + " has been processed in table " + tableName);
