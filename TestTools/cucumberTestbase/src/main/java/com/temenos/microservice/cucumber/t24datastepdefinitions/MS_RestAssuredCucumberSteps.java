@@ -35,6 +35,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.Every;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -750,6 +752,12 @@ public class MS_RestAssuredCucumberSteps {
         response.then().body(array, notNullValue());
         List<String> actualValues = getValuesFromJsonArrayWithKey(key, array);
         assertThat(actualValues, hasItem(val));
+    }
+    
+    @Then("^the MS JSON array root path key \"(.*)\" should contains the string value \"(.*)\"$")
+    public void theJSONObjectDataShouldHaveKeyContainsValue(String arrayKey, String Containsvalue) {
+        response.then().body(arrayKey, Every.everyItem(Matchers.containsString(Containsvalue)));      
+      
     }
 
     @Then("^the MS JSON array \"([^\"]*)\" should not have an element with key \"([^\"]*)\" and values? \"([^\"]*)\"$")
