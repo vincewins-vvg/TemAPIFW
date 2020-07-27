@@ -753,6 +753,14 @@ public class MS_RestAssuredCucumberSteps {
         List<String> actualValues = getValuesFromJsonArrayWithKey(key, array);
         assertThat(actualValues, hasItem(val));
     }
+
+    //Contains Value Assertion for Json Object in response    
+    @Then("^the MS JSON string property \"(.*)\" should contains value \"(.*)\"$")
+    public void jsonResponseStringPropertyXContainsNumberY(String property, String value) throws Throwable {
+        response.then().body(property, notNullValue());
+        String actualValue = JsonPath.from(response.body().asString()).getString(property);
+        assertTrue(actualValue.contains(value));
+    }
     
     @Then("^the MS JSON array root path key \"(.*)\" should contains the string value \"(.*)\"$")
     public void theJSONObjectDataShouldHaveKeyContainsValue(String arrayKey, String Containsvalue) {
