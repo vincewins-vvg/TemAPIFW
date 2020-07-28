@@ -1,0 +1,10 @@
+{
+  "eventId": "6f7cd466-2dea-45ac-999b-c61eb54ae81d11",
+  "dateTime": "2019-10-21T00:49:35",
+  "organizationId": null,
+  "status": "new",
+  "eventType": "ms-paymentorder.CreatePayment.SequenceCompleted",
+  "payload": {
+    "id": "PO~100-CBE~232-EVEN~INR~125" 
+  }
+}

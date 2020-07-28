@@ -1,0 +1,58 @@
+{
+    "paymentOrder": {
+        "fromAccount": "10995",
+        "toAccount": "898789",
+        "paymentReference": "paying",
+        "paymentDetails": "Funds transfer",
+        "currency": "USD",
+        
+        "paymentMethod": {
+            "id": 157,
+            "name": "FBNK.PAYMENT.ORDER",
+            "extensionData": {
+                "application": "PO~10995~898789~USD~100",
+                "numbers": [
+                    "1 COCA-COLA PLAZA",
+                    "ALTANTA"
+                ],
+                "entityId": "PO~10995~898789~USD~100",
+                "orderingCompany": "paying",
+                "Id": "Coca-Cola"
+            },
+            "card": {
+                "cardid": 124,
+                "cardname": "FBNK"
+            }
+        },
+        "exchangeRates": [
+            {
+               
+                "name": "DKD"
+            },
+            {
+                
+                "name": "DK"
+            }
+        ],
+        "extensionData": {
+            "test": [
+                {
+                    "id": "0"
+                },
+                {
+                    "id": "1"
+                },
+                {
+                    "id": "2"
+                },
+                {
+                    "id": "3"
+                }
+            ]
+        }
+    },
+    "paymentStatus": {
+        "paymentId": "PO~10995~898789~USD~100",
+        "details": "Funds transfer"
+    }
+}

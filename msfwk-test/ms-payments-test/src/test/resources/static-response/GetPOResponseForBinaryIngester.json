@@ -1,0 +1,42 @@
+{
+    "paymentOrder": {
+        "fromAccount": "1733",
+        "toAccount": "3621",
+        "paymentReference": "paycmd",
+        "paymentDetails": "test",
+        "currency": "USD",
+        "paymentDate": "2024-05-05",
+        "paymentMethod": {
+            "id": 100100,
+            "name": "HDFC",
+            "extensionData": {},
+            "card": {
+                "cardid": 723,
+                "cardname": "Diners",
+                "cardlimit": 120000.11
+            }
+        },
+        "exchangeRates": [
+            {
+                
+                "name": "USD",
+                "value": 78.12
+            },
+            {
+                
+                "name": "INR",
+                "value": 122.12
+            }
+        ],
+        "payeeDetails": {
+            "payeeName": "MSTester",
+            "payeeType": "temp"
+        },
+        "extensionData": {}
+    },
+    "paymentStatus": {
+        "paymentId": "PO~1733~3621~USD~901",
+        "status": "INITIATED",
+        "details": "test"
+    }
+}
