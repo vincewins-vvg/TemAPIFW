@@ -2,6 +2,8 @@ package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_WRONG;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -63,7 +65,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class))
+					.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
@@ -96,22 +99,25 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).header("roleId", "ADMIN").exchange()
-					.block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class))
+					.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
 	}
-	
+
 	public void validateSQLExtensionData() {
-		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_BusDayCentres");
-		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "paymentOrderProduct");
-		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_NonOspiType");
+		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension",
+				"PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name", "eq", "string",
+				"array_BusDayCentres");
+		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension",
+				"PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name", "eq", "string",
+				"paymentOrderProduct");
+		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord(
+				"PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name",
+				"eq", "string", "array_NonOspiType");
 		List<Attribute> extensioneEntry = insertedExtensionRecord.get(1);
 		List<Attribute> arrayExtensionEntry = insertedArrayExtensionRecord.get(1);
 		List<Attribute> multivalueArrayExtensionEntry = insertedAssoMultiValueArrayExtensionRecord.get(1);
@@ -133,13 +139,14 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertEquals(multivalueArrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
 		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertEquals(multivalueArrayExtensionEntry.get(1).getName(), "value");
-		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(), "[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(),
+				"[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
 		assertEquals(multivalueArrayExtensionEntry.get(2).getName(), "name");
 		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
 	}
-	
+
 	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
-		String extensionName = "",extensionValue="";
+		String extensionName = "", extensionValue = "";
 		for (Attribute attribute : listEntry) {
 			if (attribute.getName().equalsIgnoreCase("extensionData")) {
 				extensionName = attribute.getName().toLowerCase();
@@ -148,12 +155,12 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			}
 		}
 		assertEquals(extensionName, "extensiondata");
-	    assertTrue(extensionValue.contains("array_BusDayCentres"));
-        assertTrue(extensionValue.contains("India"));
-        assertTrue(extensionValue.contains("array_NonOspiType"));
-        assertTrue(extensionValue.contains("NonOspiType"));
-        assertTrue(extensionValue.contains("paymentOrderProduct"));
-        assertTrue(extensionValue.contains("Temenos"));
+		assertTrue(extensionValue.contains("array_BusDayCentres"));
+		assertTrue(extensionValue.contains("India"));
+		assertTrue(extensionValue.contains("array_NonOspiType"));
+		assertTrue(extensionValue.contains("NonOspiType"));
+		assertTrue(extensionValue.contains("paymentOrderProduct"));
+		assertTrue(extensionValue.contains("Temenos"));
 	}
 
 	//@Test
