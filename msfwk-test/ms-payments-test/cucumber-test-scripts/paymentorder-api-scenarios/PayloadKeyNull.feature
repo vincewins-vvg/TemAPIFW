@@ -45,5 +45,13 @@ Feature: PayloadKeyNull MSF-2181
     
     When a "GET" request is sent to MS
     Then MS response code should be 200
+    Then MS JSON property "paymentDetails" should not exist
+    Then MS JSON property "paymentMethod.card.cardname" should not exist
+		Then MS JSON property "exchangeRates.name[0]" should not exist
+		Then MS JSON property "payeeDetails.payeeType" should not exist
+		
+		
+    
+    
     
     
