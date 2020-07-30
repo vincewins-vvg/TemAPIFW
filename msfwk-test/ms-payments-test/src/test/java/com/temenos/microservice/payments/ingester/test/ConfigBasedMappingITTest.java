@@ -1,7 +1,5 @@
 package com.temenos.microservice.payments.ingester.test;
 
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -235,7 +233,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 				getResponse = this.client.get()
 						.uri("/payments/orders/" + "1 COCA-COLA PLAZA" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")
 								+ "&alternatekeys=paymentId&alternatenames=OrderingPostAddrline")
-						.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).exchange().block();
+						.exchange().block();
 			} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 			String apiResponse = getResponse.bodyToMono(String.class).block();

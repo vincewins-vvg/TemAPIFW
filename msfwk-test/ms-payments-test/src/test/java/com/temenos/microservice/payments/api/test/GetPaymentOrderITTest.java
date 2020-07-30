@@ -1,8 +1,6 @@
 package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -53,14 +51,13 @@ public class GetPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class))
-					.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
 			getResponse = this.client.get()
 					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE"))
-					.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).exchange().block();
+					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 		assertTrue(getResponse.bodyToMono(String.class).block().contains(
