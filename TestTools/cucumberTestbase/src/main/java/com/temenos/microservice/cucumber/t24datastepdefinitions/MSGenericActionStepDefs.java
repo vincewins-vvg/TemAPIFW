@@ -162,6 +162,13 @@ public class MSGenericActionStepDefs implements En {
                 () ->   
         TimeUnit.SECONDS.sleep(10));
         
+        And(format("^set wait time of session for {0} minutes$", stepConfig.stringRegEx()), (String waitTime) -> {
+            TimeUnit.MINUTES.sleep(Integer.parseInt(waitTime));
+        });
+        
+        And(format("^set wait time of session for {0} seconds$", stepConfig.stringRegEx()), (String waitTime) -> {
+            TimeUnit.SECONDS.sleep(Integer.parseInt(waitTime));
+        });
         /* Examples:
          * And increment "systemDate" with value "15 days" in bundle 
          * And increment "systemDate" with value "11 months" in bundle 

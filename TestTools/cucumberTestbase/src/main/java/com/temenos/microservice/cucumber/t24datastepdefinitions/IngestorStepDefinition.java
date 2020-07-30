@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.temenos.des.schema.exception.EventSchemaParseException;
 import com.temenos.des.serializer.serialize.exception.AvroSerializationException;
@@ -32,6 +33,8 @@ import com.temenos.microservice.test.producer.ProducerFactory;
 import com.temenos.microservice.test.util.BuildRequest;
 import com.temenos.microservice.test.util.ResourceHandler;
 import com.temenos.microservice.test.util.RetryUtil;
+import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
+import com.temenos.useragent.cucumber.steps.ScenarioBundleStepDefs;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
@@ -41,7 +44,11 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class IngestorStepDefinition {
-
+    
+    @Autowired
+    private CucumberInteractionSession cucumberInteractionSession;
+    @Autowired
+    private ScenarioBundleStepDefs scenarioBundleStepDefs;
     private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
     private static final String REPLACE_COMPANY = "COMPANY_ID_HERE";
     private static final String REPLACE_TESTCASE_ID = "TEST_CASE_ID_HERE";
@@ -196,6 +203,26 @@ public class IngestorStepDefinition {
                 }
             }
         });
+    } 
+    
+    //To use bundle(with value) under Column value while setting the criteria
+    @Then("^Set the following data criteria with bundle value$")
+    public void setDataCriteriaWithBundleValue(DataTable dataTable) throws Exception {
+        dataCriterions = new ArrayList<>();
+        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+        tableValues.forEach(tableValue -> {
+            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                
+                     dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+                            cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))));
+
+            }
+            
+            System.out.println("Bundle value :"+cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+        });
+        
     } 
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")

@@ -1189,7 +1189,15 @@ public class MS_RestAssuredCucumberSteps {
     @Then("^Clear all the expected MS JSON values from file path \"(.*)\"$")
     public void clearExpectedValuesPropertyFile(String expectedFilePath) throws Throwable {
         resuableObject.removeExpectedValuesPropertyFile(expectedFilePath);
-    }
+    }    
+
+    @Then("^the MS JSON array root path key \"(.*)\" should contains the string value \"(.*)\"$")
+        public void theJSONObjectDataShouldHaveKeyContainsValue(String arrayKey, String Containsvalue) {
+            response.then().body(arrayKey, Every.everyItem(Matchers.containsString(Containsvalue)));       
+           
+        }
+
+
 
     // To get the UTC time and store in the request payload
 

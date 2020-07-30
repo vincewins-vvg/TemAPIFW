@@ -9,6 +9,8 @@ public enum ApiUnderTest {
     PAYMENT_ORDER("PAYMENT_ORDER"),
     SERVICE_ORCHESTRATOR("SO"),
     EVENT_STORE("EVENT_STORE"),
+    FAMS("FAMS"),
+    AMS("AMS"),
     DUMMY_API("DUMMY");
 
     String name;
