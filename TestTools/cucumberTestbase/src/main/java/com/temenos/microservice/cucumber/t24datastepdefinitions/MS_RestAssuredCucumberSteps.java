@@ -762,11 +762,7 @@ public class MS_RestAssuredCucumberSteps {
         assertTrue(actualValue.contains(value));
     }
     
-    @Then("^the MS JSON array root path key \"(.*)\" should contains the string value \"(.*)\"$")
-    public void theJSONObjectDataShouldHaveKeyContainsValue(String arrayKey, String Containsvalue) {
-        response.then().body(arrayKey, Every.everyItem(Matchers.containsString(Containsvalue)));      
-      
-    }
+
 
     @Then("^the MS JSON array \"([^\"]*)\" should not have an element with key \"([^\"]*)\" and values? \"([^\"]*)\"$")
     public void theJSONObjectDataShouldNotHaveKeyAndValue(String array, String key,
