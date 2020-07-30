@@ -95,7 +95,7 @@ services:
       temn.msf.storage.home: ${MS_STORAGE_HOME}
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
-	  ms.security.tokencheck.enabled: Y
+      ms.security.tokencheck.enabled: Y
       EXECUTION_ENVIRONMENT: "TEST"
   ingester:
     build:
