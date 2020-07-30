@@ -51,7 +51,7 @@
       | MS-Test-Payments-MS-001       | status     | PROCESSED |
   
    
-   And set wait time of 10 seconds
+   And set timeout session for 30 seconds
   
   
     #Check the entries in outbox
@@ -59,10 +59,11 @@
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225777 |
       | MS-Test-Payments-MS-001       | eventType        | eq       | string   | CommandProcessed |
+      | MS-Test-Payments-MS-001       | status           | eq       | string   | DELIVERED |
       
     And Validate the below details from the db table ms_outbox_events and check no of record is 1
       | TestCaseID                    | ColumnName    | ColumnValue |
-      | MS-Test-Payments-MS-001       | status        | DELIVERED |
+      | MS-Test-Payments-MS-001       | eventType     | CommandProcessed |
       
     
     Examples:
