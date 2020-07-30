@@ -3,6 +3,8 @@ package com.temenos.microservice.payments.api.test;
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
 import static com.temenos.microservice.payments.util.ITConstants.API_KEY;
 import static com.temenos.microservice.payments.util.ITConstants.BASE_URI;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,6 +46,7 @@ public class ITTest {
 		WebClient.Builder builder = WebClient.builder();
 		builder.baseUrl(getUri());
 		builder.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		builder.defaultHeader(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE);
 		if (!StringUtil.isNullOrEmpty(apiKey)) {
 			builder.defaultHeader(API_KEY, apiKey);
 		}
