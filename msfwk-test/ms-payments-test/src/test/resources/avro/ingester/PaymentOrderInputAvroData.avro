@@ -1,0 +1,457 @@
+{
+	"eventId": "U000021_37b9cacf-5c85-4862-9894-91a61b7d5177005uB_0001",
+	"metadata": null,
+	"emittedTime": 157,
+	"entityId": {
+		"string": "PO~10995~898789~USD~100"
+	},
+	"processingTime": 124,
+	"application": {
+		"string": "PO~10995~898789~USD~100"
+	},
+	"eventSize": 1,
+	"payload": {
+		"OrderingCustomerBic": null,
+		"DebtorAgentAddrtype": null,
+		"CoCode": {
+			"string": "paying"
+		},
+		"OrderingOtIdtype": null,
+		"BenIdentifier": null,
+		"PaymentAmount": {
+			"string": "100"
+		},
+		"UserAction": null,
+		"BeneficiarySchPrty": null,
+		"OrderingCountryResidence": {
+			"string": "US"
+		},
+		"OrdAccountLocation": {
+			"string": "OWN"
+		},
+		"MessagePriority": null,
+		"BenAccountValidated": null,
+		"AcctWithBankclearingcode": null,
+		"CurrentState": {
+			"string": "Placed"
+		},
+		"BeneficiaryCountryCode": null,
+		"UltimateDebtorBrprvnc": null,
+		"DebitAccountIban": {
+			"string": "GB61DEMO60161300010995"
+		},
+		"BeneficiaryContFax": null,
+		"DebitValueDate": null,
+		"OrdAccountValidated": null,
+		"ManualPayStatusaddinfo": null,
+		"PaymentComplete": null,
+		"InternalStatus": null,
+		"ChargeBearer": {
+			"string": "SHA"
+		},
+		"BeneficiaryContOth": null,
+		"UltimateDebtorOtidtype": null,
+		"UltimateDebtorSchissur": null,
+		"OrderInitiationType": {
+			"string": "POA"
+		},
+		"UltimateCreditorBrcity": null,
+		"ManualComplete": null,
+		"AuditorCode": null,
+		"UltimateCreditorName": null,
+		"AcctWithBankcustomer": null,
+		"UltimateDebtorOtid": null,
+		"ARRAY_UltimateDebtorAddrline": [],
+		"UltimateDebtorDob": null,
+		"OrderingBrCountry": null,
+		"ManualStatusUpdatedate": null,
+		"UltimateDebtorAddrtype": null,
+		"BulkProcessingMode": null,
+		"ARRAY_StatusReasonRemark": [],
+		"ARRAY_InvoiceReference": [],
+		"PaymentOrderProduct": {
+			"string": "ACCPAYOUT"
+		},
+		"TcSimChecked": null,
+		"SubmitOrder": null,
+		"UltimateDebtorSchprty": null,
+		"DebtorAgentBic": null,
+		"OrderingPortfolio": null,
+		"RequestedCurrency": null,
+		"InstructionCodeText": null,
+		"BeneficiaryOtId": null,
+		"OrderingReference": {
+			"string": "PayRef"
+		},
+		"RecordStatus": null,
+		"OrderingOtId": null,
+		"AcFundsAuthid": null,
+		"OrderingCustName": {
+			"string": "Coca-Cola"
+		},
+		"InitiatorName": null,
+		"CancelRemark": null,
+		"ARRAY_Inputter": [
+			{
+				"Inputter": {
+					"string": "21"
+				},
+				"AUTHOR": {
+					"string": "DK"
+				}
+			},
+			{
+				"Inputter": {
+					"string": "2"
+				},
+				"AUTHOR": {
+					"string": "DKD"
+				}
+			}
+		],
+		"StructuredCreditorReference": null,
+		"PayReqTreasuryrate": null,
+		"ARRAY_ChargeType": [],
+		"ARRAY_InternalOrderDetails": [],
+		"DebitCcy": {
+			"string": "USD"
+		},
+		"IntermedBankAcc": null,
+		"CreditPl": null,
+		"ARRAY_ActivityCode": [],
+		"OrderingBrCity": null,
+		"CancelInitiatedBy": null,
+		"PaymentSystem": {
+			"string": "TPS"
+		},
+		"TapOperNature": null,
+		"UltimateCreditorBic": null,
+		"ChargeAccount": null,
+		"CreditValueDate": null,
+		"ARRAY_ContextName": [],
+		"ARRAY_BankToBankinfo": [],
+		"ARRAY_AdditionalInfo": [],
+		"DebtorAgentIdentifier": null,
+		"IntermedBankReserved3": null,
+		"ARRAY_IntermedPostalAddrline": [],
+		"IntermedBankReserved2": null,
+		"IntermedBankReserved1": null,
+		"ClearingChannel": null,
+		"ARRAY_InitiatorPostAddrline": [],
+		"StructuredCommunicationCode": null,
+		"PymtInfoSerlevelcode": null,
+		"ARRAY_OrderingPostSwiftaddr": [],
+		"ARRAY_InitiatorSwiftAddress": [],
+		"DebtorAgentName": {
+			"string": "Model Bank"
+		},
+		"AcctWithBankiban": null,
+		"RequestedAmount": null,
+		"InstructionIdRef": null,
+		"BenAccountLocation": null,
+		"StockRegisterId": null,
+		"IntermedBic": null,
+		"UltimateDebtorBrcity": null,
+		"OriginalMsgContent": null,
+		"BeneficiaryBic": null,
+		"OrderingPaymentFxspread": null,
+		"BeneficiaryId": {
+			"string": "BEN9415700002"
+		},
+		"ARRAY_IntermedSwiftAddr": [],
+		"UltimateCreditorDob": null,
+		"IntermedBankClearingcode": null,
+		"BeneficiaryBrPrvnc": null,
+		"BulkSenderReference": null,
+		"BeneficiaryBrCity": null,
+		"IntermedBankCustomer": null,
+		"ARRAY_OrderingPostAddrline": [
+			{
+				"OrderingPostAddrline": {
+					"string": "1 COCA-COLA PLAZA"
+				}
+			},
+			{
+				"OrderingPostAddrline": {
+					"string": "ALTANTA"
+				}
+			}
+		],
+		"PaymentCategory": null,
+		"ExemptFromSca": null,
+		"AuditDateTime": null,
+		"IndicativeRate": null,
+		"OrderingSchmeCde": null,
+		"RejectDateTime": null,
+		"ARRAY_AcctWithBankswiftaddr": [],
+		"Authoriser": {
+			"string": "21_INPUTTER_OFS_BROWSERTC"
+		},
+		"ARRAY_DateTime": [
+			{
+				"DateTime": {
+					"string": "1911271341"
+				}
+			}
+		],
+		"TermsAndConditions": null,
+		"AuthorisationId": null,
+		"BeneficiaryName": {
+			"string": "computer"
+		},
+		"StatusReasonCode": {
+			"string": "MS03"
+		},
+		"PaymentSystemStatus": {
+			"string": "NEW"
+		},
+		"InitialProduct": null,
+		"BeneficiarySchIssur": null,
+		"EndToEndreference": {
+			"string": "NOTPROVIDED"
+		},
+		"AcctWithBankacc": null,
+		"ChequeNumber": null,
+		"LockedEventId": null,
+		"OnusIndicator": null,
+		"DebitPl": null,
+		"ARRAY_StateHist": [
+			{
+				"SUB_ARRAY_StateHist": [
+					{
+						"StateHist": {
+							"string": "13:41:16 27 NOV 2019"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "OrderApproved"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "ReadyForExecution"
+						}
+					}
+				]
+			},
+			{
+				"SUB_ARRAY_StateHist": [
+					{
+						"StateHist": {
+							"string": "13:41:16 27 NOV 2019"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "OrderApproved"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "ReadyForExecution"
+						}
+					}
+				]
+			},
+			{
+				"SUB_ARRAY_StateHist": [
+					{
+						"StateHist": {
+							"string": "13:41:16 27 NOV 2019"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "OrderApproved"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "ReadyForExecution"
+						}
+					}
+				]
+			},
+			{
+				"SUB_ARRAY_StateHist": [
+					{
+						"StateHist": {
+							"string": "13:41:16 27 NOV 2019"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "OrderApproved"
+						}
+					},
+					{
+						"StateHist": {
+							"string": "ReadyForExecution"
+						}
+					}
+				]
+			}
+		],
+		"UltimateCreditorAddrtype": null,
+		"OrderingPaymentFxcustrate": null,
+		"OrderingSchIssur": null,
+		"ARRAY_LocalRef": [],
+		"PaymentCurrency": {
+			"string": "USD"
+		},
+		"PaymentStatusUpdatedate": {
+			"string": "13:41:16 27 NOV 2019"
+		},
+		"AcctWithBankreserved2": null,
+		"AcctWithBankreserved1": null,
+		"AcctWithBankreserved3": null,
+		"StructuredIssuer": null,
+		"OrderingCustomerSsi": null,
+		"ARRAY_RemittanceInformation": [],
+		"CreditAccountIban": null,
+		"UltimateCreditorSchissur": null,
+		"BeneficiaryAccountNo": {
+			"string": "14613"
+		},
+		"PaymentSystemId": {
+			"string": "BNK19107BDHKBDJL"
+		},
+		"UltimateCreditorCountry": null,
+		"UltimateCreditorOtidtype": null,
+		"Id": null,
+		"InitOtherId": null,
+		"CutOffTime": null,
+		"ARRAY_DebtorAgentAddrline": [],
+		"PsdCompliant": null,
+		"BeneficiaryOtIdtype": null,
+		"UltimateDebtorBrcountry": null,
+		"BenPostAddresstype": null,
+		"CurrNo": {
+			"string": "BNK19107BDHKBDJL"
+		},
+		"BulkReference": null,
+		"DebtorAgentReserved2": null,
+		"DebtorAgentReserved1": null,
+		"OrderingBrPrvnc": null,
+		"IntermedBankIban": null,
+		"DebtorAgentReserved5": null,
+		"LastTcSimtime": null,
+		"DebtorAgentReserved4": null,
+		"DebtorAgentReserved3": null,
+		"UltimateCreditorBrprvnc": null,
+		"OrderExecutionDatetime": {
+			"string": "13:41:16 27 NOV 2019"
+		},
+		"BeneficiaryCustomer": {
+			"string": "100283"
+		},
+		"UltimateDebtorName": null,
+		"OrderingDob": null,
+		"LocalInstrProp": null,
+		"DebitAccount": {
+			"string": "10995"
+		},
+		"UltimateCreditorBrcountry": null,
+		"BeneficiarySchmeCde": null,
+		"TotalDebitAmount": {
+			"string": "10000"
+		},
+		"AcctWithBankcountry": null,
+		"StockSeriesId": null,
+		"ARRAY_BenPostSwiftaddr": [],
+		"AcctWithBankidentifier": null,
+		"BeneficiaryDob": null,
+		"OrderingCompany": {
+			"string": "paying"
+		},
+		"AcctWithBankbic": null,
+		"BeneficiaryIban": null,
+		"OrderingSchPrty": null,
+		"InitiatorBic": null,
+		"CreditPortfolio": null,
+		"UltimateDebtorBic": null,
+		"FraudCheckIndicator": null,
+		"UltimateCreditorSchprty": null,
+		"BeneficiaryContEml": null,
+		"RejectedBy": null,
+		"DebtorAgentClearingcode": null,
+		"PaymentPurpose": null,
+		"UltimateDebtorSchmecde": null,
+		"WaiveAllCharges": null,
+		"ARRAY_Narrative": [],
+		"OrderType": {
+			"string": "CUSTOMER"
+		},
+		"OrderingPostAddresstype": null,
+		"ARRAY_BenPostAddrline": [],
+		"IntermedBankPostaladdrtype": null,
+		"UltimateDebtorCountry": null,
+		"ManualPaymentStatus": null,
+		"CreditAccount":  {
+			"string": "898789"
+		},
+		"BenBankClearingcode": null,
+		"ARRAY_Signatory": [],
+		"PaymentCategorypurpPrty": null,
+		"IntermedBankCountry": null,
+		"PayReqFxspread": null,
+		"ARRAY_Override": [
+			{
+				"Override": {
+					"string": "PI-ORD.CUST.NOT.OWNING.BENEF.CUST}ORDERING CUSTOMER DOES NOT OWN BENEFICIARY CUSTOMER"
+				}
+			}
+		],
+		"UltimateCreditorSchmecde": null,
+		"OrderingPaymentTreasuryrate": null,
+		"CancelReason": null,
+		"DeptCode": {
+			"string": "1"
+		},
+		"ARRAY_AcctWithBankpostaddrln": [],
+		"PaymentMethod": {
+			"string": "TRF"
+		},
+		"IntermedBankIdentifier": null,
+		"TapRefId": null,
+		"BeneficiaryBrCountry": null,
+		"ARRAY_UltimateCredAddrln": [],
+		"recId": {
+			"string": "PO~10995~898789~USD~100"
+		},
+		"IssueChequeType": null,
+		"PayReqFxcustrate": null,
+		"RequiredCreditValuedate": null,
+		"Source": null,
+		"BeneficiaryContMob": null,
+		"ARRAY_InstructionCode": [],
+		"CurrencyMarket": null,
+		"PaymentStatusAddinfo": null,
+		"ARRAY_RegulatoryReport": [],
+		"ARRAY_IntOverrideId": [],
+		"InitOtherIdtype": null,
+		"TapEventId": null,
+		"LocalInstrCode": null,
+		"PaymentExecutionDate": {
+			"string": "20200502"
+		},
+		"AcctWithBankpostaddrtype": null,
+		"UltimateCreditorOtid": null,
+		"CustomerConsent": null,
+		"InitiatorPostAddrtype": null,
+		"ChargeAccountCcy": null,
+		"OrderingCustomer": {
+			"string": "100282"
+		},
+		"AcceptanceDateTime": null
+	},
+	"dataEventIndex": 0,
+	"entityName": {
+		"string": "FBNK.PAYMENT.ORDER"
+	},
+	"context": null,
+	"company": {
+		"string": "FBNK"
+	}
+}
