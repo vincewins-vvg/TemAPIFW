@@ -162,11 +162,13 @@ public class MSGenericActionStepDefs implements En {
                 () ->   
         TimeUnit.SECONDS.sleep(10));
         
-        And(format("^set wait time of session for {0} minutes$", stepConfig.stringRegEx()), (String waitTime) -> {
+        //To mention time units for wait time via script/feature
+        And(format("^set {0} minutes wait time$", stepConfig.stringRegEx()), (String waitTime) -> {
             TimeUnit.MINUTES.sleep(Integer.parseInt(waitTime));
         });
         
-        And(format("^set wait time of session for {0} seconds$", stepConfig.stringRegEx()), (String waitTime) -> {
+      //To mention time units for wait time via script/feature
+        And(format("^set {0} seconds wait time$", stepConfig.stringRegEx()), (String waitTime) -> {
             TimeUnit.SECONDS.sleep(Integer.parseInt(waitTime));
         });
         /* Examples:
