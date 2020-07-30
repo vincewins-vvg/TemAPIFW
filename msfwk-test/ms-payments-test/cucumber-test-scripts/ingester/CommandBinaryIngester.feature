@@ -40,19 +40,21 @@ Feature: CommandBinaryIngester
     And Validate the below details from the db table ms_inbox_events and check no of record is 1    
       | TestCaseID                    | ColumnName | ColumnValue |
       | MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
+      
+   And set timeout session for 30 seconds
     
     #Check the entries in outbox
     Then Set the following data criteria
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
+      | MS-Test-PO-CommandIngester-001| status           | eq       | string   | DELIVERED |
       | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandProcessed |
       
     #And Validate the below details from the db table ms_outbox_events and check no of record is 2
     And Validate the below details from the db table ms_outbox_events
       | TestCaseID                           | ColumnName     | ColumnValue |
-      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED |  
-#
-      #
+      | MS-Test-PO-CommandIngester-001       | eventType      | CommandProcessed |  
+
     #Then Set the following data criteria
       #| TestCaseID                           | ColumnName       | Operator | DataType | ColumnValue |
       #| MS-Test-PO-CommandIngester-001       | correlationid    | eq       | string   | 4316e8-3ca-9-b-8728 |
