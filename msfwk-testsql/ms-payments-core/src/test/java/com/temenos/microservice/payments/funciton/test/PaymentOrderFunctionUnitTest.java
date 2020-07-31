@@ -53,8 +53,10 @@ import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
 import com.temenos.microservice.paymentsorder.function.GetPaymentOrders;
 import com.temenos.microservice.paymentsorder.function.GetPaymentOrdersInput;
+import com.temenos.microservice.payments.view.Card;
 import com.temenos.microservice.paymentsorder.view.GetPaymentOrdersParams;
 import com.temenos.microservice.paymentsorder.view.PaymentOrders;
+import com.temenos.microservice.payments.view.PaymentMethod;
 
 public class PaymentOrderFunctionUnitTest {
 	public static Charset charset = Charset.forName("UTF-8");
@@ -90,6 +92,15 @@ public class PaymentOrderFunctionUnitTest {
 			paymentOrder.setToAccount("70012");
 			paymentOrder.setPaymentReference("test");
 
+			PaymentMethod method = new PaymentMethod();
+			method.setId(101L);
+			method.setName("cashPayment");
+			Card card=new Card();
+			card.setCardid(434L);
+			card.setCardname("casePayment");
+			card.setCardlimit(new BigDecimal(42344));
+			method.setCard(card);
+			paymentOrder.setPaymentMethod(method);
 			String fileContent = "R2FuZXNhbW9vcnRoaQ==";
 			ByteBuffer byteBuffer = encoder.encode(CharBuffer.wrap(fileContent));
 			paymentOrder.setFileContent(byteBuffer);
@@ -158,6 +169,15 @@ public class PaymentOrderFunctionUnitTest {
 			paymentOrder.setFromAccount("70011");
 			paymentOrder.setToAccount("70012");
 			paymentOrder.setPaymentReference("test");
+			PaymentMethod method = new PaymentMethod();
+			method.setId(101L);
+			method.setName("cashPayment");
+			Card card = new Card();
+			card.setCardid(434L);
+			card.setCardname("casePayment");
+			card.setCardlimit(new BigDecimal(42344));
+			method.setCard(card);
+			paymentOrder.setPaymentMethod(method);
 			String fileContent = "R2FuZXNhbW9vcnRoaQ==";
 			ByteBuffer byteBuffer = encoder.encode(CharBuffer.wrap(fileContent));
 			paymentOrder.setFileContent(byteBuffer);

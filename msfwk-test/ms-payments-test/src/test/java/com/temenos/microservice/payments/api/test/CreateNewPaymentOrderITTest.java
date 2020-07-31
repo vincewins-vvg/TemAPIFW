@@ -5,6 +5,11 @@ import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_IN
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAX;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAXLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -151,5 +156,74 @@ public class CreateNewPaymentOrderITTest extends ITTest {
         assertTrue(extensionValue.contains("Temenos"));
 	}
 
+	@Test
+	public void testCreateNewPaymentOrderFunctionValidateMinimum() {
+		ClientResponse createResponse;
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MIN), String.class))
+					.header("roleId", "ADMIN").exchange().block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block().contains(
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 100]\",\"code\":\"\"}]"));
+	}
 
+	@Test
+	public void testCreateNewPaymentOrderFunctionValidateMaximum() {
+		ClientResponse createResponse;
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAX), String.class))
+					.header("roleId", "ADMIN").exchange().block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block().contains(
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 600]\",\"code\":\"\"}]"));
+	}
+
+	@Test
+	public void testCreateNewPaymentOrderFunctionValidateMinLength() {
+		ClientResponse createResponse;
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
+					.header("roleId", "ADMIN").exchange().block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block().contains(
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+	}
+
+	@Test
+	public void testCreateNewPaymentOrderFunctionValidateMaxLength() {
+		ClientResponse createResponse;
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
+					.header("roleId", "ADMIN").exchange().block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block().contains(
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+	}
+
+	@Test
+	public void testCreateNewPaymentOrderFunctionValidateNull() {
+		ClientResponse createResponse;
+		do {
+			createResponse = this.client.post()
+					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NULLABLE), String.class))
+					.header("roleId", "ADMIN").exchange().block();
+		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(createResponse.bodyToMono(String.class).block()
+				.contains("[{\"message\":\"[PaymentOrder.paymentMethod.card must not be null]\",\"code\":\"\"}"));
+	}
 }
