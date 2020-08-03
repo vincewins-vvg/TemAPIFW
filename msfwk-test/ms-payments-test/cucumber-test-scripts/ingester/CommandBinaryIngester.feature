@@ -17,8 +17,9 @@ Feature: CommandBinaryIngester
       #| MS-Test-PO-CommandIngester-001    | paymentOrderId    | eq       | string   | PO~10995~898789~USD~100 |
 
     
-    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/Ingester/CreatePOBinaryIngester.json for Application PAYMENT_ORDER
- 
+    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngester.json for Application PAYMENT_ORDER
+    
+    And set timeout session for 30 seconds
  
     Then Set the following data criteria
       | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
@@ -42,7 +43,8 @@ Feature: CommandBinaryIngester
       | MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
       
    And set timeout session for 30 seconds
-    
+   And set timeout session for 30 seconds
+   
     #Check the entries in outbox
     Then Set the following data criteria
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |

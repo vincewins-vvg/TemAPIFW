@@ -25,7 +25,7 @@
     And log all MS response in console
     Then MS response code should be 200
 
-    When Send Data to Topic paymentorder-event-topic from file avro/Ingester/CreatePOEventIngester.json for Application PAYMENT_ORDER
+    When Send Data to Topic paymentorder-event-topic from file avro/ingester/CreatePOEventIngester.json for Application PAYMENT_ORDER
    
     And set timeout session for 30 seconds
 
@@ -38,6 +38,7 @@
       | TestCaseID                      | ColumnName      | ColumnValue |
       | MS-Test-PO-EventIngester-001    | paymentOrderId  | PO~100-CBE~232-EVEN~INR~125 |  
     
+    And set timeout session for 30 seconds
     
     #Check the entries in Inbox
     Then Set the following data criteria
