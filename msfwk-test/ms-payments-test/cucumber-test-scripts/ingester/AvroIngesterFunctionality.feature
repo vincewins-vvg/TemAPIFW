@@ -18,9 +18,9 @@ Feature: AvroIngesterFunctionality
 
     When Send Data to Topic for following records
       | TestCaseID                 | AvroJson                                          | ApplicationName  |
-      | MS-Test-PO-Ingester-001    | avro/Ingester/PaymentOrderInputAvroData.avro      | PAYMENT_ORDER  |
+      | MS-Test-PO-Ingester-001    | avro/ingester/PaymentOrderInputAvroData.avro           | PAYMENT_ORDER  |
       
-    And set wait time of 10 seconds
+    And set timeout session for 30 seconds
     
     Then Set the following data criteria
       | TestCaseID                 | ColumnName        | Operator | DataType | ColumnValue |
@@ -43,4 +43,4 @@ Feature: AvroIngesterFunctionality
     And MS JSON property "paymentOrder.exchangeRates[0].id" should exist
     And MS JSON property "paymentOrder.exchangeRates[1].id" should exist
     And check full response with expected json content from file path "src/test/resources/static-response/GetPOResponseForAvroIngester.json"
-      
+    
