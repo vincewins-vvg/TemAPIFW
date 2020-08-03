@@ -101,6 +101,8 @@ public class MS_RestAssuredCucumberSteps {
 
     private String authToken = null;
     private String authTokenFilePath = null;
+    
+    
 
     public MS_RestAssuredCucumberSteps(MSFrameworkEndPointConfiguration endPointConfig) {
         this.endPointConfig = endPointConfig;
@@ -452,6 +454,24 @@ public class MS_RestAssuredCucumberSteps {
 
     @Then("^MS response code should be (\\d+)$")
     public void theResponseStatusEquals(int status) throws Throwable {
+        assertEquals(status, response.statusCode());
+       
+    }
+    
+    //To retry until the desired responce code is seen in response
+    @Then("^try until MS response code is (\\d+) for \"(GET|POST|PUT|PATCH|DELETE)\" request$")
+    public void retryUntilResponseCode(int status, String method) throws Throwable {  
+        
+        
+        int retryCount = 0;
+        System.out.println("Status code is :"+response.statusCode());
+        
+        while (response.statusCode() != status && retryCount < 3) {
+            System.out.println("Retrying sending request iteration " + retryCount
+                    + "since response code is " + response.statusCode());
+            
+            whenISendTheRequest(method);
+        }
         assertEquals(status, response.statusCode());
        
     }
