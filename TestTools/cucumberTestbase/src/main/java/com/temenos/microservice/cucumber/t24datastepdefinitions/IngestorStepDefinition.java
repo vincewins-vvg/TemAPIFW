@@ -265,7 +265,7 @@ public class IngestorStepDefinition {
     //To check entries in DB table and also the no of rows for the mentioned criteria/condition
     @Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
     public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable) throws Exception {
-      dataMap = RetryUtil.getWithRetry(60, () -> {
+      dataMap = RetryUtil.getWithRetry(180, () -> {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
