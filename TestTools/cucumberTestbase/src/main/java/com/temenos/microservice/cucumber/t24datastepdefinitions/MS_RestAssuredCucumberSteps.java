@@ -471,6 +471,7 @@ public class MS_RestAssuredCucumberSteps {
                     + "since response code is " + response.statusCode());
             
             whenISendTheRequest(method);
+            retryCount++;
         }
         assertEquals(status, response.statusCode());
        
