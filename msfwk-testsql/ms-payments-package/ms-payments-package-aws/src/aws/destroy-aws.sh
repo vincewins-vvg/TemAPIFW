@@ -42,11 +42,15 @@ aws lambda delete-function --function-name update-reference-api-handler
 aws lambda delete-function --function-name delete-reference-api-handler
 
 
+
 # Delete payments API functions
 aws lambda delete-function --function-name payment-sql-create
 aws lambda delete-function --function-name payment-sql-get
 aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
+aws lambda delete-function --function-name fileDownload
+aws lambda delete-function --function-name fileUpload
+
 
 
 # Delete REST API

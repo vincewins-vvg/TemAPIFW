@@ -60,6 +60,12 @@ sleep 10
 aws lambda create-function --function-name paymentorder-ingester --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.KinesisEventProcessor::handleRequest --description "Paymentorder Service" --timeout 120 --memory-size 256 --publish --tags FunctionType=Ingester,Service=Payments --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{EXECUTION_ENV=TEST,temn_msf_name=PaymentOrder,temn_msf_stream_kinesis_region=eu-west-2,temn_msf_stream_vendor=kinesis,temn_msf_schema_registry_url=\"Data,PAYMENT.ORDER\",temn_msf_ingest_sink_error_stream=error-paymentorder,temn_msf_ingest_event_ingester=com.temenos.microservice.framework.core.ingester.MicroserviceIngester,temn_ingester_mapping_enabled=true,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,DATABASE_KEY=dynamodb,PAYMENT_ORDEREvent=com.temenos.microservice.paymentorder.entity.PaymentOrder,EXECUTION_ENVIRONMENT=TEST,EXECUTION_ENV=TEST,temn_msf_ingest_source_stream=table-update-paymentorder,temn_config_file_path=s3://metering-file-bucket/test/\}
 sleep 10
 
+aws lambda create-function --function-name fileUpload --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.FileUploadFunctionAWS::invoke --description "Handler for  FileUploadFunctionAWS Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_FileUpload=com.temenos.microservice.paymentorder.function.FileUploadImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_msf_storage_home=s3://paymentorder-file-bucket\}
+sleep 10
+
+aws lambda create-function --function-name fileDownload --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.FileDownloadFunctionAWS::invoke --description "Handler for  FileDownloadFunctionAWS Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_FileDownload=com.temenos.microservice.paymentorder.function.FileDownloadImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_msf_storage_home=s3://paymentorder-file-bucket\}
+sleep 10
+
 # Create event source mapping
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
 
@@ -71,7 +77,7 @@ aws lambda create-event-source-mapping --function-name outbox-handler --batch-si
 sleep 10
 
 # Create and add APIs to ApiGateway
-export restAPIId=$(aws apigateway create-rest-api --name ms-payment-order-api --description "Payment order API" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+export restAPIId=$(aws apigateway create-rest-api --name ms-payment-order-api --description "Payment order API" --binary-media-types "multipart/form-data" "*/*" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 aws apigateway put-gateway-response --rest-api-id $restAPIId --response-type MISSING_AUTHENTICATION_TOKEN --status-code 404
 
@@ -130,6 +136,21 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $paymentor
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $paymentorderId --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $paymentorderId --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-put-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+#FileUpload API
+
+export uploadid=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "upload" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $uploadid --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $uploadid --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:fileUpload/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+#FileDownload API
+export downloadid=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "download" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export downloadparams=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $downloadid --path-part "{fileName}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $downloadparams --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $downloadparams --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:fileDownload/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_BINARY
 
 aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"
 
