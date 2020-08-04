@@ -227,7 +227,7 @@ public class IngestorStepDefinition {
 
     @Then("^Validate the below details from the db table ([^\\s]+)$")
     public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-      dataMap = RetryUtil.getWithRetry(180, () -> {
+      dataMap = RetryUtil.getWithRetry(300, () -> {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
@@ -249,6 +249,37 @@ public class IngestorStepDefinition {
         });
     }
     
+    @Then("^Validate the below details and bundle value from the db table ([^\\s]+)$")
+    public void validateDetailsAndBundleValueFromDB(String tableName, DataTable dataTable) throws Exception {
+        dataMap = RetryUtil.getWithRetry(300, () -> {
+              Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+              return (dataMap.size() != 0 ? dataMap : null);
+          }, " Getting DB records from table: " + tableName);
+//          if (dataMap.size() >= 2) {
+//              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
+//          }
+          List<Attribute> data = dataMap.get(Integer.valueOf(1));
+          List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+          tableValues.forEach(tableValue -> {
+              if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                  data.forEach(attribute -> {
+                      if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())) && cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))!=null) {
+                          assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                                  cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),attribute.getValue()),
+                                  cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),attribute.getValue());
+                                  //tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
+                      }
+                      
+                      else if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+                          assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                                  tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+                                  tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
+                      }
+                  });
+              }
+          });
+      }
+    
     //To check if an entry is not present in DB
     @Then("^Validate if below details not present in db table ([^\\s]+)$")
     public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
@@ -265,7 +296,7 @@ public class IngestorStepDefinition {
     //To check entries in DB table and also the no of rows for the mentioned criteria/condition
     @Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
     public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable) throws Exception {
-      dataMap = RetryUtil.getWithRetry(180, () -> {
+      dataMap = RetryUtil.getWithRetry(300, () -> {
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
