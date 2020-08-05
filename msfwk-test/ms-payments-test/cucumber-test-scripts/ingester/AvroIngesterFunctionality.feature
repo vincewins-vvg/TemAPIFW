@@ -21,6 +21,7 @@ Feature: AvroIngesterFunctionality
       | MS-Test-PO-Ingester-001    | avro/ingester/PaymentOrderInputAvroData.avro           | PAYMENT_ORDER  |
       
     And set timeout session for 30 seconds
+    And set timeout session for 30 seconds
     
     Then Set the following data criteria
       | TestCaseID                 | ColumnName        | Operator | DataType | ColumnValue |

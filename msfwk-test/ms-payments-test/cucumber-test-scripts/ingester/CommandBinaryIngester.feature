@@ -45,7 +45,17 @@ Feature: CommandBinaryIngester
    And set timeout session for 30 seconds
    And set timeout session for 30 seconds
    
-    #Check the entries in outbox
+    #Check the entries in outbox for correlationId
+    Then Set the following data criteria 
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
+      
+    #And Validate the below details from the db table ms_outbox_events
+    And Validate the below details from the db table ms_outbox_events
+      | TestCaseID                           | ColumnName     | ColumnValue |
+      | MS-Test-PO-CommandIngester-001       | correlationId    | 4316e8-3ca-9-b-8728 |
+      
+    #Check the entries in outbox for status and event type values
     Then Set the following data criteria
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
@@ -55,7 +65,7 @@ Feature: CommandBinaryIngester
     #And Validate the below details from the db table ms_outbox_events and check no of record is 2
     And Validate the below details from the db table ms_outbox_events
       | TestCaseID                           | ColumnName     | ColumnValue |
-      | MS-Test-PO-CommandIngester-001       | eventType      | CommandProcessed |  
+      | MS-Test-PO-CommandIngester-001       | eventType      | CommandProcessed |    
 
     #Then Set the following data criteria
       #| TestCaseID                           | ColumnName       | Operator | DataType | ColumnValue |
