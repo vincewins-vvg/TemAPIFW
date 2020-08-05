@@ -52,9 +52,19 @@
   
    
    And set timeout session for 30 seconds
+   And set timeout session for 30 seconds
   
+    #Check the entries in outbox for correlationId
+    Then Set the following data criteria
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225777 |
+      
+    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+      | TestCaseID                    | ColumnName        | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId     | fda5244e-a140-470e-83ad-768cb225777 |
   
-    #Check the entries in outbox
+   
+    #Check the entries in outbox for event type and status value
     Then Set the following data criteria
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225777 |
