@@ -15,6 +15,3 @@ CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_payment_order(paymentOrderId text,
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_inbox_events(eventId text, eventType text, eventDetails text, eventSourceId text, commandType text, payload text, creationTime timestamp, tenantId text, organizationId text, userId text, priority int, processedTime timestamp, status text, PRIMARY KEY (eventId,eventType));
 
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_outbox_events(eventId text, eventType text, payload text, status text, tenantId text, organizationId text, correlationId text, userId text, priority int, eventDetails text, creationTime timestamp, processedTime timestamp, PRIMARY KEY (eventId,eventType));
-
-
-
