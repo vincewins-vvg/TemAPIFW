@@ -34,7 +34,6 @@ import com.temenos.microservice.paymentorder.function.FileUploadInput;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrder;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl;
 import com.temenos.microservice.paymentorder.function.GetPaymentOrderInput;
-import com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrder;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderInput;
@@ -52,9 +51,6 @@ import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrders;
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrdersInput;
-import com.temenos.microservice.paymentorderschema.view.PaymentOrders;
 
 public class PaymentOrderFunctionUnitTest {
 
@@ -122,19 +118,6 @@ public class PaymentOrderFunctionUnitTest {
 		try {
 			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(null, getPaymentOrderInput);
 			Assert.assertNotNull(paymentOrderStatus);
-		} catch (FunctionException e) {
-			Assert.fail(e.getMessage());
-		}
-	}
-
-	// @Test
-	public void testGetPaymentOrders() {
-		GetPaymentOrders getPaymentOrders = new GetPaymentOrdersImpl();
-		GetPaymentOrdersInput getPaymentOrdersInput = new GetPaymentOrdersInput();
-
-		try {
-			PaymentOrders paymentOrders = getPaymentOrders.invoke(null, getPaymentOrdersInput);
-			Assert.assertNotNull(paymentOrders);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
 		}
