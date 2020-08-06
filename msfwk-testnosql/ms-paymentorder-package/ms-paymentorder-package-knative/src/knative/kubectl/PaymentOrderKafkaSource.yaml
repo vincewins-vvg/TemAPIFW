@@ -1,0 +1,15 @@
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source
+spec:
+  consumerGroup: po-consumer-group
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092 # note the kafka namespace
+  topics:
+  - paymentorder-avro
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: paymentorder-ingester-undertow
