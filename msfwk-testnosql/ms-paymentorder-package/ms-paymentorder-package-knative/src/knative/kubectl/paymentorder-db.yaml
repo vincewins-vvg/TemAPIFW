@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:    
+  name: paymentorder-db       
+spec:
+  selector:
+    matchLabels:
+      name: paymentorder-db
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        name: paymentorder-db
+    spec:
+      containers:
+      - env:
+        - name: CASSANDRA_KEYSPACE
+          value: ms_paymentorder
+        image: ms-paymentorder-cassandra
+        imagePullPolicy: IfNotPresent
+        name: paymentorder-db        
+        ports:
+        - containerPort: 9042
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: paymentorder-db-service
+  name: paymentorder-db-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: "9042"
+    port: 9042
+    targetPort: 9042
+  selector:
+    name: paymentorder-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: paymentorder-db-service
+  name: paymentorder-cassandra-LoadBalancer
+  namespace: default
+spec:
+  ports:
+    port: 9042
+    targetPort: 9042
+  type: LoadBalancer
