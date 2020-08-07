@@ -15,3 +15,9 @@ copy %DOCKER_ENV_LOCATION%\ENV.env .env > NUL
 
 REM Now run Docker Compose
 docker-compose -f kafka.yml -f paymentorder.yml %*
+
+REM Uncomment for Nuo DB
+REM copy %DOCKER_ENV_LOCATION%\nuoENV.env .env > NUL
+
+REM Uncomment for Nuo DB
+REM docker-compose -f kafka.yml -f paymentorder-nuo.yml %*

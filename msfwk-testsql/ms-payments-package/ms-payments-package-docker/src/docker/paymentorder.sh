@@ -10,3 +10,9 @@ cp -f ${DOCKER_ENV_LOCATION}/ENV.env .env
 
 # Now run Docker Compose
 docker-compose -f kafka.yml -f paymentorder.yml $@
+
+# uncomment for Nuo DB
+#cp -f ${DOCKER_ENV_LOCATION}/nuoENV.env .env
+
+# uncomment for Nuo DB
+#docker-compose -f kafka.yml -f paymentorder-nuo.yml $@
