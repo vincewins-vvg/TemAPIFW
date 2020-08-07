@@ -167,10 +167,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 100]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 1]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaximum() {
 		ClientResponse createResponse;
 		do {
@@ -181,10 +181,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 600]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 999999]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMinLength() {
 		ClientResponse createResponse;
 		do {
@@ -195,25 +195,25 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 2]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaxLength() {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAXLENGTH), String.class))
 					.header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be lesser than or equal to 20]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateNull() {
 		ClientResponse createResponse;
 		do {
@@ -224,6 +224,6 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentOrder.paymentMethod.card must not be null]\",\"code\":\"\"}"));
+				.contains("[{\"message\":\"[PaymentOrder.paymentMethod must not be null]\",\"code\":\"\"}"));
 	}
 }
