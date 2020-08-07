@@ -170,7 +170,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 100]\",\"code\":\"\"}]"));
 	}
 
-	@Test
+	//@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaximum() {
 		ClientResponse createResponse;
 		do {
@@ -184,7 +184,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 600]\",\"code\":\"\"}]"));
 	}
 
-	@Test
+	//@Test
 	public void testCreateNewPaymentOrderFunctionValidateMinLength() {
 		ClientResponse createResponse;
 		do {
@@ -198,7 +198,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
 	}
 
-	@Test
+	//@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaxLength() {
 		ClientResponse createResponse;
 		do {
@@ -213,7 +213,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
 	}
 
-	@Test
+	//@Test
 	public void testCreateNewPaymentOrderFunctionValidateNull() {
 		ClientResponse createResponse;
 		do {
