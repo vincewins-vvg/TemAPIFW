@@ -282,11 +282,17 @@ components:
         id:
           type: integer
           format: int64
+          minimum: 100
+          maximum: 600
         name:
           type: string
+          minLength: 10
+          maxLength: 32
         extensionData:
           type: object
+          nullable: true
         card:
+          nullable: false
           allOf:
           - $ref: "#/components/schemas/Card"
     ExchangeRate:
@@ -336,31 +342,40 @@ components:
         expires:
           type: integer
           format: int64
+          nullable: true
         fileContent:
           type: string
           format: binary
+          nullable: true
         fileReadWrite:
           type: string
           format: binary
+          nullable: true
         fileOverWrite:
           type: boolean
+          nullable: true
         extensionData:
           type: object
+          nullable: true
         paymentDate:
           type: string
-          format: date  
+          format: date
+          nullable: true
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
         exchangeRates:
           type: array
+          nullable: true
           items:
             $ref: "#/components/schemas/ExchangeRate"
         payeeDetails:
+          nullable: true
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
         descriptions:
           type: array
+          nullable: true
           items:
             type: string
           

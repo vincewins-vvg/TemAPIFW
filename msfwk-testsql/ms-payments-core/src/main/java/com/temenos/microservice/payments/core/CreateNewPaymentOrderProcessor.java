@@ -53,6 +53,12 @@ public class CreateNewPaymentOrderProcessor {
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
 		PaymentOrderFunctionHelper.validateInput(input);
 		PaymentOrder paymentOrder = input.getBody().get();
+		
+		//does validation based on swagger input
+		List<String> errorList= paymentOrder.doValidate();
+		if(errorList.size()>0) 
+			throw new InvalidInputException(new FailureMessage(errorList.toString()));
+		
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
