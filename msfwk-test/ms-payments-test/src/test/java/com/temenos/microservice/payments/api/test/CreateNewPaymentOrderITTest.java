@@ -156,7 +156,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
         assertTrue(extensionValue.contains("Temenos"));
 	}
 
-	@Test
+	//@Test
 	public void testCreateNewPaymentOrderFunctionValidateMinimum() {
 		ClientResponse createResponse;
 		do {
