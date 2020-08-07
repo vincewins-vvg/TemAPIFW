@@ -41,7 +41,6 @@ Feature: AvroIngesterFunctionality
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 200
-    And MS JSON property "paymentOrder.exchangeRates[0].id" should exist
-    And MS JSON property "paymentOrder.exchangeRates[1].id" should exist
+
     And check full response with expected json content from file path "src/test/resources/static-response/GetPOResponseForAvroIngester.json"
     
