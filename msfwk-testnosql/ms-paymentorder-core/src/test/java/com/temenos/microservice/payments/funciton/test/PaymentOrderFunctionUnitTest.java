@@ -76,8 +76,8 @@ public class PaymentOrderFunctionUnitTest {
 		card.setCardname("DEBIT");
 		card.setCardlimit(BigDecimal.valueOf(5000));
 		PaymentMethod method = new PaymentMethod();
-		method.setId(1L);
-		method.setName("Cash");
+		method.setId(101L);
+		method.setName("CashPayment");
 		method.setCard(card);
 		paymentOrder.setPaymentMethod(method);
 		List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
@@ -150,8 +150,8 @@ public class PaymentOrderFunctionUnitTest {
 			card.setCardname("DEBIT");
 			card.setCardlimit(BigDecimal.valueOf(5000));
 			PaymentMethod method = new PaymentMethod();
-			method.setId(1L);
-			method.setName("Cash");
+			method.setId(101L);
+			method.setName("CashPayment");
 			method.setCard(card);
 			paymentOrder.setPaymentMethod(method);
 			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
