@@ -139,14 +139,17 @@ public class ITTest {
 	}
 
 	public static void clearRecords(String paymentOrderId, String debitAccount) {
-		deleteAllRecords("ms_payment_order_ExchangeRate");
-		deleteAllRecords("PaymentOrder_extension");
-		deleteAllRecords("ms_payment_order");
 		deleteAllRecords("ms_reference_data");
+		deleteAllRecords("PaymentOrder_extension");
+		deleteAllRecords("PaymentMethod_extension");
+		deleteAllRecords("ExchangeRate_extension");
+		deleteAllRecords("Card_extension");
+		deleteAllRecords("PayeeDetails_extension");	 
 		deleteAllRecords("ms_payment_order_ExchangeRate");
-		deleteAllRecords("ExchangeRate");
+		deleteAllRecords("ms_payment_order");
 		deleteAllRecords("PaymentMethod");
 		deleteAllRecords("Card");
+		deleteAllRecords("ExchangeRate");
 		deleteAllRecords("PayeeDetails");
 	}
 }
