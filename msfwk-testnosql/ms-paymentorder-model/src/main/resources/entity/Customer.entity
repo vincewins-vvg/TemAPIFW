@@ -1,0 +1,30 @@
+{
+  "name": "Customer",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "tableName": "ms_customer",
+  "properties": [
+    {
+      "name": "customerId",
+      "type": "string",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]      
+    },
+    {
+      "name": "customerName",
+      "type": "string",
+      "attributes" : [
+        "KEY_SORT"
+      ]
+    },
+    {
+        "name": "account",
+        "type": "string"
+    },
+    {
+        "name": "loanTypes",
+        "type": "string",
+        "collection": "true"
+    }
+  ]
+}
