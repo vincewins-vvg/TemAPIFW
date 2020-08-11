@@ -1,0 +1,21 @@
+{
+  "debitAccount": "111",
+  "paymentId": "PO~111~222~USD~121",
+  "status": "changed",
+  "details": "changed",
+  "paymentMethod": {
+    "id": 22,
+    "name": "MSTester",
+    "card": {
+      "cardid": 11,
+      "cardname": "Diners",
+      "cardlimit": 11.11
+    }
+  },
+  "exchangeRates": [
+    {
+      "name": "INR",
+      "value": 22.22
+    }
+  ]
+}

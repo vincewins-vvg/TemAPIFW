@@ -1,0 +1,36 @@
+  {
+  "fromAccount": "111",
+  "toAccount": "222",
+  "paymentReference": "paytest11",
+  "paymentDetails": "Success",
+  "currency": "USD",
+  "amount": 121,
+  "expires": 10,
+  "fileContent": "77+977+9LQ==",
+  "paymentDate":"2024-05-05",   
+  "paymentMethod": {
+    "id": 100100,
+    "name": "HDFC",
+    "card": {
+      "cardid": 723,
+      "cardname": "Diners",
+      "cardlimit": 120000.11
+    }
+  },
+  "exchangeRates": [
+    {
+      "id": 30,
+      "name": "USD",
+      "value": 78.12
+    }
+    
+    
+  ],
+  "payeeDetails": {
+    "payeeName": "MSTester",
+    "payeeType": "temp"
+  },
+  "descriptions": [
+    "Tester"
+  ]
+}
