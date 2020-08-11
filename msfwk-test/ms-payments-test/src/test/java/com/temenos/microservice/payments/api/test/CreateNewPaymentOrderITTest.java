@@ -2,14 +2,14 @@ package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_WRONG;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAX;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAXLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAX;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAXLENGTH;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -161,10 +161,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 	}
 
-
-	}
-
-	//@Test
+	// @Test
 	public void testCreateNewPaymentOrderFunctionValidateMinimum() {
 		ClientResponse createResponse;
 		do {
