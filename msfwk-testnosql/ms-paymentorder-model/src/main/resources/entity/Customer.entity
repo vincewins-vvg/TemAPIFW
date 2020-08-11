@@ -1,7 +1,7 @@
 {
   "name": "Customer",
   "javaPackage": "com.temenos.microservice.paymentorder.entity",
-  "tableName": "ms_customer",
+  "tableName": "ms_payment_order_customer",
   "properties": [
     {
       "name": "customerId",

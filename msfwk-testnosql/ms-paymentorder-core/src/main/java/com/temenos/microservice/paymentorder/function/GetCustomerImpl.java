@@ -44,7 +44,7 @@ public class GetCustomerImpl implements GetCustomers {
 				customerView.setAccount(customerEntity.getAccount());
 				customerView.setCustomerId(customerEntity.getCustomerId());
 				customerView.setCustomerName(customerEntity.getCustomerName());
-				customerView.setLoanTypes(loanTypes);
+				customerView.setLoanTypes(customerEntity.getLoanTypes());
 				customers.add(customerView);
 			});
 		} else {
