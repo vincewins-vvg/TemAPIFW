@@ -66,6 +66,12 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
+		
+		//method does validation based on swagger input
+		List<String> errorList= paymentOrder.doValidate();
+		if(errorList.size()>0)
+			throw new InvalidInputException(new FailureMessage(errorList.toString()));
+		
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
@@ -221,7 +227,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		updateCommand.setDateTime(new Date());
 		updateCommand.setEventId(UUID.randomUUID().toString());
-		updateCommand.setEventType(Environment.getMSName() + "UpdatePaymentOrder");
+		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
 		updateCommand.setStatus("New");
 
 		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
