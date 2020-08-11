@@ -94,7 +94,7 @@
 		"ARRAY_Inputter": [
 			{
 				"Inputter": {
-					"string": "21"
+					"string": ""
 				},
 				"AUTHOR": {
 					"string": "DK"
@@ -102,7 +102,7 @@
 			},
 			{
 				"Inputter": {
-					"string": "2"
+					"string": ""
 				},
 				"AUTHOR": {
 					"string": "DKD"

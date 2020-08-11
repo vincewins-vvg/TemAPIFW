@@ -273,20 +273,29 @@ components:
         cardid:
           type: integer
           format: int64
+          nullable: true
         cardname:
           type: string
+          nullable: true
         cardlimit:
           type: number
+          nullable: true
     PaymentMethod:
       properties:
         id:
           type: integer
           format: int64
+          minimum: 1
+          maximum: 999999
         name:
           type: string
+          minLength: 2
+          maxLength: 20
         extensionData:
           type: object
+          nullable: true
         card:
+          nullable: true
           allOf:
           - $ref: "#/components/schemas/Card"
     ExchangeRate:
@@ -294,16 +303,21 @@ components:
         id:
           type: integer
           format: int64
+          nullable: true
         name:
           type: string
+          nullable: true
         value:
           type: number
+          nullable: true
     PayeeDetails:
       properties:
         payeeName:
           type: string
+          nullable: true
         payeeType:
           type: string
+          nullable: true
           
     EnumCurrency:
       type: string
@@ -316,51 +330,66 @@ components:
       properties:
         fromAccount:
           type: string
+          nullable: true
         toAccount:
           type: string
+          nullable: true
         paymentReference:
           type: string
           x-referencetype: paymentref
+          nullable: true
         paymentDetails:
           type: string
+          nullable: true
       
     PaymentOrder:
       allOf:
         - $ref: "#/components/schemas/TransactionDetails"
       properties:
         currency:
+          nullable: true
           allOf:
           - $ref: "#/components/schemas/EnumCurrency"
         amount:
           type: number
+          nullable: true
         expires:
           type: integer
           format: int64
+          nullable: true
         fileContent:
           type: string
           format: binary
+          nullable: true
         fileReadWrite:
           type: string
           format: binary
+          nullable: true
         fileOverWrite:
           type: boolean
+          nullable: true
         extensionData:
           type: object
+          nullable: true
         paymentDate:
           type: string
-          format: date  
+          format: date
+          nullable: true
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
         exchangeRates:
           type: array
+          nullable: true
           items:
             $ref: "#/components/schemas/ExchangeRate"
         payeeDetails:
+          nullable: true
           allOf:
           - $ref: '#/components/schemas/PayeeDetails'
         descriptions:
           type: array
+          nullable: true
           items:
             type: string
           

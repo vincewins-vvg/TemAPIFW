@@ -21,6 +21,7 @@ Feature: AvroIngesterFunctionality
       | MS-Test-PO-Ingester-001    | avro/ingester/PaymentOrderInputAvroData.avro           | PAYMENT_ORDER  |
       
     And set timeout session for 30 seconds
+    And set timeout session for 30 seconds
     
     Then Set the following data criteria
       | TestCaseID                 | ColumnName        | Operator | DataType | ColumnValue |
@@ -40,7 +41,6 @@ Feature: AvroIngesterFunctionality
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 200
-    And MS JSON property "paymentOrder.exchangeRates[0].id" should exist
-    And MS JSON property "paymentOrder.exchangeRates[1].id" should exist
+
     And check full response with expected json content from file path "src/test/resources/static-response/GetPOResponseForAvroIngester.json"
     

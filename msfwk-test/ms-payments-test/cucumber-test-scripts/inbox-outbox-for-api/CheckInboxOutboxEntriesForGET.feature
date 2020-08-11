@@ -1,5 +1,4 @@
-
-  Feature: CheckInboxOutboxEntriesForGET
+Feature: CheckInboxOutboxEntriesForGET
   
 
   Scenario Outline: Create a new Payment Order for checking IO box entries
@@ -14,7 +13,7 @@
   
     Given Set the test backgound for PAYMENT_ORDER API
     And Set the Testcase id MS-Test-Payments-MS-001 for company GB0010001
-    And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
+    And create a new MS request with code using Restassured arguments ""
     And MS request URI is "payments/orders"
     And MS query parameter for Azure env is set to value ""
     And MS request header "Authorization" is set to "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw"
@@ -29,7 +28,6 @@
     Given create a new MS request with code using Restassured arguments ""
     And MS request URI is "payments/orders/PO~100-CBE~233-IOBC~INR~126"
     And MS query parameter for Azure env is set to value ""
-    And create a new MS request with code using Restassured arguments "GET_PAYMENTODER_AUTH_CODE"
     And MS request header "Authorization" is set to "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw"
     And MS request header "UUID" is set to "fda5244e-a140-470e-83ad-768cb225777"
     And MS request header "Content-Type" is set to "application/json"
@@ -54,9 +52,18 @@
    
    And set timeout session for 30 seconds
    And set timeout session for 30 seconds
-     
   
-    #Check the entries in outbox
+    #Check the entries in outbox for correlationId
+    Then Set the following data criteria
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225777 |
+      
+    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+      | TestCaseID                    | ColumnName        | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId     | fda5244e-a140-470e-83ad-768cb225777 |
+  
+   
+    #Check the entries in outbox for event type and status value
     Then Set the following data criteria
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225777 |
