@@ -310,7 +310,116 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/ErrorSchema"                 
+                $ref: "#/components/schemas/ErrorSchema"  
+  /user/{userId}:
+    get:
+      summary: Get Single User
+      operationId: GetUser
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: getCustomersErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+  /user:
+    post:
+      summary: Creates a user
+      operationId: CreateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatus'
+  /account/{accountId}:
+    get:
+      summary: Get Single Account
+      operationId: GetAccount
+      parameters:
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          description: getAccountErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+    put:
+      summary: Update Single Account
+      operationId: UpdateAccount
+      parameters:
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: An Account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStatus'
+        default:
+          description: getAccountErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+  /account:
+    post:
+      summary: Creates an account
+      operationId: CreateAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: Created Account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStatus'
+     
 
 components:
   schemas:
@@ -534,6 +643,7 @@ components:
             format: binary
     DownloadApiResponse:
       type: "object"
+
       
     UpdatePaymentStatus:
       properties:
@@ -542,4 +652,43 @@ components:
           items:
             $ref: "#/components/schemas/CriteriaDetails"
         status:
+          type: string
+          
+    User:
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+    StandardErrorResponse:
+      properties:
+        errorCode:
+          type: string
+    UserStatus:
+      properties:
+        userId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+    Account:
+      properties:
+        accountId:
+          type: string
+        accountName:
+          type: string
+        accountType:
+          type: string
+        branch:
+          type: string
+    AccountStatus:
+      properties:
+        accountId:
+          type: string
+        status:
+          type: string
+        message:
           type: string
