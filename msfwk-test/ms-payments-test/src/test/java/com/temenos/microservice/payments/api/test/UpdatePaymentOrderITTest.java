@@ -58,13 +58,13 @@ public class UpdatePaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
 			updateResponse = this.client.put()
 					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("UPDATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_UPDATE), String.class)).header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_UPDATE), String.class)).exchange().block();
 		} while (updateResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",

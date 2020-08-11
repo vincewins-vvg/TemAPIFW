@@ -52,11 +52,11 @@ public class GetPaymentOrdersITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
-			getResponse = this.client.get().uri("/payments/orders" + ITTest.getCode("GET_PAYMENTORDERS_AUTH_CODE")).header("roleId", "ADMIN")
+			getResponse = this.client.get().uri("/payments/orders" + ITTest.getCode("GET_PAYMENTORDERS_AUTH_CODE"))
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));

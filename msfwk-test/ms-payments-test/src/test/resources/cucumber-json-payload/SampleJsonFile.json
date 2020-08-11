@@ -1,0 +1,21 @@
+{
+  "entitlements": [
+    {
+      "userId": "19000625881",
+      "roles": [
+        "viewPaymentApprover",
+        "cancelDomesticPayment"
+      ]
+    },{
+      "userId": "19000625882",
+      "roles": [
+        "cancelDomesticPayment"
+      ]
+    },{
+      "userId": "19000625883",
+      "roles": [
+        "viewClearedBalance"
+      ]
+    }
+  ]
+}

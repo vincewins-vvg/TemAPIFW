@@ -44,7 +44,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "GB0010001",
 				"description", "string", "description");
 	}
-	
+
 	@Before
 	public void setUp() throws SQLException {
 		this.client = newWebClient();
@@ -158,7 +158,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 			System.out.println("input for avro data" + inputAvroReader);
 			producer.sendGenericEvent(inputAvroReader, "PAYMENT_ORDEREvent");
 			Map<Integer, List<Attribute>> records = null;
-		
+
 			int maxDBReadRetryCount = 3;
 			int retryCount = 0;
 			do {
@@ -167,7 +167,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 				System.out.println("Reading record back from db, try=" + (retryCount + 1));
 				records = readPaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string",
 						"PI19107122J61FC9", "debitAccount", "eq", "string", "10995");
-				
+
 				System.out.println(records);
 				retryCount = retryCount + 1;
 			} while ((records == null || records.isEmpty()) && retryCount < maxDBReadRetryCount);
@@ -200,14 +200,14 @@ public class ConfigBasedMappingITTest extends ITTest {
 		return result.toString(StandardCharsets.UTF_8.name());
 
 	}
-	
+
 	public void validateSQLExtensionData() {
-		Map<Integer, List<Attribute>> extensionRecords = readPaymentOrderRecord("Card_extension", "Card_cardid", "eq", "string",
-				"124", "name", "eq", "string", "eventId");
-		Map<Integer, List<Attribute>> extensionArrayRecords = readPaymentOrderRecord("PaymentMethod_extension", "PaymentMethod_id", "eq", "string",
-				"157", "name", "eq", "string", "numbers");
-		Map<Integer, List<Attribute>> extensionMultiArrayRecords = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string",
-				"PI19107122J61FC9", "name", "eq", "string", "test");
+		Map<Integer, List<Attribute>> extensionRecords = readPaymentOrderRecord("Card_extension", "Card_cardid", "eq",
+				"string", "124", "name", "eq", "string", "eventId");
+		Map<Integer, List<Attribute>> extensionArrayRecords = readPaymentOrderRecord("PaymentMethod_extension",
+				"PaymentMethod_id", "eq", "string", "157", "name", "eq", "string", "numbers");
+		Map<Integer, List<Attribute>> extensionMultiArrayRecords = readPaymentOrderRecord("PaymentOrder_extension",
+				"PaymentOrder_paymentOrderId", "eq", "string", "PI19107122J61FC9", "name", "eq", "string", "test");
 		assertTrue(!extensionRecords.isEmpty());
 		assertNotNull("Product record should not be null", extensionRecords);
 		assertNotNull("Key set should not be null", extensionRecords.keySet().size());
@@ -221,9 +221,9 @@ public class ConfigBasedMappingITTest extends ITTest {
 		assertNotNull("Key set should not be null", extensionMultiArrayRecords.keySet().size());
 		assertNotNull("Values should not be null", extensionMultiArrayRecords.values().size());
 	}
-	
+
 	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
-		String extensionName = "",extensionValue="";
+		String extensionName = "", extensionValue = "";
 		for (Attribute attribute : listEntry) {
 			if (attribute.getName().equalsIgnoreCase("extensionData")) {
 				extensionName = attribute.getName().toLowerCase();
@@ -234,14 +234,14 @@ public class ConfigBasedMappingITTest extends ITTest {
 		assertTrue(!extensionValue.isEmpty());
 		assertNotNull("Product record should not be null", extensionValue);
 	}
-	
+
 	public void validateAltKeyData(String tableName) {
 		Map<Integer, List<Attribute>> altKeyRecords = readPaymentOrderRecord(tableName, "alternateName", "eq", "string",
 				"OrderingPostAddrline", "alternateKey", "eq", "string", "1 COCA-COLA PLAZA");
 		assertNotNull("AltKey table record should not be null", altKeyRecords);
 		assertTrue(!altKeyRecords.isEmpty());
 	}
-	
+
 	@Test
 	public void testBGetPaymentOrderWithAltKey() {
 		ClientResponse getResponse;
@@ -251,11 +251,11 @@ public class ConfigBasedMappingITTest extends ITTest {
 				getResponse = this.client.get()
 						.uri("/payments/orders/" + "1 COCA-COLA PLAZA" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")
 								+ "&alternatekeys=paymentId&alternatenames=OrderingPostAddrline")
-						.header("roleId", "ADMIN").exchange().block();
+						.exchange().block();
 			} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 			assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 			String apiResponse = getResponse.bodyToMono(String.class).block();
-			System.out.println("body response from ConfigBasedMappingITTest.java::"+apiResponse);
+			System.out.println("body response from ConfigBasedMappingITTest.java::" + apiResponse);
 			assertTrue(apiResponse.contains(
 					"\"fromAccount\":\"10995\",\"toAccount\":\"898789\",\"paymentReference\":\"GB0010001\",\"paymentDetails\":\"Funds transfer\",\"currency\":\"USD\""));
 			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
@@ -264,8 +264,8 @@ public class ConfigBasedMappingITTest extends ITTest {
 			} else {
 				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC9",
 						"debitAccount", "eq", "string", "10995");
-				deletePaymentOrderRecord("ms_altkey", "alternateName", "eq", "string",
-							"OrderingPostAddrline", "alternateKey", "eq", "string", "1 COCA-COLA PLAZA");
+				deletePaymentOrderRecord("ms_altkey", "alternateName", "eq", "string", "OrderingPostAddrline",
+						"alternateKey", "eq", "string", "1 COCA-COLA PLAZA");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -64,7 +64,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
@@ -98,7 +98,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).header("roleId", "ADMIN").exchange()
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
@@ -106,14 +106,17 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"To Account is mandatory\",\"code\":\"PAYM-PORD-A-2104\"}]"));
 	}
-	
+
 	public void validateSQLExtensionData() {
-		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_BusDayCentres");
-		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "paymentOrderProduct");
-		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension", "PaymentOrder_paymentOrderId",
-				"eq", "string", "PO~123~124~USD~100", "name", "eq", "string", "array_NonOspiType");
+		Map<Integer, List<Attribute>> insertedArrayExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension",
+				"PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name", "eq", "string",
+				"array_BusDayCentres");
+		Map<Integer, List<Attribute>> insertedExtensionRecord = readPaymentOrderRecord("PaymentOrder_extension",
+				"PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name", "eq", "string",
+				"paymentOrderProduct");
+		Map<Integer, List<Attribute>> insertedAssoMultiValueArrayExtensionRecord = readPaymentOrderRecord(
+				"PaymentOrder_extension", "PaymentOrder_paymentOrderId", "eq", "string", "PO~123~124~USD~100", "name",
+				"eq", "string", "array_NonOspiType");
 		List<Attribute> extensioneEntry = insertedExtensionRecord.get(1);
 		List<Attribute> arrayExtensionEntry = insertedArrayExtensionRecord.get(1);
 		List<Attribute> multivalueArrayExtensionEntry = insertedAssoMultiValueArrayExtensionRecord.get(1);
@@ -137,13 +140,14 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(multivalueArrayExtensionEntry.get(0).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertTrue("Value mismatch", "value".equalsIgnoreCase(multivalueArrayExtensionEntry.get(1).getName()));
-		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(), "[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
+		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(),
+				"[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
 		assertTrue("Value mismatch", "name".equalsIgnoreCase(multivalueArrayExtensionEntry.get(2).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
 	}
-	
+
 	public void validateNoSQLExtensionData(List<Attribute> listEntry) {
-		String extensionName = "",extensionValue="";
+		String extensionName = "", extensionValue = "";
 		for (Attribute attribute : listEntry) {
 			if (attribute.getName().equalsIgnoreCase("extensionData")) {
 				extensionName = attribute.getName().toLowerCase();
@@ -152,12 +156,13 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			}
 		}
 		assertEquals(extensionName, "extensiondata");
-	    assertTrue(extensionValue.contains("array_BusDayCentres"));
-        assertTrue(extensionValue.contains("India"));
-        assertTrue(extensionValue.contains("array_NonOspiType"));
-        assertTrue(extensionValue.contains("NonOspiType"));
-        assertTrue(extensionValue.contains("paymentOrderProduct"));
-        assertTrue(extensionValue.contains("Temenos"));
+		assertTrue(extensionValue.contains("array_BusDayCentres"));
+		assertTrue(extensionValue.contains("India"));
+		assertTrue(extensionValue.contains("array_NonOspiType"));
+		assertTrue(extensionValue.contains("NonOspiType"));
+		assertTrue(extensionValue.contains("paymentOrderProduct"));
+		assertTrue(extensionValue.contains("Temenos"));
+
 	}
 
 	//@Test
@@ -171,10 +176,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 100]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 1]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaximum() {
 		ClientResponse createResponse;
 		do {
@@ -185,10 +190,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 600]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 999999]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMinLength() {
 		ClientResponse createResponse;
 		do {
@@ -199,25 +204,25 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 2]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateMaxLength() {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAXLENGTH), String.class))
 					.header("roleId", "ADMIN").exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 10]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be lesser than or equal to 20]\",\"code\":\"\"}]"));
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunctionValidateNull() {
 		ClientResponse createResponse;
 		do {
@@ -228,6 +233,6 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentOrder.paymentMethod.card must not be null]\",\"code\":\"\"}"));
+				.contains("[{\"message\":\"[PaymentOrder.paymentMethod must not be null]\",\"code\":\"\"}"));
 	}
 }
