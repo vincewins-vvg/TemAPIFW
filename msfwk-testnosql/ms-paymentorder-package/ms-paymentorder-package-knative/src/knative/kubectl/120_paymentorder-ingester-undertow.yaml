@@ -1,13 +1,13 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: paymentorder-api-undertow
-  namespace: default
+  name: paymentorder-ingester-undertow
+  namespace: paymentorder
 spec:
   template:
     spec:
       containers:
-        - image: dev.local/temenos/ms-paymentorder-service:1.1
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
           ports:
           - name: http1
             containerPort: 8080
@@ -30,22 +30,6 @@ spec:
               value:
             - name: CASSANDRA_KEYSTORE_PASSWORD
               value:
-            - name: className_CreateNewPaymentOrder
-              value: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
-            - name: className_GetPaymentOrders
-              value: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
-            - name: className_UpdatePaymentOrder
-              value: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
-            - name: className_GetPaymentOrder
-              value: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
-            - name: className_invokePaymentState
-              value: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
-            - name: className_GetPaymentOrderCurrency
-              value: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
-            - name: className_getHealthCheck
-              value: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
-            - name: API_HEALTH_CHECK_BUSINESS_CONDITION
-              value: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
             - name: temn.msf.name
               value: PaymentOrder  
             - name: PDP_CONFIG
@@ -61,4 +45,12 @@ spec:
             - name: class.inbox.dao
               value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
             - name: class.outbox.dao
-              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl  
+              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+            - name: EXECUTION_ENV
+              value: TEST
+            - name: temn.msf.ingest.event.ingester
+              value: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+            - name: PAYMENT_ORDEREvent
+              value: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+            - name: temn.msf.schema.registry.url
+              value: "Payment.Order"
