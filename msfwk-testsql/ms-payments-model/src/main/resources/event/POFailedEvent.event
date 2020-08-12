@@ -1,6 +1,6 @@
 {
 	"name": "POFailedEvent",
-	"javaPackage": "com.temenos.microservice.paymentorder.event",
+	"javaPackage": "com.temenos.microservice.payments.event",
 	"properties": [
 		{
 			"name": "debitAccount",

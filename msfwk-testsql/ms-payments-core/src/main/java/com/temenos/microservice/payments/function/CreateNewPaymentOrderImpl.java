@@ -2,11 +2,11 @@ package com.temenos.microservice.payments.function;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.function.ResponseStatus;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.outbox.EventManager;
-import com.temenos.microservice.paymentorder.event.POFailedEvent;
-import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderInput;
-import com.temenos.microservice.paymentorder.function.ResponseStatus;
+import com.temenos.microservice.payments.event.POFailedEvent;
+import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.core.CreateNewPaymentOrderProcessor;
 import com.temenos.microservice.payments.core.SpringContextInitializer;
 import com.temenos.microservice.payments.view.PaymentStatus;
