@@ -36,7 +36,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poFailedEvent.setCurrency(input.getBody().get().getCurrency().toString());
 		poFailedEvent.setDebitAccount(input.getBody().get().getFromAccount());
 
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepte", poFailedEvent));
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PostHookEvent", poFailedEvent));
 	}
 
 }
