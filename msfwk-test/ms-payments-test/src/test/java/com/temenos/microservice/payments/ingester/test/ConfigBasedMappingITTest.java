@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -92,7 +93,8 @@ public class ConfigBasedMappingITTest extends ITTest {
 			assertNotNull("Key set should not be null", records.keySet().size());
 			assertNotNull("Values should not be null", records.values().size());
 
-			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+					|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 				removeForeignChecksAndDelete();
 			} else {
 				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC8",
@@ -104,14 +106,29 @@ public class ConfigBasedMappingITTest extends ITTest {
 
 	}
 
-	private void removeForeignChecksAndDelete() throws SQLException {
-		Connection con = DriverManager.getConnection(
-				new StringBuilder("jdbc:").append(Environment.getEnvironmentVariable("DB_VENDOR", "").toLowerCase())
-						.append("://").append(Environment.getEnvironmentVariable("DB_HOST", "")).append(":")
-						.append(Environment.getEnvironmentVariable("DB_PORT", "")).append("/")
-						.append(Environment.getEnvironmentVariable("DB_NAME", "")).toString(),
-				Environment.getEnvironmentVariable("DB_USERNAME", ""),
-				Environment.getEnvironmentVariable("DB_PASSWORD", ""));
+	private void removeForeignChecksAndDelete() throws SQLException, ClassNotFoundException {
+		Connection con;
+		if ("MYSQL".equalsIgnoreCase(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			con = DriverManager.getConnection(
+					new StringBuilder("jdbc:").append(Environment.getEnvironmentVariable("DB_VENDOR", "").toLowerCase())
+							.append("://").append(Environment.getEnvironmentVariable("DB_HOST", "")).append(":")
+							.append(Environment.getEnvironmentVariable("DB_PORT", "")).append("/")
+							.append(Environment.getEnvironmentVariable("DB_NAME", "")).toString(),
+					Environment.getEnvironmentVariable("DB_USERNAME", ""),
+					Environment.getEnvironmentVariable("DB_PASSWORD", ""));
+		} else {
+			Class.forName("com.nuodb.jdbc.Driver");
+			Properties prop = new Properties();
+		    prop.put("user", Environment.getEnvironmentVariable("DB_USERNAME", ""));
+		    prop.put("password", Environment.getEnvironmentVariable("DB_PASSWORD", ""));
+		    prop.put("direct", "true");
+			con = DriverManager.getConnection(
+					new StringBuilder("jdbc:").append("com.nuodb")
+							.append("://").append(Environment.getEnvironmentVariable("DB_HOST", "")).append(":")
+							.append(Environment.getEnvironmentVariable("DB_PORT", "")).append("/")
+							.append(Environment.getEnvironmentVariable("DB_NAME", ""))
+							.append("?schema=ms_paymentorder").toString(), prop);
+		}
 		con.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0");
 		con.createStatement().execute("TRUNCATE table Card");
 		con.createStatement().execute("TRUNCATE table Card_extension");
@@ -158,7 +175,8 @@ public class ConfigBasedMappingITTest extends ITTest {
 			assertNotNull("Product record should not be null", records);
 			assertNotNull("Key set should not be null", records.keySet().size());
 			assertNotNull("Values should not be null", records.values().size());
-			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+					|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 				validateSQLExtensionData();
 				validateAltKeyData("MsAltKey");
 			} else {
@@ -240,7 +258,8 @@ public class ConfigBasedMappingITTest extends ITTest {
 			System.out.println("body response from ConfigBasedMappingITTest.java::" + apiResponse);
 			assertTrue(apiResponse.contains(
 					"\"fromAccount\":\"10995\",\"toAccount\":\"898789\",\"paymentReference\":\"GB0010001\",\"paymentDetails\":\"Funds transfer\",\"currency\":\"USD\""));
-			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+					|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 				removeForeignChecksAndDelete();
 			} else {
 				deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PI19107122J61FC9",

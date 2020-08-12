@@ -11,12 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class PayeeDetails implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="PAYEE_SEQ")
+	@SequenceGenerator(sequenceName = "payee_seq", initialValue=100, name = "PAYEE_SEQ")
 	private int payeeId;
 
 	private String payeeName;
