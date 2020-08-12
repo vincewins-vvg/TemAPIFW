@@ -21,17 +21,6 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 	public PaymentorderIngesterUpdater() {
 	}
 
-	@Override
-	public void update() throws FunctionException {
-		PaymentsIngesterProcessor paymentsIngesterProcessor = (PaymentsIngesterProcessor) com.temenos.microservice.framework.core.SpringContextInitializer
-				.instance().getBean(PaymentsIngesterProcessor.class);
-		Iterator<Entity> iterator = entityMap.values().iterator();
-		while (iterator.hasNext()) {
-			PaymentOrder paymentOrder = (PaymentOrder) iterator.next();
-			paymentsIngesterProcessor.ingestPaymentOrder(paymentOrder);
-		}
-	}
-
 	/**
 	 * Check And Build.
 	 */
@@ -65,11 +54,14 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 
 		checkAndBuild(jsonObject);
 	}
-
-	@Override
+	
 	public Map<String, Entity> setEntityMap() {
-		entityMap = new HashMap<String, Entity>();
-		entityMap.put("com.temenos.microservice.payments.entity.PaymentOrder", order);
-		return entityMap;
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public Map<String, Object> setInstanceMap() {
+		Map<String, Object> instanceMap = new java.util.HashMap<String, Object>();
+		instanceMap.put("CreateNewPaymentOrder", order);
+		return instanceMap;
 	}
 }
