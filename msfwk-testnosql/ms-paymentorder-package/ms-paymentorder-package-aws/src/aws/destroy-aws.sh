@@ -27,7 +27,7 @@ aws dynamodb delete-table --table-name ms_payment_order_customer
 export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 
 # Delete usage plan
-export usageDeletePlanId=$(aws apigateway get-usage-plans | python -c 'import json,sys; usagePlans=json.load(sys.stdin); filter=[plan for plan in usagePlans["items"] if "ms-payment-demo-usageplan" == plan["name"]]; print filter[0]["id"]')
+export usageDeletePlanId=$(aws apigateway get-usage-plans | python -c 'import json,sys; usagePlans=json.load(sys.stdin); filter=[plan for plan in usagePlans["items"] if "ms-payment-order-usageplan" == plan["name"]]; print filter[0]["id"]')
 aws apigateway delete-usage-plan --usage-plan-id $usageDeletePlanId
 
 # Delete event source mapping
