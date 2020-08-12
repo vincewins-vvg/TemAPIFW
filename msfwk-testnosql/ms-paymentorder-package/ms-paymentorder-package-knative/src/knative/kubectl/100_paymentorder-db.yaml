@@ -15,11 +15,14 @@ spec:
         name: paymentorder-db
     spec:
       containers:
-        image: ms-paymentorder-mysql
+      - env:
+        - name: CASSANDRA_KEYSPACE
+          value: ms_paymentorder
+        image: ms-paymentorder-cassandra
         imagePullPolicy: IfNotPresent
         name: paymentorder-db        
         ports:
-        - containerPort: 3306
+        - containerPort: 9042
 ---
 apiVersion: v1
 kind: Service
