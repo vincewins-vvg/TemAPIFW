@@ -81,6 +81,9 @@ public class FileUploadProcessor {
 			throw new InvalidInputException(new FailureMessage("No Attachment Found!!", "PAYM-PORD-A-2005"));
 		}
 		DocumentDetails documentDetails = fileUploadRequest.getDocumentDetails();
+		if(documentDetails == null) {
+			throw new InvalidInputException(new FailureMessage("RequestBody Empty or Null", "PAYM-PORD-A-2009"));
+		}
 		if(documentDetails.getDocumentId() == null || "".equalsIgnoreCase(documentDetails.getDocumentId())) {
 			throw new InvalidInputException(new FailureMessage("DocumentId Empty or Null", "PAYM-PORD-A-2007"));
 		}

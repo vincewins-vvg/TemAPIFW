@@ -113,11 +113,32 @@
 			<groupId>com.temenos.ms.test</groupId>
 			<artifactId>cucumberTestbase</artifactId>
 			<version>DEV.0.0-SNAPSHOT</version>
-			
+			<exclusions>
+				<exclusion>
+					<groupId>javax.ws.rs</groupId>
+					<artifactId>jsr311-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- CucumberTestBase Dependency from TestTools -->
 
-		
+		<!-- Multipart Dependency -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.19</version>
+		</dependency>
+
 
 	</dependencies>
 </project>
