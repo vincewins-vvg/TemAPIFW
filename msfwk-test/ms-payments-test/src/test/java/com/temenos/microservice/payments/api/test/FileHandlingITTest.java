@@ -32,6 +32,8 @@ import com.sun.jersey.multipart.MultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 
 import junit.framework.Assert;
 
@@ -52,7 +54,7 @@ public class FileHandlingITTest extends ITTest {
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			deleteAllRecords("ms_file_upload");
 		} else {
-			deletePaymentOrderRecord("ms_file_upload", "name", "eq", "string", "textresult.txt");
+			deletePaymentOrderRecord("ms_file_upload", "name", "eq", "string", "textresult.txt","mimetype","eq","string","text/plain");
 		}
 		daoFacade.closeConnection();
 	}
@@ -75,7 +77,7 @@ public class FileHandlingITTest extends ITTest {
 		final MultiPart multiPart = new FormDataMultiPart().field("documentDetails", jsonToSend.toString())
 				.bodyPart(fileDataBodyPart);
 		multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
-		ClientResponse response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).header("roleId", "ADMIN")
+		ClientResponse response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE)
 				.post(ClientResponse.class, multiPart);
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_file_upload", "name", "eq", "string",
 				"testupload.txt", "mimetype", "eq", "string", "text/plain");
@@ -89,7 +91,7 @@ public class FileHandlingITTest extends ITTest {
 		String uri = getUri();
 		uri = uri + "/payments/download/testupload.txt" + ITTest.getCode("FILE_DOWNLOAD_AUTH_CODE");
 		javax.ws.rs.client.Client client = ClientBuilder.newClient();
-		Response response = client.target(uri).request().header("roleId", "ADMIN").get();
+		Response response = client.target(uri).request().header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).get();
 		try {
 			InputStream in = (InputStream) response.getEntity();
 			InputStreamReader isReader = new InputStreamReader(in);
