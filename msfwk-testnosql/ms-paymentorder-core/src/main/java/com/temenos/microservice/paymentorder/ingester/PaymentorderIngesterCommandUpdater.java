@@ -33,6 +33,10 @@ public class PaymentorderIngesterCommandUpdater extends BaseIngester {
 		body.setToAccount(orderRecord.getCreditAccount());
 		body.setPaymentReference(orderRecord.getPaymentReference());
 		body.setPaymentDetails(orderRecord.getPaymentDetails());
+		com.temenos.microservice.paymentorder.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.view.PaymentMethod();
+		paymentMethod.setId(4L);
+		paymentMethod.setName("CARD");
+		body.setPaymentMethod(paymentMethod);
 		createNewPaymentOrderInput = new CreateNewPaymentOrderInput(body);
 	
 	}
