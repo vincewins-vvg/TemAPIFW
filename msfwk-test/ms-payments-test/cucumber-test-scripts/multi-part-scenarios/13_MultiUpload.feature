@@ -9,29 +9,29 @@
       
   Scenario: To upload 5 files simultaneously
     
-    Given MS request header "Content-Type" is set to "multipart/form-data"
-    And create a new MS request with code using Restassured arguments "FILEUPLOAD"
-    And MS request form-data "documentDetails" is set to "{"documentId":"14","documentName":"MultiUpload"}"
-    And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult1.txt"
-    And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult2.txt"
-    And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult3.txt"
-    And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult4.txt"
-    And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult5.txt"
-    
-    
-    And MS request URI is "payments/upload"
-    When a "POST" request is sent to MS
-    And log all MS response in console
-    Then MS response code should be 200
+    #Given MS request header "Content-Type" is set to "multipart/form-data"
+    #And create a new MS request with code using Restassured arguments "FILEUPLOAD"
+    #And MS request form-data "documentDetails" is set to "{"documentId":"14","documentName":"MultiUpload"}"
+    #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult1.txt"
+    #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult2.txt"
+    #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult3.txt"
+    #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult4.txt"
+    #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/testresult5.txt"
+    #
+    #
+    #And MS request URI is "payments/upload"
+    #When a "POST" request is sent to MS
+    #And log all MS response in console
+    #Then MS response code should be 200
       
        
     
     Scenario: To download the file which is uploaded with multiple files and check its size
     
-    And MS request URI is "payments/download/testresult1.txt"
-    And create a new MS request with code using Restassured arguments "FILEDOWNLOAD"
-    When a "GET" request is sent to MS
-    Then MS response code should be 200
-    Then check if file download is successful and size is equal to file uploaded from file path "src/test/resources/cucumber-json-payload/testresult1.txt"
-    And log all MS response in console
+    #And MS request URI is "payments/download/testresult1.txt"
+    #And create a new MS request with code using Restassured arguments "FILEDOWNLOAD"
+    #When a "GET" request is sent to MS
+    #Then MS response code should be 200
+    #Then check if file download is successful and size is equal to file uploaded from file path "src/test/resources/cucumber-json-payload/testresult1.txt"
+    #And log all MS response in console
     
