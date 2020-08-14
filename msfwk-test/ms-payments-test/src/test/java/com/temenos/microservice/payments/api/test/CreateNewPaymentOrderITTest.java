@@ -2,14 +2,14 @@ package com.temenos.microservice.payments.api.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT_WRONG;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAX;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAXLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAX;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MAXLENGTH;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -44,7 +44,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			clearRecords("PO~123~124~USD~100", "123");
 		} else {
 			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
@@ -81,7 +82,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		}
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
-		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			validateSQLExtensionData();
 		} else {
 			validateNoSQLExtensionData(entry);
@@ -121,24 +123,26 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertNotNull(extensioneEntry);
 		assertNotNull(arrayExtensionEntry);
 		assertNotNull(multivalueArrayExtensionEntry);
-		assertEquals(arrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(arrayExtensionEntry.get(0).getName()));
 		assertEquals(arrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
-		assertEquals(arrayExtensionEntry.get(1).getName(), "value");
+		assertTrue("Value mismatch", "value".equalsIgnoreCase(arrayExtensionEntry.get(1).getName()));
 		assertEquals(arrayExtensionEntry.get(1).getValue(), "[\"India\",\"Aus\"]");
-		assertEquals(arrayExtensionEntry.get(2).getName(), "name");
+		assertTrue("Value mismatch", "name".equalsIgnoreCase(arrayExtensionEntry.get(2).getName()));
 		assertEquals(arrayExtensionEntry.get(2).getValue(), "array_BusDayCentres");
-		assertEquals(extensioneEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		
+		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(extensioneEntry.get(0).getName()));
 		assertEquals(extensioneEntry.get(0).getValue(), "PO~123~124~USD~100");
-		assertEquals(extensioneEntry.get(1).getName(), "value");
+		assertTrue("Value mismatch", "value".equalsIgnoreCase(extensioneEntry.get(1).getName()));
 		assertEquals(extensioneEntry.get(1).getValue(), "Temenos");
-		assertEquals(extensioneEntry.get(2).getName(), "name");
+		assertTrue("Value mismatch", "name".equalsIgnoreCase(extensioneEntry.get(2).getName()));
 		assertEquals(extensioneEntry.get(2).getValue(), "paymentOrderProduct");
-		assertEquals(multivalueArrayExtensionEntry.get(0).getName(), "PaymentOrder_paymentOrderId");
+		
+		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(multivalueArrayExtensionEntry.get(0).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
-		assertEquals(multivalueArrayExtensionEntry.get(1).getName(), "value");
+		assertTrue("Value mismatch", "value".equalsIgnoreCase(multivalueArrayExtensionEntry.get(1).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(),
 				"[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
-		assertEquals(multivalueArrayExtensionEntry.get(2).getName(), "name");
+		assertTrue("Value mismatch", "name".equalsIgnoreCase(multivalueArrayExtensionEntry.get(2).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
 	}
 
@@ -161,10 +165,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 	}
 
-
-	}
-
-	//@Test
+	// @Test
 	public void testCreateNewPaymentOrderFunctionValidateMinimum() {
 		ClientResponse createResponse;
 		do {

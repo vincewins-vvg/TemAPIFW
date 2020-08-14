@@ -12,6 +12,8 @@ export UPDATEPAYMENT=com.temenos.microservice.payments.function.UpdatePaymentOrd
 export GETPAYMENT=com.temenos.microservice.payments.function.GetPaymentOrderImpl
 export INVEPAYMENT=com.temenos.microservice.payments.function.InvokePaymentOrderImpl
 export HEATHCHECK=com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl
+export FILE_UPLOAD=com.temenos.microservice.payments.function.FileUploadImpl
+export FILE_DOWNLOAD=com.temenos.microservice.payments.function.FileDownloadImpl
 export DATABASE_NAME="payments"
 export DB_PASSWORD="payments@123"
 export DB_USERNAME="paymentsadmin@paymentsserver"
@@ -51,6 +53,7 @@ export KAFKA_SERVER="payments-kafka.servicebus.windows.net:9093"
 export SSL_ENABLED="true"
 export MAX_POLL_RECORDS=20
 export SASL_JASS_CONFIG="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://payments-kafka.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yUoa/1dlVqghGSUhf3YWUH5v7sbz9stw5ozyk8MaCx8=\";"
+export MAX_FILE_UPLOAD_SIZE=70
 
 export CREATE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl"
 export ADD_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl"
@@ -59,6 +62,7 @@ export GET_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referenc
 export DELETE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl"
 export ms_security_tokencheck_enabled=Y
 export EXECUTION_ENVIRONMENT="TEST"
+
 
 
 # Create a resource resourceGroupName
@@ -97,7 +101,7 @@ az eventhubs eventhub consumer-group create --eventhub-name "${EVENT_HUB_OUTBOX}
 export eventHubConnection=$(az eventhubs namespace authorization-rule keys list --resource-group "${RESOURCE_GROUP_NAME}" --namespace-name "${EVENT_HUB_NAME_SPACE}" --name RootManageSharedAccessKey | python -c "import json,sys;obj=json.load(sys.stdin); print(obj['primaryConnectionString'])" )
 
 # Environment variable settings
-az functionapp config appsettings set --name "${APP_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --settings className_CreateNewPaymentOrder="${CREATEPAYMENT}" className_createReferenceData="${CREATE_REFERENCE_DATA}" className_getReferenceData="${GET_REFERENCE_DATA}" className_updateReferenceData="${UPDATE_REFERENCE_DATA}" className_addReferenceData="${ADD_REFERENCE_DATA}" className_deleteReferenceData="${DELETE_REFERENCE_DATA}" className_GetPaymentOrders="${GETPAYMENTS}" className_UpdatePaymentOrder="${UPDATEPAYMENT}" className_GetPaymentOrder="${GETPAYMENT}" className_invokePaymentState="${INVEPAYMENT}" className_getHealthCheck="${HEATHCHECK}"  DATABASE_NAME="${DATABASE_NAME}" DB_PASSWORD="${DB_PASSWORD}" DB_USERNAME="${DB_USERNAME}" JAVA_OPTS="${JAVA_OPTS}" DB_CONNECTION_URL="${DB_CONNECTION_URL}" DRIVER_NAME="${DRIVER_NAME}" DIALECT="${DIALECT}" languageWorkers:java:defaultExecutablePath="${defaultExecutablePath}" temn.msf.security.authz.enabled="${AUTHZ_ENABLED}" WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_event_ingester="${INGEST_EVENT_INGESTER}" temn_msf_ingest_sink_error_stream="${ERROR_STREAM}" temn_msf_name="${MSF_NAME}" temn_msf_schema_registry_url="${REGISTRY_URL}" EXECUTION_ENV="${EXECUTION_ENV}" DATABASE_KEY=sql eventHubConnection="${eventHubConnection}" VALIDATE_PAYMENT_ORDER="${VALIDATE_PAYMENT_ORDER}" eventHubName="${EVENT_HUB}" eventHubConsumerGroup="${EVENT_HUB_CONSUMER_GROUP}" class.outbox.dao="${OUTBOX_DAO}" class.outbox.dao="${OUTBOX_DAO}" class.inbox.dao="${INBOX_DAO}" DATABASE_KEY=sql temn.msf.ingest.source.stream="${INGEST_SOURCE_STREAM}" temn.msf.ingest.sink.error.stream="${SINK_ERROR_STREAM}"
+az functionapp config appsettings set --name "${APP_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --settings className_CreateNewPaymentOrder="${CREATEPAYMENT}" className_createReferenceData="${CREATE_REFERENCE_DATA}" className_getReferenceData="${GET_REFERENCE_DATA}" className_updateReferenceData="${UPDATE_REFERENCE_DATA}" className_addReferenceData="${ADD_REFERENCE_DATA}" className_deleteReferenceData="${DELETE_REFERENCE_DATA}" className_GetPaymentOrders="${GETPAYMENTS}" className_UpdatePaymentOrder="${UPDATEPAYMENT}" className_GetPaymentOrder="${GETPAYMENT}" className_invokePaymentState="${INVEPAYMENT}" className_getHealthCheck="${HEATHCHECK}"  DATABASE_NAME="${DATABASE_NAME}" DB_PASSWORD="${DB_PASSWORD}" DB_USERNAME="${DB_USERNAME}" JAVA_OPTS="${JAVA_OPTS}" DB_CONNECTION_URL="${DB_CONNECTION_URL}" DRIVER_NAME="${DRIVER_NAME}" DIALECT="${DIALECT}" languageWorkers:java:defaultExecutablePath="${defaultExecutablePath}" temn.msf.security.authz.enabled="${AUTHZ_ENABLED}" WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_event_ingester="${INGEST_EVENT_INGESTER}" temn_msf_ingest_sink_error_stream="${ERROR_STREAM}" temn_msf_name="${MSF_NAME}" temn_msf_schema_registry_url="${REGISTRY_URL}" EXECUTION_ENV="${EXECUTION_ENV}" DATABASE_KEY=sql eventHubConnection="${eventHubConnection}" VALIDATE_PAYMENT_ORDER="${VALIDATE_PAYMENT_ORDER}" eventHubName="${EVENT_HUB}" eventHubConsumerGroup="${EVENT_HUB_CONSUMER_GROUP}" class.outbox.dao="${OUTBOX_DAO}" class.outbox.dao="${OUTBOX_DAO}" class.inbox.dao="${INBOX_DAO}" DATABASE_KEY=sql temn.msf.ingest.source.stream="${INGEST_SOURCE_STREAM}" temn.msf.ingest.sink.error.stream="${SINK_ERROR_STREAM}" className_FileDownload="${FILE_DOWNLOAD}" className_FileUpload="${FILE_UPLOAD}" temn.msf.max.file.upload.size="${MAX_FILE_UPLOAD_SIZE}"
 temn.msf.ingest.generic.ingester="${GENERIC_INGESTER}" temn.exec.env="${EXEC_ENV}" temn.msf.stream.outbox.topic="${OUTBOX_TOPIC}" class.package.name="${PACKAGE_NAME}" temn.msf.function.class.CreateNewPaymentOrder="${CreateNewPaymentOrder}" temn.msf.ingest.is.avro.event.ingester="${AVRO_INGEST_EVENT}" temn.queue.impl="${%QUEUE_IMPL}" temn.msf.stream.kafka.sasl.enabled="${SSL_ENABLED}" temn.msf.stream.kafka.sasl.jaas.config="${SASL_JASS_CONFIG}" temn.msf.stream.kafka.bootstrap.servers="${KAFKA_SERVER}" temn.msf.stream.vendor.outbox="${%QUEUE_IMPL}" temn.msf.ingest.consumer.max.poll.records="${MAX_POLL_RECORDS}" ms_security_tokencheck_enabled=$ms_security_tokencheck_enabled EXECUTION_ENVIRONMENT=$EXECUTION_ENVIRONMENT
 
 # Environment variable settings
