@@ -66,6 +66,12 @@ sleep 10
 aws lambda create-function --function-name fileDownload --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.FileDownloadFunctionAWS::invoke --description "Handler for  FileDownloadFunctionAWS Impl" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_FileDownload=com.temenos.microservice.paymentorder.function.FileDownloadImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_msf_storage_home=s3://paymentorder-file-bucket\}
 sleep 10
 
+aws lambda create-function --function-name payment-put-status-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.UpdatePaymentOrderFunctionAWS::invoke --description "Update Payment order handler" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_UpdateStatus=com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis\}
+sleep 10
+
+aws lambda create-function --function-name payment-delete-status-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.UpdatePaymentOrderFunctionAWS::invoke --description "Update Payment order handler" --timeout 120 --memory-size 512 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_DeleteWithCondition=com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis\}
+sleep 10
+
 # Create event source mapping
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
 
@@ -88,6 +94,10 @@ export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPI
 export paymentsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "payments" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 export ordersId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "orders" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export deleteId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $ordersId --path-part "delete" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export updateId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $ordersId --path-part "update" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 # Create Reference resource and get id - /v1.0.0/reference
 export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
@@ -151,6 +161,12 @@ export downloadparams=$(aws apigateway create-resource --rest-api-id $restAPIId 
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $downloadparams --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $downloadparams --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:fileDownload/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_BINARY
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $updateId --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2 
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $updateId --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-put-status-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $deleteId --http-method DELETE --authorization-type NONE --api-key-required --region eu-west-2 
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $deleteId --http-method DELETE --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-delete-status-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"
 
