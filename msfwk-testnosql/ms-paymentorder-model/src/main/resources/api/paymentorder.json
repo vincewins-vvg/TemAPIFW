@@ -330,7 +330,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         default:
-          description: getCustomersErrorResponse
+          description: getUserErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+    put:
+      summary: Update Single User
+      operationId: UpdateUser
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatus'
+        default:
+          description: getUserErrorResponse
           content:
             application/json:
               schema:
@@ -419,7 +447,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountStatus'
-     
 
 components:
   schemas:
