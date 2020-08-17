@@ -27,8 +27,10 @@ public class DeletePaymentOrderTest extends ITTest {
 	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
-		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "PayRef",
-				"description", "string", "description");
+		if ("MONGODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "PayRef",
+					"description", "string", "description");
+		}
 	}
 
 	@AfterClass
