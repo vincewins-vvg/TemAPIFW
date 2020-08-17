@@ -1,4 +1,4 @@
-package com.temenos.microservice.payments.core;
+package com.temenos.microservice.payments.function;
 
 
 import java.util.List;
