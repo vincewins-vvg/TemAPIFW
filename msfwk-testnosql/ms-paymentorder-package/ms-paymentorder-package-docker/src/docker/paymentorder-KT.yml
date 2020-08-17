@@ -46,6 +46,7 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+      className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
