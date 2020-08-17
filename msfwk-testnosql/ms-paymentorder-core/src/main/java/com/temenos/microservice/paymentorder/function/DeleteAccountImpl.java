@@ -5,36 +5,33 @@ import java.util.Optional;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
-import com.temenos.microservice.framework.core.data.NoSqlResponse;
 import com.temenos.microservice.framework.core.function.Context;
-import com.temenos.microservice.paymentorder.view.Account;
 import com.temenos.microservice.paymentorder.view.AccountStatus;
+import com.temenos.microservice.paymentorder.view.DeleteAccountParams;
 
-public class UpdateAccountImpl implements UpdateAccount{
+public class DeleteAccountImpl implements DeleteAccount{
 
 	@Override
-	public AccountStatus invoke(Context ctx, UpdateAccountInput input) throws FunctionException {
-		Account updateAccount = input.getBody().get();
+	public AccountStatus invoke(Context ctx, DeleteAccountInput input) throws FunctionException {
+		// TODO Auto-generated method stub
+		Optional<DeleteAccountParams> deleteAccountParams = input.getParams();
 
-		String accountId = input.getParams().get().getAccountId().get(0);
+		String accountId = deleteAccountParams.get().getAccountId().get(0);
+		
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Account> accountDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Account.class);
 
 		Optional<com.temenos.microservice.paymentorder.entity.Account> accountOpt = accountDao
 				.getByPartitionKey(accountId);
-
+		
 		if (accountOpt.isPresent()) {
-			com.temenos.microservice.paymentorder.entity.Account account = accountOpt.get();
-			account.setAccountId(updateAccount.getAccountId());
-			account.setAccountHolderName(updateAccount.getAccountName());
-			account.setAccountType(updateAccount.getAccountType());
-			account.setBranch(updateAccount.getBranch());
 			
-			NoSqlResponse accountResponse = accountDao.saveOrMergeEntity(account, false);
-
+			com.temenos.microservice.paymentorder.entity.Account account = accountOpt.get();
+			Long deletedCount = accountDao.deleteEntity(account);
+			
 			AccountStatus accountStatus = new AccountStatus();
-			accountStatus.setAccountId(accountResponse.getPartitionId());
-			accountStatus.setModifiedCount(accountResponse.getModifiedCount().intValue());
+			accountStatus.setAccountId(accountId);
+			accountStatus.setModifiedCount(deletedCount.intValue());
 			accountStatus.setStatus("Successful");
 			return accountStatus;
 
@@ -42,9 +39,11 @@ public class UpdateAccountImpl implements UpdateAccount{
 			AccountStatus accountStatus = new AccountStatus();
 			accountStatus.setAccountId(accountId);
 			accountStatus.setModifiedCount(0);
-			accountStatus.setStatus("Unsucessful - account ID is not present in DB");
+			accountStatus.setStatus("Unsucessful - Customer ID is not present in DB");
 			return accountStatus;
 		}
 	}
+	
+	
 
 }

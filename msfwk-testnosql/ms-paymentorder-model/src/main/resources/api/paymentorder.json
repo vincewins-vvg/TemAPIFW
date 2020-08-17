@@ -431,6 +431,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardErrorResponse'
+    delete:
+      summary: Delete Single Account
+      operationId: DeleteAccount
+      parameters:
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An Account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountStatus'
   /account:
     post:
       summary: Creates an account
@@ -715,6 +732,8 @@ components:
       properties:
         accountId:
           type: string
+        modifiedCount:
+          type: integer
         status:
           type: string
         message:

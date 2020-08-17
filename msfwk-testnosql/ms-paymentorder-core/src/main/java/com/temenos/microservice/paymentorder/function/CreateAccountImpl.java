@@ -27,6 +27,8 @@ public class CreateAccountImpl implements CreateAccount{
 		
         AccountStatus accountStatus = new AccountStatus();
         accountStatus.setAccountId(accountResult.getPartitionId());
+        if(accountResult.getModifiedCount() != null)
+        	accountStatus.setModifiedCount(accountResult.getModifiedCount().intValue());
         accountStatus.setStatus("Successful");
        
 		return accountStatus;
