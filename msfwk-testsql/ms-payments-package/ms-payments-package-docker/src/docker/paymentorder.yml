@@ -53,7 +53,7 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
       className_GetPaymentOrderCurrency: com.temenos.microservice.payments.function.GetPaymentOrderCurrencyImpl
-      className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+      className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl  
       className_FileUpload: com.temenos.microservice.payments.function.FileUploadImpl
       className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
