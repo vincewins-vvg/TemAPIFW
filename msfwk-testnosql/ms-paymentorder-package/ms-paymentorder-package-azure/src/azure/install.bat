@@ -25,8 +25,11 @@ SET ADD_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referenceda
 SET UPDATE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl"
 SET GET_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl"
 SET DELETE_REFERENCE_DATA="com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl"
+<<<<<<< HEAD
 SET FILE_UPLOAD="com.temenos.microservice.paymentorder.function.FileUploadImpl"
 SET FILE_DOWNLOAD="com.temenos.microservice.paymentorder.function.FileDownloadImpl"
+=======
+>>>>>>> cabbe69... MSF-2349 ValidationUtil is not working for UserDefined Type: new api added for all 4 stacks
 SET DOINPUTVALIDATION="com.temenos.microservice.paymentorder.function.DoInputValidationImpl"
 SET DATABASE_KEY="cassandra"
 SET eventHubConnection="TEST"
