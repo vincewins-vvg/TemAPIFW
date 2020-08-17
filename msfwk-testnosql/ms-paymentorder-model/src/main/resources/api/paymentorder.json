@@ -209,6 +209,52 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
                 
+  /payments/orders/update:
+    put:
+      summary: Updates all the payment orders which satisfy the criteria
+      operationId: UpdateStatus
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePaymentStatus"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/orders/delete:
+    delete:
+      summary: Deletes all the payment orders which satisfy the criteria
+      operationId: DeleteWithCondition
+      tags:
+        - Payments
+      parameters:
+      - name: status
+        in: query
+        description: status to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+                
                 
   /payments/orders/invoke:              
     get:
@@ -325,6 +371,15 @@ components:
       enum:
         - USD
         - INR
+        
+    CriteriaDetails:
+      properties:
+        nameOfCriteria:
+          type: string
+          nullable: true
+        valueOfCriteria:
+          type: string
+          nullable: true
         
     TransactionDetails:
       properties:
@@ -479,5 +534,12 @@ components:
             format: binary
     DownloadApiResponse:
       type: "object"
-
-       
+      
+    UpdatePaymentStatus:
+      properties:
+        criteriaDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/CriteriaDetails"
+        status:
+          type: string
