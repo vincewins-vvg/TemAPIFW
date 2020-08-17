@@ -662,6 +662,7 @@ components:
             format: binary
     DownloadApiResponse:
       type: "object"
+<<<<<<< HEAD:msfwk-testnosql/ms-paymentorder-model/src/main/resources/api/paymentorder.yaml
       
     UpdatePaymentStatus:
       properties:
@@ -671,6 +672,8 @@ components:
             $ref: "#/components/schemas/CriteriaDetails"
         status:
           type: string
+=======
+>>>>>>> 9f439b1... MSF-2349 ValidationUtil is not working for UserDefined Type: created new api and schema which covers all datatypes and validation attributes:msfwk-testnosql/ms-paymentorder-model/src/main/resources/api/paymentorder.json
     PaymentDetails:
       properties:
         paymentId:
