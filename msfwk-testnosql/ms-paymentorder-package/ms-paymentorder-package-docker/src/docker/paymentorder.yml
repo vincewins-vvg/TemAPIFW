@@ -76,8 +76,8 @@ services:
       className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
       className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
       className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
-      className_createCustomer: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
-      className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+      className_UpdateStatus: com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl
+      className_DeleteWithCondition: com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka

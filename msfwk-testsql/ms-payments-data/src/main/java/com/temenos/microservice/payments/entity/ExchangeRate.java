@@ -12,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class ExchangeRate implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="EXCH_SEQ")
+	@SequenceGenerator(sequenceName = "exch_seq", name = "EXCH_SEQ", initialValue=1000)
 	private long id;
 
 	private String name;

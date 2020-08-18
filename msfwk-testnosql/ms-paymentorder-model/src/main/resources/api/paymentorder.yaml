@@ -209,64 +209,51 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
                 
-  /payments/customers:
-    post:
-      summary: Create a payment Customer
-      operationId: createCustomer
+  /payments/orders/update:
+    put:
+      summary: Updates all the payment orders which satisfy the criteria
+      operationId: UpdateStatus
       tags:
         - Payments
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Customer"
-      
-      responses:
-        '201':
-          description: Created Customer
-          content:
-            application/json:    
-              schema:
-                $ref: "#/components/schemas/CustomerStatus"        
-                      
-    get:
-      summary: Get a Customers
-      operationId: getCustomers
-      tags:
-        - Payments
-      parameters:
-      - name: account
-        in: query
-        description: payment Group
-        required: false
-        schema:
-          type: string
-      - name: loanTypes
-        in: query
-        description: payment Type
-        required: false
-        schema:
-          type: string
-          
+              $ref: "#/components/schemas/UpdatePaymentStatus"
       responses:
         '200':
-          description: getCustomers
+          description: Update payment order
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/Customers"
+                $ref: "#/components/schemas/PaymentStatus"
         '400':
           description: Invalid paymentId
           content:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
-        '404':
-          description: Invalid paymentId
+                
+  /payments/orders/delete:
+    delete:
+      summary: Deletes all the payment orders which satisfy the criteria
+      operationId: DeleteWithCondition
+      tags:
+        - Payments
+      parameters:
+      - name: status
+        in: query
+        description: status to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/ErrorSchema"            
+                $ref: "#/components/schemas/PaymentStatus"
                 
                 
   /payments/orders/invoke:              
@@ -385,6 +372,15 @@ components:
         - USD
         - INR
         
+    CriteriaDetails:
+      properties:
+        nameOfCriteria:
+          type: string
+          nullable: true
+        valueOfCriteria:
+          type: string
+          nullable: true
+        
     TransactionDetails:
       properties:
         fromAccount:
@@ -400,33 +396,6 @@ components:
         paymentDetails:
           type: string
           nullable: true
-          
-           
-    Customer:
-      properties:
-        customerId:
-          type: string
-        customerName:
-          type: string
-        account:
-          type: string
-        loanTypes:
-          type: array
-          items:
-            type: string 
-            
-    CustomerStatus:
-      properties:
-        customerId:
-          type: string
-        status:
-          type: string      
-                   
-    Customers:
-      type: array
-      items:
-        $ref: "#/components/schemas/Customer"      
-             
       
     PaymentOrder:
       allOf:
@@ -565,5 +534,12 @@ components:
             format: binary
     DownloadApiResponse:
       type: "object"
-
-       
+      
+    UpdatePaymentStatus:
+      properties:
+        criteriaDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/CriteriaDetails"
+        status:
+          type: string

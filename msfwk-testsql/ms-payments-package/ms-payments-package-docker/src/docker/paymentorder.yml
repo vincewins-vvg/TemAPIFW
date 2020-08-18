@@ -414,6 +414,8 @@ services:
         artifactid: ${inboxoutbox_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
+    depends_on:
+      - db-service
     ports:
       - "40514:40500"
       - "8089:8080"
