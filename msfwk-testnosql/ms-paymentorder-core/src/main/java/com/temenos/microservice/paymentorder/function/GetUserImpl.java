@@ -8,13 +8,21 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.GetUserParams;
+import com.temenos.microservice.paymentorder.view.PaymentOrderStatus;
 import com.temenos.microservice.paymentorder.view.User;
 
-public class GetUserImpl implements GetUser{
+public class GetUserImpl implements GetUser {
 
 	@Override
 	public User invoke(Context ctx, GetUserInput input) throws FunctionException {
+		if (!input.getParams().isPresent()) {
+			throw new InvalidInputException(new FailureMessage("Input param is empty", "EmptyInput-2001"));
+		}
+
 		GetUserParams userParams = input.getParams().get();
 		String userId = "";
 		if (userParams != null)
@@ -34,8 +42,10 @@ public class GetUserImpl implements GetUser{
 
 			return userView;
 
+		} else {
+			return new User();
 		}
-		return null;
+
 	}
 
 }

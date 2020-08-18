@@ -335,34 +335,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardErrorResponse'
-    put:
-      summary: Update Single User
-      operationId: UpdateUser
-      parameters:
-      - name: userId
-        in: path
-        description: User ID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: A User object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserStatus'
-        default:
-          description: getUserErrorResponse
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardErrorResponse'
   /user:
     post:
       summary: Creates a user
@@ -373,7 +345,7 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
       responses:
-        '201':
+        '200':
           description: Created User
           content:
             application/json:
@@ -397,34 +369,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        default:
-          description: getAccountErrorResponse
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardErrorResponse'
-    put:
-      summary: Update Single Account
-      operationId: UpdateAccount
-      parameters:
-      - name: accountId
-        in: path
-        description: Account ID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Account'
-      responses:
-        '200':
-          description: An Account object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountStatus'
         default:
           description: getAccountErrorResponse
           content:
@@ -458,7 +402,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Account'
       responses:
-        '201':
+        '200':
           description: Created Account
           content:
             application/json:
@@ -716,8 +660,6 @@ components:
           type: string
         status:
           type: string
-        message:
-          type: string
     Account:
       properties:
         accountId:
@@ -735,6 +677,4 @@ components:
         modifiedCount:
           type: integer
         status:
-          type: string
-        message:
           type: string

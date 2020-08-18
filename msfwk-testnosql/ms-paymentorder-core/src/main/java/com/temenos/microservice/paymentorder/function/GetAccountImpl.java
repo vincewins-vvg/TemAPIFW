@@ -6,6 +6,8 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
+import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.paymentorder.view.Account;
 import com.temenos.microservice.paymentorder.view.GetAccountParams;
 
@@ -14,6 +16,11 @@ public class GetAccountImpl implements GetAccount {
 	@Override
 	public Account invoke(Context ctx, GetAccountInput input) throws FunctionException {
 		// TODO Auto-generated method stub
+
+		if (!input.getParams().isPresent()) {
+			throw new InvalidInputException(new FailureMessage("Input param is empty", "EmptyInput-2001"));
+		}
+
 		GetAccountParams userParams = input.getParams().get();
 		String accountId = "";
 		if (userParams != null)
@@ -35,8 +42,9 @@ public class GetAccountImpl implements GetAccount {
 
 			return accountView;
 
+		} else {
+			return new Account();
 		}
-		return null;
 	}
 
 }
