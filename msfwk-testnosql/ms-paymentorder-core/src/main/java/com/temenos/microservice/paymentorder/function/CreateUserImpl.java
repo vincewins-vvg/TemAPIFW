@@ -37,9 +37,10 @@ public class CreateUserImpl implements CreateUser {
 
 		UserStatus userStatus = new UserStatus();
 		try {
-			List<String> errorList = createUser.doValidate();
-			if (errorList.size() > 0)
-				throw new InvalidInputException(new FailureMessage(errorList.toString()));
+			/*
+			 * List<String> errorList = createUser.doValidate(); if (errorList.size() > 0)
+			 * throw new InvalidInputException(new FailureMessage(errorList.toString()));
+			 */
 
 			com.temenos.microservice.paymentorder.entity.User user = new com.temenos.microservice.paymentorder.entity.User();
 

@@ -31,10 +31,6 @@ public class CreateAccountImpl implements CreateAccount {
 					new FailureMessage("Invalid Request Body", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
 
-		List<String> errorList = createAccount.doValidate();
-		if (errorList.size() > 0)
-			throw new InvalidInputException(new FailureMessage(errorList.toString()));
-
 		AccountStatus accountStatus = new AccountStatus();
 		try {
 			com.temenos.microservice.paymentorder.entity.Account account = new com.temenos.microservice.paymentorder.entity.Account();
