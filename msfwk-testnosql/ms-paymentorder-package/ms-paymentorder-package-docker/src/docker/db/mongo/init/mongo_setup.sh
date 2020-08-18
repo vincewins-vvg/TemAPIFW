@@ -41,5 +41,4 @@ mongo --host mongo1:27017 <<EOF
   db.createCollection("ms_altkey");
   db.createCollection("ms_file_upload");
   db.createCollection("ms_payment_order_customer");
-  db.ms_reference_data.insert({"type" : "paymentref","value" : "PayRef", "description" : "desc" });
 EOF
