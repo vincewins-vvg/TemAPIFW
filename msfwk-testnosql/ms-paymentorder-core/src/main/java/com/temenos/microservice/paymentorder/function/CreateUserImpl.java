@@ -22,26 +22,20 @@ public class CreateUserImpl implements CreateUser {
 	@Override
 	public UserStatus invoke(Context ctx, CreateUserInput input) throws FunctionException {
 		User createUser = null;
-		
-		if(input.getBody() == null 
-				|| input.getBody().get().getName() == null 
-				|| input.getBody().get().getName().length() == 0 
-				|| ! input.getBody().get().getName().matches("[A-Za-z]")
-				|| input.getBody().get().getEmail() == null
-				|| input.getBody().get().getEmail().length() == 0 
+
+		if (input.getBody() == null || input.getBody().get().getName() == null
+				|| input.getBody().get().getName().length() == 0
+				|| !input.getBody().get().getName().matches("[A-Za-z]*") || input.getBody().get().getEmail() == null
+				|| input.getBody().get().getEmail().length() == 0
 				|| !input.getBody().get().getEmail().matches(".*[@].*[.].*")) {
 			throw new InvalidInputException(new FailureMessage("Invalid Request Body -- Check email or name",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
-		createUser = input.getBody().get();		
+		createUser = input.getBody().get();
 
+		
 		UserStatus userStatus = new UserStatus();
 		try {
-			/*
-			 * List<String> errorList = createUser.doValidate(); if (errorList.size() > 0)
-			 * throw new InvalidInputException(new FailureMessage(errorList.toString()));
-			 */
-
 			com.temenos.microservice.paymentorder.entity.User user = new com.temenos.microservice.paymentorder.entity.User();
 
 			user.setName(createUser.getName());
@@ -51,12 +45,12 @@ public class CreateUserImpl implements CreateUser {
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.User.class);
 			Entity userEntity = userDao.saveEntity(user);
 			com.temenos.microservice.paymentorder.entity.User savedUser = (com.temenos.microservice.paymentorder.entity.User) userEntity;
-			
+
 			userStatus.setUserId(savedUser.getUserId());
 			userStatus.setStatus("Successful");
-		}
-		catch(Exception e) {
-			throw new InvalidInputException("Cannot be saved in DB");
+		}catch(Exception e) {
+			throw new InvalidInputException(new FailureMessage("Cannot save in db",
+					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
 
 		return userStatus;
