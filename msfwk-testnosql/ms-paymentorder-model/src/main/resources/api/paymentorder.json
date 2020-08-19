@@ -369,12 +369,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        default:
-          description: getAccountErrorResponse
+    put:
+      summary: Update Single Account
+      operationId: UpdateAccount
+      parameters:
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: An account object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StandardErrorResponse'
+                $ref: '#/components/schemas/Account'               
     delete:
       summary: Delete Single Account
       operationId: DeleteAccount

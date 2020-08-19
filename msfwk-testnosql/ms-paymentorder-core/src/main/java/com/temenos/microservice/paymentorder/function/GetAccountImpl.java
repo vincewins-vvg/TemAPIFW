@@ -8,6 +8,7 @@ import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.paymentorder.exception.NoDataFoundException;
 import com.temenos.microservice.paymentorder.view.Account;
 import com.temenos.microservice.paymentorder.view.GetAccountParams;
 
@@ -43,7 +44,7 @@ public class GetAccountImpl implements GetAccount {
 			return accountView;
 
 		} else {
-			return new Account();
+			throw new NoDataFoundException(new FailureMessage("ID is not present in DB"));
 		}
 	}
 

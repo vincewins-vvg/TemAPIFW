@@ -1,3 +1,4 @@
+
 package com.temenos.microservice.paymentorder.function;
 
 import java.util.Optional;
@@ -14,12 +15,17 @@ import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.Account;
 import com.temenos.microservice.paymentorder.view.AccountStatus;
 
-public class CreateAccountImpl implements CreateAccount {
+public class UpdateAccountImpl implements UpdateAccount {
 
 	@Override
-	public AccountStatus invoke(Context ctx, CreateAccountInput input) throws FunctionException {
-		// TODO Auto-generated method stub
-		Account createAccount = input.getBody().get();
+	public Account invoke(Context ctx, UpdateAccountInput input) throws FunctionException {
+
+		Account updateAccount = null;
+
+		if (input.getParams() == null || input.getParams().get().getAccountId() == null)
+			throw new InvalidInputException(
+					new FailureMessage("AccountId cannot be null", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		String accountId = input.getParams().get().getAccountId().get(0);
 
 		if (input.getBody() == null || input.getBody().get().getAccountId() == null
 				|| input.getBody().get().getAccountId().length() == 0 
@@ -28,48 +34,56 @@ public class CreateAccountImpl implements CreateAccount {
 				|| input.getBody().get().getAccountName().length() == 0
 				|| !input.getBody().get().getAccountName().matches("[A-Za-z]*")
 				|| input.getBody().get().getAccountType() == null
-				|| input.getBody().get().getAccountType().length() == 0 
+				|| input.getBody().get().getAccountType().length() == 0
 				|| !input.getBody().get().getAccountType().matches("[A-Za-z]*")
-				|| input.getBody().get().getBranch() == null
-				|| input.getBody().get().getBranch().length() == 0
+				|| input.getBody().get().getBranch() == null || input.getBody().get().getBranch().length() == 0
 				|| !input.getBody().get().getBranch().matches("[A-Za-z]*")) {
-			throw new InvalidInputException(
-					new FailureMessage("Invalid Request Body", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			throw new InvalidInputException(new FailureMessage("Invalid Request Body -- Check email or name",
+					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
-		
-		if (createAccount.getAccountId() != null) {
+
+		if (!input.getBody().get().getAccountId().equals(accountId))
+			throw new InvalidInputException(new FailureMessage("AccountId does not match with path param",
+					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+
+		updateAccount = input.getBody().get();
+		AccountStatus accountStatus = new AccountStatus();
+
+		Account accountView = new Account();
+
+		if (updateAccount.getAccountId() != null) {
 			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Account> accountDaoGet = DaoFactory
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Account.class);
 			Optional<com.temenos.microservice.paymentorder.entity.Account> accountOpt = accountDaoGet
-					.getByPartitionKey(createAccount.getAccountId());
-			if (accountOpt.isPresent()) {
-				throw new InvalidInputException(new FailureMessage("Records already exists",
+					.getByPartitionKey(updateAccount.getAccountId());
+			if (!accountOpt.isPresent()) {
+				throw new InvalidInputException(new FailureMessage("Records does not exist in DB",
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
 		}
-
-		AccountStatus accountStatus = new AccountStatus();
+		
 		try {
-			
+
 			com.temenos.microservice.paymentorder.entity.Account account = new com.temenos.microservice.paymentorder.entity.Account();
-			account.setAccountId(createAccount.getAccountId());
-			account.setAccountHolderName(createAccount.getAccountName());
-			account.setAccountType(createAccount.getAccountType());
-			account.setBranch(createAccount.getBranch());
+			account.setAccountId(updateAccount.getAccountId());
+			account.setAccountHolderName(updateAccount.getAccountName());
+			account.setAccountType(updateAccount.getAccountType());
+			account.setBranch(updateAccount.getBranch());
 
 			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Account> accountDao = DaoFactory
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Account.class);
-			NoSqlResponse accountResult = accountDao.saveOrMergeEntity(account, true);
+			NoSqlResponse accountResult = accountDao.saveOrMergeEntity(account, false);
 
-			accountStatus.setAccountId(accountResult.getPartitionId());
-			if (accountResult.getModifiedCount() != null)
-				accountStatus.setModifiedCount(accountResult.getModifiedCount().intValue());
-			accountStatus.setStatus("Successful");
+			accountView.setAccountId(account.getAccountId());
+			accountView.setAccountName(account.getAccountHolderName());
+			accountView.setAccountType(account.getAccountType());
+			accountView.setBranch(account.getBranch());
+
 		} catch (Exception e) {
 			throw new DatabaseOperationException("Could not be saved in Database");
 		}
 
-		return accountStatus;
+		return accountView;
 	}
 
 }

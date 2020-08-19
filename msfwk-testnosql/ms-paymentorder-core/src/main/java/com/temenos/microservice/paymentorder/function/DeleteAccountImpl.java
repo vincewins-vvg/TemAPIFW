@@ -10,6 +10,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.paymentorder.exception.NoDataFoundException;
 import com.temenos.microservice.paymentorder.view.AccountStatus;
 import com.temenos.microservice.paymentorder.view.DeleteAccountParams;
 
@@ -21,11 +22,11 @@ public class DeleteAccountImpl implements DeleteAccount{
 		Optional<DeleteAccountParams> deleteAccountParams = input.getParams();
 
 		String accountId;
-		if(input.getParams().get().getAccountId() != null && input.getParams().get().getAccountId().get(0) != null) {
-			accountId = input.getParams().get().getAccountId().get(0);
-		} else {
-			throw new InvalidInputException(new FailureMessage("Invalid or Null AccountId value entered",MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		
+		if (!input.getParams().isPresent()) {
+			throw new InvalidInputException(new FailureMessage("Input param is empty", "EmptyInput-2001"));
 		}
+		accountId = input.getParams().get().getAccountId().get(0);
 		
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Account> accountDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Account.class);
@@ -45,7 +46,7 @@ public class DeleteAccountImpl implements DeleteAccount{
 			return accountStatus;
 
 		}else {
-			throw new InvalidInputException("Not a valid Account Id");
+			throw new NoDataFoundException(new FailureMessage("ID is not present in DB"));
 		}
 	}
 	
