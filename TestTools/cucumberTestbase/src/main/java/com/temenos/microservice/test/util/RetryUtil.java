@@ -2,15 +2,15 @@ package com.temenos.microservice.test.util;
 
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RetryUtil {
@@ -26,8 +26,8 @@ public class RetryUtil {
                         T value;
                         while ((value = getSafeFromSupplier(supplier)) == null && System.currentTimeMillis() - start < timeoutMillis) {
                             try {
-                                log.info("Waiting 5 seconds before retrying with: {}", message);
-                                Thread.sleep(5000);
+                                log.info("Waiting 20 seconds before retrying with: {}", message);
+                                Thread.sleep(20000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException("Interrupted");
                             }

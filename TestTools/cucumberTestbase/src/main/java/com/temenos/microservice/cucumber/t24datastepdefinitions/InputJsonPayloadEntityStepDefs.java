@@ -179,6 +179,24 @@ public class InputJsonPayloadEntityStepDefs implements En {
 
                 });
         
+        
+        Given(format("^(?:I ?)*set json payload body bundle value {0} appended between values {0} and {0} for property path {0}$", stepConfig.stringRegEx()),
+                (String bundleKey, String value1, String value2, String path) -> {
+                    
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(bundleKey);
+                    assertNotNull(bundleValue);
+                    
+                    final List<String> pathParts = Arrays.asList(JsonUtil.flattenPropertyName(path));
+                    final Optional<JSONObject> parent = JsonUtil.navigateJsonObjectforPropertyPath(
+                            ofNullable(bodyObject), pathParts.subList(0, pathParts.size() - 1), path, true);
+                    if (parent.isPresent()) {
+                        parent.get().put(pathParts.get(pathParts.size() - 1), value1+bundleValue+value2);
+                    }
+
+ 
+
+                });
+        
         Given(format("^(?:I ?)*set json payload header bundle value {0} append with unique value {0} for property path {0}$", stepConfig.stringRegEx()),
                 (String value, String bundlevariablename, String path) -> {
 
@@ -319,6 +337,12 @@ public class InputJsonPayloadEntityStepDefs implements En {
                     generateInputwithJson(fileName, this.getJson(), this.getJson1());
                 });
          
+         Given(format("^(?:I ?)*I post to {0} for body payload$",
+                 stepConfig.stringRegEx()), (String fileName) -> {
+
+                     generateInputwithOnlyJson(fileName, this.getJson());
+                 });
+         
          Given(format("^(?:I ?)*I post to {0} with arguments for json header and body array object payload$",
                  stepConfig.stringRegEx()), (String fileName) -> {
 
@@ -328,6 +352,10 @@ public class InputJsonPayloadEntityStepDefs implements En {
 
     public void generateInputwithJson(String fileName, JSONObject bodyJsonPayload, JSONObject headerJsonPayload) {
         cucumberInteractionSession.use(setRequestPayloadAtRuntime(fileName, bodyJsonPayload, headerJsonPayload));
+    }
+    
+    public void generateInputwithOnlyJson(String fileName, JSONObject bodyJsonPayload) {
+        cucumberInteractionSession.use(setRequestPayloadAtRuntimeWithoutHeader(fileName, bodyJsonPayload));
     }
     
     public void generateInputwithJsonBodyArray(String fileName, JSONObject bodyJsonPayload, JSONObject headerJsonPayload) {
@@ -346,6 +374,23 @@ public class InputJsonPayloadEntityStepDefs implements En {
         JSONObject json = new JSONObject(payload);
         json.put("body", bodyjsonProperties);
         json.put("header", headerjsonProperties);
+        EntityHandler handler = new PlainTextEntityHandler(json.toString());
+        EntityWrapper entity = new DefaultEntityWrapper();
+        entity.setHandler(handler);
+        return entity;
+    }
+    
+    private EntityWrapper setRequestPayloadAtRuntimeWithoutHeader(String fileName, JSONObject bodyjsonProperties) {
+//        String payload = "";
+//
+//        try {
+//            payload = IOUtils.toString(getClass().getClassLoader().getResourceAsStream(fileName));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        JSONObject json = new JSONObject(payload);
+//        json.put("body", bodyjsonProperties);
+//        //json.put("header", headerjsonProperties);
         EntityHandler handler = new PlainTextEntityHandler(json.toString());
         EntityWrapper entity = new DefaultEntityWrapper();
         entity.setHandler(handler);

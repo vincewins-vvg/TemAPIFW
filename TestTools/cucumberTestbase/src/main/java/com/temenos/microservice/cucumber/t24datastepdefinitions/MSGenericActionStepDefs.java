@@ -304,6 +304,14 @@ public class MSGenericActionStepDefs implements En {
 
                 });
 
+        //To append Customer Id with Company Code from OFS response
+        And(format("^(?:I ?)*post an OFS message and then store customer id appended with company code in {0} and message {0}$",
+                stepConfig.stringRegEx()), (String recordId, String OfsString) -> {
+                    CompanyIdandCustomerIdFromOFSString(recordId, OfsString);
+                });
+        
+        
+  
 
       //** Use the below step to check if the record id created is present in any t24 table
         Then(format("^verify if entry for {0} is present in t24 table {0}$", stepConfig.stringRegEx()),
@@ -317,6 +325,21 @@ public class MSGenericActionStepDefs implements En {
                     else{
                         
                         t24DAO.executeQuery(id,tableName);
+                    }
+                });
+        
+        //** Use the below step to check if no record id  is present in any t24 table
+        Then(format("^verify if entry for {0} is not present in t24 table {0}$", stepConfig.stringRegEx()),
+                (String id, String tableName) -> {
+                    T24DAO t24DAO = new T24DAO();
+                    String bundleValue = cucumberInteractionSession.scenarioBundle().getString(id);
+                    if (bundleValue != null)
+                    {
+                    t24DAO.executeQueryToCheckIfRecordNotPresent(cucumberInteractionSession.scenarioBundle().getString(id),tableName);
+                    }
+                    else{
+                        
+                        t24DAO.executeQueryToCheckIfRecordNotPresent(id,tableName);
                     }
                 });
         
@@ -364,6 +387,16 @@ public class MSGenericActionStepDefs implements En {
                     t24DAO.executeQuery(idSplitValue, tableName);
                 
                 });
+        
+        And(format("^(?:I ?)* append a value {0} after the bundle value {0} and store it in a new bundle {0}$",
+                stepConfig.stringRegEx()), (String valueToAppend, String existingbundle ,String newAppendedBundle) -> {
+                    appendValueToBundle(valueToAppend, existingbundle,newAppendedBundle,"suffix");
+                });
+        
+        And(format("^(?:I ?)* append a value {0} before the bundle value {0} store it in a new bundle {0}$",
+                stepConfig.stringRegEx()), (String valueToAppend, String existingbundle, String newAppendedBundle ) -> {
+                    appendValueToBundle(valueToAppend, existingbundle,newAppendedBundle,"prefix");
+                });
     }
 
     
@@ -373,6 +406,26 @@ public class MSGenericActionStepDefs implements En {
 //    public MSGenericActionStepDefs() {
 //        // TODO Auto-generated constructor stub
 //    }
+    
+    public Object appendValueToBundle(String valueToAppend, String existingbundle, String newAppendedBundle, String position) {
+        
+        String appendedValue=null;
+        
+        String actualBundleValue = cucumberInteractionSession.scenarioBundle().getString(existingbundle);
+        if(position.equalsIgnoreCase("suffix"))
+        {
+            appendedValue = actualBundleValue+valueToAppend;
+        }
+        else
+        {
+            appendedValue = valueToAppend+actualBundleValue;
+        }
+        
+        System.out.println("The new bundle value after appending "+valueToAppend+" is :"+cucumberInteractionSession.scenarioBundle().getString(newAppendedBundle));
+        
+        return cucumberInteractionSession.scenarioBundle().put(newAppendedBundle, appendedValue); 
+        
+    }
 
 
     public String getPropertyValue(String propertyKey) {
@@ -618,7 +671,7 @@ public class MSGenericActionStepDefs implements En {
         }
 
         String cusidFromResponseContent = responseContents.split("/")[0];
-        System.out.println("Customer Id in OFS message is " + cusidFromResponseContent);
+        System.out.println("Id in OFS message is " + cusidFromResponseContent);
 
         if (responseContents.contains("CO.CODE:1:1")) { //returns true
                Integer n = responseContents.indexOf("CO.CODE:1:1"); //find the position of C to start the trimming of string

@@ -212,13 +212,23 @@ public class IngestorStepDefinition {
         List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
         tableValues.forEach(tableValue -> {
             if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null && cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))!=null){
                 
                      dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
                             cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))));
 
-            }
+                }
+                else if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null)
+                {
+                            dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+                            tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+                }
+                
+                }
             
             System.out.println("Bundle value :"+cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
         });
