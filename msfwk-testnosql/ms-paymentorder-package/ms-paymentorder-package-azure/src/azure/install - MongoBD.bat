@@ -50,6 +50,7 @@ SET ms_security_tokencheck_enabled=Y
 SET EXECUTION_ENVIRONMENT="TEST"
 SET RESOURCE_STORAGE_NAME="paymentordernosql"
 SET RESOURCE_STORAGE_HOME="blob://paymentorder"
+SET RESOURCE_STORAGE_NAME="paymentsql"
 SET MAX_FILE_UPLOAD_SIZE=70
 
 rem deployment azure package into azure enviornment
