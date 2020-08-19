@@ -22,6 +22,8 @@ export inboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_i
 
 aws dynamodb delete-table --table-name ms_payment_order
 
+aws dynamodb delete-table --table-name ms_payment_order_customer
+
 export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 
 # Delete usage plan
@@ -57,4 +59,6 @@ aws lambda delete-function --function-name update-reference-api-handler
 aws lambda delete-function --function-name delete-reference-api-handler
 aws lambda delete-function --function-name fileDownload
 aws lambda delete-function --function-name fileUpload
+aws lambda delete-function --function-name create-customer-payments
+aws lambda delete-function --function-name get-customer-payments
 sleep 60
