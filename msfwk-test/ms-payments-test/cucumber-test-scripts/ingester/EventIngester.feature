@@ -44,29 +44,30 @@
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-EventIngester-001  | eventId    | eq       | string   | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      | MS-Test-PO-EventIngester-001  | eventType  | eq       | string   | ms-paymentorder.CreatePayment.SequenceCompleted |
+      | MS-Test-PO-EventIngester-001  | eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder.SequenceCompleted |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1    
       | TestCaseID                   | ColumnName | ColumnValue |
-      | MS-Test-PO-EventIngester-001 | eventid    | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
+      | MS-Test-PO-EventIngester-001 | eventId    | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
       
 
     #Check the entries in outbox
 
-      #
-    #Then Set the following data criteria
-      #| TestCaseID                         | ColumnName       | Operator | DataType | ColumnValue |
-      #| MS-Test-PO-EventIngester-001       | correlationid    | eq       | string   | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      #| MS-Test-PO-EventIngester-001       | eventtype        | eq      | string    | CommandProcessed |
-      #
-    #And Validate the below details from the db table ms_outbox_events
-      #| TestCaseID                         | ColumnName    | ColumnValue |
-      #| MS-Test-PO-EventIngester-001       | correlationid | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      #| MS-Test-PO-EventIngester-001       | eventtype     | CommandProcessed |
-      #| MS-Test-PO-EventIngester-001       | status        | DELIVERED |  
+     
+    Then Set the following data criteria
+      | TestCaseID                         | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-PO-EventIngester-001       | correlationId    | eq       | string   | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
+      | MS-Test-PO-EventIngester-001       | status           | eq       | string   | DELIVERED |
       
-    Examples:
-    
+      #| MS-Test-PO-EventIngester-001       | eventtype        | eq      | string    | CommandProcessed |
+      
+    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+      | TestCaseID                         | ColumnName    | ColumnValue |
+      | MS-Test-PO-EventIngester-001       | correlationId | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
+      #| MS-Test-PO-EventIngester-001       | eventtype     | CommandProcessed |
+      | MS-Test-PO-EventIngester-001       | status        | DELIVERED |  
+      
+    Examples:    
     |payload|
     |{"fromAccount":"100-CBE","toAccount":"232-EVEN","paymentReference":"payeven","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"test","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
     

@@ -208,7 +208,34 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
-                
+    
+    delete:
+      summary: Delete payment order with payment order Id
+      operationId: deletePaymentOrder
+      tags:
+        - Payments
+      parameters:
+      - name: paymentId
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      - name: debitAccount
+        in: query
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+                            
   /payments/orders/update:
     put:
       summary: Updates all the payment orders which satisfy the criteria
@@ -255,6 +282,64 @@ paths:
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
                 
+  /payments/customers:
+    post:
+      summary: Create a payment Customer
+      operationId: createCustomer
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      
+      responses:
+        '201':
+          description: Created Customer
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/CustomerStatus"        
+                      
+    get:
+      summary: Get a Customers
+      operationId: getCustomers
+      tags:
+        - Payments
+      parameters:
+      - name: account
+        in: query
+        description: payment Group
+        required: false
+        schema:
+          type: string
+      - name: loanTypes
+        in: query
+        description: payment Type
+        required: false
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: getCustomers
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Customers"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+        '404':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema" 
                 
   /payments/orders/invoke:              
     get:
@@ -509,7 +594,31 @@ components:
         paymentDetails:
           type: string
           nullable: true
-      
+    Customer:
+      properties:
+        customerId:
+          type: string
+        customerName:
+          type: string
+        account:
+          type: string
+        loanTypes:
+          type: array
+          items:
+            type: string 
+            
+    CustomerStatus:
+      properties:
+        customerId:
+          type: string
+        status:
+          type: string      
+                   
+    Customers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Customer"      
+               
     PaymentOrder:
       allOf:
         - $ref: "#/components/schemas/TransactionDetails"

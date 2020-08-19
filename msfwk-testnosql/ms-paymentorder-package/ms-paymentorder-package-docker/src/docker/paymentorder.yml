@@ -84,6 +84,9 @@ services:
       className_GetAccount: com.temenos.microservice.paymentorder.function.GetAccountImpl
       className_DeleteAccount: com.temenos.microservice.paymentorder.function.DeleteAccountImpl
       className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
+      className_createCustomer: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
+      className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+      className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
