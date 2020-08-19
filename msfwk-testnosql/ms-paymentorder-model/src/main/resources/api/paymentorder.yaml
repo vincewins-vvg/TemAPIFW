@@ -208,7 +208,34 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/ErrorSchema"
-                
+    
+    delete:
+      summary: Delete payment order with payment order Id
+      operationId: deletePaymentOrder
+      tags:
+        - Payments
+      parameters:
+      - name: paymentId
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      - name: debitAccount
+        in: query
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+                            
   /payments/orders/update:
     put:
       summary: Updates all the payment orders which satisfy the criteria
