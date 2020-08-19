@@ -65,7 +65,7 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 
 		checkAndBuild(jsonObject);
 	}
-	
+
 	@Override
 	public Map<String, Entity> setEntityMap() {
 		entityMap = new HashMap<String, Entity>();
