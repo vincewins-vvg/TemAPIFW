@@ -12,11 +12,8 @@ export UPDATEPAYMENT=com.temenos.microservice.payments.function.UpdatePaymentOrd
 export GETPAYMENT=com.temenos.microservice.payments.function.GetPaymentOrderImpl
 export INVEPAYMENT=com.temenos.microservice.payments.function.InvokePaymentOrderImpl
 export HEATHCHECK=com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl
-<<<<<<< HEAD
 export FILE_UPLOAD=com.temenos.microservice.payments.function.FileUploadImpl
 export FILE_DOWNLOAD=com.temenos.microservice.payments.function.FileDownloadImpl
-=======
->>>>>>> cabbe69... MSF-2349 ValidationUtil is not working for UserDefined Type: new api added for all 4 stacks
 export DOINPUTVALIDATION=com.temenos.microservice.payments.function.DoInputValidationImpl
 export DATABASE_NAME="payments"
 export DB_PASSWORD="payments@123"

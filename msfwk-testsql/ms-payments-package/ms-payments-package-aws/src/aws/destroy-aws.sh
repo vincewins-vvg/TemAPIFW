@@ -41,6 +41,10 @@ aws lambda delete-function --function-name create-reference-value-api-handler
 aws lambda delete-function --function-name update-reference-api-handler
 aws lambda delete-function --function-name delete-reference-api-handler
 aws lambda delete-function --function-name payment-sql-validation
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82e3c449ecdee6addcdde1df0b9db4cf3a510519
 
 
 # Delete payments API functions
