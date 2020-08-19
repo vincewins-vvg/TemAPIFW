@@ -187,40 +187,6 @@ public class ConfigBasedMappingITTest extends ITTest {
 			Assert.fail(e.getMessage());
 		}
 	}
-	@Test
-	public void testAvroIngesterConfigDateAsCommandEvent() {
-		try {
-			System.setProperty("temn.msf.ingest.sink.stream", "table-update-paymentorder");
-			AvroProducer producer = new AvroProducer("paymentorder-test",
-					Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "localhost:8081"));
-			InputStream inputAvro = ConfigBasedMappingITTest.class.getClassLoader()
-					.getResourceAsStream("PaymentOrderInputAvroData.json");
-			Assert.assertNotNull("avro data is read", inputAvro);
-			String inputAvroReader = convertInputStreamToString(inputAvro);
-			System.out.println("input for avro data" + inputAvroReader);
-			producer.sendGenericEvent(inputAvroReader, "PAYMENT_ORDEREvent");
-			Map<Integer, List<Attribute>> records = null;
-
-			int maxDBReadRetryCount = 3;
-			int retryCount = 0;
-			do {
-				System.out.println("Sleeping for 15 sec before reading data from database...");
-				Thread.sleep(15000);
-				System.out.println("Reading record back from db, try=" + (retryCount + 1));
-				records = readPaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string",
-						"PO~10995~898789~USD~10000", "debitAccount", "eq", "string", "10995");
-
-				System.out.println(records);
-				retryCount = retryCount + 1;
-			} while ((records == null || records.isEmpty()) && retryCount < maxDBReadRetryCount);
-			assertTrue(!records.isEmpty());
-			assertNotNull("Product record should not be null", records);
-			assertNotNull("Key set should not be null", records.keySet().size());
-			assertNotNull("Values should not be null", records.values().size());
-		} catch (Exception e) {
-			Assert.fail(e.getMessage());
-		}
-	}
 
 	private String convertInputStreamToString(InputStream inputStream) throws IOException {
 

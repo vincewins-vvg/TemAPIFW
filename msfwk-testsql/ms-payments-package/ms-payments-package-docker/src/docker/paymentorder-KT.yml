@@ -47,7 +47,6 @@ services:
       className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
       className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
-      className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.name: PaymentOrder

@@ -51,14 +51,9 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setStatus(orderRecord.getStatus());
 	}
 
+	@Override
 	public Map<String, Entity> setEntityMap() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public Map<String, Object> setInstanceMap() {
-		Map<String, Object> instanceMap = new java.util.HashMap<String, Object>();
-		instanceMap.put("CreateNewPaymentOrder", order);
-		return instanceMap;
 	}
 }

@@ -446,7 +446,7 @@
 		},
 		"AcceptanceDateTime": null
 	},
-	"eventIndex": 0,
+	"dataEventIndex": 0,
 	"entityName": {
 		"string": "FBNK.PAYMENT.ORDER"
 	},

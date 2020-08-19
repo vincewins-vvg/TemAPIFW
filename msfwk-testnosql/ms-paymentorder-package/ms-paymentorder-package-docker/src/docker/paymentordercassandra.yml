@@ -52,7 +52,6 @@ services:
       className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
       className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
       className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
-      className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
