@@ -62,8 +62,8 @@ public class CreateAccountImpl implements CreateAccount {
 			NoSqlResponse accountResult = accountDao.saveOrMergeEntity(account, true);
 
 			accountStatus.setAccountId(accountResult.getPartitionId());
-			if (accountResult.getModifiedCount() != null)
-				accountStatus.setModifiedCount(accountResult.getModifiedCount().intValue());
+			if (accountResult.getModifiedCount() >= 0l)
+				accountStatus.setModifiedCount((int) accountResult.getModifiedCount());
 			accountStatus.setStatus("Successful");
 		} catch (Exception e) {
 			throw new DatabaseOperationException("Could not be saved in Database");
