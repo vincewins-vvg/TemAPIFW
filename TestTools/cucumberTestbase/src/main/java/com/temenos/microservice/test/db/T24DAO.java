@@ -23,6 +23,68 @@ public class T24DAO {
     public T24DAO()throws Exception{
         getDBConnection();
     }
+    
+    public void executeQueryToCheckIfRecordNotPresent(String CusId, String tableName){ 
+        long start = System.currentTimeMillis();
+        long timeoutMillis = 60 * 10000;
+        String cusRec;
+        String tafjVocCheck;
+        log.info("Waiting to check for entry in " + tableName + " for the Record Id: {}", CusId );
+        //System.out.println("select COUNT(*) as resultCount from " + tableName + " where RECID ='" +CusId+"'");
+        //log.info("Querying --> select COUNT(*) as resultCount from " + tableName + " where RECID ='" +CusId+"'");
+        
+        while(System.currentTimeMillis() - start < timeoutMillis) {
+            
+            try {
+                
+                if (tableName.contains("DATA_EVENTS"))
+                {
+                    
+                cusRec = "select COUNT(*) as resultCount from " + tableName + " where XMLRECORD LIKE '%transactionRef=" + CusId + "%'";
+       
+                }
+                else{
+                    
+                cusRec = "select COUNT(*) as resultCount from " + tableName + " where RECID ='" +CusId+"'";
+                }
+                ResultSet rs = stmt.executeQuery(cusRec);
+                
+                if (rs.next()){
+                    short rowCount = rs.getShort("resultCount");
+                    
+                    if(rowCount == 0){
+                    //System.out.print(rowCount);
+                    //System.out.println(cusRec);
+                    System.out.println("Entry for the created record " + CusId + " is not present in " + tableName +  " table");
+                    
+                    if (tableName.contains("RR_PARAM")){
+                    tafjVocCheck = "SELECT COUNT(*) as isOtherAttributeY FROM TAFJ_VOC where RECID ='" +CusId+ "'" + " and OTHERATTRIBUTES like '%Y%'" ;
+                    
+                    ResultSet rs1 = stmt.executeQuery(tafjVocCheck);
+                    rs1.next();
+                    short attribCount = rs1.getShort("isOtherAttributeY");
+                    if(attribCount==0){
+                        
+                        log.info("OTHERATTRIBUTES column is set to 'Y' in TAFJ_VOC table for the Record Id: {}", CusId );
+                        
+                    }
+                    else {
+                        log.info("OTHERATTRIBUTES column is not set to 'Y' in TAFJ_VOC table for the Record Id: {}", CusId );
+                    }
+                    }
+                    return;
+                }
+//                    else {
+//                        log.info("Waiting to check entry in " + tableName + " for the Record Id: {}", CusId );
+//                    }
+                }
+                
+            } catch (Exception e) {
+                fail("Error in executing select statement on t24 db: " + e);
+            }
+        }
+        fail("Timed out waiting to check if no entry is present for Record Id: " + CusId + " in table "+ tableName);
+    }
 
     public void executeQuery(String CusId, String tableName){ 
         long start = System.currentTimeMillis();
