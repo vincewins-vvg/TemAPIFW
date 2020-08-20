@@ -371,6 +371,7 @@ services:
       temn.msf.exec.env: server
       temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
       temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
+      temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
       # temn.msf.raise.received.event: "true"
       class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
