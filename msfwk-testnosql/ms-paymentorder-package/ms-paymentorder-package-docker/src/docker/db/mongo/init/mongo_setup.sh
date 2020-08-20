@@ -40,5 +40,7 @@ mongo --host mongo1:27017 <<EOF
   db.createCollection("ms_reference_data");
   db.createCollection("ms_altkey");
   db.createCollection("ms_file_upload");
+  db.createCollection("ms_payments_user");
+  db.createCollection("ms_payments_account"); 
   db.createCollection("ms_payment_order_customer");
 EOF

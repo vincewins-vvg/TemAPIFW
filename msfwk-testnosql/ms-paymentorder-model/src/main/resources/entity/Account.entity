@@ -1,0 +1,27 @@
+{
+  "name": "Account",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "tableName": "ms_payments_account",
+  "isExtendable": true,
+  "properties": [
+    {
+      "name": "accountId",
+      "type": "string",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]      
+    },
+    {
+      "name": "accountHolderName",
+      "type": "string"
+    },
+    {
+      "name": "accountType",
+      "type": "string"
+    },
+    {
+      "name": "branch",
+      "type": "string"
+    }
+  ]
+}
