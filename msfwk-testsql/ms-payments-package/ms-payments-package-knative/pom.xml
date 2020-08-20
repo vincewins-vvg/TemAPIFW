@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
-		<artifactId>microservice-package-docker-jpa</artifactId>
+		<artifactId>microservice-package-knative-jpa</artifactId>
 		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
-
+	
 	<groupId>com.temenos.microservice.payments</groupId>
-	<artifactId>ms-payments-package-docker</artifactId>
-	<name>ms-payments-package-docker</name>
-	<description>ms-payments docker packaging</description>
+	<artifactId>ms-payments-package-knative</artifactId>
+	<name>ms-payments-package-knative</name>
+	<description>ms-payments knative packaging</description>
 	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
@@ -22,14 +21,14 @@
 		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
 
 		<!-- Directory name inside the final Assembly -->
-		<assemblyOutputDirectory>ms-payments-Docker</assemblyOutputDirectory>
+		<assemblyOutputDirectory>ms-payments-knative</assemblyOutputDirectory>
 
-		<!-- Provider API WAR filename as it would be used as /context-root -->
-		<docker.apiPackageFileName>ms-payments-api.war</docker.apiPackageFileName>
+		<!-- Provider API  filename as it would be used as /context-root -->
+		<knative.apiPackageFileName>ms-payments-api.jar</knative.apiPackageFileName>
 		<!-- Ingester App Name -->
-		<docker.ingester.app.name>ms-payments-ingester.jar</docker.ingester.app.name>
-		<docker.inbox.app.name>ms-paymentorder-inboxoutbox.jar</docker.inbox.app.name>
-		<docker.ms-framework-scheduler.name>ms-paymentorder-scheduler.jar</docker.ms-framework-scheduler.name>
+		<knative.ingester.app.name>ms-payments-ingester.jar</knative.ingester.app.name>
+		<knative.inbox.app.name>ms-paymentorder-inboxoutbox.jar</knative.inbox.app.name>
+		<knative.ms-framework-scheduler.name>ms-paymentorder-scheduler.jar</knative.ms-framework-scheduler.name>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 
@@ -55,7 +54,7 @@
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
-								<targetPlatform>Camel</targetPlatform>
+								<targetPlatform>Undertow</targetPlatform>
 								<enableInbox>true</enableInbox>
 								<apiCamelVersion>1.1</apiCamelVersion>
 							</configuration>
@@ -67,7 +66,7 @@
 								<goal>generate-view</goal>
 							</goals>
 							<configuration>
-								<functionViewModelVersion>1.3</functionViewModelVersion>
+								<functionViewModelVersion>1.2</functionViewModelVersion>
 							</configuration>
 						</execution>
 					</executions>

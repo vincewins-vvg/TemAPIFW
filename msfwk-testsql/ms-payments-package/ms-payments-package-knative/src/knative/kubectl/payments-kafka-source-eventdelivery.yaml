@@ -1,0 +1,15 @@
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-eventdelivery
+spec:
+  consumerGroup: po-consumer-group-eventdelivery
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092 # note the kafka namespace
+  topics:
+  - paymentorder-outbox
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: payments-ingester-eventdelivery
