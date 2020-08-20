@@ -61,4 +61,5 @@ aws lambda delete-function --function-name fileDownload
 aws lambda delete-function --function-name fileUpload
 aws lambda delete-function --function-name create-customer-payments
 aws lambda delete-function --function-name get-customer-payments
+aws lambda delete-function --function-name payment-post-api-validation-handler
 sleep 60
