@@ -1,19 +1,14 @@
 package com.temenos.microservice.payments.funciton.test;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -21,7 +16,6 @@ import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.MSTransaction;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataEntity;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataIdEntity;
-import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.RequestContext;
 import com.temenos.microservice.framework.core.function.RequestImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
@@ -30,29 +24,22 @@ import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.GetPaymentOrder;
 import com.temenos.microservice.payments.function.GetPaymentOrderImpl;
 import com.temenos.microservice.payments.function.GetPaymentOrderInput;
+import com.temenos.microservice.payments.function.GetPaymentOrders;
 import com.temenos.microservice.payments.function.GetPaymentOrdersImpl;
+import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
 import com.temenos.microservice.payments.function.UpdatePaymentOrder;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
+import com.temenos.microservice.payments.view.Card;
 import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
+import com.temenos.microservice.payments.view.GetPaymentOrdersParams;
+import com.temenos.microservice.payments.view.PaymentMethod;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
+import com.temenos.microservice.payments.view.PaymentOrders;
 import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
-<<<<<<< HEAD
-import com.temenos.microservice.paymentsorder.function.GetPaymentOrders;
-import com.temenos.microservice.paymentsorder.function.GetPaymentOrdersInput;
-import com.temenos.microservice.payments.view.Card;
-import com.temenos.microservice.paymentsorder.view.GetPaymentOrdersParams;
-import com.temenos.microservice.paymentsorder.view.PaymentOrders;
-import com.temenos.microservice.payments.view.PaymentMethod;
-=======
-import com.temenos.microservice.payments.function.GetPaymentOrders;
-import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
-import com.temenos.microservice.payments.view.GetPaymentOrdersParams;
-import com.temenos.microservice.payments.view.PaymentOrders;
->>>>>>> MSF-1923: Knative sql changes
 
 public class PaymentOrderFunctionUnitTest {
 	public static Charset charset = Charset.forName("UTF-8");
@@ -91,7 +78,7 @@ public class PaymentOrderFunctionUnitTest {
 			PaymentMethod method = new PaymentMethod();
 			method.setId(101L);
 			method.setName("cashPayment");
-			Card card=new Card();
+			Card card = new Card();
 			card.setCardid(434L);
 			card.setCardname("casePayment");
 			card.setCardlimit(new BigDecimal(42344));

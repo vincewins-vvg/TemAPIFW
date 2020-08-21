@@ -2,21 +2,17 @@ package com.temenos.microservice.paymentorder.function;
 
 import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
-import com.temenos.microservice.paymentorderschema.view.EnumCurrency;
-import com.temenos.microservice.paymentorderschema.view.ExchangeRate;
-
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrders;
-import com.temenos.microservice.paymentorderschema.function.GetPaymentOrdersInput;
-import com.temenos.microservice.paymentorderschema.view.PaymentOrder;
-import com.temenos.microservice.paymentorderschema.view.PaymentOrders;
-import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.paymentorder.view.EnumCurrency;
+import com.temenos.microservice.paymentorder.view.ExchangeRate;
+import com.temenos.microservice.paymentorder.view.PaymentOrder;
+import com.temenos.microservice.paymentorder.view.PaymentOrders;
 
 public class GetPaymentOrdersImpl implements GetPaymentOrders {
 
@@ -55,7 +51,7 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 			view.setPaymentDetails(entity.getPaymentDetails());
 			view.setExtensionData(entity.getExtensionData());
 
-			com.temenos.microservice.paymentorderschema.view.Card card = new com.temenos.microservice.paymentorderschema.view.Card();
+			com.temenos.microservice.paymentorder.view.Card card = new com.temenos.microservice.paymentorder.view.Card();
 			if (entity.getPaymentMethod() != null) {
 				if (entity.getPaymentMethod().getCard() != null) {
 					card.setCardid(entity.getPaymentMethod().getCard().getCardid());
@@ -63,7 +59,7 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 					card.setCardlimit(entity.getPaymentMethod().getCard().getCardlimit());
 				}
 
-				com.temenos.microservice.paymentorderschema.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorderschema.view.PaymentMethod();
+				com.temenos.microservice.paymentorder.view.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.view.PaymentMethod();
 				paymentMethod.setId(entity.getPaymentMethod().getId());
 				paymentMethod.setName(entity.getPaymentMethod().getName());
 				paymentMethod.setCard(card);
@@ -79,7 +75,7 @@ public class GetPaymentOrdersImpl implements GetPaymentOrders {
 				}
 				view.setExchangeRates(exchangeRates);
 
-				com.temenos.microservice.paymentorderschema.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorderschema.view.PayeeDetails();
+				com.temenos.microservice.paymentorder.view.PayeeDetails payeeDtls = new com.temenos.microservice.paymentorder.view.PayeeDetails();
 				if (entity.getPayeeDetails() != null) {
 					payeeDtls.setPayeeName(entity.getPayeeDetails().getPayeeName());
 					payeeDtls.setPayeeType(entity.getPayeeDetails().getPayeeType());
