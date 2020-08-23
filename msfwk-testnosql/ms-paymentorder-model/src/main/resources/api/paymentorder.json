@@ -1,0 +1,565 @@
+openapi: "3.0.0"
+info:
+  title: Test Payments API
+  description: Test Payments API
+  version: 1.0.0
+
+tags:
+- name: Payments
+  description: A collection of Payments APIs
+  
+servers:
+- url: http://localhost:8090/ms-payments-api/api
+  
+paths:
+  /payments/orders:
+    post:
+      summary: Creates a new payment order 
+      operationId: CreateNewPaymentOrder
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentOrder"
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  /payments/upload:
+    post:
+      tags:
+      - Payments
+      summary: "uploads an document"
+      description: ""
+      operationId: "FileUpload"
+      requestBody:
+        description: "file to upload"
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FileUploadRequest"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payments/download/{fileName}:
+    get:
+      tags:
+      - Payments
+      parameters:
+      - name: fileName
+        in: path
+        description: FileName
+        required: true
+        schema:
+          type: string
+      summary: "downloads an document"
+      description: ""
+      operationId: "FileDownload"
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/octet-stream:
+              schema:
+                 $ref: '#/components/schemas/DownloadApiResponse'
+  /payments/allorders:
+    post:
+      summary: Creates all the payment orders in a list (Bulk)
+      operationId: CreateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentOrdersItems"
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
+  /payments/allorders/update:
+    put:
+      summary: updates all the payment orders in a list (Bulk)
+      operationId: UpdateNewPaymentOrders
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatusList"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/allorders/delete/{paymentIds}:
+    delete:
+      summary: Deletes all the payment orders in a list (Bulk)
+      operationId: DeletePaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: paymentIds
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delete payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AllPaymentStatus"
+                
+  /payments/orders/{paymentId}:
+    put:
+      summary: Updates an existing payment order 
+      operationId: UpdatePaymentOrder
+      tags:
+        - Payments
+      parameters:
+      - name: paymentId
+        in: path
+        description: Payment IDs
+        required: true
+        schema:
+          type: string
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatus"
+      responses:
+        '200':
+          description: Update payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+          
+    get:
+      summary: Get a payment order
+      operationId: GetPaymentOrder
+      x-altkey: true
+      tags:
+        - Payments
+      parameters:
+      - name: paymentId
+        in: path
+        description: Payment ID
+        required: true
+        schema:
+          type: string
+      - name: getFromStorageFile
+        in: query
+        description: getFromStorageFile
+        required: false
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrderStatus"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+        '404':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+                
+  /payments/orders/invoke:              
+    get:
+      summary: Invoke State Ingester
+      operationId: invokePaymentState
+      tags:
+        - Payments
+      parameters:
+      - name: paymentStateId
+        in: query
+        description: paymentStateId
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: invokePaymentState
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrderStatus" 
+        '400':
+          description: Invalid paymentStateId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/orders/currency:
+    get:
+      summary: Get a payment order currency
+      operationId: GetPaymentOrderCurrency
+      tags:
+        - Payments
+      parameters:
+      - name: currency
+        in: query
+        description: Currency ID
+        required: true
+        schema:
+          type: string
+          
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"                 
+  /payments/createBalanceAndTransaction:
+    post:
+      summary: Creat balance and transaction entry 
+      operationId: CreateBalanceAndTransaction
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MultiEventDataModels"
+      responses:
+        '201':
+          description: Created balance and transaction entry
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  
+components:
+  schemas:
+    Card:
+      properties:
+        cardid:
+          type: integer
+          format: int64
+          nullable: true
+        cardname:
+          type: string
+          nullable: true
+        cardlimit:
+          type: number
+          nullable: true
+    PaymentMethod:
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 999999
+        name:
+          type: string
+          minLength: 2
+          maxLength: 20
+        extensionData:
+          type: object
+          nullable: true
+        card:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Card"
+    ExchangeRate:
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        value:
+          type: number
+          nullable: true
+    PayeeDetails:
+      properties:
+        payeeName:
+          type: string
+          nullable: true
+        payeeType:
+          type: string
+          nullable: true
+          
+    EnumCurrency:
+      type: string
+      x-deprictionallowed: true
+      enum:
+        - USD
+        - INR
+        
+    TransactionDetails:
+      properties:
+        fromAccount:
+          type: string
+          nullable: true
+        toAccount:
+          type: string
+          nullable: true
+        paymentReference:
+          type: string
+          x-referencetype: paymentref
+          nullable: true
+        paymentDetails:
+          type: string
+          nullable: true
+      
+    PaymentOrder:
+      allOf:
+        - $ref: "#/components/schemas/TransactionDetails"
+      properties:
+        currency:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/EnumCurrency"
+        amount:
+          type: number
+          nullable: true
+        expires:
+          type: integer
+          format: int64
+          nullable: true
+        fileContent:
+          type: string
+          format: binary
+          nullable: true
+        fileReadWrite:
+          type: string
+          format: binary
+          nullable: true
+        fileOverWrite:
+          type: boolean
+          nullable: true
+        extensionData:
+          type: object
+          nullable: true
+        paymentDate:
+          type: string
+          format: date
+          nullable: true
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+        payeeDetails:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/PayeeDetails'
+        descriptions:
+          type: array
+          nullable: true
+          items:
+            type: string
+          
+    PaymentOrders:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentOrder"
+        
+    PaymentOrdersItems:
+      properties:
+        paymentOrders:
+          allOf:
+          - $ref: '#/components/schemas/PaymentOrders'
+        
+    PaymentStatus:
+      properties:
+        debitAccount:
+          type: string
+        paymentId:
+          type: string
+        status:
+          type: string
+        fileReadWrite:
+          type: string
+          format: binary
+        details:
+          type: string
+        paymentMethod:
+          allOf:
+          - $ref: "#/components/schemas/PaymentMethod"
+        exchangeRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExchangeRate"
+           
+    AllPaymentStatus:
+      type: array
+      items:
+        $ref: "#/components/schemas/PaymentStatus"
+        
+    PaymentStatusList:
+      properties:
+        paymentStatus:
+          allOf:
+          - $ref: "#/components/schemas/AllPaymentStatus"
+          
+    PaymentOrderStatus:
+      properties:
+        paymentOrder:
+          allOf: 
+          - $ref: "#/components/schemas/PaymentOrder"
+        paymentStatus:
+          $ref: "#/components/schemas/PaymentStatus"
+          
+    FailureMessage:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    ErrorSchema:
+      type: array
+      items:
+        $ref: "#/components/schemas/FailureMessage"
+    DocumentDetails:
+      type: "object"
+      properties:
+        documentId:
+          type: string
+        documentName:
+          type: string
+    ApiResponse:
+      type: "object"
+      properties:
+        message:
+          type: "string"
+    FileUploadRequest:
+      type: object
+      properties:
+        documentDetails:
+          allOf:
+          - $ref: '#/components/schemas/DocumentDetails'
+        documentFile:
+          type: array
+          items:
+            type: string
+            format: binary
+    DownloadApiResponse:
+      type: "object"
+    Balance:
+      properties:
+        recId:
+          type: string
+        stmtProcDate:
+          type: string
+        coCode:
+          type: string
+        onlineClearedBal:
+          type: string
+          format: decimal
+        workingBalance:
+          type: string
+          format: decimal
+        onlineActualBal:
+          type: string
+          format: decimal
+        currency:
+          type: string
+        customer:
+          type: string
+        product:
+          type: string
+        processingTime:
+          type: string
+          format: date
+    Transaction:
+      properties:
+        recId:
+          type: string
+        companyCode:
+          type: string
+        amountLcy:
+          type: string
+        processingDate:
+          type: string
+        transactionCode:
+          type: string
+        valueDate:
+          type: string
+        accountNumber:
+          type: string
+        ourReference:
+          type: string
+        theirReference:
+          type: string
+        accountOfficer:
+          type: string
+        transReference:
+          type: string
+        bookingDate:
+          type: string
+        customerId:
+          type: string
+        currency:
+          type: string
+    MultiEventDataModels:
+     properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        balances:
+          type: array
+          items:
+            $ref: "#/components/schemas/Balance"
