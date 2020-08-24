@@ -168,7 +168,7 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     ports:
-      - "40510:40500"
+      - "40519:40500"
       - "8083:8080"
     environment:
       HOST: db-service
