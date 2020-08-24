@@ -1,4 +1,4 @@
-package com.temenos.microservice.paymentorder.ingester;
+package com.temenos.microservice.payments.ingester;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -14,10 +14,10 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.ingester.IngesterEvent;
 import com.temenos.microservice.framework.core.ingester.MultiEventBaseIngester;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
-import com.temenos.microservice.paymentorder.view.Balance;
-import com.temenos.microservice.paymentorder.view.MultiEventDataModels;
-import com.temenos.microservice.paymentorder.view.Transaction;
-import com.temenos.microservice.paymentorder.function.CreateBalanceAndTransactionInput;
+import com.temenos.microservice.payments.view.Balance;
+import com.temenos.microservice.payments.view.MultiEventDataModels;
+import com.temenos.microservice.payments.view.Transaction;
+import com.temenos.microservice.payments.function.CreateBalanceAndTransactionInput;
 
 public class BalanceAndTransactionIngesterCommandUpdater extends MultiEventBaseIngester{
 
