@@ -16,10 +16,10 @@ import com.temenos.microservice.payments.view.EnumCurrency;
 
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 
-public class PaymentorderIngesterCommandUpdater extends BaseIngester {
+public class PaymentOrderIngesterCommandUpdater extends BaseIngester {
 	private CreateNewPaymentOrderInput createNewPaymentOrderInput;
 	
-	public PaymentorderIngesterCommandUpdater() {
+	public PaymentOrderIngesterCommandUpdater() {
 	}
 
 	@Override
