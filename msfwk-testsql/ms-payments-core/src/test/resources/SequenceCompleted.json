@@ -1,10 +1,10 @@
 {
-   "eventId":"148313a7-ff3a-45d3-b34b-169adbd61147",
+   "eventId":"148313a7-ff3a-45d3-b34b-169adbd61161",
    "dateTime":1576074808386,
    "correlationId":"148313a7-ff3a-45d3-b34b-169adbd61cfa",
    "priority":0,
    "status":"new",
-   "eventType":"ms-paymentorder.CreatePayment.SequenceCompleted",
+   "eventType":"ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted",
    "payload":{
       "paymentOrderId":"PO~111~123~USD~100"
    }
