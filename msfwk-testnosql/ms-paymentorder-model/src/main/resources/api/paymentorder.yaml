@@ -417,6 +417,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardErrorResponse'
+  '/users':
+    get:
+      summary: Search Users by name
+      operationId: searchUsers
+      parameters:
+        - name: name
+          in: query
+          description: User Name
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Email ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        default:
+          description: getUserErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
   /user:
     post:
       summary: Creates a user
@@ -818,6 +847,10 @@ components:
           type: string
         email:
           type: string
+    Users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     StandardErrorResponse:
       properties:
         errorCode:
