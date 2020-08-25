@@ -15,15 +15,12 @@ import com.temenos.microservice.framework.core.security.CriterionImpl;
 import com.temenos.microservice.framework.core.security.MsLogicalOperator;
 import com.temenos.microservice.paymentorder.entity.User;
 import com.temenos.microservice.paymentorder.view.SearchUsersParams;
-//import com.temenos.microservice.paymentorder.view.GetUserByNameParams;
-//import com.temenos.microservice.paymentorder.view.User;
 import com.temenos.microservice.paymentorder.view.Users;
-//com.temenos.microservice.paymentorder.function.SearchUsersByNameImpl
+
 public class SearchUsersImpl implements SearchUsers{
-//
+
 	@Override
 	public Users invoke(Context ctx, SearchUsersInput input) throws FunctionException {
-		// TODO Auto-generated method stub
 		SearchUsersParams params = input.getParams().get();
 		List<String> nameList = params.getName();
 		if(nameList == null) {
