@@ -196,7 +196,6 @@ services:
       temn.msf.ingest.sink.error.stream: error-paymentorder3
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer3
       temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
-      BALANCE_TRANSACTIONEvent: com.temenos.microservice.paymentorder.ingester.BalanceAndTransactionIngesterCommandUpdater
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
