@@ -53,6 +53,18 @@ public class GetCustomerImpl implements GetCustomers {
 		} catch (ParseException e) {
 			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
 		}
+		try {
+		if(fromDate != null && fromDate.size() >0) {
+			criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
+		}
+		if(toDate != null && toDate.size() >0) {
+			
+				criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
+		}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		List<Entity> entityList = DaoFactory.getNoSQLDao(Customer.class).getByIndexes(criteria);
 		Customers customers = new Customers();
 		if (!entityList.isEmpty()) {
