@@ -32,8 +32,7 @@ public class CreateCustomerImpl implements CreateCustomer {
 		try {
 			customerEntity.setDateOfJoining(DataTypeConverter.toDate(dateOfJoin, DATE_FORMAT));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
 		}
 		DaoFactory.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class).saveEntity(customerEntity);
 		CustomerStatus status = new CustomerStatus();
