@@ -304,6 +304,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: fromDate
+          in: query
+          description: from date
+          required: false
+          schema:
+            type: string
+        - name: toDate
+          in: query
+          description: to Date
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: getCustomers
@@ -628,6 +640,10 @@ components:
           type: array
           items:
             type: string
+        dateOfJoining:
+          type: string
+          format: date
+          nullable: true
     CustomerStatus:
       properties:
         customerId:
