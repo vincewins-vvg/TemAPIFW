@@ -57,7 +57,8 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 
 	@Override
 	public Map<String, Entity> setEntityMap() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Entity> instanceMap = new java.util.HashMap<String, Entity>();
+		instanceMap.put("com.temenos.microservice.paymentorder.entity.PaymentOrder", order);
+		return instanceMap;
 	}
 }
