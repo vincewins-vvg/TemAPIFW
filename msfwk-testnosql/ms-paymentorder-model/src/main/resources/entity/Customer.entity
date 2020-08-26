@@ -25,6 +25,10 @@
         "name": "loanTypes",
         "type": "string",
         "collection": "true"
+    },
+    {
+        "name": "dateOfJoining",
+        "type": "date"
     }
   ]
 }
