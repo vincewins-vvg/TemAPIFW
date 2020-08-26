@@ -51,8 +51,7 @@ public class GetCustomerImpl implements GetCustomers {
 				criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
 		}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
 		}
 		List<Entity> entityList = DaoFactory.getNoSQLDao(Customer.class).getByIndexes(criteria);
 		Customers customers = new Customers();
