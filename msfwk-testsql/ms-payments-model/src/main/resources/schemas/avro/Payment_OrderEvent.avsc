@@ -4595,6 +4595,27 @@
 										"fieldlangtype": "N",
 										"fieldlen": "101",
 										"fieldmvgroupnumber": "0"
+									},
+									{
+										"name": "AUTHOR",
+										"type": ["null", "string"],
+										"default": null,
+										"fieldtag": "AUTHOR",
+										"fieldshortname": "c203",
+										"fieldnumber": "203",
+										"fieldgroupnumber": "203",
+										"fielddatatype": "string",
+										"fieldtype": "D",
+										"fieldmvgroupname": "",
+										"fieldjustification": "L",
+										"fieldname": "AUTHOR",
+										"fieldcolumnname": "AUTHOR",
+										"fieldfmt": "",
+										"fieldinputlen": "100",
+										"fieldgroupname": "AUTHOR",
+										"fieldlangtype": "N",
+										"fieldlen": "101",
+										"fieldmvgroupnumber": "0"
 									}
 								]
 							}
