@@ -3,6 +3,7 @@ package com.temenos.microservice.payments.ingester.test;
 import static org.junit.Assert.assertTrue;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -10,6 +11,7 @@ import com.temenos.microservice.framework.test.streams.ITestProducer;
 import com.temenos.microservice.payments.util.HoldingsEventStub;
 import com.temenos.microservice.payments.api.test.ITTest;
 
+@Ignore
 public class MultiEventDataModelTopicITTest extends ITTest{
 	private static ITestProducer producer;
 

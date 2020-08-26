@@ -58,6 +58,9 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setPaymentDetails(orderRecord.getPaymentDetails());
 		order.setPaymentReference(orderRecord.getPaymentReference());
 		order.setStatus(orderRecord.getStatus());
+		Map<String, String> extension = new java.util.HashMap<String, String>();		
+		extension.put("extensionData", "{\"array_BusDayCentres\":[\"India\",\"Aus\"],\"paymentOrderProduct\":\"Temenos\",\"array_NonOspiType\":[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]}");
+		order.setExtensionData(extension);
 	}
 
 	@Override
