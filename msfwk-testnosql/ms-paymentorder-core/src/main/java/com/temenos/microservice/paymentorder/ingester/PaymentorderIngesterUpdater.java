@@ -49,10 +49,18 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setPaymentOrderId(orderRecord.getPaymentOrderId());
 		order.setPaymentReference(orderRecord.getPaymentReference());
 		order.setStatus(orderRecord.getStatus());
-		Map<String, String> extension = new java.util.HashMap<String, String>();		
-		extension.put("extensionData", "{\"array_BusDayCentres\":[\"India\",\"Aus\"],\"paymentOrderProduct\":\"Temenos\",\"array_NonOspiType\":[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]}");
-		order.setExtensionData(extension);
-		
+		com.temenos.microservice.paymentorder.entity.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.entity.PaymentMethod();
+		paymentMethod.setId(new java.util.Random().nextLong());
+		paymentMethod.setName("CARD");
+		com.temenos.microservice.paymentorder.entity.Card card = new com.temenos.microservice.paymentorder.entity.Card();
+		card.setCardid(new java.util.Random().nextLong());
+		card.setCardlimit(new java.math.BigDecimal("44"));
+		card.setCardname("test");
+		card.setExtensionData(new java.util.HashMap<String,String>());
+		paymentMethod.setCard(card);
+		order.setPaymentMethod(paymentMethod);
+		java.util.List<com.temenos.microservice.paymentorder.entity.ExchangeRate> exchangeList = new java.util.ArrayList<com.temenos.microservice.paymentorder.entity.ExchangeRate>();
+		order.setExchangeRates(exchangeList);
 	}
 
 	@Override

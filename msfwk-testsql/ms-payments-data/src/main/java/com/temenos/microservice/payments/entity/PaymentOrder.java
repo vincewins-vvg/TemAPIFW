@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
@@ -40,6 +41,7 @@ public class PaymentOrder implements ExtendableEntity {
 
 	private String paymentDetails;
 
+	@JsonFormat(pattern = "yyyyMMdd")
 	private Date paymentDate;
 
 	private BigDecimal amount;

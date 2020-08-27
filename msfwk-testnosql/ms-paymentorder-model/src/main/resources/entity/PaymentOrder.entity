@@ -32,7 +32,8 @@
     },
     {
       "name": "paymentDate",
-      "type": "date"
+      "type": "date",
+      "dateFormat": "yyyy-MM-dd"
     },
     {
       "name": "amount",
