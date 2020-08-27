@@ -1,0 +1,32 @@
+{
+    "paymentId": 5,
+    "personalAccNo": 5,
+    "branchId": 5,
+    "monthCount": 8,
+    "penaltyInterest": 5.1,
+    "yearWiseInterest": 1.0,
+    "userIdenfication": 10,
+    "paymentMethod": "card",
+    "fileReadWrite": "file",
+    "paymentDate": 1500658348000,
+    "actualDate": "2017-07-21",
+    "socialSecurityNo": "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+    "seniorCitizen": false,
+    "paymentOrders": [
+        {
+            "fileOverWrite": false,
+            "paymentMethod": {
+                "id": 33,
+                "name": "Card"
+            }
+        }
+    ],
+    "currency": "USD",
+    "extensionData": {
+        "id": "43"
+    },
+    "paymentOrdersItems": {
+        "name": "Card",
+        "id": 33
+    }
+}
