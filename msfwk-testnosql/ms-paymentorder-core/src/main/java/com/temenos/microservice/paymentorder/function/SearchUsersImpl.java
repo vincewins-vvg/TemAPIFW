@@ -35,12 +35,10 @@ public class SearchUsersImpl implements SearchUsers{
 		Criteria criteria = new Criteria();
 		criteria.condition(MsLogicalOperator.AND);
 		if(nameList != null ) {
-			
 		criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.User.COLUMN_NAME,".*(?i)"+nameList.get(0)+".*",Operator.regex));
 		}
 		if (emailList != null) {
-			
-			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.User.COLUMN_EMAIL,".*(?i)"+emailList.get(0)+".*",Operator.regex));
+		criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.User.COLUMN_EMAIL,".*(?i)"+emailList.get(0)+".*",Operator.regex));
 		}
 		List<Entity> entityList = DaoFactory.getNoSQLDao(User.class).search(criteria);		
 		com.temenos.microservice.paymentorder.view.Users users = new com.temenos.microservice.paymentorder.view.Users();
