@@ -36,19 +36,19 @@ public class GetCustomerImpl implements GetCustomers {
 		criteria.condition(MsLogicalOperator.AND);
 		if (Objects.nonNull(accountId) && !accountId.isEmpty()) {
 			List<Object> objectList = new ArrayList<>(accountId);
-			criteria.add(new CriterionImpl("account", Operator.in, objectList));
+			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_ACCOUNT, Operator.in, objectList));
 		}
 		if (Objects.nonNull(loanTypes) && !loanTypes.isEmpty()) {
 			List<Object> objectList = new ArrayList<>(loanTypes);
-			criteria.add(new CriterionImpl("loanTypes", Operator.contains, objectList));
+			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_LOAN_TYPES, Operator.contains, objectList));
 		}
 		try {
 		if(fromDate != null && fromDate.size() >0) {
-			criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
+			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
 		}
 		if(toDate != null && toDate.size() >0) {
 			
-				criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
+				criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
 		}
 		} catch (ParseException e) {
 			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
