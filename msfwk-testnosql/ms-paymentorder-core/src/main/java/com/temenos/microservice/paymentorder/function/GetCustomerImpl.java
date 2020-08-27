@@ -46,19 +46,8 @@ public class GetCustomerImpl implements GetCustomers {
 		if(fromDate != null && fromDate.size() >0) {
 			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
 		}
-		if(toDate != null && toDate.size() >0) {		
-			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
-		}
-		} catch (ParseException e) {
-			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
-		}
-		try {
-		if(fromDate != null && fromDate.size() >0) {
-			criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
-		}
 		if(toDate != null && toDate.size() >0) {
-			
-				criteria.add(new CriterionImpl("dateOfJoining",DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
+			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
 		}
 		} catch (ParseException e) {
 			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
