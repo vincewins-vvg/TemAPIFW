@@ -22,7 +22,7 @@ public class CreateCustomerImpl implements CreateCustomer {
 		String name = param.getCustomerName();
 		String dateOfJoin = param.getDateOfJoining();
 		if (Objects.isNull(customerId) || customerId.isEmpty() || Objects.isNull(name) || name.isEmpty()) {
-			throw new InvalidInputException(new FailureMessage("CustomerId or name is empty", "400"));
+			throw new InvalidInputException(new FailureMessage("CustomerId or name is empty ", "400"));
 		}
 		com.temenos.microservice.paymentorder.entity.Customer customerEntity = new com.temenos.microservice.paymentorder.entity.Customer();
 		customerEntity.setAccount(param.getAccount());
