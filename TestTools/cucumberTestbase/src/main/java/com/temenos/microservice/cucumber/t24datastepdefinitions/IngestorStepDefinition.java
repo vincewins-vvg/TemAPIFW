@@ -218,7 +218,9 @@ public class IngestorStepDefinition {
                             tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
                             tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
                             cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))));
-
+                     
+                     System.out.println("Bundle value :"+cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+               
                 }
                 else if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null)
                 {
@@ -230,7 +232,7 @@ public class IngestorStepDefinition {
                 
                 }
             
-            System.out.println("Bundle value :"+cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+            
         });
         
     } 

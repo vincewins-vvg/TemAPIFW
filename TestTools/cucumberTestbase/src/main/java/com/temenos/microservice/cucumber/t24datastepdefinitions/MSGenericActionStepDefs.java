@@ -393,9 +393,14 @@ public class MSGenericActionStepDefs implements En {
                     appendValueToBundle(valueToAppend, existingbundle,newAppendedBundle,"suffix");
                 });
         
-        And(format("^(?:I ?)* append a value {0} before the bundle value {0} store it in a new bundle {0}$",
+        And(format("^(?:I ?)* append a value {0} before the bundle value {0} and store it in a new bundle {0}$",
                 stepConfig.stringRegEx()), (String valueToAppend, String existingbundle, String newAppendedBundle ) -> {
                     appendValueToBundle(valueToAppend, existingbundle,newAppendedBundle,"prefix");
+                });
+        
+        And(format("^(?:I ?)* append bundle value {0} with value of another bundle {0} with serpartor {0} and store it in a new bundle {0}$",
+                stepConfig.stringRegEx()), (String bundleValue1, String bundleValue2, String separator, String newAppendedBundle ) -> {
+                    appendValueToBundle(bundleValue1, bundleValue2, separator, newAppendedBundle);
                 });
     }
 
@@ -406,6 +411,22 @@ public class MSGenericActionStepDefs implements En {
 //    public MSGenericActionStepDefs() {
 //        // TODO Auto-generated constructor stub
 //    }
+    
+    public Object appendTwoBundleValues(String bundleValue1, String bundleValue2, String separator, String newAppendedBundle) {
+        
+        String appendedValue=null;
+        
+        String actualBundleValue1 = cucumberInteractionSession.scenarioBundle().getString(bundleValue1);
+        String actualBundleValue2 = cucumberInteractionSession.scenarioBundle().getString(bundleValue2);
+        
+        appendedValue = actualBundleValue1+separator+actualBundleValue2;
+ 
+        
+        System.out.println("The new bundle value after appending "+appendedValue+" is :"+cucumberInteractionSession.scenarioBundle().getString(newAppendedBundle));
+        
+        return cucumberInteractionSession.scenarioBundle().put(newAppendedBundle, appendedValue); 
+        
+    }
     
     public Object appendValueToBundle(String valueToAppend, String existingbundle, String newAppendedBundle, String position) {
         
