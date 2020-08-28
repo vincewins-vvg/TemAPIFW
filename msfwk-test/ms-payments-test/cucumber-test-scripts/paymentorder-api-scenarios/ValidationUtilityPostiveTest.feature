@@ -14,7 +14,7 @@ Background: To set the preconfig for the scenarios
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200
-	And check full response with expected json content from file path "src\test\resources\static-response\ValidationUtilityPositiveTest.json" 
+	And check full response with expected json content from file path "src/test/resources/static-response/ValidationUtilityPositiveTest.json" 
 	 
 	
 	Examples: 
