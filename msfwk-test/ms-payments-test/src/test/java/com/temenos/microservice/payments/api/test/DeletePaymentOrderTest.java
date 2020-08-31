@@ -57,7 +57,7 @@ public class DeletePaymentOrderTest extends ITTest {
 			do {
 				deleteResponse = this.client
 						.delete().uri("/payments/orders/" + "PO~123~124~USD~100"
-								+ ITTest.getCode("DELETE_PAYMENTODER_AUTH_CODE") + "&debitAccount=100")
+								+ ITTest.getCode("DELETE_PAYMENTODER_AUTH_CODE") + "&debitAccount=123")
 						.exchange().block();
 			} while (deleteResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 			System.out.println("deleteResponse.statusCode()::" + deleteResponse.statusCode());
