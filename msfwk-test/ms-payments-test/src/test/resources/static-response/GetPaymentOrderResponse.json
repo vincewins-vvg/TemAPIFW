@@ -5,6 +5,7 @@
         "paymentReference": "paytest",
         "paymentDetails": "Success",
         "currency": "USD",
+        "fileContent": "dGVzdA==",
         
         
         "extensionData": {},
