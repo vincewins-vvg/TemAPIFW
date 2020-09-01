@@ -109,6 +109,32 @@ services:
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: Y
       EXECUTION_ENVIRONMENT: "TEST"
+  paymentorderScheduler:
+    build:
+      context: ${SCHEDULER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${SCHEDULER_BASE_IMAGE}
+        artifactid: ${scheduler_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${SCHEDULER_IMAGE}
+    depends_on:
+      - db-service1
+      - db-service2
+      - db-service3
+    ports:
+      - "40515:40500"
+    environment:
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
+      temn.msf.name: PaymentOrder
+      temn.msf.security.authz.enabled: "false"
+      temn.file.input.path: /etc/mock.json
+      temn.msf.scheduler.paymentscheduler.cron.trigger.time: 30/30 * * * * ?
+      className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler
+      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

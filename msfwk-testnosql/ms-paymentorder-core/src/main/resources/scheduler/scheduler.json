@@ -1,0 +1,8 @@
+{
+	"schedularInstances": [
+		{
+			"id": "paymentscheduler",
+			"additionalParameters": {"source":"schedulerJSON"}
+		}
+	]
+}
