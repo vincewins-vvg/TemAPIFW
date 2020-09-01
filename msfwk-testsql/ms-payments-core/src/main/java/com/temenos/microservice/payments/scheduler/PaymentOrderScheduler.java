@@ -1,4 +1,4 @@
-package com.temenos.microservice.paymentorder.scheduler;
+package com.temenos.microservice.payments.scheduler;
 
 import static com.temenos.microservice.framework.core.logger.constants.LoggerConstants.SCHEDULER_DIAGNOSTIC;
 
@@ -15,7 +15,6 @@ import javax.persistence.criteria.Root;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
-//import com.temenos.microservice.framework.core.data.OutboxEvent;
 import com.temenos.microservice.framework.core.data.sql.SqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.scheduler.function.SchedulerCommandInput;
@@ -46,7 +45,7 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 		schedulerCommandOutput.setMessage("Success!");
 		SCHEDULER_DIAGNOSTIC
 				.prepareInfo("*** Payment order Scheduler run has completed... ***" + new Date().toString()
-						+ "....Operation ID: " + input.getOperationId() + "Total count of payment orders: " + count)
+						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count)
 				.log();
 		return schedulerCommandOutput;
 	}

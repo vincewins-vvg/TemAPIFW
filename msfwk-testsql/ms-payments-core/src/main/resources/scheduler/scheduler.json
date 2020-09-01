@@ -2,7 +2,7 @@
 	"schedularInstances": [
 		{
 			"id": "paymentscheduler",
-			"additionalParameters": {"source":"schedulerJSON"}
+			"parameters": {"source":"schedulerJSON"}
 		}
 	]
 }
