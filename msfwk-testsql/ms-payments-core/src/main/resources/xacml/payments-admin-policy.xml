@@ -417,7 +417,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">AddReferenceData</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">addReferenceData</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -447,7 +447,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CreateReferenceData</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">createReferenceData</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -477,7 +477,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetReferenceData</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">getReferenceData</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -507,7 +507,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">DeleteReferenceData</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">deleteReferenceData</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -537,7 +537,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">UpdateReferenceData</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">updateReferenceData</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">

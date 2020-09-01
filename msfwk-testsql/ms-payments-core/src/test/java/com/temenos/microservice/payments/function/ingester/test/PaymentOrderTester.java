@@ -24,8 +24,8 @@ public class PaymentOrderTester {
 
 	public static void main(String[] args) throws IOException {
 		StreamProducer producer = createStreamProducer("itest", "kafka");
-		String content = new String(Files.readAllBytes(Paths.get("src/test/resources/CreatePayment.json")));
-		producer.batch().add("ms-paymentorder-inbox-topic", "1",
+		String content = new String(Files.readAllBytes(Paths.get("src/test/resources/POAccepted.json")));
+		producer.batch().add("paymentorder-event-topic", "1",
 				new String(content).getBytes());
 		try {
 			producer.batch().send();
