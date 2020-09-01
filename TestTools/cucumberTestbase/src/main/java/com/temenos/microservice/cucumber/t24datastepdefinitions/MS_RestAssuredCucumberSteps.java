@@ -381,6 +381,20 @@ public class MS_RestAssuredCucumberSteps {
         queryParameters.put(queryParameterName, queryParameterValue + this.authCodeVariable);
 
     }
+    
+    // Key and value should be mandatorily passed
+    @Given("^MS query parameter \"([^\"]*)\" is set to decimal value \"([^\"]*)\"$")
+    public void givenAQueryParameter(String queryParameterName, float queryParameterValue) {
+        queryParameters.put(queryParameterName, queryParameterValue + this.authCodeVariable);
+
+    }
+    
+    // Key and value should be mandatorily passed
+    @Given("^MS query parameter \"([^\"]*)\" is set to numeric value \"([^\"]*)\"$")
+    public void givenAQueryParameter(String queryParameterName, int queryParameterValue) {
+        queryParameters.put(queryParameterName, queryParameterValue + this.authCodeVariable);
+
+    }
 
     // Used for passing query param values on Azure env, value will be passed
     // during run time
