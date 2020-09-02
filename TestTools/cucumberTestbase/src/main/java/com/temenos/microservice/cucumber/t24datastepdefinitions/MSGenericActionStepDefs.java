@@ -654,7 +654,7 @@ public class MSGenericActionStepDefs implements En {
     public Object recordIdFromOFSString(String key, String OFS) {
      
         Random random = new Random();
-        int threeNos = random.nextInt(900);
+        int threeNos = random.nextInt(90000);
         String responseContents = null;
         
          if (OFS.contains("mnemonicvalue"))

@@ -75,6 +75,11 @@ public class MSEndToEndFunctionalitySteps implements En {
             
             });
 
+    And(format("^(?:I ?)*post an OFS Message and value of field 1 {0} in bundle {0} and value of field 2 {0} in bundle {0} and pass a bundle value in message {0} {0} {0}$", stepConfig.stringRegEx()),
+            (String fieldName1, String bundleValue1 ,String fieldName2 , String bundleValue2, String ofsString1, String ofsBundle, String ofsString2) -> { bundleOtherFieldValue(fieldName1 , bundleValue1, fieldName2 ,bundleValue2 , ofsString1 ,ofsBundle, ofsString2);
+            
+            });
+    
 } 
     
     public Object concatenateBundleValueInOFS(String recordIdGen , String ofsString1, String bundleValueInOFS,String ofsString2) {
@@ -225,8 +230,59 @@ public class MSEndToEndFunctionalitySteps implements En {
           System.out.println("Invalid field name "+fieldName+" or field name not present in response");
       }
      
-     
+    
      return cucumberInteractionSession.scenarioBundle().put(bundleName, fieldValue);
+     
+ }
+    
+    public Object bundleOtherFieldValue(String fieldName1 , String bundleName1, String fieldName2, String bundleName2, String ofsString1, String bundleValueInOFS, String ofsString2 ) {
+        
+        
+        String ofsString = ofsString1+cucumberInteractionSession.scenarioBundle().getString(bundleValueInOFS)+ofsString2;
+        
+        String fieldValue1 = null;
+        String fieldValue2 = null;
+        System.out.println("OFS String to be executed: "+ofsString);
+        
+        String responseContents= JsonUtil.ExecuteOfsMessage(ofsString);
+        
+        System.out.println("OFS response: "+responseContents);
+        
+
+      
+      //Field name ex: ACCOUNT.REFERENCE:1:1
+      if(responseContents.contains(fieldName1)) {
+          
+      int beginingIndex = responseContents.indexOf(fieldName1);
+      int commaIndex = responseContents.substring(beginingIndex).indexOf(",");
+      
+      fieldValue1 = responseContents.substring(beginingIndex+fieldName1.length()+1,beginingIndex+commaIndex);
+      System.out.println("Value of "+fieldName1+" in OFS response is" + fieldValue1);
+      }
+      else{
+          
+          System.out.println("Invalid field name "+fieldName1+" or field name not present in response");
+      }
+      
+      //Field name ex: ACCOUNT.REFERENCE:1:1
+      if(responseContents.contains(fieldName2)) {
+          
+      int beginingIndex = responseContents.indexOf(fieldName2);
+      int commaIndex = responseContents.substring(beginingIndex).indexOf(",");
+      
+      fieldValue2 = responseContents.substring(beginingIndex+fieldName2.length()+1,beginingIndex+commaIndex);
+      System.out.println("Value of "+fieldName2+" in OFS response is" + fieldValue2);
+      }
+      else{
+          
+          System.out.println("Invalid field name "+fieldName2+" or field name not present in response");
+      }
+     
+    
+     cucumberInteractionSession.scenarioBundle().put(bundleName1, fieldValue1);
+     cucumberInteractionSession.scenarioBundle().put(bundleName2, fieldValue2);
+     
+     return cucumberInteractionSession;
      
  }
     
