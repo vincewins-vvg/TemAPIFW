@@ -376,6 +376,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorSchema'
   /payments/validations:
+    get:
+      summary: Get a payment order currency
+      operationId: GetInputValidation
+      tags:
+        - Payments
+      parameters:
+        - name: paymentId
+          in: query
+          description: PAYMENT ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPaymentDetails'
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
     post:
       summary: Performs validation for input data
       operationId: DoInputValidation
@@ -393,6 +418,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentDetails'
+    
   '/user/{userId}':
     get:
       summary: Get Single User
@@ -845,4 +871,8 @@ components:
         modifiedCount:
           type: integer
         status:
+          type: string
+    GetPaymentDetails:
+      properties:
+        paymentId:
           type: string

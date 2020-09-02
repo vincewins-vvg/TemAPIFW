@@ -88,6 +88,7 @@ services:
       className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
       className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+      className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
