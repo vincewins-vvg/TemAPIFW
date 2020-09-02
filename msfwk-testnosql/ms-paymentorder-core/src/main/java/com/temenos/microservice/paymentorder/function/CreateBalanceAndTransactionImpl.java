@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -71,6 +72,7 @@ public class CreateBalanceAndTransactionImpl implements CreateBalanceAndTransact
 			transaction.setBookingDate(convertDate(stmtEntryRec.getBookingDate()));
 			transaction.setCustomerId(stmtEntryRec.getCustomerId());
 			transaction.setCurrency(stmtEntryRec.getCurrency());
+			transaction.setExtensionData((java.util.Map<String, String>)stmtEntryRec.getExtensionData());
 
 			transactionRecords.add(transaction);
 		}
@@ -105,6 +107,7 @@ public class CreateBalanceAndTransactionImpl implements CreateBalanceAndTransact
 			balance.setCustomer(ebContBalRec.getCustomer());
 			balance.setProduct(ebContBalRec.getProduct());
 			balance.setProcessingTime(convertDate(ebContBalRec.getProcessingTime()));
+			balance.setExtensionData((java.util.Map<String, String>)ebContBalRec.getExtensionData());
 			balanceRecords.add(balance);
 		}
 

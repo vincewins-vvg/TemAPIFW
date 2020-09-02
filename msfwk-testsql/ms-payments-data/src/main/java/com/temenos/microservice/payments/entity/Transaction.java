@@ -13,9 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 
 import com.temenos.microservice.framework.core.data.JPAEntity;
+import com.temenos.microservice.framework.core.data.ExtendableEntity;
+
 
 @Entity
-public class Transaction implements com.temenos.microservice.framework.core.data.Entity {
+public class Transaction implements ExtendableEntity  {
 
 	@Id
 	private java.lang.String recId;
@@ -32,6 +34,18 @@ public class Transaction implements com.temenos.microservice.framework.core.data
 	private java.util.Date bookingDate;
 	private java.lang.String customerId;
 	private java.lang.String currency;
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "Transaction_extension", joinColumns = @JoinColumn(name = "Transaction_recId"))
+	Map<String, String> extensionData = new HashMap<String, String>();
+	
+	public Map<String, String> getExtensionData() {
+		return extensionData;
+	}
+	public void setExtensionData(Map<String, String> extensionData) {
+		this.extensionData = extensionData;
+	}
 	public java.lang.String getRecId() {
 		return recId;
 	}
@@ -116,6 +130,7 @@ public class Transaction implements com.temenos.microservice.framework.core.data
 	public void setCurrency(java.lang.String currency) {
 		this.currency = currency;
 	}
+	
 	
 	
 }

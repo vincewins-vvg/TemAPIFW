@@ -1,10 +1,20 @@
 package com.temenos.microservice.payments.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import com.temenos.microservice.framework.core.data.ExtendableEntity;
+
 
 @Entity
-public class Balance implements com.temenos.microservice.framework.core.data.Entity {
+public class Balance implements ExtendableEntity {
 
 	@Id
 	private java.lang.String recId;
@@ -17,6 +27,18 @@ public class Balance implements com.temenos.microservice.framework.core.data.Ent
 	private java.lang.String customer;
 	private java.lang.String product;
 	private java.util.Date processingTime;
+	@ElementCollection
+	@MapKeyColumn(name = "name")
+	@Column(name = "value")
+	@CollectionTable(name = "Balance_extension", joinColumns = @JoinColumn(name = "Balance_recId"))
+	Map<String, String> extensionData = new HashMap<String, String>();
+	
+	public Map<String, String> getExtensionData() {
+		return extensionData;
+	}
+	public void setExtensionData(Map<String, String> extensionData) {
+		this.extensionData = extensionData;
+	}
 	public java.lang.String getRecId() {
 		return recId;
 	}

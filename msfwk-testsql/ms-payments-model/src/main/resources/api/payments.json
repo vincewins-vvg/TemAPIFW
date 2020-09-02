@@ -630,6 +630,8 @@ components:
         processingTime:
           type: string
           format: date
+        extensionData:
+          type: object
     Transaction:
       properties:
         recId:
@@ -660,6 +662,8 @@ components:
           type: string
         currency:
           type: string
+        extensionData:
+          type: object
     MultiEventDataModels:
      properties:
         transactions:
@@ -669,4 +673,4 @@ components:
         balances:
           type: array
           items:
-            $ref: "#/components/schemas/Balance"        
+            $ref: "#/components/schemas/Balance"

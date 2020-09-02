@@ -1,6 +1,7 @@
 {
   "name": "Transaction",
   "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "isExtendable": true,
   "tableName" : "ms_payment_order_transaction",
   "properties": [
     {
