@@ -109,6 +109,10 @@ services:
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: Y
       EXECUTION_ENVIRONMENT: "TEST"
+      #temn.entitlement.service.base.path: http://10.93.23.73:8095/ms-entitlement-api/api/v1.0.0
+      #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
+    #extra_hosts:
+      #- "entitlement-api:10.93.23.73"
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
