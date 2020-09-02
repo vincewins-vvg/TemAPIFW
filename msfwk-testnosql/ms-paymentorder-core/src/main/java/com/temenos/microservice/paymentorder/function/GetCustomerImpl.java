@@ -47,7 +47,6 @@ public class GetCustomerImpl implements GetCustomers {
 			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(fromDate.get(0), DATE_FORMAT),Operator.greaterThanEqual));
 		}
 		if(toDate != null && toDate.size() >0) {
-			
 			criteria.add(new CriterionImpl(com.temenos.microservice.paymentorder.entity.Customer.COLUMN_DATE_OF_JOINING,DataTypeConverter.toDate(toDate.get(0), DATE_FORMAT),Operator.lessThanEqual));
 		}
 		} catch (ParseException e) {
