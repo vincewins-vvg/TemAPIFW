@@ -5,6 +5,7 @@
         "paymentReference": "paytest",
         "paymentDetails": "Success",
         "currency": "USD",
+        "fileContent": "dGVzdA==",
         
         
         "extensionData": {},
@@ -21,7 +22,7 @@
         },
         "exchangeRates": [
             {
-                "id": 30,
+                
                 "name": "INR",
                 "value": 22.22
             }

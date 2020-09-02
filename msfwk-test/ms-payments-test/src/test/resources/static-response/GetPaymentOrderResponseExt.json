@@ -5,6 +5,7 @@
         "paymentReference": "paytest",
         "paymentDetails": "extension",
         "currency": "INR",
+        "fileContent": "dGVzdA==",
         
         
         "extensionData": {

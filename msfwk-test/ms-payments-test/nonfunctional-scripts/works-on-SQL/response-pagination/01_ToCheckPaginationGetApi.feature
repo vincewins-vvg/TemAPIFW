@@ -11,12 +11,12 @@ Feature: ToCheckPaginationGetApi
     
   Scenario: To check PO GET API is supporting pagination query parameters
   
-    Given enter the tablename ms_reference_data
-    And enter data for table
-      | Fields      | type   | data       |
-      | type        | string | paymentref|
-      | value       | string | paymentpag     |
-      | description | string | desc       |
+    #Given enter the tablename ms_reference_data
+    #And enter data for table
+      #| Fields      | type   | data       |
+      #| type        | string | paymentref|
+      #| value       | string | paymentpag     |
+      #| description | string | desc       |
       
     #Entry1
 
