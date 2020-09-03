@@ -201,11 +201,11 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtQueryParamNull() {
 		ClientResponse getResponse;
 		do {
-			getResponse =  this.client.get().uri("/payments/validations?paymentId=test").header("roleId", "ADMIN").exchange()
+			getResponse =  this.client.get().uri("/payments/validations").header("roleId", "ADMIN").exchange()
 					.block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(getResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.paymentId must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[GetPaymentDetails.paymentId must not be null]\",\"code\":\"\"}]"));
 	}
 }

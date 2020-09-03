@@ -388,6 +388,9 @@ paths:
           required: true
           schema:
             type: string
+            minLength: 1
+            maxLength: 20
+            nullable: true
       responses:
         '200':
           description: Get payment order

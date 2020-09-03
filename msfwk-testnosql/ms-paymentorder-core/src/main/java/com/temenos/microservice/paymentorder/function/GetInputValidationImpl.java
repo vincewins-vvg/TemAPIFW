@@ -13,15 +13,16 @@ public class GetInputValidationImpl implements GetInputValidation {
 	@Override
 	public GetPaymentDetails invoke(Context ctx, GetInputValidationInput input) throws FunctionException {
 		GetPaymentDetails paymentDetails = new GetPaymentDetails();
-		String paymentId = input.getParams().get().getPaymentId().get(0);
-		
-		List<String> errorList= paymentDetails.doValidate();
-		if(errorList.size()>0)
-			throw new InvalidInputException(new FailureMessage(errorList.toString()));
-		
+		String paymentId = null;
+		if(input.getParams().get().getPaymentId()!=null) {
+			paymentId = input.getParams().get().getPaymentId().get(0);
 		paymentDetails.setPaymentId(paymentId);
-		
-		return paymentDetails;
+		}
+		List<String> errorList= paymentDetails.doValidate();
+		if(errorList.size()>0) {
+			throw new InvalidInputException(new FailureMessage(errorList.toString()));
+		}
+			return paymentDetails;
 	}
 
 }
