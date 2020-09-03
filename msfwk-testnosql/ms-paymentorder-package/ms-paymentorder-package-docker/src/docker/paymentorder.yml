@@ -130,8 +130,8 @@ services:
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
-      temn.file.input.path: /etc/mock.json
-      temn.msf.scheduler.paymentscheduler.cron.trigger.time: 30/30 * * * * ?
+      temn.queue.impl: kafka
+      temn.msf.scheduler.paymentscheduler.cron.trigger.time: 0 0 */4 ? * *
       className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl

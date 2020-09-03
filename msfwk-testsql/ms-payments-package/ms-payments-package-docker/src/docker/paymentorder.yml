@@ -111,14 +111,15 @@ services:
       MIN_POOL_SIZE: 10  
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
-      temn.msf.scheduler.paymentscheduler.cron.trigger.time: 30/30 * * * * ?
+      temn.queue.impl: kafka
+      temn.msf.scheduler.paymentscheduler.cron.trigger.time: 0 0 */4 ? * *
       className_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
       className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
-      temn.msf.scheduler.sqlInboxCatchup.cron.trigger.time: 30/30 * * * * ?
-      temn.msf.scheduler.sqlOutboxCatchup.cron.trigger.time: 30/30 * * * * ?
+      temn.msf.scheduler.sqlInboxCatchup.cron.trigger.time: 0 0 */4 ? * *
+      temn.msf.scheduler.sqlOutboxCatchup.cron.trigger.time: 0 0 */4 ? * *
       DATABASE_KEY: sql
   ingester:
     build:
