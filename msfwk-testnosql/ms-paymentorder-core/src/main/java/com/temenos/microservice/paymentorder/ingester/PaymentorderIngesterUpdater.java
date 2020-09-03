@@ -49,20 +49,14 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setPaymentOrderId(orderRecord.getPaymentOrderId());
 		order.setPaymentReference(orderRecord.getPaymentReference());
 		order.setStatus(orderRecord.getStatus());
-		com.temenos.microservice.paymentorder.entity.PaymentMethod paymentMethod = new com.temenos.microservice.paymentorder.entity.PaymentMethod();
-		paymentMethod.setId(new java.util.Random().nextLong());
-		paymentMethod.setName("CARD");
-		com.temenos.microservice.paymentorder.entity.Card card = new com.temenos.microservice.paymentorder.entity.Card();
-		card.setCardid(new java.util.Random().nextLong());
-		card.setCardlimit(new java.math.BigDecimal("44"));
-		card.setCardname("test");
-		card.setExtensionData(new java.util.HashMap<String,String>());
-		paymentMethod.setCard(card);
-		order.setPaymentMethod(paymentMethod);
-		java.util.List<com.temenos.microservice.paymentorder.entity.ExchangeRate> exchangeList = new java.util.ArrayList<com.temenos.microservice.paymentorder.entity.ExchangeRate>();
-		order.setExchangeRates(exchangeList);
 	}
 
+	/*
+	 * Updates instanceMap variable
+	 * instanceMapp is required to perform merging of ExtensionData from jolt spec
+	 * 
+	 * @return HashMap<String, entity> packageName for Entity and entity object
+	 */
 	@Override
 	public Map<String, Entity> setEntityMap() {
 		Map<String, Entity> instanceMap = new java.util.HashMap<String, Entity>();

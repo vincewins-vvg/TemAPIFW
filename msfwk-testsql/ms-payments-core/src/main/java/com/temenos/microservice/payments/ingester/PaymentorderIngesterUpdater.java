@@ -58,18 +58,6 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setPaymentDetails(orderRecord.getPaymentDetails());
 		order.setPaymentReference(orderRecord.getPaymentReference());
 		order.setStatus(orderRecord.getStatus());
-		com.temenos.microservice.payments.entity.PaymentMethod paymentMethod = new com.temenos.microservice.payments.entity.PaymentMethod();
-		paymentMethod.setId(new java.util.Random().nextLong());
-		paymentMethod.setName("CARD");
-		com.temenos.microservice.payments.entity.Card card = new com.temenos.microservice.payments.entity.Card();
-		card.setCardid(new java.util.Random().nextLong());
-		card.setCardlimit(new java.math.BigDecimal("44"));
-		card.setCardname("test");
-		card.setExtensionData(new java.util.HashMap<String,String>());
-		paymentMethod.setCard(card);
-		order.setPaymentMethod(paymentMethod);
-		java.util.List<com.temenos.microservice.payments.entity.ExchangeRate> exchangeList = new java.util.ArrayList<com.temenos.microservice.payments.entity.ExchangeRate>();
-		order.setExchangeRates(exchangeList);
 	}
 
 	@Override
