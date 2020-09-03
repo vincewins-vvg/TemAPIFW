@@ -32,6 +32,7 @@
     Then Set the following data criteria
       | TestCaseID                      | ColumnName        | Operator | DataType | ColumnValue |
       | MS-Test-PO-EventIngester-001    | paymentOrderId    | eq       | string   | PO~100-CBE~232-EVEN~INR~125 |
+      | MS-Test-PO-EventIngester-001    | status            | eq       | string   | Completed |
 
     
     And Validate the below details from the db table ms_payment_order and check no of record is 1
