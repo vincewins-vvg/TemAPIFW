@@ -55,7 +55,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: payments-ingester-command
-  namespace: default
+  namespace: payments
 spec:
   template:
     spec:
@@ -128,7 +128,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: payments-ingester-eventingester
-  namespace: default
+  namespace: payments
 spec:
   template:
     spec:
@@ -199,7 +199,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: payments-ingester-eventdelivery
-  namespace: default
+  namespace: payments
 spec:
   template:
     spec:
