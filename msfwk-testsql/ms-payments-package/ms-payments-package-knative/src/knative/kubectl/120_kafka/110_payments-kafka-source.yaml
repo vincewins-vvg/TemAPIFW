@@ -2,6 +2,7 @@ apiVersion: sources.knative.dev/v1alpha1
 kind: KafkaSource
 metadata:
   name: po-kafka-source-avro
+  namespace: payments
 spec:
   consumerGroup: po-consumer-group-avro
   bootstrapServers:
@@ -18,6 +19,7 @@ apiVersion: sources.knative.dev/v1alpha1
 kind: KafkaSource
 metadata:
   name: po-kafka-source-eventdelivery
+  namespace: payments
 spec:
   consumerGroup: po-consumer-group-eventdelivery
   bootstrapServers:
@@ -34,6 +36,7 @@ apiVersion: sources.knative.dev/v1alpha1
 kind: KafkaSource
 metadata:
   name: po-kafka-source-eventingester
+  namespace: payments
 spec:
   consumerGroup: po-consumer-group-eventingester
   bootstrapServers:
@@ -50,6 +53,7 @@ apiVersion: sources.knative.dev/v1alpha1
 kind: KafkaSource
 metadata:
   name: po-kafka-source-command
+  namespace: payments
 spec:
   consumerGroup: po-consumer-group-command
   bootstrapServers:

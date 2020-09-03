@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: paymentorder-db
+  namespace: payments
 spec:
   selector:
     matchLabels:
@@ -31,6 +32,7 @@ metadata:
   labels:
     app.kubernetes.io/name: paymentorder-db-service
   name: paymentorder-db-service
+  namespace: payments
 spec:
   type: NodePort
   ports:
