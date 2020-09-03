@@ -135,6 +135,10 @@ services:
       className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
+      className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
+      temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 0 0 */4 ? * *
+      temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 0 0 */4 ? * *
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
