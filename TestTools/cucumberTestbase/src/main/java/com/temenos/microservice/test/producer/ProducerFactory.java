@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import com.temenos.des.streamvendorio.core.stream.produce.StreamProducer;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
+import com.temenos.microservice.test.util.IngesterUtil;
 
 public class ProducerFactory {
 
@@ -35,7 +36,7 @@ public class ProducerFactory {
 			props.put("acks", "all");
 			props.put("enable.idempotence", true);
 			props.put("key.serializer", StringSerializer.class);
-			if (com.temenos.connect.config.Environment.isCloudEvent()) {
+			if (IngesterUtil.isCloudEvent()) {
 				props.put("value.serializer", StringSerializer.class);
 			} else {
 				props.put("value.serializer", ByteArraySerializer.class);
