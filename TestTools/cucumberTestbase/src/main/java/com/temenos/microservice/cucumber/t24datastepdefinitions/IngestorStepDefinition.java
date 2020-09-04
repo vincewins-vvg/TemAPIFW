@@ -26,6 +26,7 @@ import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
 import com.temenos.microservice.framework.test.dao.DaoFactory;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
 import com.temenos.microservice.test.producer.AvroProducer;
@@ -44,321 +45,344 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class IngestorStepDefinition {
-    
-    @Autowired
-    private CucumberInteractionSession cucumberInteractionSession;
-    @Autowired
-    private ScenarioBundleStepDefs scenarioBundleStepDefs;
-    private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
-    private static final String REPLACE_COMPANY = "COMPANY_ID_HERE";
-    private static final String REPLACE_TESTCASE_ID = "TEST_CASE_ID_HERE";
-    private DaoFacade daoFacade = DaoFactory.getInstance();
+	@Autowired
+	private CucumberInteractionSession cucumberInteractionSession;
+	@Autowired
+	private ScenarioBundleStepDefs scenarioBundleStepDefs;
+	private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
+	private static final String REPLACE_COMPANY = "COMPANY_ID_HERE";
+	private static final String REPLACE_TESTCASE_ID = "TEST_CASE_ID_HERE";
+	private DaoFacade daoFacade = DaoFactory.getInstance();
 
-    private String apiName;
-   
-    private TestCase testCase;
-    private AvroProducer avroProducer;
-    private ProducerFactory createStreamProducer;
-    private ITestProducer t24Producer;
-    private List<Criterion> dataCriterions = null;
-    Map<Integer, List<Attribute>> dataMap = null;
+	private String apiName;
 
-    @Before
-    public void setUp() {
-        if (daoFacade != null) {
-            daoFacade.openConnection();
-        }
-    }
+	private TestCase testCase;
+	private AvroProducer avroProducer;
+	private ProducerFactory createStreamProducer;
+	private ITestProducer t24Producer;
+	private List<Criterion> dataCriterions = null;
+	Map<Integer, List<Attribute>> dataMap = null;
 
-    @Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS) API$")
-    public void setTestBackground(String apiName) throws Exception {
-        this.apiName = apiName;   
-    }
+	@Before
+	public void setUp() {
+		if (daoFacade != null) {
+			daoFacade.openConnection();
+		}
+	}
 
-    @Given("^Set the Testcase id ([^\\s]+) for company ([^\\s]+)$")
-    public void setTestCaseID(String testCaseID, String companyID) throws Exception {
-        testCase = new TestCase(testCaseID, apiName);
-        testCase.setCompanyID(companyID);
-        log.info("Running test case {}", testCaseID);
+	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS) API$")
+	public void setTestBackground(String apiName) throws Exception {
+		this.apiName = apiName;
+	}
 
-    }
+	@Given("^Set the Testcase id ([^\\s]+) for company ([^\\s]+)$")
+	public void setTestCaseID(String testCaseID, String companyID) throws Exception {
+		testCase = new TestCase(testCaseID, apiName);
+		testCase.setCompanyID(companyID);
+		log.info("Running test case {}", testCaseID);
 
-    @Given("^Delete Record in the table ([^\\s]+) for the following criteria$")
-    public void deleteRecordsInTable(String tableName, DataTable dataTable) throws Exception {
-        dataCriterions = new ArrayList<>();
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                        tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
-            }
-        });
-        log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
-        daoFacade.deleteItems(tableName, dataCriterions);
-    }
+	}
 
-    @When("^Send Data to Topic from file ([^\\s]+) for Application ([^\\s]+)$")
-    public void sendDataToTopic(String resourcePath, String applicationName) throws Exception {
-        avroProducer = new AvroProducer("table-update-holdings", Environment
-                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
-        testCase.setT24Payload(readResource("/" + resourcePath));
-        avroProducer.sendGenericEvent(testCase.getT24Payload(), applicationName);
-    }
-    
-    //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
-    @When("^Send Data to Topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
-    public void sendDataToMentionedTopic(String topicName,String resourcePath, String applicationName) throws Exception {
-        
-        if(topicName.equals("ms-paymentorder-inbox-topic")==true || topicName.equals("paymentorder-event-topic")==true)
-        
-        {  
-           StreamProducer producer = ProducerFactory.createStreamProducer("itest", Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
-            String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
-            System.out.println("content:" + content);
-            producer.batch().add(topicName, new String(content).getBytes());
-            try {
-                producer.batch().send();
-            } catch (StreamProducerException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            throw new Exception("Topic name: "+topicName+" is incorrect");
-        }
+	@Given("^Delete Record in the table ([^\\s]+) for the following criteria$")
+	public void deleteRecordsInTable(String tableName, DataTable dataTable) throws Exception {
+		dataCriterions = new ArrayList<>();
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+			}
+		});
+		log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
+		daoFacade.deleteItems(tableName, dataCriterions);
+	}
 
-        
-        
-   
-    }
-    
-  //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
-    @When("^Send Data to Topic ([^\\s]+) for following records$")
-    public void sendDataToMentionedTopics(String topicName,DataTable dataTable) throws Exception {
-        System.setProperty("temn.msf.ingest.sink.stream", topicName);
-        avroProducer = new AvroProducer("table-update-holdings", Environment
-                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                try {
-                    testCase.setT24Payload(readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    avroProducer.sendGenericEvent(testCase.getT24Payload(),
-                            tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
-                } catch (IOException | StreamProducerException | InterruptedException |
-                        AvroSerializationException |  EventSchemaParseException | SchemaRegistryException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
+	@When("^Send Data to Topic from file ([^\\s]+) for Application ([^\\s]+)$")
+	public void sendDataToTopic(String resourcePath, String applicationName) throws Exception {
+		avroProducer = new AvroProducer("table-update-holdings",
+				Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+		testCase.setT24Payload(readResource("/" + resourcePath));
+		avroProducer.sendGenericEvent(testCase.getT24Payload(), applicationName);
+	}
 
-    @When("^Send Data to Topic for following records$")
-    public void sendDataToTopic(DataTable dataTable) throws Exception {
-        avroProducer = new AvroProducer("table-update-holdings", Environment
-                .getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                try {
-                    testCase.setT24Payload(readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    avroProducer.sendGenericEvent(testCase.getT24Payload(),
-                            tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
-                } catch (IOException | StreamProducerException | InterruptedException |
-                        AvroSerializationException |  EventSchemaParseException | SchemaRegistryException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
+	// To send data to the topic name mentioned in step ex: When send data to topic
+	// <topic name>
+	@When("^Send Data to Topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
+	public void sendDataToMentionedTopic(String topicName, String resourcePath, String applicationName)
+			throws Exception {
 
+		if (topicName.equals("ms-paymentorder-inbox-topic") == true
+				|| topicName.equals("paymentorder-event-topic") == true)
 
-    @Then("^Set the following data criteria$")
-    public void setDataCriteria(DataTable dataTable) throws Exception {
-        dataCriterions = new ArrayList<>();
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null) {
-                     dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
-                }
-                else{
-                    dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                            MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
-                    //System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
-                }
-            }
-        });
-    } 
-    
-    //To use bundle(with value) under Column value while setting the criteria
-    @Then("^Set the following data criteria with bundle value$")
-    public void setDataCriteriaWithBundleValue(DataTable dataTable) throws Exception {
-        dataCriterions = new ArrayList<>();
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null && cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))!=null){
-                
-                     dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                            cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))));
-                     
-                     System.out.println("Bundle value :"+cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
-               
-                }
-                else if(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())!=null)
-                {
-                            dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-                            tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
-                }
-                
-                }
-            
-            
-        });
-        
-    } 
+		{
+			StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+					Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+			String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
+			System.out.println("content:" + content);
 
-    @Then("^Validate the below details from the db table ([^\\s]+)$")
-    public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-      dataMap = RetryUtil.getWithRetry(300, () -> {
-            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
-            return (dataMap.size() != 0 ? dataMap : null);
-        }, " Getting DB records from table: " + tableName);
+			if (com.temenos.connect.config.Environment.isCloudEvent()) {
+				producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+			} else {
+				producer.batch().add(topicName, new String(content).getBytes());
+			}
+
+			try {
+				producer.batch().send();
+			} catch (StreamProducerException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new Exception("Topic name: " + topicName + " is incorrect");
+		}
+
+	}
+
+	// To send data to the topic name mentioned in step ex: When send data to topic
+	// <topic name>
+	@When("^Send Data to Topic ([^\\s]+) for following records$")
+	public void sendDataToMentionedTopics(String topicName, DataTable dataTable) throws Exception {
+		System.setProperty("temn.msf.ingest.sink.stream", topicName);
+		avroProducer = new AvroProducer("table-update-holdings",
+				Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				try {
+					testCase.setT24Payload(
+							readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				try {
+					avroProducer.sendGenericEvent(testCase.getT24Payload(),
+							tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
+				} catch (IOException | StreamProducerException | InterruptedException | AvroSerializationException
+						| EventSchemaParseException | SchemaRegistryException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+	}
+
+	@When("^Send Data to Topic for following records$")
+	public void sendDataToTopic(DataTable dataTable) throws Exception {
+		avroProducer = new AvroProducer("table-update-holdings",
+				Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "http://localhost:8083"));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				try {
+					testCase.setT24Payload(
+							readResource("/" + tableValue.get(DataTablesColumnNames.AVRO_JSON.getName())));
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				try {
+					avroProducer.sendGenericEvent(testCase.getT24Payload(),
+							tableValue.get(DataTablesColumnNames.APPLICATION_NAME.getName()));
+				} catch (IOException | StreamProducerException | InterruptedException | AvroSerializationException
+						| EventSchemaParseException | SchemaRegistryException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+	}
+
+	@Then("^Set the following data criteria$")
+	public void setDataCriteria(DataTable dataTable) throws Exception {
+		dataCriterions = new ArrayList<>();
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()) != null) {
+					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+				} else {
+					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+							MSGenericActionStepDefs.DbcolumnValues
+									.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
+					// System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
+				}
+			}
+		});
+	}
+
+	// To use bundle(with value) under Column value while setting the criteria
+	@Then("^Set the following data criteria with bundle value$")
+	public void setDataCriteriaWithBundleValue(DataTable dataTable) throws Exception {
+		dataCriterions = new ArrayList<>();
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()) != null
+						&& cucumberInteractionSession.scenarioBundle()
+								.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())) != null) {
+
+					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+							cucumberInteractionSession.scenarioBundle()
+									.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))));
+
+					System.out.println("Bundle value :" + cucumberInteractionSession.scenarioBundle()
+							.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+
+				} else if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()) != null) {
+					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+							tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+				}
+
+			}
+		});
+
+	}
+
+	@Then("^Validate the below details from the db table ([^\\s]+)$")
+	public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + tableName);
 //        if (dataMap.size() >= 2) {
 //            throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
 //        }
-        List<Attribute> data = dataMap.get(Integer.valueOf(1));
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                data.forEach(attribute -> {
-                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-                        assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
-                    }
-                });
-            }
-        });
-    }
-    
-    @Then("^Validate the below details and bundle value from the db table ([^\\s]+)$")
-    public void validateDetailsAndBundleValueFromDB(String tableName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(300, () -> {
-              Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
-              return (dataMap.size() != 0 ? dataMap : null);
-          }, " Getting DB records from table: " + tableName);
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						assertEquals(getDataMismatchErrorLog(tableName,
+								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
+					}
+				});
+			}
+		});
+	}
+
+	@Then("^Validate the below details and bundle value from the db table ([^\\s]+)$")
+	public void validateDetailsAndBundleValueFromDB(String tableName, DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + tableName);
 //          if (dataMap.size() >= 2) {
 //              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
 //          }
-          List<Attribute> data = dataMap.get(Integer.valueOf(1));
-          List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-          tableValues.forEach(tableValue -> {
-              if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                  data.forEach(attribute -> {
-                      if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())) && cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()))!=null) {
-                          assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                                  cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),attribute.getValue()),
-                                  cucumberInteractionSession.scenarioBundle().getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),attribute.getValue());
-                                  //tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
-                      }
-                      
-                      else if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-                          assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                                  tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
-                                  tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
-                      }
-                  });
-              }
-          });
-      }
-    
-    //To check if an entry is not present in DB
-    @Then("^Validate if below details not present in db table ([^\\s]+)$")
-    public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))
+							&& cucumberInteractionSession.scenarioBundle()
+									.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())) != null) {
+						assertEquals(
+								getDataMismatchErrorLog(tableName,
+										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										cucumberInteractionSession.scenarioBundle().getString(
+												tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
+										attribute.getValue()),
+								cucumberInteractionSession.scenarioBundle()
+										.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
+								attribute.getValue());
+						// tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+						// attribute.getValue().toString());
+					}
+
+					else if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						assertEquals(getDataMismatchErrorLog(tableName,
+								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
+					}
+				});
+			}
+		});
+	}
+
+	// To check if an entry is not present in DB
+	@Then("^Validate if below details not present in db table ([^\\s]+)$")
+	public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
 //      dataMap = RetryUtil.getWithRetry(60, () -> {
-            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
-            System.out.println("map content"+dataMap);
-            System.out.println("map size" +dataMap.size());
+		Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+		System.out.println("map content" + dataMap);
+		System.out.println("map size" + dataMap.size());
 
-        if (dataMap.size() > 0) {
-            throw new Exception("a record in table " + tableName + " is present for this transaction");
-        }
-    }
+		if (dataMap.size() > 0) {
+			throw new Exception("a record in table " + tableName + " is present for this transaction");
+		}
+	}
 
-    //To check entries in DB table and also the no of rows for the mentioned criteria/condition
-    @Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
-    public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable) throws Exception {
-      dataMap = RetryUtil.getWithRetry(300, () -> {
-            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
-            return (dataMap.size() != 0 ? dataMap : null);
-        }, " Getting DB records from table: " + tableName);
+	// To check entries in DB table and also the no of rows for the mentioned
+	// criteria/condition
+	@Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
+	public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable)
+			throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + tableName);
 //      System.out.println(dataMap.toString());
 //      System.out.println("data map size:"+dataMap.size());
-        if (dataMap.size() != recordCount) {
-            throw new Exception("record(s) in table " + tableName + " is not equal to no of records "+recordCount+" specified in step");
-        }
-        List<Attribute> data = dataMap.get(Integer.valueOf(1));
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                data.forEach(attribute -> {
-                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-                        assertEquals(getDataMismatchErrorLog(tableName, tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
-                                tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString());
-                    }
-                });
-            }
-        });
-    }
+		if (dataMap.size() != recordCount) {
+			throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
+					+ " specified in step");
+		}
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						assertEquals(getDataMismatchErrorLog(tableName,
+								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
+					}
+				});
+			}
+		});
+	}
 
-    
-    
-    private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
-        return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: "
-                + tableName + " for column" + columnName.toString() + " expected value: " + expected.toString() + " actual value: " + actual.toString();
-    }
+	private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
+		return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: " + tableName + " for column"
+				+ columnName.toString() + " expected value: " + expected.toString() + " actual value: "
+				+ actual.toString();
+	}
 
+	@When("^Build (POST|PUT) Request with the json file ([^\\s]+)$")
+	public void sendRequest(String requestType, String fileLocation) throws Exception {
+		BuildRequest buildRequest = new BuildRequest(testCase.getApiUnderTest());
+		buildRequest.setBodyMessage(ResourceHandler.readResource("/" + fileLocation));
+		buildRequest.buildRequest();
+		buildRequest.sendRequest();
+	}
 
-    @When("^Build (POST|PUT) Request with the json file ([^\\s]+)$")
-    public void sendRequest(String requestType,String fileLocation) throws Exception {
-        BuildRequest buildRequest = new BuildRequest(testCase.getApiUnderTest());
-        buildRequest.setBodyMessage(ResourceHandler.readResource("/" + fileLocation));
-        buildRequest.buildRequest();
-        buildRequest.sendRequest();
-    }
-
-    @After
-    public void tearDown() {
-        if (avroProducer != null) {
-            avroProducer.close();
-        }
-        if (t24Producer != null) {
-            t24Producer.cleanup();
-        }
-        if (daoFacade != null) {
-            daoFacade.closeConnection();
-        }
-    }
+	@After
+	public void tearDown() {
+		if (avroProducer != null) {
+			avroProducer.close();
+		}
+		if (t24Producer != null) {
+			t24Producer.cleanup();
+		}
+		if (daoFacade != null) {
+			daoFacade.closeConnection();
+		}
+	}
 
 }

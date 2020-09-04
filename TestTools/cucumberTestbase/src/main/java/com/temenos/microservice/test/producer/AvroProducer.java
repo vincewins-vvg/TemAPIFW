@@ -22,66 +22,74 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
 import com.temenos.microservice.framework.core.ingester.SchemaRegistryProvider;
 import com.temenos.microservice.framework.test.streams.T24EventSchemaProvider;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 
 public class AvroProducer {
 
-    private StreamProducer streamProducer;
-    private SchemaRegistry schemaRegistry;
-    private AvroSerializer<byte[]> avroSerializer;
-    private String streamVendor;
-    private String Topic;
-    private T24EventSchemaProvider schemaProvider;
+	private StreamProducer streamProducer;
+	private SchemaRegistry schemaRegistry;
+	private AvroSerializer<byte[]> avroSerializer;
+	private String streamVendor;
+	private String Topic;
+	private T24EventSchemaProvider schemaProvider;
 
+	public AvroProducer(String producerName, String localSchemaNamesAsCSVOrRemoteSchemaURL) {
+		this.streamVendor = Environment.getEnvironmentVariable(IngesterConfigProperty.STREAM_VENDOR.getName(), "kafka");
+		schemaProvider = new T24EventSchemaProvider();
+		avroSerializer = new AvroBinarySchemaRegistrySerializer(schemaRegistry);
+		schemaRegistry = SchemaRegistryProvider.getSchemaRegistry(localSchemaNamesAsCSVOrRemoteSchemaURL);
+		streamProducer = ProducerFactory.createStreamProducer(producerName, streamVendor);
+		Topic = Environment.getEnvironmentVariable("temn.msf.ingest.sink.stream", "Test-topic");
+	}
 
-    public AvroProducer(String producerName,String localSchemaNamesAsCSVOrRemoteSchemaURL) {
-        this.streamVendor = Environment.getEnvironmentVariable
-                (IngesterConfigProperty.STREAM_VENDOR.getName(), "kafka");
-        schemaProvider = new T24EventSchemaProvider();
-        avroSerializer = new AvroBinarySchemaRegistrySerializer(schemaRegistry);
-        schemaRegistry = SchemaRegistryProvider.getSchemaRegistry(localSchemaNamesAsCSVOrRemoteSchemaURL);
-        streamProducer = ProducerFactory.createStreamProducer(producerName, streamVendor);
-        Topic = Environment.getEnvironmentVariable("temn.msf.ingest.sink.stream", "Test-topic");
-    }
+	private int registerSchema(String schemaName, Schema schema) throws SchemaRegistryException {
+		return schemaRegistry.register(schemaName, schema);
 
-    private int registerSchema(String schemaName, Schema schema) throws SchemaRegistryException {
-        return schemaRegistry.register(schemaName, schema);
+	}
 
-    }
+	public void sendGenericEvent(String jsonMessage, String applicationName)
+			throws IOException, StreamProducerException, InterruptedException, EventSchemaParseException,
+			SchemaRegistryException, AvroSerializationException {
+		Schema schema = schemaProvider.getSchema(applicationName);
+		System.out.println(schema.toString());
+		GenericRecord payload = getGenericRecordFromJson(schema, jsonMessage);
 
-    public void sendGenericEvent(String jsonMessage, String applicationName)
-            throws IOException, StreamProducerException, InterruptedException, EventSchemaParseException, SchemaRegistryException, AvroSerializationException {
-        Schema schema = schemaProvider.getSchema(applicationName);
-        System.out.println(schema.toString());
-        GenericRecord payload = getGenericRecordFromJson(schema, jsonMessage);
-        streamProducer.batch().add(Topic,"1", getSerializedMessage
-                (getOutgoingConsumerAvro(payload, Topic, registerSchema(applicationName, schema))));
-        streamProducer.batch().send();
-    }
+		if (com.temenos.connect.config.Environment.isCloudEvent()) {
+			streamProducer.batch().add(Topic, "1", IngesterUtil.packageCloudEvent(getSerializedMessage(
+					getOutgoingConsumerAvro(payload, Topic, registerSchema(applicationName, schema)))));
+		} else {
+			streamProducer.batch().add(Topic, "1", getSerializedMessage(
+					getOutgoingConsumerAvro(payload, Topic, registerSchema(applicationName, schema))));
+		}
 
-    public void close() {
-        if (streamProducer != null) {
-            streamProducer.flush();
-            streamProducer.close();
-        }
-    }
+		streamProducer.batch().send();
+	}
 
-    private OutgoingConsumerAvro getOutgoingConsumerAvro(GenericRecord genericRecord, String topic, Integer schemaRegistryId) {
-        return new OutgoingConsumerAvro.Builder()
-                .payload(genericRecord).topic(topic).schemaRegistryId(schemaRegistryId).build();
-    }
+	public void close() {
+		if (streamProducer != null) {
+			streamProducer.flush();
+			streamProducer.close();
+		}
+	}
 
-    private byte[] getSerializedMessage(OutgoingConsumerAvro outgoingConsumerAvro) throws AvroSerializationException {
-        return avroSerializer.serialize(outgoingConsumerAvro);
-    }
+	private OutgoingConsumerAvro getOutgoingConsumerAvro(GenericRecord genericRecord, String topic,
+			Integer schemaRegistryId) {
+		return new OutgoingConsumerAvro.Builder().payload(genericRecord).topic(topic).schemaRegistryId(schemaRegistryId)
+				.build();
+	}
 
-    private GenericRecord getGenericRecordFromJson(Schema schema, String input) {
-        DatumReader reader = new GenericDatumReader(schema);
-        try {
-            JsonDecoder decoder = DecoderFactory.get().jsonDecoder(schema, input);
-            return (GenericRecord) reader.read(null, decoder);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	private byte[] getSerializedMessage(OutgoingConsumerAvro outgoingConsumerAvro) throws AvroSerializationException {
+		return avroSerializer.serialize(outgoingConsumerAvro);
+	}
+
+	private GenericRecord getGenericRecordFromJson(Schema schema, String input) {
+		DatumReader reader = new GenericDatumReader(schema);
+		try {
+			JsonDecoder decoder = DecoderFactory.get().jsonDecoder(schema, input);
+			return (GenericRecord) reader.read(null, decoder);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }
