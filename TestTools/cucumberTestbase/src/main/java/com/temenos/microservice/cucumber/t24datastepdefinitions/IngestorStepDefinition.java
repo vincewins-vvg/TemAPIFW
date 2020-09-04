@@ -26,12 +26,12 @@ import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
 import com.temenos.microservice.framework.test.dao.DaoFactory;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
-import com.temenos.microservice.framework.test.util.IngesterUtil;
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
 import com.temenos.microservice.test.producer.AvroProducer;
 import com.temenos.microservice.test.producer.ProducerFactory;
 import com.temenos.microservice.test.util.BuildRequest;
+import com.temenos.microservice.test.util.IngesterUtil;
 import com.temenos.microservice.test.util.ResourceHandler;
 import com.temenos.microservice.test.util.RetryUtil;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
@@ -122,7 +122,7 @@ public class IngestorStepDefinition {
 			String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
 			System.out.println("content:" + content);
 
-			if (com.temenos.connect.config.Environment.isCloudEvent()) {
+			if (IngesterUtil.isCloudEvent()) {
 				producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
 			} else {
 				producer.batch().add(topicName, new String(content).getBytes());

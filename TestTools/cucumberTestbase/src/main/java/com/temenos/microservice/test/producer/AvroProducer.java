@@ -22,7 +22,7 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
 import com.temenos.microservice.framework.core.ingester.SchemaRegistryProvider;
 import com.temenos.microservice.framework.test.streams.T24EventSchemaProvider;
-import com.temenos.microservice.framework.test.util.IngesterUtil;
+import com.temenos.microservice.test.util.IngesterUtil;
 
 public class AvroProducer {
 
@@ -54,7 +54,7 @@ public class AvroProducer {
 		System.out.println(schema.toString());
 		GenericRecord payload = getGenericRecordFromJson(schema, jsonMessage);
 
-		if (com.temenos.connect.config.Environment.isCloudEvent()) {
+		if (IngesterUtil.isCloudEvent()) {
 			streamProducer.batch().add(Topic, "1", IngesterUtil.packageCloudEvent(getSerializedMessage(
 					getOutgoingConsumerAvro(payload, Topic, registerSchema(applicationName, schema)))));
 		} else {
