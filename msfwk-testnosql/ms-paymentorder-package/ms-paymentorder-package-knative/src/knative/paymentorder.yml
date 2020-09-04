@@ -1,0 +1,36 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:  
+  db-service:
+    build:
+      context: ${DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+    image: ${DB_IMAGE}
+    shm_size: '1gb'
+    ports:
+      - "9047:9042" 
+    environment:
+      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+  api:
+    build:
+      context: ${API_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        api_artifactid: ${api_artifactid}
+        api_java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${API_IMAGE}
+  ingester:
+    build:
+      context: ${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${INGESTER_IMAGE}

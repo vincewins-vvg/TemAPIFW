@@ -1,0 +1,67 @@
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-avro
+  namespace: paymentorder
+spec:
+  consumerGroup: po-consumer-group-avro
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092  
+  topics:
+  - table-update-paymentorder
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: po-avro-ingester
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-command
+  namespace: paymentorder
+spec:
+  consumerGroup: po-consumer-group-command
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092  
+  topics:
+  - ms-paymentorder-inbox-topic
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: po-command-ingester
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-eventdelivery
+  namespace: paymentorder
+spec:
+  consumerGroup: po-consumer-group-eventdelivery
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092  
+  topics:
+  - paymentorder-outbox
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: po-event-delivery
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-eventingester
+  namespace: paymentorder
+spec:
+  consumerGroup: po-consumer-group-eventingester
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092  
+  topics:
+  - paymentorder-event-topic
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: po-event-ingester

@@ -13,11 +13,11 @@ import cucumber.api.junit.Cucumber;
  * 
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(junit = "--no-step-notifications", features = { "cucumber-test-scripts/" }, glue = { "cucumber.api.spring",
-				"com.temenos.useragent.cucumber.steps", "com.temenos.interaction.cucumber.stepdefs",
-				"com.temenos.microservice.payments.cucumber",
-				"com.temenos.microservice.cucumber.t24datastepdefinitions" }, format = { "pretty",
-						"html:target/cucumber", "json:target/cucumber/cucumber.json" })
+@CucumberOptions(junit = "--no-step-notifications", features = { "cucumber-test-scripts/" }, glue = {
+		"cucumber.api.spring", "com.temenos.useragent.cucumber.steps", "com.temenos.interaction.cucumber.stepdefs",
+		"com.temenos.microservice.payments.cucumber",
+		"com.temenos.microservice.cucumber.t24datastepdefinitions" }, format = { "pretty", "html:target/cucumber",
+				"json:target/cucumber/cucumber.json" })
 
 public class MSRunnnerITTest {
 

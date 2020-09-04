@@ -1,5 +1,7 @@
 package com.temenos.microservice.payments.api.test;
 
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
+import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.Client;
@@ -32,8 +35,6 @@ import com.sun.jersey.multipart.MultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.test.dao.Attribute;
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
-import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 
 import junit.framework.Assert;
 
@@ -54,7 +55,8 @@ public class FileHandlingITTest extends ITTest {
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			deleteAllRecords("ms_file_upload");
 		} else {
-			deletePaymentOrderRecord("ms_file_upload", "name", "eq", "string", "textresult.txt","mimetype","eq","string","text/plain");
+			deletePaymentOrderRecord("ms_file_upload", "name", "eq", "string", "textresult.txt", "mimetype", "eq",
+					"string", "text/plain");
 		}
 		daoFacade.closeConnection();
 	}
@@ -77,8 +79,8 @@ public class FileHandlingITTest extends ITTest {
 		final MultiPart multiPart = new FormDataMultiPart().field("documentDetails", jsonToSend.toString())
 				.bodyPart(fileDataBodyPart);
 		multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
-		ClientResponse response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE)
-				.post(ClientResponse.class, multiPart);
+		ClientResponse response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
+				.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).post(ClientResponse.class, multiPart);
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_file_upload", "name", "eq", "string",
 				"testupload.txt", "mimetype", "eq", "string", "text/plain");
 		List<Attribute> entry = insertedRecord.get(1);
@@ -86,7 +88,7 @@ public class FileHandlingITTest extends ITTest {
 		client.destroy();
 	}
 
-	@Test
+	@Ignore
 	public void testFileDownload() {
 		String uri = getUri();
 		uri = uri + "/payments/download/testupload.txt" + ITTest.getCode("FILE_DOWNLOAD_AUTH_CODE");
@@ -106,7 +108,5 @@ public class FileHandlingITTest extends ITTest {
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
-
 	}
-
 }
