@@ -331,6 +331,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: fromDate
+          in: query
+          description: from date
+          required: false
+          schema:
+            type: string
+        - name: toDate
+          in: query
+          description: to Date
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: getCustomers
@@ -438,6 +450,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        default:
+          description: getUserErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+  '/users':
+    get:
+      summary: Search Users by name
+      operationId: searchUsers
+      parameters:
+        - name: name
+          in: query
+          description: User Name
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Email ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
         default:
           description: getUserErrorResponse
           content:
@@ -626,6 +667,10 @@ components:
           type: array
           items:
             type: string
+        dateOfJoining:
+          type: string
+          format: date
+          nullable: true
     CustomerStatus:
       properties:
         customerId:
@@ -845,6 +890,10 @@ components:
           type: string
         email:
           type: string
+    Users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     StandardErrorResponse:
       properties:
         errorCode:
