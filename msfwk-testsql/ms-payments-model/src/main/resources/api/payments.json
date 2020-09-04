@@ -13,6 +13,33 @@ servers:
   
 paths:
   /payments/orders:
+    get:
+      summary: Get all payment orders
+      operationId: GetPaymentOrders
+      tags:
+        - Payments
+      parameters:
+      - name: pageNumber
+        in: query
+        description: PageNumber
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        description: PageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
     post:
       summary: Creates a new payment order 
       operationId: CreateNewPaymentOrder

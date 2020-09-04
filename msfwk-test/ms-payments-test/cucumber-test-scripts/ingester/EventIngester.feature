@@ -32,6 +32,7 @@
     Then Set the following data criteria
       | TestCaseID                      | ColumnName        | Operator | DataType | ColumnValue |
       | MS-Test-PO-EventIngester-001    | paymentOrderId    | eq       | string   | PO~100-CBE~232-EVEN~INR~125 |
+      | MS-Test-PO-EventIngester-001    | status            | eq       | string   | Completed |
 
     
     And Validate the below details from the db table ms_payment_order and check no of record is 1
@@ -51,21 +52,7 @@
       | MS-Test-PO-EventIngester-001 | eventId    | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
       
 
-    #Check the entries in outbox
-
-     
-    Then Set the following data criteria
-      | TestCaseID                         | ColumnName       | Operator | DataType | ColumnValue |
-      | MS-Test-PO-EventIngester-001       | correlationId    | eq       | string   | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      | MS-Test-PO-EventIngester-001       | status           | eq       | string   | DELIVERED |
-      
-      #| MS-Test-PO-EventIngester-001       | eventtype        | eq      | string    | CommandProcessed |
-      
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID                         | ColumnName    | ColumnValue |
-      | MS-Test-PO-EventIngester-001       | correlationId | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      #| MS-Test-PO-EventIngester-001       | eventtype     | CommandProcessed |
-      | MS-Test-PO-EventIngester-001       | status        | DELIVERED |  
+    #Outbox entries removed as part of MSF-2442 
       
     Examples:    
     |payload|

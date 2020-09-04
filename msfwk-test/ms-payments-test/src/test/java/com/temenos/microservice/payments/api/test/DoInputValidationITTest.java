@@ -1,20 +1,22 @@
 package com.temenos.microservice.payments.api.test;
 
-import static org.junit.Assert.assertTrue;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_DATATYPES;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_USERDEFINED_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_OBJECT_NULL;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_ARRAY_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_ENUM_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_TIMESTAMP_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_UUID_NULL;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_BYTEBUFFER_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NUMBER_NULL;
-import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NUMBER_MIN;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_DATATYPES;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_ENUM_NULL;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NUMBER_MAX;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NUMBER_MIN;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NUMBER_NULL;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_OBJECT_NULL;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_STRING_NULL;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_TIMESTAMP_NULL;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_USERDEFINED_NULL;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_UUID_NULL;
+import static org.junit.Assert.assertTrue;
+
 
 import java.sql.SQLException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -36,7 +38,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_DATATYPES), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -49,7 +51,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_USERDEFINED_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -62,7 +64,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_OBJECT_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -75,7 +77,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_ARRAY_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -88,7 +90,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_ENUM_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -101,7 +103,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_TIMESTAMP_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -114,7 +116,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_UUID_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -127,7 +129,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_BYTEBUFFER_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
@@ -140,7 +142,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -153,7 +155,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_MIN), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -166,7 +168,7 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_MAX), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -179,11 +181,12 @@ public class DoInputValidationITTest extends ITTest {
 		do {
 			createResponse = this.client.post().uri("/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_STRING_NULL), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"[PaymentDetails.paymentMethod must not be null]\",\"code\":\"\"}]"));
+
 	}
 
 	@Test
@@ -207,5 +210,6 @@ public class DoInputValidationITTest extends ITTest {
 		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(getResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"[GetPaymentDetails.paymentId must not be null]\",\"code\":\"\"}]"));
+
 	}
 }

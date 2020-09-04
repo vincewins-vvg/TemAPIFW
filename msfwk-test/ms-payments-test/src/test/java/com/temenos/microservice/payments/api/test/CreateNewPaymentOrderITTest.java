@@ -123,21 +123,23 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertNotNull(extensioneEntry);
 		assertNotNull(arrayExtensionEntry);
 		assertNotNull(multivalueArrayExtensionEntry);
-		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(arrayExtensionEntry.get(0).getName()));
+		assertTrue("Value mismatch",
+				"PaymentOrder_paymentOrderId".equalsIgnoreCase(arrayExtensionEntry.get(0).getName()));
 		assertEquals(arrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertTrue("Value mismatch", "value".equalsIgnoreCase(arrayExtensionEntry.get(1).getName()));
 		assertEquals(arrayExtensionEntry.get(1).getValue(), "[\"India\",\"Aus\"]");
 		assertTrue("Value mismatch", "name".equalsIgnoreCase(arrayExtensionEntry.get(2).getName()));
 		assertEquals(arrayExtensionEntry.get(2).getValue(), "array_BusDayCentres");
-		
+
 		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(extensioneEntry.get(0).getName()));
 		assertEquals(extensioneEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertTrue("Value mismatch", "value".equalsIgnoreCase(extensioneEntry.get(1).getName()));
 		assertEquals(extensioneEntry.get(1).getValue(), "Temenos");
 		assertTrue("Value mismatch", "name".equalsIgnoreCase(extensioneEntry.get(2).getName()));
 		assertEquals(extensioneEntry.get(2).getValue(), "paymentOrderProduct");
-		
-		assertTrue("Value mismatch", "PaymentOrder_paymentOrderId".equalsIgnoreCase(multivalueArrayExtensionEntry.get(0).getName()));
+
+		assertTrue("Value mismatch",
+				"PaymentOrder_paymentOrderId".equalsIgnoreCase(multivalueArrayExtensionEntry.get(0).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertTrue("Value mismatch", "value".equalsIgnoreCase(multivalueArrayExtensionEntry.get(1).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(),
@@ -171,8 +173,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MIN), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MIN), String.class)).exchange()
+					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -185,8 +187,8 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		do {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
-					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAX), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAX), String.class)).exchange()
+					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -200,7 +202,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
@@ -214,7 +216,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAXLENGTH), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
@@ -229,7 +231,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 			createResponse = this.client.post()
 					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NULLABLE), String.class))
-					.header("roleId", "ADMIN").exchange().block();
+					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
