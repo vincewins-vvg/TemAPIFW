@@ -3,15 +3,15 @@
 	"name": "PAYMENT_ORDEREvent",
 	"namespace": "com.temenos.des.event.table.payment_order",
 	"fields": [{
-			"name": "dataEventId",
+			"name": "eventId",
 			"type": "string",
 			"doc": "Data event ID"
 		}, {
-			"name": "dataEventSize",
+			"name": "eventSize",
 			"type": "int",
 			"doc": "Number of T24 events within the Data event"
 		}, {
-			"name": "dataEventIndex",
+			"name": "eventIndex",
 			"type": "int",
 			"doc": "Index of the T24 event within the Data event"
 		}, {
@@ -22,11 +22,6 @@
 			"name": "processingTime",
 			"type": "long",
 			"doc": "Time when event was processed in T24"
-		}, {
-			"name": "companyTable",
-			"type": ["null", "string"],
-			"doc": "DATA EVENTS table prefix",
-			"default": null
 		}, {
 			"name": "company",
 			"type": ["null", "string"],
@@ -4597,6 +4592,27 @@
 										"fieldfmt": "",
 										"fieldinputlen": "100",
 										"fieldgroupname": "INPUTTER",
+										"fieldlangtype": "N",
+										"fieldlen": "101",
+										"fieldmvgroupnumber": "0"
+									},
+									{
+										"name": "AUTHOR",
+										"type": ["null", "string"],
+										"default": null,
+										"fieldtag": "AUTHOR",
+										"fieldshortname": "c203",
+										"fieldnumber": "203",
+										"fieldgroupnumber": "203",
+										"fielddatatype": "string",
+										"fieldtype": "D",
+										"fieldmvgroupname": "",
+										"fieldjustification": "L",
+										"fieldname": "AUTHOR",
+										"fieldcolumnname": "AUTHOR",
+										"fieldfmt": "",
+										"fieldinputlen": "100",
+										"fieldgroupname": "AUTHOR",
 										"fieldlangtype": "N",
 										"fieldlen": "101",
 										"fieldmvgroupnumber": "0"

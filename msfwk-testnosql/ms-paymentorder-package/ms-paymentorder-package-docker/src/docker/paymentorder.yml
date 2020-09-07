@@ -88,6 +88,7 @@ services:
       className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
       className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+      className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -109,6 +110,10 @@ services:
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: Y
       EXECUTION_ENVIRONMENT: "TEST"
+      #temn.entitlement.service.base.path: http://10.93.23.73:8095/ms-entitlement-api/api/v1.0.0
+      #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
+    #extra_hosts:
+      #- "entitlement-api:10.93.23.73"
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}

@@ -1,0 +1,90 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: paymentorder-api
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-service:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          env:
+            - name: DATABASE_KEY
+              value: mongodb
+            - name: MONGODB_CONNECTIONSTR
+              value: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+            - name: MONGODB_DBNAME
+              value: ms_paymentorder
+            - name: className_CreateNewPaymentOrder
+              value: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+            - name: className_GetPaymentOrders
+              value: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
+            - name: className_UpdatePaymentOrder
+              value: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+            - name: className_GetPaymentOrder
+              value: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
+            - name: className_invokePaymentState
+              value: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+            - name: className_GetPaymentOrderCurrency
+              value: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
+            - name: className_getHealthCheck
+              value: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+            - name: API_HEALTH_CHECK_BUSINESS_CONDITION
+              value: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
+            - name: className_CreateNewPaymentOrders
+              value: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrdersImpl
+            - name: className_UpdateNewPaymentOrders
+              value: com.temenos.microservice.paymentorder.function.UpdateNewPaymentOrdersImpl
+            - name: className_DeletePaymentOrders
+              value: com.temenos.microservice.paymentorder.function.DeletePaymentOrdersImpl
+            - name: className_FileUpload
+              value: com.temenos.microservice.paymentorder.function.FileUploadImpl
+            - name: className_createReferenceData
+              value: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
+            - name: className_getReferenceData
+              value: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
+            - name: className_updateReferenceData
+              value: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
+            - name: className_addReferenceData
+              value: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
+            - name: className_deleteReferenceData
+              value: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
+            - name: className_FileDownload
+              value: com.temenos.microservice.paymentorder.function.FileDownloadImpl
+            - name: className_DoInputValidation
+              value: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+            - name: className_deletePaymentOrder
+              value: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
+            - name: temn.msf.name
+              value: PaymentOrder  
+            - name: PDP_CONFIG
+              value: classpath:xacml/payments-pdp-config.xml
+            - name: temn.msf.pdp.resource.type
+              value: API
+            - name: temn.msf.pdp.resource.manager
+              value: PAYMENT
+            - name: temn.msf.stream.vendor
+              value: kafka
+            - name: temn.queue.impl
+              value: kafka
+            - name: temn.msf.ingest.is.cloud.event
+              value: "true"
+            - name: temn.msf.stream.kafka.bootstrap.servers
+              value: my-cluster-kafka-bootstrap.kafka:9092
+            - name: class.inbox.dao
+              value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+            - name: class.outbox.dao
+              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+            - name: temn.msf.storage.home
+              value: path:/usr/local/tomcat/temp
+            - name: FILE_STORAGE_URL
+              value: /demo.properties
+            - name: temn.msf.max.file.upload.size
+              value: "70"
+            - name: ms.security.tokencheck.enabled
+              value: "Y"
+            - name: EXECUTION_ENVIRONMENT
+              value: "TEST"              
