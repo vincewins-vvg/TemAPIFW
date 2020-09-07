@@ -193,11 +193,11 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationWithValidQueryParam() {
 		ClientResponse getResponse;
 		do {
-			getResponse = this.client.get().uri("/payments/validations?paymentId=test").header("roleId", "ADMIN").exchange()
+			getResponse = this.client.get().uri("/payments/validations?paymentId=employee").header("roleId", "ADMIN").exchange()
 					.block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
-		assertTrue(getResponse.bodyToMono(String.class).block().contains("\"paymentId\":\"test\""));
+		
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(getResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[GetPaymentDetails.paymentId must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[GetInputValidationParams.paymentId must not be null]\",\"code\":\"\"}]"));
 
 	}
 }
