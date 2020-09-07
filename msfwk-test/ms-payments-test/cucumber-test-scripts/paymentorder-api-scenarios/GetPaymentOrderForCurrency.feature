@@ -1,4 +1,4 @@
-
+@rew
    Feature: GetPaymentOrderForCurrency
   
    Background: To setup the preconfigs
@@ -43,8 +43,11 @@
     
     When a "GET" request is sent to MS
     And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 400
     #Then MS JSON property "items" should contain 0 elements
+   # And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum.inr"
+    And MS JSON response string property key "code" should contain value "MSF-001"
+    
     
     Scenario: To get created PO using Currency as Query param with no value
     Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERSBYCURRENCY_AUTH_CODE"
@@ -55,8 +58,10 @@
     
     When a "GET" request is sent to MS
     And log all MS response in console
-    #Then MS response code should be 400
+    Then MS response code should be 400
     #Then MS JSON property "items" should contain 0 elements
+   #And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum."  
+    And MS JSON response string property key "code" should contain value "MSF-001"
     
     Scenario: To get created PO using Currency as invalid Query param values
     Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERSBYCURRENCY_AUTH_CODE"
@@ -65,12 +70,15 @@
     And MS query parameter "currency" is set to value "sss"
     And MS request header "Authorization" is set to "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw"
     
+    
     When a "GET" request is sent to MS
     And log all MS response in console
-    #Then MS response code should be 200
-    Then MS JSON property "items" should contain 0 elements
+    Then MS response code should be 400
+   #Then MS JSON property "items" should contain 0 elements
+    #And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum.sss"
+    And MS JSON response string property key "code" should contain value "MSF-001"
     
-    Scenario: To delete created record
+   # Scenario: To delete created record
     #To delete the values inserted into the DB
     #Given enter tablename to delete ms_payment_order
     #And enter value to be deleted
