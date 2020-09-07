@@ -1,0 +1,51 @@
+{
+  "name": "Balance",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "isExtendable": true,
+  "tableName" : "ms_payment_order_balance",
+  "properties": [
+    {
+      "name": "recId",
+      "type": "string",
+      "attributes": [
+        "KEY_PARTITION"
+      ]
+    },    
+    {
+      "name": "stmtProcDate",
+      "type": "string"
+    },
+    {
+      "name": "coCode",
+      "type": "string"
+    },
+    {
+      "name": "onlineClearedBal",
+      "type": "decimal"
+    },
+    {
+      "name": "workingBalance",
+      "type": "decimal"
+    },
+    {
+      "name": "onlineActualBal",
+      "type": "decimal"
+    },
+    {
+      "name": "currency",
+      "type": "string"
+    },    
+    {
+      "name": "customer",
+      "type": "string"
+    },
+    {
+      "name": "product",
+      "type": "string"
+    },    
+    {
+      "name": "processingTime",
+      "type": "date"
+    }
+  ]
+}
