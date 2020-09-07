@@ -574,6 +574,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountStatus'
+  /payments/createBalanceAndTransaction:
+    post:
+      summary: Creat balance and transaction entry 
+      operationId: CreateBalanceAndTransaction
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MultiEventDataModels"
+      responses:
+        '201':
+          description: Created balance and transaction entry
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"              
 components:
   schemas:
     Card:
@@ -922,3 +940,73 @@ components:
           type: integer
         status:
           type: string
+    Balance:
+      properties:
+        recId:
+          type: string
+        stmtProcDate:
+          type: string
+        coCode:
+          type: string
+        onlineClearedBal:
+          type: string
+          format: decimal
+        workingBalance:
+          type: string
+          format: decimal
+        onlineActualBal:
+          type: string
+          format: decimal
+        currency:
+          type: string
+        customer:
+          type: string
+        product:
+          type: string
+        processingTime:
+          type: string
+          format: date
+        extensionData:
+          type: object
+    Transaction:
+      properties:
+        recId:
+          type: string
+        companyCode:
+          type: string
+        amountLcy:
+          type: string
+        processingDate:
+          type: string
+        transactionCode:
+          type: string
+        valueDate:
+          type: string
+        accountNumber:
+          type: string
+        ourReference:
+          type: string
+        theirReference:
+          type: string
+        accountOfficer:
+          type: string
+        transReference:
+          type: string
+        bookingDate:
+          type: string
+        customerId:
+          type: string
+        currency:
+          type: string
+        extensionData:
+          type: object
+    MultiEventDataModels:
+     properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+        balances:
+          type: array
+          items:
+            $ref: "#/components/schemas/Balance"      

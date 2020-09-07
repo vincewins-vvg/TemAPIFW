@@ -51,9 +51,16 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		order.setStatus(orderRecord.getStatus());
 	}
 
+	/*
+	 * Updates instanceMap variable
+	 * instanceMapp is required to perform merging of ExtensionData from jolt spec
+	 * 
+	 * @return HashMap<String, entity> packageName for Entity and entity object
+	 */
 	@Override
 	public Map<String, Entity> setEntityMap() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Entity> instanceMap = new java.util.HashMap<String, Entity>();
+		instanceMap.put("com.temenos.microservice.paymentorder.entity.PaymentOrder", order);
+		return instanceMap;
 	}
 }
