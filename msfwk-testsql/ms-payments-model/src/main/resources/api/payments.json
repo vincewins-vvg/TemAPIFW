@@ -327,7 +327,45 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/PaymentStatus"              
+                $ref: "#/components/schemas/PaymentStatus"
+  /payments/employee:
+    post:
+      summary: Creates an employee
+      operationId: CreateEmployee
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeRequest"
+      responses:
+        '200':
+          description: Created employee
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/EmployeeStatus"
+  /payments/employee/{employeeId}:
+    get:
+      summary: Fetches an employee
+      operationId: GetEmployee
+      tags:
+        - Payments
+      parameters:
+      - name: employeeId
+        in: path
+        description: Employee ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Fetched employee
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Employee"
 components:
   schemas:
     Card:
@@ -674,3 +712,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Balance"
+	Employee:
+      properties:
+        employeeId:
+          type: string
+        name:
+          type: string
+    EmployeeRequest:
+      properties:
+        name:
+          type: string
+    EmployeeStatus:
+      properties:
+        employeeId:
+          type: string
+        status:
+          type: string
