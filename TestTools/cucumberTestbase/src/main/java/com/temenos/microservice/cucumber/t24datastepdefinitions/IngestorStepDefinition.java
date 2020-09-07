@@ -3,6 +3,7 @@ package com.temenos.microservice.cucumber.t24datastepdefinitions;
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
 import static com.temenos.microservice.test.util.ResourceHandler.readResource;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -138,7 +139,29 @@ public class IngestorStepDefinition {
 		}
 
 	}
+	
+	
+    //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
+  @When("^send JSON data to topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
+  public void sendJSONDataToMentionedTopic(String topicName,String resourcePath, String applicationName) throws Exception {
+      
 
+         StreamProducer producer = ProducerFactory.createStreamProducer("itest", Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+          String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
+          System.out.println("content:" + content);
+          
+          if (IngesterUtil.isCloudEvent()) {
+              producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+          } else {
+              producer.batch().add(topicName, new String(content).getBytes());
+          }
+          
+          try {
+              producer.batch().send();
+          } catch (StreamProducerException e) {
+              e.printStackTrace();
+          }
+}
 	// To send data to the topic name mentioned in step ex: When send data to topic
 	// <topic name>
 	@When("^Send Data to Topic ([^\\s]+) for following records$")
@@ -312,6 +335,34 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
+	
+	
+	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+)$")
+	    public void validateColumnContainValuesInDB(String tableName, DataTable dataTable) throws Exception {
+	      dataMap = RetryUtil.getWithRetry(300, () -> {
+	            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+	            return (dataMap.size() != 0 ? dataMap : null);
+	        }, " Getting DB records from table: " + tableName);
+//	        if (dataMap.size() >= 2) {
+//	            throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
+//	        }
+	        List<Attribute> data = dataMap.get(Integer.valueOf(1));
+	        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+	        tableValues.forEach(tableValue -> {
+	            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+	                data.forEach(attribute -> {
+	                    if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
+	                        
+//	                        System.out.println("attri get name" +attribute.getName());
+//	                        System.out.println("attri get value" +attribute.getValue());
+	                        assertTrue("Actual value against column "+attribute.getName()+" in DB ie :"+attribute.getValue()+" doesnt contain value mentioned in script ie: "+tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue().toString().contains(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString()));
+
+	                    }
+	                });
+	            }
+	        });
+	    }
+	
 
 	// To check if an entry is not present in DB
 	@Then("^Validate if below details not present in db table ([^\\s]+)$")

@@ -503,6 +503,18 @@ public class MS_RestAssuredCucumberSteps {
     public void responseBodyShouldBeEmpty() {
         assertTrue(response.getBody().asString().isEmpty());
     }
+    
+    //Use this for postive scenarios alone
+    @Then("^log all MS response if validation fails in console")
+    public void logResponseIfValidationFails() {
+        response.then().log().ifError();
+        
+        System.out.println("Actual Status Code: " + response.getStatusCode());
+        System.out.println("Response Body: ");
+        System.out.println(System.lineSeparator());
+        Optional.ofNullable(response.getBody()).map(ResponseBody::prettyPrint).orElse("");
+
+    }
 
     @Then("^log all MS response in console")
     public void logResponses() {
@@ -1239,6 +1251,17 @@ public class MS_RestAssuredCucumberSteps {
         dateTime = value.toString();
         String valueConcat = ValueTobeUpdate.concat(dateTime);
         resuableObject.updateRequestFileDynamicValues(jsonpath, valueConcat, jsonFilePath);
+    }
+    
+    //Assert the response by mentioning the same in Examples
+    @Then("^check if actual response matches the expected static response (.*?)$")
+    public void fullResponseAssertionFromExamples(String expectedStaticResponse) throws Throwable {
+    String actualJSONResponse = response.asString();
+
+    //Lenient mode will ignore any missing fields in JSON
+    //JSONAssert.assertEquals(expected, data, false);
+    assertThat(actualJSONResponse,sameJSONAs(expectedStaticResponse).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+   
     }
 
     // To compare full response with file content
