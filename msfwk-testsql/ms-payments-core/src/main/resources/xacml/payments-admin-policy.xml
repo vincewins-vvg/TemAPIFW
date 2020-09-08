@@ -74,7 +74,26 @@
         <Rule RuleId="permit-getPaymentOrder" Effect="Permit">
             <Description />
             <Condition>
-                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+	               <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	                  <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+	                     <AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:serviceid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
+	                  </Apply>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">client</AttributeValue>
+	               </Apply>
+	               <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	                  <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+	                     <AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:channelid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
+	                  </Apply>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">web</AttributeValue>
+	               </Apply>
+	               <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+	                  <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+	                     <AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:customfilterid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" />
+	                  </Apply>
+	                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">test</AttributeValue>
+	               </Apply>
+           		 </Apply>
             </Condition>
         </Rule>
     </Policy>
@@ -584,7 +603,68 @@
          </Condition>
       </Rule>
    </Policy>
-    <Policy PolicyId="permit-GetInputValidationUsingQuery" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+   <Policy PolicyId="permit-createEmployee" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">CreateEmployee</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-createEmployee" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   <Policy PolicyId="permit-getEmployee" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetEmployee</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-getEmployee" Effect="Permit">
+         <Description />
+         <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
+         </Condition>
+      </Rule>
+   </Policy>
+   
+   <Policy PolicyId="permit-GetInputValidationUsingQuery" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />
       <PolicyDefaults>
          <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -614,5 +694,4 @@
          </Condition>
       </Rule>
     </Policy>
-   
 </PolicySet>

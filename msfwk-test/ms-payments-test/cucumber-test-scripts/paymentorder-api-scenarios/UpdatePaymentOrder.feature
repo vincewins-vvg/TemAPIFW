@@ -75,6 +75,9 @@ Background: To set the preconfig for the scenarios
     Scenario: To get updated PO
     Given MS request URI is "payments/orders/PO~100-CBE~222-VVG~USD~433"
     And create a new MS request with code using Restassured arguments "GET_PAYMENTODER_AUTH_CODE"
+    And MS request header "serviceid" is set to "client"
+    And MS request header "channelid" is set to "web"
+    And MS request header "customfilterid" is set to "test"
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 200
