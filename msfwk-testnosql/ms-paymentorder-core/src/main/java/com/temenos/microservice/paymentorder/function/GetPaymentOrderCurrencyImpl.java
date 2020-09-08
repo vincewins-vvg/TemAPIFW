@@ -34,7 +34,7 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 			GetPaymentOrderCurrencyParams params = input.getParams().get();
 			validateParam(params);
 			Criteria criteria = new Criteria();
-			Criterion<Object> criterion = new CriterionImpl("currency", input.getParams().get().getCurrency().get(0),
+			Criterion<Object> criterion = new CriterionImpl("currency", input.getParams().get().getCurrency().get(0).toString(),
 					Operator.equal);
 			criteria.add(criterion);
 			entities = paymentOrderDao.getByIndexes(criteria);
@@ -89,12 +89,12 @@ public class GetPaymentOrderCurrencyImpl implements GetPaymentOrderCurrency {
 	}
 
 	private void validateParam(GetPaymentOrderCurrencyParams params) throws InvalidInputException {
-		List<String> currencyId = params.getCurrency();
-		if (currencyId.size() != 1) {
+		List<com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum> currencyId = params.getCurrency();		
+		if (currencyId.size() > 1) {
 			throw new InvalidInputException(
 					new FailureMessage("Invalid CurrencyId param. Only one CurrencyId expected", "PAYM-PORD-A-2002"));
 		}
-		if (currencyId.get(0).isEmpty()) {
+		if (currencyId.size() == 0) {
 			throw new InvalidInputException(
 					new FailureMessage("Invalid CurrencyId param. CurrencyId is empty", "PAYM-PORD-A-2003"));
 		}
