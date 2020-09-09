@@ -46,7 +46,7 @@ public class GetPaymentOrderCurrencyProcessor {
 		if (input.getParams().get().getCurrency().get(0) != null) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			predicates.add(criteriaBuilder
-					.and(criteriaBuilder.equal(root.get("currency"), input.getParams().get().getCurrency().get(0))));
+					.and(criteriaBuilder.equal(root.get("currency"), input.getParams().get().getCurrency().get(0).toString())));
 			entities = PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class)
 					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
 							com.temenos.microservice.payments.entity.PaymentOrder.class);
