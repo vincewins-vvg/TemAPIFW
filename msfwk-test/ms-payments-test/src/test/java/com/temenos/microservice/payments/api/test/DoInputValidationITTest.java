@@ -14,6 +14,7 @@ import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VA
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_UUID_NULL;
 import static org.junit.Assert.assertTrue;
 
+
 import java.sql.SQLException;
 
 import org.junit.Before;
@@ -185,5 +186,30 @@ public class DoInputValidationITTest extends ITTest {
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"[PaymentDetails.paymentMethod must not be null]\",\"code\":\"\"}]"));
+
+	}
+
+	@Test
+	public void testInpuValidationWithValidQueryParam() {
+		ClientResponse getResponse;
+		do {
+			getResponse = this.client.get().uri("/payments/validations?paymentId=employee").header("roleId", "ADMIN").exchange()
+					.block();
+		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+		
+	}
+
+	@Test
+	public void testInpuValidationtQueryParamNull() {
+		ClientResponse getResponse;
+		do {
+			getResponse =  this.client.get().uri("/payments/validations").header("roleId", "ADMIN").exchange()
+					.block();
+		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+		assertTrue(getResponse.bodyToMono(String.class).block()
+				.contains("[{\"message\":\"[GetInputValidationParams.paymentId must not be null]\",\"code\":\"\"}]"));
+
 	}
 }
