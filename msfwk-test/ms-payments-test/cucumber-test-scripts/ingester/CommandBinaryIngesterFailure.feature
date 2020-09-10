@@ -44,8 +44,8 @@ Feature: CommandBinaryIngesterFailure
       | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
       | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
       
-    And Validate the below details from the db table ms_outbox_events
-    #And Validate the below details from the db table ms_outbox_events and check no of record is 1
+    #And Validate the below details from the db table ms_outbox_events
+    And Validate the below details from the db table ms_outbox_events and check no of record is 1
     | TestCaseID                           | ColumnName     | ColumnValue |
     | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cifs-87200 |
     
@@ -106,8 +106,8 @@ Feature: CommandBinaryIngesterFailure
       | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
       | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
       
-    And Validate the below details from the db table ms_outbox_events
-    #And Validate the below details from the db table ms_outbox_events and check no of record is 1
+    #And Validate the below details from the db table ms_outbox_events
+    And Validate the below details from the db table ms_outbox_events and check no of record is 1
     | TestCaseID                           | ColumnName     | ColumnValue |
     | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cicur-87200 |
     
