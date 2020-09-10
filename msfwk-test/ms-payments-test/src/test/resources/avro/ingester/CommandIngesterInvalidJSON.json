@@ -1,0 +1,46 @@
+{
+	"eventId": "4316e8-3ca-9-cifs-87200",
+	"dateTime": "2019-10-21T00:49:35",
+	"eventType": "PaymentOrder.CreateNewPaymentOrder",
+	"payload": {
+		"body": {
+			"fromAccount": "1739",
+			"toAccount": "3621",
+			"paymentReference": "bgvggk",
+			"paymentDetails": "test",
+			"currency": "USD",
+			"amount": 901,
+			"expires": 0,
+			"paymentDate": "2024-05-05",
+			"paymentMethod": {
+            "id": 100100,
+             "name": "HDFC",
+              "card": {
+            "cardid": 723,
+            "cardname": "Diners",
+            "cardlimit": 120000.11
+        }
+		},
+		 "exchangeRates": [
+        {
+            "id": 30,
+            "name": "USD",
+            "value": 78.12
+        },
+        {
+            "id": 23,
+            "name": "INR",
+            "value": 122.12
+        }    
+
+    ],
+    "payeeDetails": {
+        "payeeName": "MSTester",
+        "payeeType": "temp"
+    },
+    "descriptions": [
+        "Processed by Binary/Command Ingester"
+    ]
+	}
+}
+}

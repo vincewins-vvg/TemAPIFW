@@ -1,0 +1,33 @@
+{
+  "fromAccount": "111",
+  "toAccount": "123",
+  "paymentReference": "paymentpag",
+  "paymentDetails": "TEST",
+  "currency": "USD",
+  "amount": 100,
+  "expires": 0,
+  "fileContent": "TEST",
+  "paymentMethod": {
+    "id": 11,
+    "name": "TEST",
+    "card": {
+      "cardid": 11,
+      "cardname": "IDFC",
+      "cardlimit": 111
+    }
+  },
+  "exchangeRates": [
+    {
+      "id": 11,
+      "name": "TEST",
+      "value": 12
+    }
+  ],
+  "payeeDetails": {
+    "payeeName": "TESTER",
+    "payeeType": "ONLINE"
+  },
+  "descriptions": [
+    "TEST"
+  ]
+}
