@@ -252,9 +252,9 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
 
 		PaymentStatus paymentStatus = new PaymentStatus();
-		paymentStatus.setDebitAccount("1111");
+		paymentStatus.setDebitAccount(entity.getDebitAccount());
 		paymentStatus.setDetails("Payment order updated");
-		paymentStatus.setPaymentId("1111~1112~USD~100");
+		paymentStatus.setPaymentId(entity.getPaymentOrderId());
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
