@@ -39,8 +39,10 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 		int count = sqlDbDao.executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates, PaymentOrder.class)
 				.size();
 		Map<String, Object> data = new HashMap<>();
-		data.put("source", input.getParameters().get("source"));
 		data.put("Total count of payment orders", count);
+		if (input.getParameters()!=null) {
+			data.put("source", input.getParameters().get("source"));
+		}
 		schedulerCommandOutput.setData(data);
 		schedulerCommandOutput.setMessage("Success!");
 		SCHEDULER_DIAGNOSTIC

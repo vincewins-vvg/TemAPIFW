@@ -22,6 +22,10 @@ aws rds delete-db-cluster-parameter-group --db-cluster-parameter-group-name Paym
 # Delete S3 bucket
 aws s3 rb s3://ms-payment-order-sql --force
 
+#Delete scheduler
+aws events remove-targets --rule ms-payments-scheduler-rule --ids "paymentscheduler"
+aws events delete-rule --name ms-payments-scheduler-rule
+aws lambda delete-function --function-name paymentscheduler
 
 # Delete Stream table-update-marketingcatalog
 aws kinesis delete-stream --stream-name payment-inbox-topic
