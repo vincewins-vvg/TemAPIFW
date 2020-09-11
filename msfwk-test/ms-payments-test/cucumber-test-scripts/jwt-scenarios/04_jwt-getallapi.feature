@@ -48,7 +48,7 @@
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 401
-    And MS JSON response string property key "message" should equal value "[Token authentication failed]"
+    And MS JSON response string property key "message" should equal value "[Authorization failed]"
     
  Scenario: To verify the responses when token passed in expired in PO GET All Api
   
@@ -62,7 +62,7 @@
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 401
-    And MS JSON response string property key "message" should equal value "[Token authentication failed]"
+    And MS JSON response string property key "message" should equal value "[Authorization failed]"
        
  
  Scenario: To verify the responses when token passed in invalid in PO GET All Api
@@ -76,7 +76,7 @@
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 401
-    And MS JSON response string property key "message" should equal value "[Token authentication failed]"
+    And MS JSON response string property key "message" should equal value "[Authorization failed]"
     
  Scenario: To verify the responses when null is passed as part of authorization header in PO GET All Api
       
@@ -88,6 +88,6 @@
     When a "GET" request is sent to MS
     And log all MS response in console
     Then MS response code should be 401
-    And MS JSON response string property key "message" should equal value "[Token authentication failed]"  
+    And MS JSON response string property key "message" should equal value "[Authorization failed]"  
     
  

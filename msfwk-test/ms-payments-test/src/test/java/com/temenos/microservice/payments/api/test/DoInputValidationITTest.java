@@ -55,7 +55,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.extensionData must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.extensionData must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.PaymentOrdersItems must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.PaymentOrdersItems must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.paymentOrders must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.paymentOrders must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.currency must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.currency must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.paymentDate must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.paymentDate must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.socialSecurityNo must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.socialSecurityNo must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.fileReadWrite must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.fileReadWrite must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentDetails.paymentId must not be null, PaymentDetails.branchId must not be null, PaymentDetails.monthCount must not be null, PaymentDetails.yearWiseInterest must not be null]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentDetails.paymentId must not be null, PaymentDetails.branchId must not be null, PaymentDetails.monthCount must not be null, PaymentDetails.yearWiseInterest must not be null]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentDetails.personalAccNo must be greater than or equal to 5, PaymentDetails.branchId must be greater than or equal to 5, PaymentDetails.penaltyInterest must be greater than or equal to 5, PaymentDetails.yearWiseInterest must be greater than or equal to 1.0]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentDetails.personalAccNo must be greater than or equal to 5, PaymentDetails.branchId must be greater than or equal to 5, PaymentDetails.penaltyInterest must be greater than or equal to 5, PaymentDetails.yearWiseInterest must be greater than or equal to 1.0]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentDetails.personalAccNo must be lesser than or equal to 50, PaymentDetails.branchId must be lesser than or equal to 50, PaymentDetails.penaltyInterest must be lesser than or equal to 50, PaymentDetails.yearWiseInterest must be lesser than or equal to 60.0]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentDetails.personalAccNo must be lesser than or equal to 50, PaymentDetails.branchId must be lesser than or equal to 50, PaymentDetails.penaltyInterest must be lesser than or equal to 50, PaymentDetails.yearWiseInterest must be lesser than or equal to 60.0]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentDetails.paymentMethod must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[PaymentDetails.paymentMethod must not be null]\",\"code\":\"MSF-999\"}]"));
 
 	}
 
@@ -209,7 +209,7 @@ public class DoInputValidationITTest extends ITTest {
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(getResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[GetInputValidationParams.paymentId must not be null]\",\"code\":\"\"}]"));
+				.contains("[{\"message\":\"[GetInputValidationParams.paymentId must not be null]\",\"code\":\"MSF-999\"}]"));
 
 	}
 }

@@ -178,7 +178,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 1]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be greater than or equal to 1]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 999999]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.id must be lesser than or equal to 999999]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 2]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be greater than or equal to 2]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -221,7 +221,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
-				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be lesser than or equal to 20]\",\"code\":\"\"}]"));
+				"[{\"message\":\"[PaymentOrder.paymentMethod.name length must be lesser than or equal to 20]\",\"code\":\"MSF-999\"}]"));
 	}
 
 	@Test
@@ -235,6 +235,6 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
-				.contains("[{\"message\":\"[PaymentOrder.paymentMethod must not be null]\",\"code\":\"\"}"));
+				.contains("[{\"message\":\"[PaymentOrder.paymentMethod must not be null]\",\"code\":\"MSF-999\"}"));
 	}
 }
