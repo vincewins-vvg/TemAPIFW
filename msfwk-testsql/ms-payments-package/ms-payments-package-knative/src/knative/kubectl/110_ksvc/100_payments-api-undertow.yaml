@@ -100,5 +100,5 @@ spec:
               value: "70"
             - name: ms.security.tokencheck.enabled
               value: "Y"
-            - name: EXECUTION_ENVIRONMENT
-              value: "TEST"
+            - name: temn.entitlement.stubbed.service.enabled
+              value: "true"
