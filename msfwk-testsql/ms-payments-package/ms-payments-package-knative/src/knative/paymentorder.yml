@@ -33,7 +33,7 @@ services:
       context: ${INGESTER_CONTEXT}
       dockerfile: Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
-        artifactid: ${ingester_artifactid}
+        BASE_IMAGE: ${API_BASE_IMAGE}
+        artifactid: ${api_artifactid}
         java_options: ${java_options}
     image: ${INGESTER_IMAGE}

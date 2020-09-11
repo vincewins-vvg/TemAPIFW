@@ -23,14 +23,14 @@ services:
       args:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
-        api_java_options: ${java_options} ${REMOTE_DEBUG}
+        api_java_options: ${java_options}
     image: ${API_IMAGE}
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
       dockerfile: Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
-        artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        BASE_IMAGE: ${API_BASE_IMAGE}
+        artifactid: ${api_artifactid}
+        java_options: ${java_options}
     image: ${INGESTER_IMAGE}

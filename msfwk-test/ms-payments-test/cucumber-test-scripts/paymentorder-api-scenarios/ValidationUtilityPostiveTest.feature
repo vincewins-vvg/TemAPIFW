@@ -9,7 +9,7 @@ Background: To set the preconfig for the scenarios
 	And MS request header "Content-Type" is set to "application/json"
 	
 	Scenario Outline: Validate utilies for datatypes using POST METHOD. 
-	And MS request URI is "payments/validations"
+	And MS request URI is "v1.0.0/payments/validations"
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 

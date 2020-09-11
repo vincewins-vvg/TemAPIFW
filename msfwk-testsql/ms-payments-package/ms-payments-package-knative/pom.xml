@@ -7,7 +7,7 @@
 		<artifactId>microservice-package-knative-jpa</artifactId>
 		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<groupId>com.temenos.microservice.payments</groupId>
 	<artifactId>ms-payments-package-knative</artifactId>
 	<name>ms-payments-package-knative</name>
@@ -15,6 +15,9 @@
 	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
+		<!-- Domain name -->
+		<msf.domain.name>payments</msf.domain.name>
+
 		<!-- Enable Model unpack and MSF CodeGen -->
 		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
@@ -23,7 +26,7 @@
 		<!-- Directory name inside the final Assembly -->
 		<assemblyOutputDirectory>ms-payments-knative</assemblyOutputDirectory>
 
-		<!-- Provider API  filename as it would be used as /context-root -->
+		<!-- Provider API filename as it would be used as /context-root -->
 		<knative.apiPackageFileName>ms-payments-api.jar</knative.apiPackageFileName>
 		<!-- Ingester App Name -->
 		<knative.ingester.app.name>ms-payments-ingester.jar</knative.ingester.app.name>

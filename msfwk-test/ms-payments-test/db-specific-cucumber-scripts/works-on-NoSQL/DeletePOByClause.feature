@@ -15,7 +15,7 @@ Scenario Outline: Create multiple Payment Orders using POST METHOD.
 		| type | string |paymentref|
 		| value | string |paymenttest|
 		| description | string |Payment ref|
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -29,7 +29,7 @@ Scenario Outline: Create multiple Payment Orders using POST METHOD.
 		
 		#Update the status of the payment order using the update clause
 Scenario Outline: Update the status of PO as per details provided in the payload using update clause 
-	Given MS request URI is "payments/orders/update" 
+	Given MS request URI is "v1.0.0/payments/orders/update" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	Then MS response code should be 200 
@@ -41,7 +41,7 @@ Scenario Outline: Update the status of PO as per details provided in the payload
 		
 		#delete the payment orders where status=INITIATED of the payment order using the delete clause		
 Scenario: Delete only the PO where status is equal to INITIATED using delete clause 
-	Given MS request URI is "payments/orders/delete?status=POUPDATEDCLAUSETEST" 
+	Given MS request URI is "v1.0.0/payments/orders/delete?status=POUPDATEDCLAUSETEST" 
 	When a "DELETE" request is sent to MS 
 	Then MS response code should be 200 
 	And MS JSON response string property key "status" should equal value "Deleted 1 PaymentIds which satisfy this Criteria" 

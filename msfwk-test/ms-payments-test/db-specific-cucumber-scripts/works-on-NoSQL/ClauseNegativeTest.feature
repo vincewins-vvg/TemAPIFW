@@ -9,7 +9,7 @@ Background: To set the preconfig for the scenarios
 	And MS request header "Content-Type" is set to "application/json" 
 
 Scenario Outline: To validate whether status of the PO is updated while passing values not existing in the DB. 
-	Given MS request URI is "payments/orders/update" 
+	Given MS request URI is "v1.0.0/payments/orders/update" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	Then MS response code should be 200 
@@ -21,13 +21,13 @@ Scenario Outline: To validate whether status of the PO is updated while passing 
 		|{"criteriaDetails":[{"nameOfCriteria":"debitAccount","valueOfCriteria":"4009-test"}],"status":"POUPDATED"}|
 	
 Scenario: To validate whether PO is deleted when param passed not exists in DB.
-	Given MS request URI is "payments/orders/delete?status=ClauseTest" 
+	Given MS request URI is "v1.0.0/payments/orders/delete?status=ClauseTest" 
 	When a "DELETE" request is sent to MS 
 	Then MS response code should be 200 
 	And MS JSON response string property key "status" should equal value "Deleted 0 PaymentIds which satisfy this Criteria"
 
 Scenario Outline: To validate whether status of the payment order is updated when null value is passed. 
-	Given MS request URI is "payments/orders/update" 
+	Given MS request URI is "v1.0.0/payments/orders/update" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	Then MS response code should be 400 
@@ -39,7 +39,7 @@ Scenario Outline: To validate whether status of the payment order is updated whe
 		|{"criteriaDetails":[{"nameOfCriteria":"debitAccount","valueOfCriteria":null}],"status":"POUPDATED"}|
 
 Scenario: To validate whether a PO is deleted when no param has been passed.
-	Given MS request URI is "payments/orders/delete" 
+	Given MS request URI is "v1.0.0/payments/orders/delete" 
 	When a "DELETE" request is sent to MS 
 	Then MS response code should be 400 
 	And MS JSON response string property key "message" should equal value "[Invalid or Null Status value entered]"

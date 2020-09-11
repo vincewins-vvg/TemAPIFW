@@ -10,7 +10,7 @@ spec:
         - image: dev.local/temenos/ms-paymentorder-ingester:DEV
           ports:
           - name: http1
-            containerPort: 8081
+            containerPort: 8080
           env:
             - name: DATABASE_KEY
               value: sql
@@ -63,7 +63,7 @@ spec:
         - image: dev.local/temenos/ms-paymentorder-ingester:DEV
           ports:
           - name: http1
-            containerPort: 8081
+            containerPort: 8080
           env:
             - name: DATABASE_KEY
               value: sql
@@ -136,7 +136,7 @@ spec:
         - image: dev.local/temenos/ms-paymentorder-ingester:DEV
           ports:
           - name: http1
-            containerPort: 8081
+            containerPort: 8080
           env:
             - name: DATABASE_KEY
               value: sql
@@ -207,7 +207,7 @@ spec:
         - image: dev.local/temenos/ms-paymentorder-ingester:DEV
           ports:
           - name: http1
-            containerPort: 8081
+            containerPort: 8080
           env:
             - name: DATABASE_KEY
               value: sql

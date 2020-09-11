@@ -13,7 +13,7 @@
     #And create a new MS request with code using Restassured arguments "FILEUPLOAD"
     #And MS request form-data "documentDetails" is set to "{"documentId":"13","documentName":"Corrupted Doc"}"
     #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/Corruptedfile.docx"
-    #And MS request URI is "payments/upload"
+    #And MS request URI is "v1.0.0/payments/upload"
     #When a "POST" request is sent to MS
     #And log all MS response in console
     #Then MS response code should be 200
@@ -22,7 +22,7 @@
     
     Scenario: To download a empty file and check its size
     
-    #And MS request URI is "payments/download/Corruptedfile.docx"
+    #And MS request URI is "v1.0.0/payments/download/Corruptedfile.docx"
     #And create a new MS request with code using Restassured arguments "FILEDOWNLOAD"
     #When a "GET" request is sent to MS
     #Then MS response code should be 200

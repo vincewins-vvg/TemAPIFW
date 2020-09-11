@@ -20,7 +20,7 @@ Feature: ToCheckPaginationGetApi
       
     #Entry1
 
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/popost1.json"
     When a "POST" request is sent to MS
     And log all MS response in console
@@ -29,7 +29,7 @@ Feature: ToCheckPaginationGetApi
     
     #Entry2
     
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/popost2.json"
     When a "POST" request is sent to MS
     And log all MS response in console
@@ -37,14 +37,14 @@ Feature: ToCheckPaginationGetApi
     
     #Entry3
     
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/popost3.json"
     When a "POST" request is sent to MS
     And log all MS response in console
     Then MS response code should be 200
     
     #ActualValidation
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And MS query parameter "pageNumber" is set to value "1"
     And MS query parameter "pageSize" is set to value "1"
     When a "GET" request is sent to MS
@@ -55,7 +55,7 @@ Feature: ToCheckPaginationGetApi
     
   Scenario: To check if each page number contains the correct no of elements  
   
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And MS query parameter "pageNumber" is set to value "2"
     And MS query parameter "pageSize" is set to value "1"    
     When a "GET" request is sent to MS
@@ -64,7 +64,7 @@ Feature: ToCheckPaginationGetApi
     Then MS response code should be 200
     Then MS JSON property "items" should contain 1 elements
     
-    And MS request URI is "payments/orders"
+    And MS request URI is "v1.0.0/payments/orders"
     And MS query parameter "pageNumber" is set to value "3"
     And MS query parameter "pageSize" is set to value "1"
     When a "GET" request is sent to MS

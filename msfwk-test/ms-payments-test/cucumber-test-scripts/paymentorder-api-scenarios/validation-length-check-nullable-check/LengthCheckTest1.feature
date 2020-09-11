@@ -11,7 +11,7 @@ Background: To set the preconfig for the scenarios
 	
 Scenario Outline: Create a new paymentorder against length check validation Test1. 
 #To create PO details in order to validate against length checks.
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload>
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -24,7 +24,7 @@ Scenario Outline: Create a new paymentorder against length check validation Test
 		
 Scenario Outline: Create a new paymentorder against length check validation Test2. 
 #To create PO details in order to validate against length checks.
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -37,7 +37,7 @@ Scenario Outline: Create a new paymentorder against length check validation Test
 	
 Scenario Outline: Create a new paymentorder against length check validation Test3. 
 #To create PO details in order to validate against length checks.
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 

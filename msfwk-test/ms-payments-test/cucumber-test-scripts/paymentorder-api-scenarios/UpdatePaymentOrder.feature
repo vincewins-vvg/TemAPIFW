@@ -14,7 +14,7 @@ Background: To set the preconfig for the scenarios
     And MS request header "Content-Type" is set to "application/json"
     
     Scenario Outline: Create a new Payment Order with one Role Id
-    Given MS request URI is "payments/orders"
+    Given MS request URI is "v1.0.0/payments/orders"
     And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
@@ -34,7 +34,7 @@ Background: To set the preconfig for the scenarios
 
    Scenario: Update an existing Payment Order
     
-    Given MS request URI is "payments/orders/PO~100-CBE~222-VVG~USD~433"
+    Given MS request URI is "v1.0.0/payments/orders/PO~100-CBE~222-VVG~USD~433"
     And create a new MS request with code using Restassured arguments "UPDATE_PAYMENTORDER_AUTH_CODE"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/UpdatePaymentOrder.json"
     When a "PUT" request is sent to MS
@@ -45,7 +45,7 @@ Background: To set the preconfig for the scenarios
 
     Scenario: Update an existing Payment Order with incorrect Debit Account
     
-    Given MS request URI is "payments/orders/PO~100-CBE~222-VVG~USD~433"
+    Given MS request URI is "v1.0.0/payments/orders/PO~100-CBE~222-VVG~USD~433"
     And create a new MS request with code using Restassured arguments "UPDATE_PAYMENTORDER_AUTH_CODE"
     And MS request header "Content-Type" is set to "application/json"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/UpdatePOWrongPaymentId.json"
@@ -54,7 +54,7 @@ Background: To set the preconfig for the scenarios
     Then MS response code should be 400
     
     Scenario: Update an existing Payment Order with incorrect Payment Id in payload 
-    Given MS request URI is "payments/orders/PO~100-CBE~222-VVG~USD~433"
+    Given MS request URI is "v1.0.0/payments/orders/PO~100-CBE~222-VVG~USD~433"
     And MS request header "Content-Type" is set to "application/json"
     And create a new MS request with code using Restassured arguments "UPDATE_PAYMENTORDER_AUTH_CODE"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/UpdatePOWrongPaymentId.json"
@@ -63,7 +63,7 @@ Background: To set the preconfig for the scenarios
     Then MS response code should be 400
     
     Scenario: Update an existing Payment Order with incorrect Payment Id in URI 
-    Given MS request URI is "payments/orders/PO~100-CBE~123-ABC~USD~43211"
+    Given MS request URI is "v1.0.0/payments/orders/PO~100-CBE~123-ABC~USD~43211"
     And create a new MS request with code using Restassured arguments "UPDATE_PAYMENTORDER_AUTH_CODE"
     And MS request header "Content-Type" is set to "application/json"
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/UpdatePaymentOrder.json"
@@ -73,7 +73,7 @@ Background: To set the preconfig for the scenarios
     
     
     Scenario: To get updated PO
-    Given MS request URI is "payments/orders/PO~100-CBE~222-VVG~USD~433"
+    Given MS request URI is "v1.0.0/payments/orders/PO~100-CBE~222-VVG~USD~433"
     And create a new MS request with code using Restassured arguments "GET_PAYMENTODER_AUTH_CODE"
     And MS request header "serviceid" is set to "client"
     And MS request header "channelid" is set to "web"

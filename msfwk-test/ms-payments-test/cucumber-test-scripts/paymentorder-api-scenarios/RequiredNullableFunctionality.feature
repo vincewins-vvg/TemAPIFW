@@ -9,28 +9,28 @@ Background: To set the preconfig for the scenarios
 	And MS request header "Content-Type" is set to "application/json"
 	
 	Scenario: To validate by passing param length less than 4.  
-	Given MS request URI is "payments/validations?paymentId=test"  
+	Given MS request URI is "v1.0.0/payments/validations?paymentId=test"  
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400
 	And MS JSON response string property key "message" should equal value "[[GetInputValidationParams.paymentId[0] length must be greater than or equal to 5]]"
 	
 	Scenario: To validate by passing param length more than 20.  
-	Given MS request URI is "payments/validations?paymentId=test0000000000000000000000001"  
+	Given MS request URI is "v1.0.0/payments/validations?paymentId=test0000000000000000000000001"  
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400
 	And MS JSON response string property key "message" should equal value "[[GetInputValidationParams.paymentId[0] length must be lesser than or equal to 20]]"
 	
 	Scenario: To validate by passing param length (valid).  
-	Given MS request URI is "payments/validations?paymentId=test1"  
+	Given MS request URI is "v1.0.0/payments/validations?paymentId=test1"  
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200
 	And MS JSON response string property key "status" should equal value "Success"
 	
 	Scenario: To validate by passing NULL param.  
-	Given MS request URI is "payments/validations"  
+	Given MS request URI is "v1.0.0/payments/validations"  
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400

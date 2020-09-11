@@ -14,7 +14,6 @@ import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VA
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_UUID_NULL;
 import static org.junit.Assert.assertTrue;
 
-
 import java.sql.SQLException;
 
 import org.junit.Before;
@@ -36,7 +35,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationWithValidData() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_DATATYPES), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -49,7 +48,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationExtensionDataNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_USERDEFINED_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -62,7 +61,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationObjectNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_OBJECT_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -75,7 +74,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationArrayNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_ARRAY_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -88,7 +87,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationEnumNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_ENUM_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -101,7 +100,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtTimeStampNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_TIMESTAMP_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -114,7 +113,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtUuidNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_UUID_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -127,7 +126,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtByteBufferNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_BYTEBUFFER_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -140,7 +139,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtNumberNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -153,7 +152,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtNumberMIN() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_MIN), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -166,7 +165,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtNumberMAX() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NUMBER_MAX), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -179,7 +178,7 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationtStringNull() {
 		ClientResponse createResponse;
 		do {
-			createResponse = this.client.post().uri("/payments/validations")
+			createResponse = this.client.post().uri("/v1.0.0/payments/validations")
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_STRING_NULL), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -193,19 +192,17 @@ public class DoInputValidationITTest extends ITTest {
 	public void testInpuValidationWithValidQueryParam() {
 		ClientResponse getResponse;
 		do {
-			getResponse = this.client.get().uri("/payments/validations?paymentId=employee").header("roleId", "ADMIN").exchange()
-					.block();
+			getResponse = this.client.get().uri("/v1.0.0/payments/validations?paymentId=employee").exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
-		
+
 	}
 
 	@Test
 	public void testInpuValidationtQueryParamNull() {
 		ClientResponse getResponse;
 		do {
-			getResponse =  this.client.get().uri("/payments/validations").header("roleId", "ADMIN").exchange()
-					.block();
+			getResponse = this.client.get().uri("/v1.0.0/payments/validations").exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(getResponse.bodyToMono(String.class).block()

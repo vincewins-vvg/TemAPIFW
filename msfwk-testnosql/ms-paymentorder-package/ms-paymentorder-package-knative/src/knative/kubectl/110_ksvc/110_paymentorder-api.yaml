@@ -56,6 +56,8 @@ spec:
               value: com.temenos.microservice.paymentorder.function.FileDownloadImpl
             - name: className_DoInputValidation
               value: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+            - name: className_GetInputValidation
+              value: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
             - name: className_deletePaymentOrder
               value: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
             - name: temn.msf.name

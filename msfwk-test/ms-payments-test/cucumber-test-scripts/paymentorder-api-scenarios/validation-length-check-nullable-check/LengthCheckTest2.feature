@@ -12,7 +12,7 @@ Background: To set the preconfig for the scenarios
 Scenario Outline: Create a new paymentorder using payment reference created and satisfying length checks. 
 
 #To create PO details in order to validate against length checks.
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -25,7 +25,7 @@ Scenario Outline: Create a new paymentorder using payment reference created and 
 		|{"fromAccount":"8923","toAccount":"8921","PaymentReferenceTestData":"PayRefTestData","paymentDetails":"TEST","currency":"USD","amount":100,"expires":0,"fileContent":"TEST","paymentMethod":{"id":100,"name":"TEST000001TEST000001","card":{"cardid":11,"cardname":"IDFC","cardlimit":111}}}|
 		
 Scenario Outline: Update the created paymentorder using the paymentID 
-	Given MS request URI is "payments/orders/PO~8923~8921~USD~100" 
+	Given MS request URI is "v1.0.0/payments/orders/PO~8923~8921~USD~100" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 

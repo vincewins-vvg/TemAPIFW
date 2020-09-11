@@ -119,15 +119,14 @@ public class ConfigBasedMappingITTest extends ITTest {
 		} else {
 			Class.forName("com.nuodb.jdbc.Driver");
 			Properties prop = new Properties();
-		    prop.put("user", Environment.getEnvironmentVariable("DB_USERNAME", ""));
-		    prop.put("password", Environment.getEnvironmentVariable("DB_PASSWORD", ""));
-		    prop.put("direct", "true");
-			con = DriverManager.getConnection(
-					new StringBuilder("jdbc:").append("com.nuodb")
-							.append("://").append(Environment.getEnvironmentVariable("DB_HOST", "")).append(":")
-							.append(Environment.getEnvironmentVariable("DB_PORT", "")).append("/")
-							.append(Environment.getEnvironmentVariable("DB_NAME", ""))
-							.append("?schema=ms_paymentorder").toString(), prop);
+			prop.put("user", Environment.getEnvironmentVariable("DB_USERNAME", ""));
+			prop.put("password", Environment.getEnvironmentVariable("DB_PASSWORD", ""));
+			prop.put("direct", "true");
+			con = DriverManager.getConnection(new StringBuilder("jdbc:").append("com.nuodb").append("://")
+					.append(Environment.getEnvironmentVariable("DB_HOST", "")).append(":")
+					.append(Environment.getEnvironmentVariable("DB_PORT", "")).append("/")
+					.append(Environment.getEnvironmentVariable("DB_NAME", "")).append("?schema=ms_paymentorder")
+					.toString(), prop);
 		}
 		con.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0");
 		con.createStatement().execute("TRUNCATE table Card");
@@ -187,6 +186,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 			Assert.fail(e.getMessage());
 		}
 	}
+
 	@Test
 	public void testAvroIngesterConfigDateAsCommandEvent() {
 		try {
@@ -283,7 +283,8 @@ public class ConfigBasedMappingITTest extends ITTest {
 		try {
 			do {
 				getResponse = this.client.get()
-						.uri("/payments/orders/" + "1 COCA-COLA PLAZA" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")
+						.uri("/v1.0.0/payments/orders/" + "1 COCA-COLA PLAZA"
+								+ ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")
 								+ "&alternatekeys=paymentId&alternatenames=OrderingPostAddrline")
 						.exchange().block();
 			} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));

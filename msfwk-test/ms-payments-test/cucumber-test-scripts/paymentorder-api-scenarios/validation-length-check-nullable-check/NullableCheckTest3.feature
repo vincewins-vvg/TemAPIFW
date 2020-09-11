@@ -11,7 +11,7 @@ Background: To set the preconfig for the scenarios
 Scenario Outline:Create a new paymentorder using payment reference created - Nullable validation Test 1. 
 
 #To create PO details in order to validate against nullable checks - Null values passed as part of the JSON.
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 

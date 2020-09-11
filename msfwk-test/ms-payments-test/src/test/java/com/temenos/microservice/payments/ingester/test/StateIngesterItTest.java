@@ -1,6 +1,5 @@
 package com.temenos.microservice.payments.ingester.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -61,16 +60,16 @@ public class StateIngesterItTest extends ITTest {
 			try {
 				ClientResponse getResponse;
 				do {
-					getResponse = this.client.get().uri("/payments/orders/invoke?paymentStateId=prep").exchange()
+					getResponse = this.client.get().uri("/v1.0.0/payments/orders/invoke?paymentStateId=prep").exchange()
 							.block();
 				} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-				
+
 				Properties props = new Properties();
 				props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 				props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 				props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
 				Random r = new Random();
-				props.put(ConsumerConfig.GROUP_ID_CONFIG, "testGroupId"+ r.nextInt());
+				props.put(ConsumerConfig.GROUP_ID_CONFIG, "testGroupId" + r.nextInt());
 				props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 				this.kafkaConsmer = new KafkaConsumer<String, byte[]>(props);
 				this.kafkaConsmer.subscribe(Arrays.asList("table-result"));
@@ -113,7 +112,7 @@ public class StateIngesterItTest extends ITTest {
 			try {
 				ClientResponse getResponse;
 				do {
-					getResponse = this.client.get().uri("/payments/orders/invoke?paymentStateId=prep").exchange()
+					getResponse = this.client.get().uri("/v1.0.0/payments/orders/invoke?paymentStateId=prep").exchange()
 							.block();
 				} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 				List<byte[]> messageList = new ArrayList<>();

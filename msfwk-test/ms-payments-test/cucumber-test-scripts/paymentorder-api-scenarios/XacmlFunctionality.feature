@@ -5,7 +5,7 @@
   #
     #Given Set the test backgound for PAYMENT_ORDER API
     #Given create a new MS request with code using Restassured arguments ""
-    #And MS request URI is "payments/orders"
+    #And MS request URI is "v1.0.0/payments/orders"
     #And MS query parameter for Azure env is set to value ""
     #
     #And MS request header "Content-Type" is set to "application/json"
