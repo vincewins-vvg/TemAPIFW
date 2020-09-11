@@ -1,4 +1,3 @@
-@rew
    Feature: GetPaymentOrderForCurrency
   
    Background: To setup the preconfigs
@@ -45,7 +44,10 @@
     And log all MS response in console
     Then MS response code should be 400
     #Then MS JSON property "items" should contain 0 elements
-   # And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum.inr"
+    And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum.inr"
+    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "currency"
     And MS JSON response string property key "code" should contain value "MSF-001"
     
     
@@ -60,8 +62,11 @@
     And log all MS response in console
     Then MS response code should be 400
     #Then MS JSON property "items" should contain 0 elements
-   #And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum."  
-    And MS JSON response string property key "code" should contain value "MSF-001"
+    And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum."
+    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "currency"
+    And MS JSON response string property key "code" should contain value "MSF-001"  
     
     Scenario: To get created PO using Currency as invalid Query param values
     Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERSBYCURRENCY_AUTH_CODE"
@@ -75,8 +80,12 @@
     And log all MS response in console
     Then MS response code should be 400
    #Then MS JSON property "items" should contain 0 elements
-    #And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyParams.CurrencyEnum.sss"
+    And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum.sss"
+    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "currency"
     And MS JSON response string property key "code" should contain value "MSF-001"
+      
     
    # Scenario: To delete created record
     #To delete the values inserted into the DB
@@ -107,3 +116,4 @@
       #| TestCaseID              | ColumnName    | Operator | DataType | ColumnValue |
       #| MS-Test-Payments-MS-001 | paymentOrderId | eq       | string   | PO~100-CBE~201-CAN~INR~483 |
       #| MS-Test-Payments-MS-001 | debitAccount | eq       | string   | 100-CBE |  
+     
