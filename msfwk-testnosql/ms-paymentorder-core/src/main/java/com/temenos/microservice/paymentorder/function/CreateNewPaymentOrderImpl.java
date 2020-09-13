@@ -258,12 +258,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
-		try {
-			updateCommand.setPayload(JsonUtil.writeValueAsString(input));
-		} catch (JsonProcessingException e) {
-
-		}
-
+		updateCommand.setPayload(input);
 		EventManager.raiseCommandEvent(ctx, updateCommand);
 	}
 }

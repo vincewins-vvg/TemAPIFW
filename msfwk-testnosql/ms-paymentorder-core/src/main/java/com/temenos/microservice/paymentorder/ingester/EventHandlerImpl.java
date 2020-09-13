@@ -22,7 +22,7 @@ public class EventHandlerImpl implements EventProcessor {
 	@Override
 	public void processEvent(Context context, GenericEvent event) throws FunctionException {
 		String eventType = event.getEventType();
-		if ("CommandProcessed".equals(eventType) || "CommandFailed".equals(eventType)) {
+		if ("CommandProcessed".equals(eventType) || "CommandFailed".equals(eventType) || "PostHookEvent".equals(eventType)) {
 			Logger.forDiagnostic().forComp(LoggingConstants.COMPONENT).prepareInfo(new StringBuilder("Received ")
 					.append(eventType).append(" ").append(event.getPayload().toString()).toString()).log();
 			return;

@@ -203,7 +203,7 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
 
 		EventManager.raiseBusinessEvent(ctx,
-				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+				new GenericEvent("POAccepted", paymentOrderEvent));
 		raiseCommandEvent(ctx, entity);
 		return entity;
 	}
@@ -247,12 +247,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
-		try {
-			updateCommand.setPayload(JsonUtil.writeValueAsString(input));
-		} catch (JsonProcessingException e) {
-
-		}
-
+		updateCommand.setPayload(input);		
 		EventManager.raiseCommandEvent(ctx, updateCommand);
 	}
 }
