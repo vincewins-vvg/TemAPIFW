@@ -40,10 +40,10 @@ public class CreateCustomerImpl implements CreateCustomer {
 		} catch (ParseException e) {
 			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
 		}
-		com.temenos.microservice.paymentorder.entity.Customer Response = (com.temenos.microservice.paymentorder.entity.Customer) DaoFactory.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class).saveEntity(customerEntity);
+		com.temenos.microservice.paymentorder.entity.Customer customerResponse = (com.temenos.microservice.paymentorder.entity.Customer) DaoFactory.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class).saveEntity(customerEntity);
 		CustomerStatus status = new CustomerStatus();
-		status.setCustomerId(Response.getCustomerId());
-		status.setAccountStatus(Response.isActiveStatus());
+		status.setCustomerId(customerResponse.getCustomerId());
+		status.setAccountStatus(customerResponse.isActiveStatus());
 		status.setStatus("Created");
 		return status;
 	}
