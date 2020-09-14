@@ -727,6 +727,8 @@ components:
           type: string
         status:
           type: string
+        accountStatus:
+          type: boolean
     Customers:
       type: array
       items:

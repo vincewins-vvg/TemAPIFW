@@ -26,6 +26,12 @@ public class CreateCustomerImpl implements CreateCustomer {
 		}
 		com.temenos.microservice.paymentorder.entity.Customer customerEntity = new com.temenos.microservice.paymentorder.entity.Customer();
 		customerEntity.setAccount(param.getAccount());
+		if(("savings").equalsIgnoreCase(param.getAccount()))
+		{
+			customerEntity.setActiveStatus(true);
+		}else{
+			customerEntity.setActiveStatus(false);
+		}
 		customerEntity.setCustomerId(customerId);
 		customerEntity.setCustomerName(name);
 		customerEntity.setLoanTypes(param.getLoanTypes());
@@ -34,9 +40,10 @@ public class CreateCustomerImpl implements CreateCustomer {
 		} catch (ParseException e) {
 			throw new InvalidInputException(new FailureMessage("Check the date format entered", "400"));
 		}
-		DaoFactory.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class).saveEntity(customerEntity);
+		com.temenos.microservice.paymentorder.entity.Customer Response = (com.temenos.microservice.paymentorder.entity.Customer) DaoFactory.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class).saveEntity(customerEntity);
 		CustomerStatus status = new CustomerStatus();
-		status.setCustomerId(customerId);
+		status.setCustomerId(Response.getCustomerId());
+		status.setAccountStatus(Response.isActiveStatus());
 		status.setStatus("Created");
 		return status;
 	}

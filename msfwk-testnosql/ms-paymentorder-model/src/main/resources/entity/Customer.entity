@@ -29,6 +29,10 @@
     {
         "name": "dateOfJoining",
         "type": "date"
+    },
+    {
+        "name": "activeStatus",
+        "type": "Boolean"
     }
   ]
 }
