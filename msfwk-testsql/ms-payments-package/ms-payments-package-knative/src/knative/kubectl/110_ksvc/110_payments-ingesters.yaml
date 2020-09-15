@@ -50,6 +50,12 @@ spec:
               value: mapping/
             - name: temn.ingester.mapping.enabled
               value: "true"
+            - name: temn.msf.stream.kafka.bootstrap.servers
+              value: my-cluster-kafka-bootstrap.kafka:9092
+            - name: temn.msf.ingest.sink.error.stream
+              value: error-paymentorder
+            - name: temn.msf.ingest.sink.error.stream.producer.id
+              value: ms-paymentorder-ingester-error-producer
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service

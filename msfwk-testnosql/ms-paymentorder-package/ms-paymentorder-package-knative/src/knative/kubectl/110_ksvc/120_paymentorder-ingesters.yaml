@@ -35,6 +35,12 @@ spec:
               value: "true"
             - name: temn.msf.security.authz.enabled
               value: "false"
+            - name: temn.msf.stream.kafka.bootstrap.servers
+              value: my-cluster-kafka-bootstrap.kafka:9092
+            - name: temn.msf.ingest.sink.error.stream
+              value: error-paymentorder
+            - name: temn.msf.ingest.sink.error.stream.producer.id
+              value: ms-paymentorder-ingester-error-producer
 ---
 #PO Command Ingester 
 apiVersion: serving.knative.dev/v1
