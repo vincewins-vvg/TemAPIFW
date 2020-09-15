@@ -36,7 +36,6 @@ aws kinesis delete-stream --stream-name error-paymentorder
 
 # Delete Ingester
 aws lambda delete-function --function-name payment-sql-inbox-ingester
-aws lambda delete-function --function-name inbox-sql-handler
 aws lambda delete-function --function-name outbox-sql-handler
 aws lambda delete-function --function-name payment-sql-configavro-ingester
 aws lambda delete-function --function-name create-reference-api-handler
@@ -53,10 +52,15 @@ aws lambda delete-function --function-name payment-sql-create
 aws lambda delete-function --function-name payment-sql-get
 aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
-aws lambda delete-function --function-name fileDownload
-aws lambda delete-function --function-name fileUpload
+aws lambda delete-function --function-name fileDownloadsql
+aws lambda delete-function --function-name fileUploadsql
 
 
+#Delete event source mappings
+export inboxIngesterUuid=$(aws lambda list-event-source-mappings --function-name payment-sql-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+export avroIngesterUuid=$(aws lambda list-event-source-mappings --function-name payment-sql-configavro-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid ${inboxIngesterUuid}
+aws lambda delete-event-source-mapping --uuid ${avroIngesterUuid}
 
 # Delete REST API
 export restAPIId=$(aws apigateway get-rest-apis | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["items"] if "ms-payment-order-sql-api" == api["name"]]; print filter[0]["id"]')

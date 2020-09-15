@@ -54,7 +54,6 @@ aws lambda delete-function --function-name payment-post-api-handler
 aws lambda delete-function --function-name payment-getall-api-handler
 aws lambda delete-function --function-name payment-get-api-handler
 aws lambda delete-function --function-name payment-put-api-handler
-aws lambda delete-function --function-name inbox-handler
 aws lambda delete-function --function-name outbox-handler
 aws lambda delete-function --function-name paymentorder-ingester
 aws lambda delete-function --function-name create-reference-api-handler
