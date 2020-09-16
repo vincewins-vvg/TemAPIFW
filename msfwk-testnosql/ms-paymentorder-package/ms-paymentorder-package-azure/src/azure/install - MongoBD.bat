@@ -73,7 +73,7 @@ call az eventhubs eventhub create --name %EVENT_HUB% --resource-group %RESOURCE_
 rem Outbox EventListener EventHub //Outbox Listener
 call az eventhubs eventhub create --name %EVENT_HUB_OUTBOX% --resource-group %RESOURCE_GROUP_NAME% --namespace-name %EVENT_HUB_NAME_SPACE%
 
-rem Consumer Group for event hub
+rem Consumer Group for event hub 
 call az eventhubs eventhub consumer-group create --eventhub-name %EVENT_HUB% --resource-group %RESOURCE_GROUP_NAME% --namespace-name %EVENT_HUB_NAME_SPACE% --name %EVENT_HUB_CG%
 
 rem Consumer Group for event hub
