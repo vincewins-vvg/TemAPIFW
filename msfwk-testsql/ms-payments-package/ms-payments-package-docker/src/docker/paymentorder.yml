@@ -60,7 +60,8 @@ services:
       className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
       className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
       className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
-      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl   
+      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl
+      className_FileDelete: com.temenos.microservice.payments.function.FileDeleteImpl         
       className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
       className_GetInputValidation: com.temenos.microservice.payments.function.GetInputValidationImpl
       className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
