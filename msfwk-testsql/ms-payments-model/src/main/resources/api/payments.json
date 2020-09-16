@@ -98,6 +98,33 @@ paths:
             application/octet-stream:
               schema:
                  $ref: '#/components/schemas/DownloadApiResponse'
+  /payments/delete/{fileName}:
+    delete:
+      tags:
+        - Payments
+      parameters:
+        - name: fileName
+          in: path
+          description: FileName
+          required: true
+          schema:
+            type: string
+      summary: Deletes an document
+      description: ''
+      operationId: FileDelete
+      responses:
+        '200':
+          description: Deleted SuccessFully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: File Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSchema'
   /payments/allorders:
     post:
       summary: Creates all the payment orders in a list (Bulk)
