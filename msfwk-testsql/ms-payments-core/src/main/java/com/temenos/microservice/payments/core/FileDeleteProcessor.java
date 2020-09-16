@@ -1,12 +1,11 @@
-package com.temenos.microservice.paymentorder.function;
+package com.temenos.microservice.payments.core;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.stereotype.Component;
 
 import com.temenos.microservice.framework.core.FunctionException;
-import com.temenos.microservice.framework.core.data.DaoFactory;
-import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapter;
 import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapterFactory;
 import com.temenos.microservice.framework.core.file.writer.StorageWriteException;
@@ -14,13 +13,16 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
-import com.temenos.microservice.paymentorder.exception.StorageException;
-import com.temenos.microservice.paymentorder.view.ApiResponse;
-import com.temenos.microservice.paymentorder.view.FileDeleteParams;
+import com.temenos.microservice.payments.dao.FileUploadDao;
+import com.temenos.microservice.payments.entity.FileDetails;
+import com.temenos.microservice.payments.exception.StorageException;
+import com.temenos.microservice.payments.function.FileDeleteInput;
+import com.temenos.microservice.payments.view.ApiResponse;
+import com.temenos.microservice.payments.view.FileDeleteParams;
 
-public class FileDeleteImpl implements FileDelete {
+@Component
+public class FileDeleteProcessor {
 
-	@Override
 	public ApiResponse invoke(Context ctx, FileDeleteInput input) throws FunctionException {
 		ApiResponse apiResponse = new ApiResponse();		
 		validate(input);
@@ -73,11 +75,7 @@ public class FileDeleteImpl implements FileDelete {
 	 * @return void
 	 */
 	private void deleteFileContentFromDatabase(String fileName) throws FunctionException{
-		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.FileDetails> fileDao = DaoFactory
-				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.FileDetails.class);
-		Optional<com.temenos.microservice.paymentorder.entity.FileDetails> fileContent = fileDao
-				.getByPartitionKey(fileName);
-		com.temenos.microservice.paymentorder.entity.FileDetails fileDetailSample = fileContent.get();
-		fileDao.deleteEntity(fileDetailSample);		
+		FileDetails paymentDetailsOpt = (FileDetails) FileUploadDao.getInstance(com.temenos.microservice.payments.entity.FileDetails.class).getSqlDao().findById(fileName, com.temenos.microservice.payments.entity.FileDetails.class);
+		FileUploadDao.getInstance(com.temenos.microservice.payments.entity.FileDetails.class).getSqlDao().deleteById(paymentDetailsOpt);
 	}
 }

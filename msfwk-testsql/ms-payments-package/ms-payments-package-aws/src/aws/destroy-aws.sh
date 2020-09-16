@@ -54,6 +54,7 @@ aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
+aws lambda delete-function --function-name fileDeletesql
 
 
 #Delete event source mappings
