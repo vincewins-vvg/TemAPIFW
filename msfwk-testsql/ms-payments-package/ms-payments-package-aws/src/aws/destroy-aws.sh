@@ -56,7 +56,11 @@ aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
+<<<<<<< HEAD
 aws lambda delete-function --function-name fileDeletesql
+=======
+aws lambda delete-function --function-name fileDownloadsql
+>>>>>>> MSF-2451:Create new aPI to test delete file for Changes(SQL)
 
 
 #Delete event source mappings
