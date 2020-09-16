@@ -79,7 +79,7 @@ call az eventhubs eventhub consumer-group create --eventhub-name %EVENT_HUB% --r
 rem Consumer Group for event hub
 call az eventhubs eventhub consumer-group create --eventhub-name %EVENT_HUB_OUTBOX% --resource-group %RESOURCE_GROUP_NAME% --namespace-name %EVENT_HUB_NAME_SPACE% --name %EVENT_HUB_OUTBOX_CG%
 
-rem Reterive event hub connection string
+rem Reterive event hub connection string 
 call az eventhubs namespace authorization-rule keys list --resource-group %RESOURCE_GROUP_NAME% --namespace-name %EVENT_HUB_NAME_SPACE% --name RootManageSharedAccessKey | python -c "import json,sys;obj=json.load(sys.stdin); print(obj['primaryConnectionString'])" >> out.txt
 set /p eventHubConnection=< out.txt
 del out.txt
