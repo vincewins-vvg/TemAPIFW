@@ -54,12 +54,7 @@ aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
-<<<<<<< HEAD
 aws lambda delete-function --function-name fileDeletesql
-=======
-aws lambda delete-function --function-name fileDownloadsql
->>>>>>> MSF-2451:Create new aPI to test delete file for Changes(SQL)
-
 
 #Delete event source mappings
 export inboxIngesterUuid=$(aws lambda list-event-source-mappings --function-name payment-sql-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
