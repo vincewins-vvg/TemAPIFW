@@ -84,7 +84,7 @@ call az eventhubs namespace authorization-rule keys list --resource-group %RESOU
 set /p eventHubConnection=< out.txt
 del out.txt
 
-REM create new Storage
+REM create new Storage 
 call az storage account create -n %RESOURCE_STORAGE_NAME% -g %RESOURCE_GROUP_NAME% -l %LOCATION% --sku Standard_LRS
 
 rem Reterive storage account connection string
