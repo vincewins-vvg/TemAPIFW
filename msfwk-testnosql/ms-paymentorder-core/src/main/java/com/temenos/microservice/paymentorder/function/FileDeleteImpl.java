@@ -14,6 +14,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.paymentorder.exception.NoDataFoundException;
 import com.temenos.microservice.paymentorder.exception.StorageException;
 import com.temenos.microservice.paymentorder.view.ApiResponse;
 import com.temenos.microservice.paymentorder.view.FileDeleteParams;
@@ -22,21 +23,29 @@ public class FileDeleteImpl implements FileDelete {
 
 	@Override
 	public ApiResponse invoke(Context ctx, FileDeleteInput input) throws FunctionException {
-		ApiResponse apiResponse = new ApiResponse();		
+		ApiResponse apiResponse = new ApiResponse();
 		validate(input);
-		if(input.getParams().get().getFileName() != null ) {
-		deleteFileContentFromDatabase(input.getParams().get().getFileName().get(0));
-		deleteFileContent(input.getParams().get().getFileName().get(0));
+		if (input.getParams().get().getFileName() != null) {
+			deleteFileContent(input.getParams().get().getFileName().get(0));
+			Optional<com.temenos.microservice.paymentorder.entity.FileDetails> fileContent = readFile(
+					input.getParams().get().getFileName().get(0));
+			if (fileContent.isPresent()) {
+				deleteFileContentFromDatabase(fileContent);
+			} else {
+				FailureMessage failureMessage = new FailureMessage("No Data Found", "PAYM-PORD-A-2005");
+				throw new NoDataFoundException(failureMessage);
+			}
 		} else {
-			throw new StorageException(
-					new FailureMessage("Expecting proper request values", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+			throw new StorageException(new FailureMessage("Expecting proper request values",
+					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
 		apiResponse.setMessage("File Deleted Successfully");
 		return apiResponse;
 	}
-	
+
 	/*
 	 * Validate input data
+	 * 
 	 * @return void
 	 */
 	private void validate(FileDeleteInput input) throws InvalidInputException {
@@ -51,33 +60,46 @@ public class FileDeleteImpl implements FileDelete {
 					new FailureMessage("Invalid  param. FileName is empty", "PAYM-PORD-A-2003"));
 		}
 	}
-	
-	
+
 	/*
 	 * delete the file from storage
+	 * 
 	 * @return byte[]
 	 */
-	private void deleteFileContent(String fileName) throws FunctionException{
+	private void deleteFileContent(String fileName) throws FunctionException {
 		try {
-			String StorageUrl = File.separator+ fileName;
+			String StorageUrl = File.separator + fileName;
 			MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
-			 fileWriter.deleteFile(StorageUrl);
+			fileWriter.deleteFile(StorageUrl);
 		} catch (StorageWriteException e) {
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
 	}
-	
+
 	/*
-	 * delete the filecontent from the database.
+	 * get the filecontent from the database.
+	 * 
 	 * @return void
 	 */
-	private void deleteFileContentFromDatabase(String fileName) throws FunctionException{
+	private Optional<com.temenos.microservice.paymentorder.entity.FileDetails> readFile(String fileName)
+			throws FunctionException {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.FileDetails> fileDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.FileDetails.class);
 		Optional<com.temenos.microservice.paymentorder.entity.FileDetails> fileContent = fileDao
 				.getByPartitionKey(fileName);
+		return fileContent;
+	}
+
+	/*
+	 * delete the filecontent from the database.
+	 * 
+	 * @return void
+	 */
+	private void deleteFileContentFromDatabase(Optional<com.temenos.microservice.paymentorder.entity.FileDetails> fileContent) throws FunctionException {
+		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.FileDetails> fileDao = DaoFactory
+				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.FileDetails.class);
 		com.temenos.microservice.paymentorder.entity.FileDetails fileDetailSample = fileContent.get();
-		fileDao.deleteEntity(fileDetailSample);		
+		fileDao.deleteEntity(fileDetailSample);
 	}
 }
