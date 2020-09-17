@@ -7,7 +7,8 @@ export JWT_TOKEN_PUBLIC_KEY="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2d
 
 
 # Create Streams
-aws kinesis create-stream --stream-name payment-inbox-topic --shard-count 1
+aws kinesis create-stream --stream-name PaymentOrder-inbox-topic --shard-count 1
+aws kinesis create-stream --stream-name PaymentOrder-event-topic --shard-count 1
 aws kinesis create-stream --stream-name payment-inbox-error-topic --shard-count 1
 aws kinesis create-stream --stream-name payment-outbox-topic --shard-count 1
 aws kinesis create-stream --stream-name table-update-paymentorder --shard-count 1
@@ -31,6 +32,11 @@ aws s3 cp app/ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar s3://ms-payment-o
 # Create lambdas for scheduler function
 aws lambda create-function --function-name paymentorder-scheduler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.CloudWatchSchedulerProcessor::handleRequest --description "Scheduler for payment order" --timeout 120 --memory-size 600 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_function_class_paymentscheduler=com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler,temn_msf_security_authz_enabled=false,TEST_ENVIRONMENT=MOCK,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,DATABASE_KEY=dynamodb,operationId=paymentscheduler,parameters=\''{"source":"JSON"}'\'\}
 
+# Create lambdas
+aws lambda create-function --function-name payment-inbox-ingester --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.KinesisEventProcessor::handleRequest --description "Inbox Ingester for Holding Service" --timeout 120 --memory-size 256 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{EXECUTION_ENV=TEST,temn_msf_name=PaymentOrder,temn_exec_env=serverless,temn_msf_ingest_sink_error_stream=payment-inbox-error-topic,temn_msf_ingest_generic_ingester=com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl,temn_msf_function_class_UpdatePaymentOrder=com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl,class_package_name=com.temenos.microservice.paymentorder.function,temn_msf_ingest_is_avro_event_ingester=false,DATABASE_KEY=dynamodb,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties\}
+sleep 10
+
+aws lambda create-function --function-name payment-event-ingester --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.KinesisEventProcessor::handleRequest --description "Inbox Ingester for Holding Service" --timeout 120 --memory-size 256 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{EXECUTION_ENV=TEST,temn_msf_name=PaymentOrder,temn_exec_env=serverless,temn_msf_ingest_sink_error_stream=payment-inbox-error-topic,temn_msf_ingest_generic_ingester=com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl,temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl,temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl,class_package_name=com.temenos.microservice.paymentorder.function,temn_msf_ingest_is_avro_event_ingester=false,DATABASE_KEY=dynamodb,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties\}
 sleep 10
 
 aws events put-rule --name ms-paymentorder-scheduler-rule --schedule-expression 'cron(0/50 * * * ? *)'
@@ -106,7 +112,9 @@ aws lambda create-function --function-name payment-post-api-validation-handler -
 sleep 10
 
 # Create event source mapping
-aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
+aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/PaymentOrder-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
+
+aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/PaymentOrder-event-topic --function-name payment-event-ingester --enabled --batch-size 100 --starting-position LATEST
 
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/table-update-paymentorder --function-name paymentorder-ingester --enabled --batch-size 100 --starting-position LATEST
 
