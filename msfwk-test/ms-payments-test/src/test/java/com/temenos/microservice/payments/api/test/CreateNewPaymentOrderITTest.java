@@ -63,7 +63,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		String paymentOrderValue = null;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
@@ -97,7 +97,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT_WRONG), String.class)).exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -172,7 +172,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MIN), String.class)).exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -186,7 +186,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAX), String.class)).exchange()
 					.block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -200,7 +200,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MINLENGTH), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -214,7 +214,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_MAXLENGTH), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
@@ -229,7 +229,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		ClientResponse createResponse;
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_NULLABLE), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));

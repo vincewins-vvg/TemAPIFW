@@ -64,7 +64,7 @@ public class FileHandlingITTest extends ITTest {
 	@Test
 	public void testAFileUpload() {
 		String uri = getUri();
-		uri = uri + "/payments/upload" + ITTest.getCode("FILE_UPLOAD_AUTH_CODE");
+		uri = uri + "/v1.0.0/payments/upload" + ITTest.getCode("FILE_UPLOAD_AUTH_CODE");
 		final ClientConfig config = new DefaultClientConfig();
 		final Client client = Client.create(config);
 		final WebResource resource = client.resource(uri);
@@ -91,7 +91,7 @@ public class FileHandlingITTest extends ITTest {
 	@Ignore
 	public void testFileDownload() {
 		String uri = getUri();
-		uri = uri + "/payments/download/testupload.txt" + ITTest.getCode("FILE_DOWNLOAD_AUTH_CODE");
+		uri = uri + "/v1.0.0/payments/download/testupload.txt" + ITTest.getCode("FILE_DOWNLOAD_AUTH_CODE");
 		javax.ws.rs.client.Client client = ClientBuilder.newClient();
 		Response response = client.target(uri).request().header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).get();
 		try {

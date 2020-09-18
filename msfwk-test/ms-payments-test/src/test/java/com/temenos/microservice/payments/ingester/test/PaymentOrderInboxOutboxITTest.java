@@ -1,19 +1,30 @@
 package com.temenos.microservice.payments.ingester.test;
 
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_INSERT;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
-import java.util.*;
-import org.junit.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
+
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.payments.api.test.ITTest;
 
-import org.junit.runners.*;
 import reactor.core.publisher.Mono;
 
 @Ignore
@@ -42,7 +53,7 @@ public class PaymentOrderInboxOutboxITTest extends ITTest {
 
 		do {
 			createResponse = this.client.post()
-					.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 

@@ -14,7 +14,7 @@
     #And create a new MS request with code using Restassured arguments "FILEUPLOAD"
     #And MS request form-data "documentDetails" is set to "{"documentId":"15","documentName":"Large File"}"
     #And upload document with key "textDoc" from file path "src/test/resources/cucumber-json-payload/LargeSizeFile.zip"
-    #And MS request URI is "payments/upload"
+    #And MS request URI is "v1.0.0/payments/upload"
     #When a "POST" request is sent to MS
     #And log all MS response in console
     #Then MS response code should be 400

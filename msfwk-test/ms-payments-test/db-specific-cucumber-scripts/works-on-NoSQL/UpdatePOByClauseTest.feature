@@ -17,7 +17,7 @@ Scenario Outline: Create a new Payment Order using POST METHOD.
 		| value | string |paytest|
 		| description | string |Payment ref| 
 		
-	And MS request URI is "payments/orders" 
+	And MS request URI is "v1.0.0/payments/orders" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -30,7 +30,7 @@ Scenario Outline: Create a new Payment Order using POST METHOD.
 		|  {  "fromAccount": "3004",  "toAccount": "123-ABC", "paymentReference": "paytest","paymentDetails": "Success",  "currency": "USD",  "amount": 485,  "expires": 10,  "fileContent": "test",  "paymentDate":"2024-05-05",     "paymentMethod": {    "id": 100111,    "name": "HDFC",    "card": {      "cardid": 723,      "cardname": "Diners",      "cardlimit": 120000.11    }  },  "exchangeRates": [    {      "id": 30,      "name": "USD",      "value": 78.12    }          ],  "payeeDetails": {    "payeeName": "MSTester",    "payeeType": "temp"  },  "descriptions": [    "Tester"  ]}|
 		
 Scenario Outline: Update the status of the created payment order using the update clause
-	Given MS request URI is "payments/orders/update" 
+	Given MS request URI is "v1.0.0/payments/orders/update" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	Then MS response code should be 200 
@@ -44,7 +44,7 @@ Scenario Outline: Update the status of the created payment order using the updat
 Scenario: To get the created PO using GET METHOD inorder to validate the updated status 
 	Given create a new MS request with code using Restassured arguments "" 
 	And Set the Testcase id MS-Test-Payments-MS-001 for company GB0010001 
-	And MS request URI is "payments/orders/PO~3004~123-ABC~USD~485" 
+	And MS request URI is "v1.0.0/payments/orders/PO~3004~123-ABC~USD~485" 
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	

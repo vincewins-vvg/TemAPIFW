@@ -11,7 +11,7 @@
   
     Scenario: To download a file by providing invalidurl
     
-    #And MS request URI is "payments/downloadinvalid/TextDoc1.txt"
+    #And MS request URI is "v1.0.0/payments/downloadinvalid/TextDoc1.txt"
     #When a "GET" request is sent to MS
     #Then MS response code should be 404
           

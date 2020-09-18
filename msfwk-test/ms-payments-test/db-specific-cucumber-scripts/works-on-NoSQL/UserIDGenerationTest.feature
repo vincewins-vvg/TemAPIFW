@@ -9,7 +9,7 @@ Feature: UserIDGenerationTest
     And MS request header "Content-Type" is set to "application/json"
     
     Scenario Outline: Create a new userID using POST METHOD.
-    And MS request URI is "user"
+    And MS request URI is "v1.0.0/user"
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
     And log all MS response in console

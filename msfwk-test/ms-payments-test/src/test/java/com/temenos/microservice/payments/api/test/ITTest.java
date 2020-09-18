@@ -147,7 +147,7 @@ public class ITTest {
 		deleteAllRecords("PaymentMethod_extension");
 		deleteAllRecords("ExchangeRate_extension");
 		deleteAllRecords("Card_extension");
-		deleteAllRecords("PayeeDetails_extension");	 
+		deleteAllRecords("PayeeDetails_extension");
 		deleteAllRecords("ms_payment_order_ExchangeRate");
 		deleteAllRecords("ms_payment_order");
 		deleteAllRecords("PaymentMethod");

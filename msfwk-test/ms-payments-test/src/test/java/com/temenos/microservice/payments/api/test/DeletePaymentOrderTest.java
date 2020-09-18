@@ -49,14 +49,14 @@ public class DeletePaymentOrderTest extends ITTest {
 			ClientResponse createResponse, deleteResponse;
 			do {
 				createResponse = this.client.post()
-						.uri("/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+						.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
 						.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange()
 						.block();
 			} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 			do {
-				deleteResponse = this.client
-						.delete().uri("/payments/orders/" + "PO~123~124~USD~100"
+				deleteResponse = this.client.delete()
+						.uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100"
 								+ ITTest.getCode("DELETE_PAYMENTODER_AUTH_CODE") + "&debitAccount=123")
 						.exchange().block();
 			} while (deleteResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));

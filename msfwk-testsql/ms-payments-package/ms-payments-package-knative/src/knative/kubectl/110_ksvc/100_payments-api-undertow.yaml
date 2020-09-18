@@ -70,6 +70,8 @@ spec:
               value: com.temenos.microservice.payments.function.FileDownloadImpl
             - name: className_DoInputValidation
               value: com.temenos.microservice.payments.function.DoInputValidationImpl
+            - name: className_GetInputValidation
+              value: com.temenos.microservice.payments.function.GetInputValidationImpl
             - name: API_HEALTH_CHECK_BUSINESS_CONDITION
               value: com.temenos.microservice.payments.core.BusinessConditionImpl
             - name: temn.msf.name

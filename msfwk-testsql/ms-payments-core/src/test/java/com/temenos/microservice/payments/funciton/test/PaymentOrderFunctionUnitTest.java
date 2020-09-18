@@ -24,22 +24,22 @@ import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.GetPaymentOrder;
 import com.temenos.microservice.payments.function.GetPaymentOrderImpl;
 import com.temenos.microservice.payments.function.GetPaymentOrderInput;
-import com.temenos.microservice.payments.function.GetPaymentOrders;
 import com.temenos.microservice.payments.function.GetPaymentOrdersImpl;
-import com.temenos.microservice.payments.function.GetPaymentOrdersInput;
 import com.temenos.microservice.payments.function.UpdatePaymentOrder;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderImpl;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.payments.view.Card;
 import com.temenos.microservice.payments.view.EnumCurrency;
 import com.temenos.microservice.payments.view.GetPaymentOrderParams;
-import com.temenos.microservice.payments.view.GetPaymentOrdersParams;
 import com.temenos.microservice.payments.view.PaymentMethod;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentOrderStatus;
-import com.temenos.microservice.payments.view.PaymentOrders;
 import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
+import com.temenos.microservice.paymentsorder.function.GetPaymentOrders;
+import com.temenos.microservice.paymentsorder.function.GetPaymentOrdersInput;
+import com.temenos.microservice.paymentsorder.view.GetPaymentOrdersParams;
+import com.temenos.microservice.paymentsorder.view.PaymentOrders;
 
 public class PaymentOrderFunctionUnitTest {
 	public static Charset charset = Charset.forName("UTF-8");
