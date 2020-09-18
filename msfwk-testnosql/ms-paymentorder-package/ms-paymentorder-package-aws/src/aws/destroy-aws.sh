@@ -17,6 +17,11 @@ aws apigateway delete-api-key --api-key $apiDeleteKeyId
 aws s3 rb s3://ms-payment-order --force
 sleep 30
 
+#Delete scheduler
+aws events remove-targets --rule ms-paymentorder-scheduler-rule --ids "paymentorder-scheduler"
+aws events delete-rule --name ms-paymentorder-scheduler-rule
+aws lambda delete-function --function-name paymentorder-scheduler
+
 # Delete tables
 export inboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 
@@ -49,7 +54,6 @@ aws lambda delete-function --function-name payment-post-api-handler
 aws lambda delete-function --function-name payment-getall-api-handler
 aws lambda delete-function --function-name payment-get-api-handler
 aws lambda delete-function --function-name payment-put-api-handler
-aws lambda delete-function --function-name inbox-handler
 aws lambda delete-function --function-name outbox-handler
 aws lambda delete-function --function-name paymentorder-ingester
 aws lambda delete-function --function-name create-reference-api-handler

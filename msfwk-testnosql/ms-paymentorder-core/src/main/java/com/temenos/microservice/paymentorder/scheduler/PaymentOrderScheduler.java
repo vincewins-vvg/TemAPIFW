@@ -26,7 +26,9 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 		NoSqlDbDao<PaymentOrder> paymentOrderDao = DaoFactory.getNoSQLDao(PaymentOrder.class);
 		int count = paymentOrderDao.get().size();
 		Map<String, Object> data = new HashMap<>();
-		data.put("source", input.getParameters().get("source"));
+		if (input.getParameters()!=null) {
+			data.put("source", input.getParameters().get("source"));
+		}
 		data.put("Total count of payment orders", count);
 		schedulerCommandOutput.setData(data);
 		schedulerCommandOutput.setMessage("Success!");
