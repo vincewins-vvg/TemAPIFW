@@ -406,6 +406,11 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
+      EXECUTION_ENVIRONMENT: "TEST"
+      ms.security.tokencheck.enabled: Y
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
