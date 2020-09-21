@@ -1,3 +1,4 @@
+
 Feature: PaymentCustomer
 Background: to set the preconfig for the scenarios
 
@@ -9,7 +10,7 @@ Background: to set the preconfig for the scenarios
 	And MS request header "Content-Type" is set to "application/json" 
 	
 	#POST API
-	#data_1
+	#data_1 Along with Boolean change Validation(MSF-2588)
 Scenario Outline: create customer using post method
 
 	When post the static MS JSON as payload <payload> 
@@ -18,12 +19,25 @@ Scenario Outline: create customer using post method
 	Then MS response code should be 200 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
+	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Riya                 |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD1                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | true                 |
 	
 	Examples: 
         |payload|
 		|{"customerId":"AD1","customerName":"Riya","account":"Savings","loanTypes":["education loan"],"dateOfJoining":"2020-08-26"}|
 		
-#data_2
+#data_2 Along with Boolean change Validation and Sort and Partition Func (MSF-2588)
 Scenario Outline: create customer using post method
 
 	When post the static MS JSON as payload <payload> 
@@ -33,9 +47,23 @@ Scenario Outline: create customer using post method
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Ram                  |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD2                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | false                |
+	
 	Examples: 
         |payload|
 		|{"customerId":"AD2","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-22"}|	
+        |{"customerId":"AD2","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-27"}|	
 	
 #data_3
 Scenario Outline: create customer using post method
@@ -47,9 +75,23 @@ Scenario Outline: create customer using post method
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Ram                  |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD3                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | false                 |
+		
+	
 	Examples: 
         |payload|
-		|{"customerId":"AD3","customerName":"Janani","account":"Savings","loanTypes":["housing loan"],"dateOfJoining":"2021-12-10"}|
+		|{"customerId":"AD3","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-27"}|	
 		
 #data_4
 Scenario Outline: create customer using post method
@@ -132,7 +174,7 @@ Scenario Outline: create customer using post method-invalid date format
 
 	And MS query parameter "fromDate" is set to value "2020-01-10" 
 	And MS query parameter "toDate" is set to value "2021-12-10"
-	And MS query parameter "loanTypes" is set to value "housing%20loan" 
+	And MS query parameter "loanTypes" is set to value "housing loan" 
 	
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
