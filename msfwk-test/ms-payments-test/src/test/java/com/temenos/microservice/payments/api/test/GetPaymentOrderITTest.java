@@ -48,7 +48,6 @@ public class GetPaymentOrderITTest extends ITTest {
 	@Test
 	public void testGetPaymentOrderFunction() {
 		ClientResponse createResponse, getResponse;
-		String params = "&serviceid=client&channelid=web&customfilterid=test";
 		do {
 			createResponse = this.client.post()
 					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
@@ -56,8 +55,9 @@ public class GetPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
-			getResponse = this.client.get().uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100"
-					+ ITTest.getCode("GET_PAYMENTODER_AUTH_CODE") + params).exchange().block();
+			getResponse = this.client.get()
+					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web").header("customfilterid", "test")
+					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
 		assertTrue(getResponse.bodyToMono(String.class).block().contains(
@@ -67,7 +67,6 @@ public class GetPaymentOrderITTest extends ITTest {
 	@Test
 	public void testXcamlGetPaymentOrderFunction() {
 		ClientResponse createResponse, getResponse;
-		String params = "&serviceid=client&channelid=web";
 		do {
 			createResponse = this.client.post()
 					.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
@@ -75,8 +74,9 @@ public class GetPaymentOrderITTest extends ITTest {
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
 		do {
-			getResponse = this.client.get().uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100"
-					+ ITTest.getCode("GET_PAYMENTODER_AUTH_CODE") + params).exchange().block();
+			getResponse = this.client.get()
+					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web")
+					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.UNAUTHORIZED));
 	}
