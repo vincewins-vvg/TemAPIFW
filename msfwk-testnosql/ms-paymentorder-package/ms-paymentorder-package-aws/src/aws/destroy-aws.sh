@@ -1,7 +1,8 @@
 #!/bin/bash -x
 
 # Delete streams
-aws kinesis delete-stream --stream-name payment-inbox-topic
+aws kinesis delete-stream --stream-name PaymentOrder-inbox-topic
+aws kinesis delete-stream --stream-name PaymentOrder-event-topic
 aws kinesis delete-stream --stream-name payment-inbox-error-topic
 aws kinesis delete-stream --stream-name payment-outbox-topic
 aws kinesis delete-stream --stream-name table-update-paymentorder
@@ -50,6 +51,7 @@ aws lambda delete-event-source-mapping --uuid inboxingesteruuid
 
 # Delete lambdas
 aws lambda delete-function --function-name payment-inbox-ingester
+aws lambda delete-function --function-name payment-event-ingester
 aws lambda delete-function --function-name payment-post-api-handler
 aws lambda delete-function --function-name payment-getall-api-handler
 aws lambda delete-function --function-name payment-get-api-handler

@@ -8,15 +8,19 @@ import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.temenos.inboxoutbox.core.GenericCommand;
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -32,7 +36,10 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
+import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
+import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
 import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
@@ -196,7 +203,8 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
 
 		EventManager.raiseBusinessEvent(ctx,
-				new GenericEvent(Environment.getMSName() + ".PaymentOrderCreated", paymentOrderEvent));
+				new GenericEvent("POAccepted", paymentOrderEvent));
+		raiseCommandEvent(ctx, entity);
 		return entity;
 	}
 
@@ -219,5 +227,27 @@ public class CreateNewPaymentOrderProcessor {
 		paymentStatus.setStatus(paymentOrder.getStatus());
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
 		return paymentStatus;
+	}
+	
+	public void raiseCommandEvent(Context ctx, com.temenos.microservice.payments.entity.PaymentOrder entity) {
+		GenericCommand updateCommand = new GenericCommand();
+
+		updateCommand.setDateTime(new Date());
+		updateCommand.setEventId(UUID.randomUUID().toString());
+		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
+		updateCommand.setStatus("New");
+
+		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
+		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
+
+		PaymentStatus paymentStatus = new PaymentStatus();
+		paymentStatus.setDebitAccount(entity.getDebitAccount());
+		paymentStatus.setDetails("Payment order updated");
+		paymentStatus.setPaymentId(entity.getPaymentOrderId());
+
+		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
+
+		updateCommand.setPayload(input);		
+		EventManager.raiseCommandEvent(ctx, updateCommand);
 	}
 }
