@@ -3,13 +3,13 @@ Background: to set the preconfig for the scenarios
 
 	Given Set the test backgound for PAYMENT_ORDER API 
 	And create a new MS request with code using Restassured arguments "" 
-	And MS request URI is "payments/customers" 
+	And MS request URI is "payments/customers"
 	And MS query parameter for Azure env is set to value "" 
 	And MS request header "Authorization" is set to "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw" 
 	And MS request header "Content-Type" is set to "application/json" 
 	
 	#POST API
-	#data_1
+	#data_1 Along with Boolean change Validation(MSF-2588)
 Scenario Outline: create customer using post method
 
 	When post the static MS JSON as payload <payload> 
@@ -18,12 +18,25 @@ Scenario Outline: create customer using post method
 	Then MS response code should be 200 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
+	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Riya                 |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD1                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | true                 |
 	
 	Examples: 
         |payload|
 		|{"customerId":"AD1","customerName":"Riya","account":"Savings","loanTypes":["education loan"],"dateOfJoining":"2020-08-26"}|
 		
-#data_2
+#data_2 Along with Boolean change Validation and Sort and Partition Func (MSF-2588)
 Scenario Outline: create customer using post method
 
 	When post the static MS JSON as payload <payload> 
@@ -33,9 +46,23 @@ Scenario Outline: create customer using post method
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Ram                  |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD2                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | false                |
+	
 	Examples: 
         |payload|
 		|{"customerId":"AD2","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-22"}|	
+        |{"customerId":"AD2","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-27"}|	
 	
 #data_3
 Scenario Outline: create customer using post method
@@ -47,9 +74,23 @@ Scenario Outline: create customer using post method
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
+	Given Set the Testcase id MS-Test-PO-Boolean-001 for company GB0010001
+	
+	And set timeout session for 30 seconds
+	 
+	 Then Set the following data criteria
+      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
+      | MS-Test-PO-Boolean-001        | customerName      | eq       | string   | Ram                  |
+      | MS-Test-PO-Boolean-001        | customerId        | eq       | string   | AD3                  |
+
+   And Validate the below details from the db table ms_payment_order_customer and check no of record is 1
+     | TestCaseID                        | ColumnName      | ColumnValue          |
+     | MS-Test-PO-Boolean-001            | activeStatus    | false                 |
+		
+	
 	Examples: 
         |payload|
-		|{"customerId":"AD3","customerName":"Janani","account":"Savings","loanTypes":["housing loan"],"dateOfJoining":"2021-12-10"}|
+		|{"customerId":"AD3","customerName":"Ram","account":"Salary","loanTypes":["education loan"],"dateOfJoining":"2020-09-27"}|	
 		
 #data_4
 Scenario Outline: create customer using post method
