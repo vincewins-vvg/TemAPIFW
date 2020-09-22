@@ -65,6 +65,8 @@ services:
       className_GetInputValidation: com.temenos.microservice.payments.function.GetInputValidationImpl
       className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
       className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
+      className_UpdateEmployee: com.temenos.microservice.payments.core.UpdateEmployeeImpl
+      className_DeleteEmployee: com.temenos.microservice.payments.core.DeleteEmployeeImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml

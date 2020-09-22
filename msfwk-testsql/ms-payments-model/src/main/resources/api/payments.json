@@ -369,6 +369,57 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/Employee"
+    put:
+      summary: Updates an existing employee
+      operationId: UpdateEmployee
+      tags:
+        - Payments
+      parameters:
+      - name: employeeId
+        in: path
+        description: Employee IDs
+        required: true
+        schema:
+          type: string
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeRequest"
+      responses:
+        '200':
+          description: Update employee
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/EmployeeStatus"
+        '400':
+          description: Invalid employee Id
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"
+    delete:
+      summary: deletes an employee
+      operationId: DeleteEmployee
+      tags:
+        - Payments
+      parameters:
+      - name: employeeId
+        in: path
+        description: Employee ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: deleted employee
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/EmployeeStatus"
+
 components:
   schemas:
     Card:
@@ -731,3 +782,5 @@ components:
           type: string
         status:
           type: string
+        count:
+          type: integer
