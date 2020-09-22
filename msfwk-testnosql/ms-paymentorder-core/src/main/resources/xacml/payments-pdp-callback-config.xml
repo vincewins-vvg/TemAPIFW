@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdp
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://authzforce.github.io/core/xmlns/pdp/7"
+	xmlns:ext="http://authzforce.github.io/core/xmlns/ext/callback/java"
+	version="7.1">
+	<policyProvider
+		id="refPolicyProvider"
+		xsi:type="ext:CallbackPolicyProviderDescriptor"
+		callbackClass="com.temenos.microservice.framework.core.conf.EnvironmentBasedPolicyProvider" />
+	<rootPolicyRef>default</rootPolicyRef>
+</pdp>

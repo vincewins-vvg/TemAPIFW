@@ -60,7 +60,8 @@ services:
       className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
       className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
       className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
-      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl   
+      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl
+      className_FileDelete: com.temenos.microservice.payments.function.FileDeleteImpl         
       className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
       className_GetInputValidation: com.temenos.microservice.payments.function.GetInputValidationImpl
       className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
@@ -408,6 +409,11 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
+      EXECUTION_ENVIRONMENT: "TEST"
+      ms.security.tokencheck.enabled: Y
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}

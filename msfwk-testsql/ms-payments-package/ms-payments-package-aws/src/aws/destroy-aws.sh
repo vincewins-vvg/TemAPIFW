@@ -28,7 +28,8 @@ aws events delete-rule --name ms-payments-scheduler-rule
 aws lambda delete-function --function-name paymentscheduler
 
 # Delete Stream table-update-marketingcatalog
-aws kinesis delete-stream --stream-name payment-inbox-topic
+aws kinesis delete-stream --stream-name PaymentOrder-inbox-topic
+aws kinesis delete-stream --stream-name PaymentOrder-event-topic
 aws kinesis delete-stream --stream-name payment-inbox-error-topic
 aws kinesis delete-stream --stream-name payment-outbox-topic
 aws kinesis delete-stream --stream-name table-update-paymentorder
@@ -36,6 +37,7 @@ aws kinesis delete-stream --stream-name error-paymentorder
 
 # Delete Ingester
 aws lambda delete-function --function-name payment-sql-inbox-ingester
+aws lambda delete-function --function-name payment-sql-event-ingester
 aws lambda delete-function --function-name outbox-sql-handler
 aws lambda delete-function --function-name payment-sql-configavro-ingester
 aws lambda delete-function --function-name create-reference-api-handler
@@ -54,7 +56,7 @@ aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
-
+aws lambda delete-function --function-name fileDeletesql
 
 #Delete event source mappings
 export inboxIngesterUuid=$(aws lambda list-event-source-mappings --function-name payment-sql-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')

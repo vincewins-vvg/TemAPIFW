@@ -90,6 +90,7 @@ services:
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
       className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
       className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
+      className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -310,6 +311,11 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.pdp.resource.type: API
+      temn.msf.pdp.resource.manager: PAYMENT
+      EXECUTION_ENVIRONMENT: "TEST"
+      ms.security.tokencheck.enabled: Y
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}
