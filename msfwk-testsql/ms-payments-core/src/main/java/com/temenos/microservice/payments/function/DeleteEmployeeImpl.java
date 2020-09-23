@@ -1,4 +1,4 @@
-package com.temenos.microservice.payments.core;
+package com.temenos.microservice.payments.function;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.Entity;

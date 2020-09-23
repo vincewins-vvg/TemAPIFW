@@ -50,8 +50,8 @@ services:
       className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
       className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
       className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
-      className_UpdateEmployee: com.temenos.microservice.payments.core.UpdateEmployeeImpl
-      className_DeleteEmployee: com.temenos.microservice.payments.core.DeleteEmployeeImpl
+      className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+      className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.name: PaymentOrder
