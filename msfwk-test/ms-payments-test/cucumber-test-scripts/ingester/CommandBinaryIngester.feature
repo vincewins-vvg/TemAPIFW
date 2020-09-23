@@ -1,4 +1,3 @@
-
 Feature: CommandBinaryIngester    
 
  Scenario: Send Data to topic and validate Payment Order functionality
