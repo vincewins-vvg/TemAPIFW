@@ -56,7 +56,7 @@ public class GetPaymentOrderITTest extends ITTest {
 
 		do {
 			getResponse = this.client.get()
-					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web").header("customfilterid", "test")
+					.uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web").header("customfilterid", "test")
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
@@ -75,7 +75,7 @@ public class GetPaymentOrderITTest extends ITTest {
 
 		do {
 			getResponse = this.client.get()
-					.uri("/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web")
+					.uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTODER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web")
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 		assertTrue(getResponse.statusCode().equals(HttpStatus.UNAUTHORIZED));

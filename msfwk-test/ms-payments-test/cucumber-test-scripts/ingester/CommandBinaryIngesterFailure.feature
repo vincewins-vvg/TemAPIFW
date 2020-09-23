@@ -1,4 +1,3 @@
-
 Feature: CommandBinaryIngesterFailure 
 
  Scenario: Send error prone data to topic and validate Payment Order functionality (incorrect PayRef)
@@ -28,14 +27,14 @@ Feature: CommandBinaryIngesterFailure
     And set timeout session for 30 seconds
 
     #Check the entries in Inbox
-    Then Set the following data criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
-      | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
-      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+    #Then Set the following data criteria
+      #| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
+      #| MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
+      #| MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
 
-    And Validate the below details from the db table ms_inbox_events and check no of record is 1
-      | TestCaseID                    | ColumnName | ColumnValue |
-      | MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
+    #And Validate the below details from the db table ms_inbox_events and check no of record is 1
+      #| TestCaseID                    | ColumnName | ColumnValue |
+      #| MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
       
       
       #To check outbox entries
@@ -90,14 +89,14 @@ Feature: CommandBinaryIngesterFailure
     And set timeout session for 30 seconds
 
     #Check the entries in Inbox
-    Then Set the following data criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
-      | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
-      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+    #Then Set the following data criteria
+      #| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
+      #| MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
+      #| MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
 
-    And Validate the below details from the db table ms_inbox_events and check no of record is 1
-      | TestCaseID                    | ColumnName | ColumnValue |
-      | MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
+    #And Validate the below details from the db table ms_inbox_events and check no of record is 1
+      #| TestCaseID                    | ColumnName | ColumnValue |
+      #| MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
       
       
       #To check outbox entries
