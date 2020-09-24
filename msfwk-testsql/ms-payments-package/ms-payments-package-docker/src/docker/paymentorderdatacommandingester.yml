@@ -51,6 +51,10 @@ services:
       className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
       className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl   
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
+      className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
+      className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
+      className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+      className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.name: PaymentOrder

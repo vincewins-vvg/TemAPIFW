@@ -57,6 +57,10 @@ aws lambda delete-function --function-name payment-sql-update
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
 aws lambda delete-function --function-name fileDeletesql
+aws lambda delete-function --function-name createEmployee
+aws lambda delete-function --function-name updateEmployee
+aws lambda delete-function --function-name deleteEmployee
+aws lambda delete-function --function-name getEmployee
 
 #Delete event source mappings
 export inboxIngesterUuid=$(aws lambda list-event-source-mappings --function-name payment-sql-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
