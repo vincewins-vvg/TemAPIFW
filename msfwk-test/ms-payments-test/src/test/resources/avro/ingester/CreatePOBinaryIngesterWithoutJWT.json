@@ -1,0 +1,38 @@
+{
+	"eventId": "1a316d88-3c7-4-ad7e-1001",
+	"dateTime": "2019-10-21T00:49:35",
+	"eventType": "PaymentOrder.CreateNewPaymentOrder",
+	"payload": {
+		"body": {
+  "fromAccount": "101",
+  "toAccount": "102",
+  "paymentReference": "PayRef",
+  "paymentDetails": "paymentDetails_TEST",
+  "currency": "USD",
+  "amount":10,
+  "expires": 0,
+  "fileContent": "TEST",
+  "paymentMethod": {
+    "id": 1,
+    "name": "ONLINE_TXN",
+    "card": {
+      "cardid": 1,
+      "cardname": "HDFC",
+      "cardlimit": 10
+    }
+  },
+  "exchangeRates": [
+    {
+      "id": 1,
+      "name": "MoneyExchange",
+      "value": 10
+    }
+  ],
+  "payeeDetails": {
+    "payeeName": "bsnl",
+    "payeeType": "ONLINE"
+  },
+  "descriptions": []
+}
+	}
+}
