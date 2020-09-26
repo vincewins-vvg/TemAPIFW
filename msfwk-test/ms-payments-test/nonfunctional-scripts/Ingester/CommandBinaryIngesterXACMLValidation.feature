@@ -35,11 +35,11 @@
 #    #Check for no entries in PO table 
 #    Then Set the following data criteria
 #      | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
-#      | WithoutJWTToken| paymentOrderId    | eq       | string   | PO~101~102~USD~501 |
+#      | XACMLValidation| paymentOrderId    | eq       | string   | PO~101~102~USD~501 |
 #    
 #     And Validate if below details not present in db table ms_payment_order 
 #      | TestCaseID                        | ColumnName      | ColumnValue          |
-#      | WithoutJWTToken    | paymentOrderId  | PO~101~102~USD~501 |
+#      | XACMLValidation    | paymentOrderId  | PO~101~102~USD~501 |
 #    
 #    
 #    And set timeout session for 30 seconds
@@ -73,6 +73,6 @@
 #      
 #     And Validate if the below columns contains values from the db table ms_outbox_events
 #      | TestCaseID                           | ColumnName     | ColumnValue |      
-#      | WithoutJWTToken       | status         | DELIVERED   |
-#      | WithoutJWTToken       | payload        | "status":401 |
-#      | WithoutJWTToken      | payload        | "failureMessages":[{"message":"Authorization failed","code":"MSF-003"}]|
+#      | XACMLValidation       | status         | DELIVERED   |
+#      | XACMLValidation       | payload        | "status":401 |
+#      | XACMLValidation      | payload        | "failureMessages":[{"message":"Authorization failed","code":"MSF-003"}]|
