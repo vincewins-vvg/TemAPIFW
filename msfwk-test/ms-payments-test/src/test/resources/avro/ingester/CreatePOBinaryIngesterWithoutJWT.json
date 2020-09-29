@@ -6,7 +6,7 @@
 		"body": {
   "fromAccount": "101",
   "toAccount": "102",
-  "paymentReference": "PayRef",
+  "paymentReference": "PayRefJWT",
   "paymentDetails": "paymentDetails_TEST",
   "currency": "USD",
   "amount":10,
