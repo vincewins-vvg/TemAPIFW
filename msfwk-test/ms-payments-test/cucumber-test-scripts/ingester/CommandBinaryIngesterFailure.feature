@@ -213,14 +213,14 @@ Feature: CommandBinaryIngesterFailure
   Given Set the Testcase id WithoutJWTToken for company GB0010001
   And Delete Record in the table ms_reference_data for the following criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
-      | WithoutJWTToken    | value    | eq       | string   | PayRef |
+      | WithoutJWTToken    | value    | eq       | string   | PayRefJWT |
   
   #Insert record in ms_reference_table
   Given enter the tablename ms_reference_data
   And enter data for table
   | Fields   | type | data|
   | type | string |paymentref|
-  | value | string |PayRef |
+  | value | string |PayRefJWT |
   | description | string |Payment ref|
   
 	#Delete existing record in Outbox table
