@@ -391,7 +391,7 @@ public class InputJsonPayloadEntityStepDefs implements En {
 //        JSONObject json = new JSONObject(payload);
 //        json.put("body", bodyjsonProperties);
 //        //json.put("header", headerjsonProperties);
-        EntityHandler handler = new PlainTextEntityHandler(json.toString());
+        EntityHandler handler = new PlainTextEntityHandler(bodyjsonProperties.toString());
         EntityWrapper entity = new DefaultEntityWrapper();
         entity.setHandler(handler);
         return entity;

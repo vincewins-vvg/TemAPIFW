@@ -1263,6 +1263,43 @@ public class MS_RestAssuredCucumberSteps {
     assertThat(actualJSONResponse,sameJSONAs(expectedStaticResponse).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
    
     }
+    
+    //To iterate through a JSON array and assert a static json object in it
+    @Then("^check if json array (.*?) in response contains the static json object (.*?)$")
+    public void checkJSONObjectInJSONArray(String jsonArray,String ExpectedJsonObject) throws Throwable {
+    //String actualJSONResponse = response.asString();
+    int count=0;
+    JsonPath json = response.jsonPath();
+    List<Object> resString = json.getList(jsonArray);
+    JSONArray arrayres = new JSONArray();
+    arrayres.put(resString);
+
+    for (int i = 0; i < arrayres.length(); i++) {        
+
+        System.out.println(arrayres.get(0).toString());
+        System.out.println(ExpectedJsonObject);
+        System.out.println("------------------------");
+        
+        if(arrayres.get(i).toString().contains(ExpectedJsonObject)==true)
+        {
+            
+            System.out.print("The given static json object" +ExpectedJsonObject+ "content is present in the array");
+            count++;
+            
+            if(arrayres.get(i).toString().equals(ExpectedJsonObject)==true) {
+            assertThat(arrayres.get(i).toString(),sameJSONAs(ExpectedJsonObject).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+            System.out.print("The given static json object is fully present in the response array");              
+            }
+        }
+        else if(count==0 && i == arrayres.length()-1) {
+            
+            throw new Exception("The json object passed: "+ExpectedJsonObject+" is not part of the returned json array response");
+        }
+    }
+    
+    }    
+    
+    
 
     // To compare full response with file content
 
