@@ -475,3 +475,32 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka  
+  fileingester:
+    build:
+      context: ${FILEINGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${FILEINGESTER_BASE_IMAGE}
+        artifactid: ${fileingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${FILEINGESTER_IMAGE}
+    volumes:
+      - 'c:\testing:/usr/local/tomcat/temp'
+      - 'c:\testing\processed:/usr/local/tomcat'
+    depends_on:
+      - db-service1
+      - db-service2
+      - db-service3
+    ports:
+      - "40520:40500"
+      - "8091:8080"
+    environment:
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
+      temn.msf.name: PaymentOrder
+      temn.msf.security.authz.enabled: "false"
+      VALIDATE_PAYMENT_ORDER: "false"
+      temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
+      temn.msf.ingest.file.procesed.path: /usr/local/tomcat
+      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
