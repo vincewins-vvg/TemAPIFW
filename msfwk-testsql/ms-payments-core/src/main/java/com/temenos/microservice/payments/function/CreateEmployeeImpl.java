@@ -16,7 +16,6 @@ public class CreateEmployeeImpl implements CreateEmployee {
 
 	@Override
 	public EmployeeStatus invoke(Context ctx, CreateEmployeeInput input) throws FunctionException {
-		// TODO Auto-generated method stub
 
 		EmployeeRequest employeeRequest = null;
 

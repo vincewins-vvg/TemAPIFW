@@ -25,11 +25,11 @@ public class UpdateEmployeeImpl implements UpdateEmployee {
 	@Override
 	public EmployeeStatus invoke(Context ctx, UpdateEmployeeInput input) throws FunctionException {
 		EmployeeRequest employeeRequest = null;
-		if (!input.getParams().isPresent() || input.getParams().get().getEmployeeId().isEmpty() || input.getParams().get().getOrgCode().isEmpty() || !input.getBody().isPresent() || input.getBody().get().getName() == null
+		if (!input.getParams().isPresent() || input.getParams().get().getEmployeeId()==null || input.getParams().get().getEmployeeId().isEmpty() || input.getParams().get().getOrgCode() == null || input.getParams().get().getOrgCode().isEmpty() || !input.getBody().isPresent() || input.getBody().get().getName() == null
 				|| input.getBody().get().getName().length() == 0
 				|| !input.getBody().get().getName().matches("[A-Za-z]*")) {
 			throw new InvalidInputException(
-					new FailureMessage("Invalid Request Body", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+					new FailureMessage("Invalid input", Integer.toString(MSFrameworkErrorConstant.INVALID_INPUT)));
 		}
 		employeeRequest = input.getBody().get();
 		EmployeeStatus employeeStatus = new EmployeeStatus();

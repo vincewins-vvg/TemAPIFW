@@ -5,6 +5,7 @@ import com.temenos.microservice.framework.core.data.Entity;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.EmployeeDao;
 import com.temenos.microservice.payments.entity.EmployeePK;
 import com.temenos.microservice.payments.exception.NoDataFoundException;
@@ -15,10 +16,9 @@ public class GetEmployeeImpl implements GetEmployee {
 
 	@Override
 	public Employee invoke(Context ctx, GetEmployeeInput input) throws FunctionException {
-		// TODO Auto-generated method stub
 
-		if (!input.getParams().isPresent()) {
-			throw new InvalidInputException(new FailureMessage("Input param is empty", "EmptyInput-2001"));
+		if (!input.getParams().isPresent() || input.getParams().get().getOrgCode() ==null || input.getParams().get().getOrgCode().isEmpty() || input.getParams().get().getEmployeeId()==null || input.getParams().get().getEmployeeId().isEmpty()) {
+			throw new InvalidInputException(new FailureMessage("Invalid input", Integer.toString(MSFrameworkErrorConstant.INVALID_INPUT)));
 		}
 		GetEmployeeParams employeeParams = input.getParams().get();
 		EmployeePK empId = new EmployeePK();
