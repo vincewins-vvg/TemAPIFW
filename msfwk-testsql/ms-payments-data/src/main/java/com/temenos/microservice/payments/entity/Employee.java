@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 
 @Entity
+@IdClass(EmployeePK.class)
 @Table(name = "ms_payment_employee")
 public class Employee implements ExtendableEntity {
 
@@ -21,6 +23,9 @@ public class Employee implements ExtendableEntity {
 	String employeeId;
 
 	String name;
+	
+	@Id
+	String orgCode;
 
 	public String getEmployeeId() {
 		return employeeId;
@@ -48,6 +53,20 @@ public class Employee implements ExtendableEntity {
 	public void setExtensionData(Map<String, String> extensionData) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @return the orgCode
+	 */
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	/**
+	 * @param orgCode the orgCode to set
+	 */
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 
 }
