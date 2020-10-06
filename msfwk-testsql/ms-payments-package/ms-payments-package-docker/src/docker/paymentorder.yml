@@ -515,8 +515,8 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${FILEINGESTER_IMAGE}
     volumes:
-      - 'c:\testing:/usr/local/tomcat/temp'
-      - 'c:\testing\processed:/usr/local/tomcat'
+      - '/usr/local/tomcat/temp'
+      - '/usr/local/tomcat'
     depends_on:
       - db-service
     ports:
