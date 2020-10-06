@@ -26,7 +26,7 @@ Feature: UserIDGenerationTest
     Given create a new MS request with code using Restassured arguments "" 
 	And fetch the MS response data for rest assured json response "user_Id" from file path "src/test/resources/reusable-test-data/KeyAndValues3.txt" 
 	#Use the store user_Id in CreatePaymentOrder in the request URI
-	And concat the MS request URI "user" with Bundle Value "{user_Id}" 
+	And concat the MS request URI "v1.0.0/user" with Bundle Value "{user_Id}" 
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200 

@@ -11,7 +11,7 @@ Background: To set the preconfig for the scenarios
 	#data_1
  	Scenario Outline: create user by post method(to check the existing) 
 
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -28,7 +28,7 @@ Background: To set the preconfig for the scenarios
 
 	And fetch the MS response data for rest assured json response "user_Id" from file path "src/test/resources/reusable-test-data/KeyAndValues3.txt" 
 	#Use the store user_Id in CreatePaymentOrder in the request URI
-	And concat the MS request URI "user" with Bundle Value "{user_Id}" 
+	And concat the MS request URI "v1.0.0/user" with Bundle Value "{user_Id}" 
 	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200 
@@ -40,7 +40,7 @@ Background: To set the preconfig for the scenarios
 	# data_2
 	Scenario Outline: create user by post method 
 
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -55,7 +55,7 @@ Background: To set the preconfig for the scenarios
 		# data_3
 	Scenario Outline: create user by post method
 	 
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -70,7 +70,7 @@ Background: To set the preconfig for the scenarios
 		# data_4
 	Scenario Outline: create user by post method 
 	
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -85,7 +85,7 @@ Background: To set the preconfig for the scenarios
 		# data_5
 	Scenario Outline: create user by post method 
 
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -100,7 +100,7 @@ Background: To set the preconfig for the scenarios
 		# data_6
 	Scenario Outline: create user by post method 
 	
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -114,7 +114,7 @@ Background: To set the preconfig for the scenarios
 		
 		# data_7
 	Scenario Outline: create user by post method 
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -129,7 +129,7 @@ Background: To set the preconfig for the scenarios
 		# data_8
 	Scenario Outline: create user by post method 
 	
-	And MS request URI is "user" 
+	And MS request URI is "v1.0.0/user" 
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
@@ -143,7 +143,7 @@ Background: To set the preconfig for the scenarios
 		
 	Scenario: wildcard search using user names_1 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "Esh" 
 	
 	When a "GET" request is sent to MS 
@@ -157,7 +157,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_2 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "NiTH" 
 	
 	When a "GET" request is sent to MS 
@@ -171,7 +171,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_3 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "thk" 
 	
 	When a "GET" request is sent to MS 
@@ -185,7 +185,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_4 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "WAR" 
 	
 	When a "GET" request is sent to MS 
@@ -199,7 +199,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_5 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "Aji" 
 	
 	When a "GET" request is sent to MS 
@@ -213,7 +213,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_6 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "!@#$" 
 	
 	When a "GET" request is sent to MS 
@@ -224,7 +224,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names_7 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "null" 
 	
 	When a "GET" request is sent to MS 
@@ -235,7 +235,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names and mail id_8 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "Aji" 
 	And MS query parameter "email" is set to value "tce" 
 	
@@ -248,7 +248,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using user names and mail id_9 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "thk" 
 	And MS query parameter "email" is set to value "yah" 
 	
@@ -261,7 +261,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search using  valid user names and invalid mail id_10 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "thk" 
 	And MS query parameter "email" is set to value "tem" 
 	
@@ -273,7 +273,7 @@ Background: To set the preconfig for the scenarios
 		
 	Scenario: wildcard search using invalid user names and valid mail id_11 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "name" is set to value "xyza" 
 	And MS query parameter "email" is set to value "tce" 
 	
@@ -285,7 +285,7 @@ Background: To set the preconfig for the scenarios
 	
 	Scenario: wildcard search only valid mail id_12 
 
-	And MS request URI is "users" 
+	And MS request URI is "v1.0.0/users" 
 	And MS query parameter "email" is set to value "tce" 
 	
 	When a "GET" request is sent to MS 
