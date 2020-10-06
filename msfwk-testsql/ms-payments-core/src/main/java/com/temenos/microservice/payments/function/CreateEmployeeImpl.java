@@ -16,7 +16,6 @@ public class CreateEmployeeImpl implements CreateEmployee {
 
 	@Override
 	public EmployeeStatus invoke(Context ctx, CreateEmployeeInput input) throws FunctionException {
-		// TODO Auto-generated method stub
 
 		EmployeeRequest employeeRequest = null;
 
@@ -35,6 +34,8 @@ public class CreateEmployeeImpl implements CreateEmployee {
 			com.temenos.microservice.payments.entity.Employee employee = new com.temenos.microservice.payments.entity.Employee();
 
 			employee.setName(employeeRequest.getName());
+			String orgCode = employeeRequest.getOrgCode()!=null ? employeeRequest.getOrgCode() : "ABC";
+			employee.setOrgCode(orgCode);
 
 			SqlDbDao<Entity> employeeDao = DaoFactory
 					.getSQLDao(com.temenos.microservice.payments.entity.Employee.class);

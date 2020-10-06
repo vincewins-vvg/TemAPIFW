@@ -389,6 +389,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: orgCode    
+        in: query
+        description: Organisation code
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Fetched employee
@@ -408,7 +414,12 @@ paths:
         required: true
         schema:
           type: string
-          
+      - name: orgCode    
+        in: query
+        description: Organisation code
+        required: true
+        schema:
+          type: string    
       requestBody:
         content:
           application/json:
@@ -436,6 +447,12 @@ paths:
       - name: employeeId
         in: path
         description: Employee ID
+        required: true
+        schema:
+          type: string
+      - name: orgCode    
+        in: query
+        description: Organisation code
         required: true
         schema:
           type: string
@@ -799,9 +816,13 @@ components:
           type: string
         name:
           type: string
+        orgCode:
+          type: string  
     EmployeeRequest:
       properties:
         name:
+          type: string
+        orgCode:
           type: string
     EmployeeStatus:
       properties:
