@@ -1,0 +1,15 @@
+{
+	"eventId": "c2964e99-22f2-4c70-bd75-bae4866bc869",
+	"correlationId": "c2964e99-22f2-4c70-bd75-bae4866bc869",
+	"priority": 0,
+	"status": "PROCESSED",
+	"eventSourceId": "PaymentOrder",
+	"eventType": "POAccepted",
+	"payload": {
+		"paymentOrderId": "PO~259934~5937~USD~124",
+		"debitAccount": "259934",
+		"creditAccount": "5937",
+		"amount": 124,
+		"currency": "USD"
+	}
+}
