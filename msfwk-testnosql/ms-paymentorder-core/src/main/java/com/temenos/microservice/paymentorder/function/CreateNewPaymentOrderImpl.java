@@ -145,7 +145,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 					.getByPartitionKeyAndSortKey(paymentOrderId, paymentOrder.getFromAccount());
 			if (paymentOrderOpt.isPresent()) {
 				throw new InvalidInputException(
-						new FailureMessage("Records already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+						new FailureMessage("Record already exists", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
 		}
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
