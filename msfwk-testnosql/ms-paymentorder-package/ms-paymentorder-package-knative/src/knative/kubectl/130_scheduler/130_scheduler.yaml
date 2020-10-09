@@ -1,0 +1,42 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: paymentorder-scheduler
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          env:
+            - name: DATABASE_KEY
+              value: mongodb
+            - name: MONGODB_CONNECTIONSTR
+              value: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+            - name: MONGODB_DBNAME
+              value: ms_paymentorder
+            - name: temn.msf.name
+              value: PaymentOrder  
+            - name: temn.msf.security.authz.enabled
+              value: "false"
+            - name: temn.queue.impl
+              value: kafka
+            - name: temn.msf.isScheduler
+              value: "true"
+            - name: operationId
+              value: paymentscheduler
+            - name: temn_msf_function_class_paymentscheduler
+              value: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler
+            - name: class.inbox.dao
+              value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+            - name: class.outbox.dao
+              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+            - name: temn.msf.stream.kafka.bootstrap.servers
+              value: my-cluster-kafka-bootstrap.kafka:9092
+            - name: temn.msf.ingest.is.cloud.event
+              value: "true"
+            - name: temn.msf.stream.vendor
+              value: kafka

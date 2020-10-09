@@ -32,10 +32,12 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 		data.put("Total count of payment orders", count);
 		schedulerCommandOutput.setData(data);
 		schedulerCommandOutput.setMessage("Success!");
-		SCHEDULER_DIAGNOSTIC
-				.prepareInfo("*** Payment order Scheduler run has completed... ***" + new Date().toString()
-						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count)
-				.log();
+		System.out.println("*** Payment order Scheduler run has completed... ***" + new Date().toString()
+						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count);
+//		SCHEDULER_DIAGNOSTIC
+//				.prepareInfo("*** Payment order Scheduler run has completed... ***" + new Date().toString()
+//						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count)
+//				.log();
 		return schedulerCommandOutput;
 	}
 
