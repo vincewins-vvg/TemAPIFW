@@ -97,6 +97,18 @@ spec:
               value: kafka
             - name: temn.msf.ingest.is.cloud.event
               value: "true"
+            - name: ms.security.tokencheck.enabled
+              value: "Y"
+            - name: temn.entitlement.stubbed.service.enabled
+              value: "true"
+            - name: JWT_TOKEN_ISSUER
+              value: https://localhost:9443/oauth2/token
+            - name: JWT_TOKEN_PRINCIPAL_CLAIM
+              value: "sub"
+            - name: ID_TOKEN_SIGNED
+              value: "true"
+            - name: JWT_TOKEN_PUBLIC_KEY
+              value: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
 ---
 #PO Business event Ingester
 apiVersion: serving.knative.dev/v1

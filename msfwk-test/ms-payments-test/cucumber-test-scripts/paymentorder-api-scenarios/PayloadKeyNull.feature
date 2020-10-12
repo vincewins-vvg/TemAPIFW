@@ -20,7 +20,7 @@ Scenario Outline: Create a new Payment Order with Null value for JSON-Data,Objec
 	Examples: 
 	
 		|payload|
-		|{"fromAccount":"101","toAccount":"102","paymentReference":"paytest","paymentDetails":null,"currency":"USD","amount":10,"expires":0,"fileContent":"TEST","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":null,"cardlimit":10}},"exchangeRates":[{"id":11,"name":null,"value":10},{"id":12,"name":"WesternUnion","value":10}],"payeeDetails":{"payeeName":"bsnl","payeeType":null},"descriptions":[null]}|
+		|{"fromAccount":"101","toAccount":"112","paymentReference":"paytest","paymentDetails":null,"currency":"USD","amount":10,"expires":0,"fileContent":"TEST","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":null,"cardlimit":10}},"exchangeRates":[{"id":11,"name":null,"value":10},{"id":12,"name":"WesternUnion","value":10}],"payeeDetails":{"payeeName":"bsnl","payeeType":null},"descriptions":[null]}|
 		
 		
 Scenario Outline: Create a new Payment Order with Null value for Amount (i.e XACML Policy-Validation Applicable) 

@@ -1,0 +1,13 @@
+apiVersion: sources.knative.dev/v1alpha2
+kind: PingSource
+metadata:
+  name: paymentorder-scheduler-source
+  namespace: paymentorder
+spec:
+  schedule: "* * * * *"
+  jsonData: '{"message": "Hello world!"}'
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: paymentorder-scheduler
