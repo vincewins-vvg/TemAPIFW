@@ -389,6 +389,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: orgCode    
+        in: query
+        description: Organisation code
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Fetched employee
@@ -408,7 +414,12 @@ paths:
         required: true
         schema:
           type: string
-          
+      - name: orgCode    
+        in: query
+        description: Organisation code
+        required: true
+        schema:
+          type: string    
       requestBody:
         content:
           application/json:
@@ -439,6 +450,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: orgCode    
+        in: query
+        description: Organisation code
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: deleted employee
@@ -446,6 +463,35 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/EmployeeStatus"
+  /payments/validate:
+    post:
+      summary: Validate a Impl Class 
+      operationId: CreateValidateRequest
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MultiEventDataModels"
+      responses:
+        '201':
+          description: Created balance and transaction entry
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  /account/validate:
+    get:
+      summary: Get Single Account
+      operationId: GetAccountValidate
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
 
 components:
   schemas:
@@ -799,9 +845,13 @@ components:
           type: string
         name:
           type: string
+        orgCode:
+          type: string  
     EmployeeRequest:
       properties:
         name:
+          type: string
+        orgCode:
           type: string
     EmployeeStatus:
       properties:

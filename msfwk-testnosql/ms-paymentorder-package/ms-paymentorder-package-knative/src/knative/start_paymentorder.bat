@@ -29,4 +29,8 @@ cd ../120_kafka
 kubectl apply -f 100_paymentorder-create-kafka-topics.yaml
 kubectl apply -f 110_kafka-source.yaml
 
+cd ../130_scheduler
+kubectl apply -f 130_scheduler.yaml
+kubectl apply -f 131_scheduler_source.yaml
+
 cd ../../

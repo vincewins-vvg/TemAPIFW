@@ -623,7 +623,36 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/PaymentStatus"              
+                $ref: "#/components/schemas/PaymentStatus"
+  /payments/validate:
+    post:
+      summary: Validate a Impl Class 
+      operationId: CreateValidateRequest
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MultiEventDataModels"
+      responses:
+        '201':
+          description: Created balance and transaction entry
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+  /account/validate:
+    get:
+      summary: Get Single Account
+      operationId: GetAccountValidate
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
 components:
   schemas:
     Card:
