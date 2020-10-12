@@ -1,7 +1,5 @@
 package com.temenos.microservice.paymentorder.function;
 
-import java.util.Optional;
-
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.DatabaseOperationException;
@@ -18,39 +16,24 @@ public class CreateAccountImpl implements CreateAccount {
 
 	@Override
 	public AccountStatus invoke(Context ctx, CreateAccountInput input) throws FunctionException {
-		// TODO Auto-generated method stub
 		Account createAccount = input.getBody().get();
-
 		if (input.getBody() == null || input.getBody().get().getAccountId() == null
-				|| input.getBody().get().getAccountId().length() == 0 
+				|| input.getBody().get().getAccountId().length() == 0
 				|| !input.getBody().get().getAccountId().matches("[A-Za-z0-9]*")
 				|| input.getBody().get().getAccountName() == null
 				|| input.getBody().get().getAccountName().length() == 0
 				|| !input.getBody().get().getAccountName().matches("[A-Za-z]*")
 				|| input.getBody().get().getAccountType() == null
-				|| input.getBody().get().getAccountType().length() == 0 
+				|| input.getBody().get().getAccountType().length() == 0
 				|| !input.getBody().get().getAccountType().matches("[A-Za-z]*")
-				|| input.getBody().get().getBranch() == null
-				|| input.getBody().get().getBranch().length() == 0
+				|| input.getBody().get().getBranch() == null || input.getBody().get().getBranch().length() == 0
 				|| !input.getBody().get().getBranch().matches("[A-Za-z]*")) {
 			throw new InvalidInputException(
 					new FailureMessage("Invalid Request Body", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
-		
-		if (createAccount.getAccountId() != null) {
-			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Account> accountDaoGet = DaoFactory
-					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Account.class);
-			Optional<com.temenos.microservice.paymentorder.entity.Account> accountOpt = accountDaoGet
-					.getByPartitionKey(createAccount.getAccountId());
-			if (accountOpt.isPresent()) {
-				throw new InvalidInputException(new FailureMessage("Records already exists",
-						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-			}
-		}
 
 		AccountStatus accountStatus = new AccountStatus();
 		try {
-			
 			com.temenos.microservice.paymentorder.entity.Account account = new com.temenos.microservice.paymentorder.entity.Account();
 			account.setAccountId(createAccount.getAccountId());
 			account.setAccountHolderName(createAccount.getAccountName());
@@ -68,8 +51,6 @@ public class CreateAccountImpl implements CreateAccount {
 		} catch (Exception e) {
 			throw new DatabaseOperationException("Could not be saved in Database");
 		}
-
 		return accountStatus;
 	}
-
 }
