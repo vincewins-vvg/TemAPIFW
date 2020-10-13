@@ -64,14 +64,14 @@ public class InputJsonPayloadEntityStepDefs implements En {
                         JSONObject override_header_obj = new JSONObject(overrideHeader);
                         String override = cucumberInteractionSession.entities().item().get("override");
                         JSONObject obje = new JSONObject(override);
-                        JSONArray overrideArray = obje.getJSONArray("overrideDetails");
-                        
-                        for (Object object : overrideArray) {
-                            if ( object instanceof JSONObject ) {
-                                ((JSONObject) object).put("responseCode", "YES");
-                             }
-                        }
-                        obje.put("overrideDetails", overrideArray);
+                        //JSONArray overrideArray = obje.getJSONArray("overrideDetails"); 
+//                        
+//                        for (Object object : overrideArray) {
+//                            if ( object instanceof JSONObject ) {
+//                                ((JSONObject) object).put("responseCode", "YES");
+//                             }
+//                        }
+//                        obje.put("overrideDetails", overrideArray);
                         override_header_obj.put("override", obje);
                         cucumberInteractionSession.use(setRequestPayloadWithOverride(bodyObject, override_header_obj));
                         cucumberInteractionSession.executeRequest(httpMethod);
