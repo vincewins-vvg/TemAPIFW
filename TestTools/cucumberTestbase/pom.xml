@@ -309,6 +309,25 @@
 			<version>2.17.0</version> <scope>test</scope> </dependency> -->
 
 		<!-- JSON Assert Dependency -->
+		
+		      <!-- Multipart Dependency -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>1.19</version>
+        </dependency>
+        
+          <!-- Multipart Dependency -->
 
 		<dependency>
 			<groupId>io.cloudevents</groupId>
