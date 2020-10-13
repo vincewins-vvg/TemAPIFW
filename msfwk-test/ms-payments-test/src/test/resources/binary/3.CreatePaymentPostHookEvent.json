@@ -1,0 +1,14 @@
+{
+	"eventId": "34ae9209-856e-4ed4-8980-1c658eb0a204",
+	"correlationId": "34ae9209-856e-4ed4-8980-1c658eb0a204",
+	"priority": 0,
+	"status": "PROCESSED",
+	"eventSourceId": "PaymentOrder",
+	"eventType": "PostHookEvent",
+	"payload": {
+		"debitAccount": "259934",
+		"creditAccount": "5937",
+		"amount": 124,
+		"currency": "USD"
+	}
+}
