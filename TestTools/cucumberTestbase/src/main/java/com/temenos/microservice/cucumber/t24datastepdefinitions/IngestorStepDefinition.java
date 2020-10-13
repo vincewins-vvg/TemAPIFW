@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import com.temenos.microservice.framework.test.dao.Criterion;
 import com.temenos.microservice.framework.test.dao.DaoFacade;
 import com.temenos.microservice.framework.test.dao.DaoFactory;
 import com.temenos.microservice.framework.test.streams.ITestProducer;
+import com.temenos.microservice.framework.test.util.ITtestStreamTopicReader;
 import com.temenos.microservice.test.DataTablesColumnNames;
 import com.temenos.microservice.test.TestCase;
 import com.temenos.microservice.test.producer.AvroProducer;
@@ -139,6 +141,16 @@ public class IngestorStepDefinition {
 		}
 
 	}
+	   
+	   //To check json data content in topic
+	   @When("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
+	    public void checkJSONInTopic(String eventId, String eventType, String topicName) throws Exception {
+	       
+	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandType(topicName,eventId, eventType);
+	       assertTrue("There is no entry for the Event Id:"+eventId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
+	   }
+	
+	
 	
 	
     //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
@@ -408,6 +420,37 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
+	
+	
+	
+	@Then("^associate below column values with bundle from the db table ([^\\s]+)$")
+    public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
+        dataMap = RetryUtil.getWithRetry(300, () -> {
+            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+            return (dataMap.size() != 0 ? dataMap : null);
+        }, " Getting DB records from table: " + tableName);
+//          if (dataMap.size() >= 2) {
+//              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
+//          }
+        List<Attribute> data = dataMap.get(Integer.valueOf(1));
+        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+        tableValues.forEach(tableValue -> {
+            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+                data.forEach(attribute -> {
+                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+                     
+                        cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()), tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString());
+                    }
+                    
+                    System.out.println(DataTablesColumnNames.COLUMN_NAME.getName().toString()+"value is "+DataTablesColumnNames.COLUMN_VALUE.getName().toString());
+
+                });
+            }
+        });
+    }
+	
+	
+	
 
 	private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
 		return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: " + tableName + " for column"

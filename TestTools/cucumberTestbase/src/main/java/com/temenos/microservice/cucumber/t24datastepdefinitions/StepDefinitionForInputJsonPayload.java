@@ -2,13 +2,20 @@ package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static java.text.MessageFormat.format;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.MultiPart;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.useragent.cucumber.config.StepDefinitionConfiguration;
 import com.temenos.useragent.cucumber.steps.CucumberInteractionSession;
@@ -58,6 +65,31 @@ public class StepDefinitionForInputJsonPayload implements En {
             json = new JSONObject();
             this.setJson(json);
         });
+        
+        
+        Given(format("^(?:I ?)*upload document with key {0} from path {0}$", stepConfig.stringRegEx()),
+        (String formDataKey, String docPath) -> {
+       
+          File fileToBeUploaded = new File(System.getProperty("user.dir") + "/" +docPath);
+          FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("f", fileToBeUploaded);
+          fileDataBodyPart
+                  .setContentDisposition(FormDataContentDisposition.name(formDataKey).fileName(fileToBeUploaded.getName()).build());
+            
+          final MultiPart multiPart = new FormDataMultiPart().bodyPart(fileDataBodyPart);
+          multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
+
+
+        
+        });
+        
+        Given(format("^(?:I ?)*set form-data with key {0} and value {0}$", stepConfig.stringRegEx()),
+        (String formDataKey, String formDataValue) -> {
+       
+   
+            final MultiPart multiPart = new FormDataMultiPart().field(formDataKey, formDataValue);
+            multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);        
+            });
+
 
         Given(format("^(?:I ?)*set property {0} from bundle value {0}$", stepConfig.stringRegEx()),
                 (String propertyName, String bundlevariablename) -> {
