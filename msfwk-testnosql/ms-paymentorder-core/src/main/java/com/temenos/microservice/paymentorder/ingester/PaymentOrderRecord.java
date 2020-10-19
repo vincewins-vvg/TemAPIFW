@@ -37,7 +37,9 @@ public class PaymentOrderRecord {
 
 	private void transform() {
 		JSONObject payload = sourceRecord.getJSONObject("payload");
-
+		if("".equalsIgnoreCase(payload.optString("recId"))) {
+			throw new RuntimeException("Paymentorder id null");
+		}
 		this.paymentOrderId = payload.optString("recId");
 		this.debitAccount = payload.getString("DebitAccount"); // 10
 		this.paymentReference = payload.getString("OrderingReference"); // 15
