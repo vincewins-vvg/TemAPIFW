@@ -1,0 +1,27 @@
+{
+   "create":"ms_holdings_test"    
+}
+
+{
+   "createIndexes":"ms_holdings_test",
+   "indexes":[
+      {
+         "key":{
+            "txnId":1
+         },
+         "name":"txnId"
+      }
+   ]
+}
+
+{
+   "createIndexes":"ms_holdings_test",
+   "indexes":[
+      {
+         "key":{
+            "accountId":1
+         },
+         "name":"accountId"
+      }
+   ]
+}
