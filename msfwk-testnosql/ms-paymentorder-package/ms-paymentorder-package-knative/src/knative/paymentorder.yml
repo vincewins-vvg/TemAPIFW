@@ -4,18 +4,14 @@
 
 version: '3.6'
 services:  
-  db-service:
+  db-init-service:
     build:
-      context: ${DB_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${KNATIVE_CONTEXT}
+      dockerfile: db/mongo/Dockerfile
       args:
-        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
-    image: ${DB_IMAGE}
-    shm_size: '1gb'
-    ports:
-      - "9047:9042" 
-    environment:
-      CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        api_artifactid: ${knative_artifactid}
+    image: ${MONGO_SCRIPT_IMAGE}    
   api:
     build:
       context: ${API_CONTEXT}

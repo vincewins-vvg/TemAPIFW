@@ -18,6 +18,7 @@ kubectl delete -f 110_paymentorder-api.yaml
 kubectl delete -f 100_paymentorder-create-namespace.yaml
 
 cd ../100_db/mongo/rs
+kubectl delete -f mongo-setup.yaml
 kubectl delete -f 170_mongo_services.yaml
 kubectl delete -f 160_rs.yaml
 cd ../operator

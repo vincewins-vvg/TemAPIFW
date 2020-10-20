@@ -1,4 +1,8 @@
-ARG DB_BASE_IMAGE
-FROM ${DB_BASE_IMAGE}
+ARG API_BASE_IMAGE
+FROM ${API_BASE_IMAGE}
 
-ENTRYPOINT ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "ms-mongo-set"]
+ADD dbMigration/ /app/temp/
+
+WORKDIR app/temp/lib
+
+CMD java -cp "ms-framework-db-migration-DEV.0.0-SNAPSHOT.jar:libs/*:" com.temenos.microservice.framework.tools.dbMigration.MSFDataMigration
