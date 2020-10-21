@@ -10,9 +10,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -38,6 +40,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.InvocationFailedException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.JsonUtil;
@@ -73,6 +76,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		if(errorList.size()>0)
 			throw new InvalidInputException(new FailureMessage(errorList.toString()));
 		
+		errorGenerationBasedOnInput(input,"process");
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
@@ -122,10 +126,22 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		}
 		return paymentStatus;
 	}
+	
+	@Override
+	public void preHook(final Context ctx, final CreateNewPaymentOrderInput input) throws FunctionException {
+		errorGenerationBasedOnInput(input, "preHook");
+		POFailedEvent poFailedEvent = new POFailedEvent();
+		poFailedEvent.setAmount(input.getBody().get().getAmount());
+		poFailedEvent.setCreditAccount(input.getBody().get().getToAccount());
+		poFailedEvent.setCurrency(input.getBody().get().getCurrency().toString());
+		poFailedEvent.setDebitAccount(input.getBody().get().getFromAccount());
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PreHookEvent", poFailedEvent));
+	}
 
 	@Override
 	public void postHook(final Context ctx, final ResponseStatus responseStatus, final CreateNewPaymentOrderInput input,
 			final PaymentStatus response) throws FunctionException {
+		errorGenerationBasedOnInput(input, "postHook");
 		POFailedEvent poFailedEvent = new POFailedEvent();
 		poFailedEvent.setAmount(input.getBody().get().getAmount());
 		poFailedEvent.setCreditAccount(input.getBody().get().getToAccount());
@@ -260,5 +276,24 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		updateCommand.setPayload(input);
 		EventManager.raiseCommandEvent(ctx, updateCommand);
+	}
+	
+	/**
+	 * Generates Exception based on "Descriptions" from input payload
+	 * @param input -payload
+	 * @param hookName - prehook,posthook,process
+	 * @throws InvocationFailedException
+	 */
+	private void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName) throws InvocationFailedException {
+		if (input == null || input.getBody() == null && input.getBody().get() == null)
+			return;
+		if (input.getBody().get().getDescriptions() != null && !input.getBody().get().getDescriptions().isEmpty()) {
+			if(input.getBody().get().getDescriptions().get(0)==null)
+				return;
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"BusinessFailure"))
+				throw new InvocationFailedException("Business Failure error generated");
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"InfrastructureFailure"))
+				throw new NullPointerException("Infrastructure Failure error generated");
+		}
 	}
 }

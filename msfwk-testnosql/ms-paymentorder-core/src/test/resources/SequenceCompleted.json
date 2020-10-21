@@ -6,6 +6,7 @@
    "status":"new",
    "eventType":"ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted",
    "payload":{
-      "paymentOrderId":"PO~111~123~USD~100"
+      "paymentOrderId":"PO~111~123~USD~100",
+      "descriptions": "success"
    }
 }
