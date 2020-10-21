@@ -34,6 +34,7 @@ import com.temenos.microservice.framework.core.file.writer.StorageWriteException
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.InvocationFailedException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.JsonUtil;
@@ -66,6 +67,7 @@ public class CreateNewPaymentOrderProcessor {
 		if(errorList.size()>0) 
 			throw new InvalidInputException(new FailureMessage(errorList.toString()));
 		
+		errorGenerationBasedOnInput(input,"process");
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
@@ -250,4 +252,23 @@ public class CreateNewPaymentOrderProcessor {
 		updateCommand.setPayload(input);		
 		EventManager.raiseCommandEvent(ctx, updateCommand);
 	}
+	/**
+	 * Generates Exception based on "Descriptions" from input payload
+	 * @param input -payload
+	 * @param hookName - prehook,posthook,process
+	 * @throws InvocationFailedException
+	 */
+	public void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName) throws InvocationFailedException {
+		if (input == null || input.getBody() == null && input.getBody().get() == null)
+			return;
+		if (input.getBody().get().getDescriptions() != null && !input.getBody().get().getDescriptions().isEmpty()) {
+			if(input.getBody().get().getDescriptions().get(0)==null)
+				return;
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"BusinessFailure"))
+				throw new InvocationFailedException("Business Failure error generated");
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"InfrastructureFailure"))
+				throw new NullPointerException("Infrastructure Failure error generated");
+		}
+	}
+
 }

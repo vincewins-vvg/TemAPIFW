@@ -12,8 +12,10 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.InvocationFailedException;
 import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
+import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderInput;
 
 public class EventHandlerImpl implements EventProcessor {
 
@@ -27,6 +29,7 @@ public class EventHandlerImpl implements EventProcessor {
 					.append(eventType).append(" ").append(event.getPayload().toString()).toString()).log();
 			return;
 		}
+		errorGenerationBasedOnInput(event, "process");
 		PaymentOrder paymentOrder = null;
 		String paymentOrderId = "";
 
@@ -39,6 +42,37 @@ public class EventHandlerImpl implements EventProcessor {
 			paymentOrder = noSqlDao.getByPartitionKey(paymentOrderId).get();
 			paymentOrder.setStatus("Completed");
 			noSqlDao.saveEntity(paymentOrder);
+	}
+	
+	@Override
+	public void preHook(final Context ctx, GenericEvent event) throws FunctionException {
+		errorGenerationBasedOnInput(event, "preHook");
+	}
+	@Override
+	public void postHook(final Context ctx, GenericEvent event) throws FunctionException {
+		errorGenerationBasedOnInput(event, "postHook");
+	}
+	private void errorGenerationBasedOnInput(GenericEvent event, String hookName) throws InvocationFailedException {
+		try {
+			String description = JsonUtil.readField(event.getPayload(), "descriptions");
+			if (description==null || description.isEmpty())
+				return;
+			if (description.equals(hookName+"BusinessFailure"))
+				throw new InvocationFailedException("Business Failure error generated");
+			if (description.equals(hookName+"InfrastructureFailure"))
+				throw new NullPointerException("Infrastructure Failure error generated");
+		} catch(IOException e) {
+			//suppress exception
+			Logger.forDiagnostic().forComp(LoggingConstants.COMPONENT).prepareInfo("Cannot get value of description from input payload, for errorGenerationBasedOnInput()").log();
+		} catch(InvocationFailedException e) {
+			//suppress exception
+			Logger.forDiagnostic().forComp(LoggingConstants.COMPONENT).prepareInfo("Triggering Business failure in "+hookName).log();
+			throw e;
+		} catch(Exception e) {
+			//suppress exception
+			Logger.forDiagnostic().forComp(LoggingConstants.COMPONENT).prepareInfo("Triggering Infrastructural failure in "+hookName).log();
+			throw e;
+		}
 		
 	}
 }
