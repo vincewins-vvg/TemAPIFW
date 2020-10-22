@@ -31,12 +31,14 @@ Scenario Outline: duplication check
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Records already exists" 
+	Then check if actual response matches the expected static response <response>
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":"AD1","accountName":"ALEX","accountType":"SAVINGS","branch":"CHENNAI"}|
+		|payload|response|
+		|{"accountId":"AD1","accountName":"ALEX","accountType":"SAVINGS","branch":"CHENNAI"}|[{"message":"Could not be saved in Database","code":"MSF-999"}]|
+		
+		
 		
 Scenario Outline: to check whether the payloads get updated in post api 
 
@@ -44,12 +46,12 @@ Scenario Outline: to check whether the payloads get updated in post api
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Records already exists" 
+	Then check if actual response matches the expected static response <response> 
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|
+		|payload|response|
+		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|[{"message":"Could not be saved in Database","code":"MSF-999"}]|
 		
 Scenario Outline: payload conditions-null handling
 
@@ -57,13 +59,12 @@ Scenario Outline: payload conditions-null handling
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Invalid Request Body" 
-	
+	Then check if actual response matches the expected static response <response> 
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":null,"accountName":"fghj","accountType":"rtyu","branch":"hjj"}|
+		|payload|response|
+		|{"accountId":null,"accountName":"fghj","accountType":"rtyu","branch":"hjj"}|[{"message":"Invalid Request Body","code":"MSF-002"}]|
 		
 Scenario Outline: payload conditions without extension payload
 
@@ -71,13 +72,13 @@ Scenario Outline: payload conditions without extension payload
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Invalid Request Body" 
+	Then check if actual response matches the expected static response <response> 
 	
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":"ABD"}|
+		|payload|response|
+		|{"accountId":"ABD"}|[{"message":"Invalid Request Body","code":"MSF-002"}]|
 		
 Scenario Outline: payload conditins without account id
 
@@ -85,13 +86,13 @@ Scenario Outline: payload conditins without account id
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Invalid Request Body" 
+	Then check if actual response matches the expected static response <response>  
 	
 	
 	Examples: 
 	
-		|payload|
-		|{"accountName":"fghj","accountType":"rtyu","branch":"hjj"}|
+		|payload|response|
+		|{"accountName":"fghj","accountType":"rtyu","branch":"hjj"}|[{"message":"Invalid Request Body","code":"MSF-002"}]|
 		
 Scenario Outline: payload conditions with junk values
 
@@ -99,12 +100,12 @@ Scenario Outline: payload conditions with junk values
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	
+	Then check if actual response matches the expected static response <response> 
 	
 	Examples: 
 	
-		|payload|
-		|{sdfghj}|
+		|payload|response|
+		|{sdfghj}|[{"message":"Unexpected error occurred. Check system logs for more details","code":"MSF-002"}]|
 		
 Scenario Outline: payload condition with no payload
 
@@ -112,12 +113,12 @@ Scenario Outline: payload condition with no payload
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Invalid Body parameter" 
+	Then check if actual response matches the expected static response <response>  
 	
 	Examples: 
 	
-		|payload|
-		||
+		|payload|response|
+		||[{"message":"Invalid Body parameter","code":"MSF-001"}]|
 		
 		#PUT API
 		
@@ -128,12 +129,12 @@ Scenario Outline: update payload with put api-id mismatch
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "AccountId does not match with path param" 
+	Then check if actual response matches the expected static response <response> 
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|
+		|payload|response|
+		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|[{"message":"AccountId does not match with path param","code":"MSF-002"}]|
 		
 Scenario Outline: payload conditions without account id
 
@@ -142,13 +143,27 @@ Scenario Outline: payload conditions without account id
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Invalid Request Body" 
+	Then check if actual response matches the expected static response <response>  
 	
 	Examples: 
 	
-		|payload|
-		|{"accountName":"AAA","accountType":"BBB","branch":"CCC"}|
+		|payload|response|
+		|{"accountName":"AAA","accountType":"BBB","branch":"CCC"}|[{"message":"Invalid Request Body -- Check email or name","code":"MSF-002"}]|
 		
+Scenario Outline: payload conditions with missing extensive payload
+
+	Given MS request URI is "v1.0.0/account/AD1" 
+	When post the static MS JSON as payload <payload> 
+	When a "PUT" request is sent to MS 
+	And log all MS response in console 
+	Then MS response code should be 400 
+	Then check if actual response matches the expected static response <response>  
+	
+	Examples: 
+	
+		|payload|response|
+		|{"accountId":"AD1","accountType":"BBB"}|[{"message":"Invalid Request Body -- Check email or name","code":"MSF-002"}]|
+
 Scenario Outline: update payload with put api
 
 	Given MS request URI is "v1.0.0/account/AD1" 
@@ -156,12 +171,27 @@ Scenario Outline: update payload with put api
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200 
+	Then check if actual response matches the expected static response <response>
 	
 	Examples: 
 	
-		|payload|
-		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|
-		
+		|payload|response|
+		|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|{"accountId":"AD1","accountName":"AAA","accountType":"BBB","branch":"CCC"}|
+
+Scenario Outline: create a new account with put api
+
+	Given MS request URI is "v1.0.0/account/NEW" 
+	When post the static MS JSON as payload <payload> 
+	When a "PUT" request is sent to MS 
+	And log all MS response in console 
+	Then MS response code should be 200 
+	Then check if actual response matches the expected static response <response>
+	
+	Examples: 
+	
+		|payload|response|
+		|{"accountId":"NEW","accountName":"HHH","accountType":"JJJ","branch":"KKK"}|{"accountId":"NEW","accountName":"HHH","accountType":"JJJ","branch":"KKK"}|
+				
 		#GET API
 		
 Scenario: get api
@@ -193,7 +223,7 @@ Scenario: delete with invalid id
 	Then MS response code should be 404 
 	And MS JSON response string property key "message" should contain value "ID is not present in DB" 
 	
-Scenario: delete api
+Scenario: delete api_1
 
 	Given MS request URI is "v1.0.0/account/AD1" 
 	When a "DELETE" request is sent to MS 
@@ -202,6 +232,16 @@ Scenario: delete api
 	And MS JSON property "accountId" should exist 
 	And MS JSON response string property key "modifiedCount" should equal value "1" 
 	And MS JSON response string property key "status" should equal value "Successful" 
+	
+Scenario: delete api_2
+
+	Given MS request URI is "v1.0.0/account/NEW" 
+	When a "DELETE" request is sent to MS 
+	And log all MS response in console 
+	Then MS response code should be 200 
+	And MS JSON property "accountId" should exist 
+	And MS JSON response string property key "modifiedCount" should equal value "1" 
+	And MS JSON response string property key "status" should equal value "Successful"	
 	
 	
 	
