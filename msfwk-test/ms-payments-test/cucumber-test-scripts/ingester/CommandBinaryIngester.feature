@@ -110,7 +110,7 @@ Feature: CommandBinaryIngester
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                    | ColumnName | ColumnValue |
-      | MS-Test-PO-CommandIngester-001| status    | PROCESSED   |
+      | MS-Test-PO-CommandIngester-001| status    | FAILED   |
     
     
       #To check outbox entries
