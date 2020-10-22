@@ -1,27 +1,56 @@
 {
-   "create":"ms_holdings_test"    
+   "create":"ms_payment_order"    
 }
 
 {
-   "createIndexes":"ms_holdings_test",
-   "indexes":[
-      {
-         "key":{
-            "txnId":1
-         },
-         "name":"txnId"
-      }
-   ]
+   "create":"ms_inbox_events"    
 }
 
 {
-   "createIndexes":"ms_holdings_test",
+   "create":"ms_outbox_events"    
+}
+
+{
+   "create":"ms_reference_data"    
+}
+
+{
+   "create":"ms_altkey"    
+}
+
+{
+   "create":"ms_file_upload"    
+}
+
+{
+   "create":"ms_payments_user"    
+}
+
+{
+   "create":"ms_payments_account"    
+}
+
+{
+   "create":"ms_payment_order_customer"    
+}
+
+{
+   "create":"ms_payment_order_balance"    
+}
+
+{
+   "create":"ms_payment_order_transaction"    
+}
+
+
+{
+   "createIndexes":"ms_payment_order_customer",
    "indexes":[
       {
          "key":{
-            "accountId":1
+            "customerId":1
          },
-         "name":"accountId"
+         "name":"customerId"
       }
    ]
 }
