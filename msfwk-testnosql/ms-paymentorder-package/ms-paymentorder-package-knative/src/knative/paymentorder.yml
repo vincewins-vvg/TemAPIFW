@@ -10,7 +10,7 @@ services:
       dockerfile: db/mongo/Dockerfile
       args:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
-        api_artifactid: ${knative_artifactid}
+        api_artifactid: ${knative-artifactid}
     image: ${MONGO_SCRIPT_IMAGE}    
   api:
     build:
