@@ -7,7 +7,7 @@ services:
   db-service1:
     build:
       context: ${MONGO_DB_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo1'
@@ -16,7 +16,7 @@ services:
   db-service2:
     build:
       context: ${MONGO_DB_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo2'
@@ -25,7 +25,7 @@ services:
   db-service3:
     build:
       context: ${MONGO_DB_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     container_name: 'mongo3'
@@ -35,7 +35,7 @@ services:
     container_name: 'mongoinit'
     build:
       context: ${MONGO_INIT_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
     depends_on:
@@ -127,7 +127,7 @@ services:
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${SCHEDULER_BASE_IMAGE}
         artifactid: ${scheduler_artifactid}
@@ -157,7 +157,7 @@ services:
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
         artifactid: ${inboxoutbox_artifactid}
@@ -192,7 +192,7 @@ services:
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -236,7 +236,7 @@ services:
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -275,7 +275,7 @@ services:
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -326,7 +326,7 @@ services:
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -366,7 +366,7 @@ services:
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -404,7 +404,7 @@ services:
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -442,7 +442,7 @@ services:
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
@@ -481,7 +481,7 @@ services:
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
-      dockerfile: PerfDockerfile
+      dockerfile: Dockerfile
       args:
         BASE_IMAGE: ${FILEINGESTER_BASE_IMAGE}
         artifactid: ${fileingester_artifactid}
