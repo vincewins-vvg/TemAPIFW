@@ -3,12 +3,15 @@ FROM ${API_BASE_IMAGE}
 
 ARG api_artifactid
 ARG api_java_options
+ARG performance_agent_artifactid
+ARG performance_logger_artifactid
 
 ENV artifactid ${api_artifactid}
 ENV java_options ${api_java_options}
 ENV JAVA_OPTS ${java_options}
+ENV performance_agent ${performance_agent_artifactid}
+ENV performance_logger ${performance_logger_artifactid}
 
 COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
-COPY ${performance_agent_artifactid} /usr/local/${performance_agent_artifactid}
-COPY ${performance_logger_artifactid} /usr/local/tomcat/lib/${performance_logger_artifactid}
-
+COPY ${performance_agent} /usr/local/${performance_agent}
+COPY ${performance_logger} /usr/local/tomcat/lib/${performance_logger}
