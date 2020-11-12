@@ -13,6 +13,7 @@ import com.temenos.des.streamvendorio.kafka.producer.KafkaStreamProducer;
 import com.temenos.des.streamvendorio.kinesis.producer.KinesisStreamProducer;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.ingester.IngesterConfigProperty;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 
 public class StreamUtils {
 
@@ -48,7 +49,11 @@ public class StreamUtils {
 			props.put(ProducerConfig.ACKS_CONFIG, "all");
 			props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
 			props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-			props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+			if (IngesterUtil.isCloudEvent()) {
+				props.put("value.serializer", StringSerializer.class);
+			} else {
+				props.put("value.serializer", ByteArraySerializer.class);
+			}
 			props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
 			props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
 			props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
