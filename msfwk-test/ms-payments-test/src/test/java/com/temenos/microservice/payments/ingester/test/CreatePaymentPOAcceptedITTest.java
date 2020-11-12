@@ -26,6 +26,8 @@ import com.temenos.microservice.payments.util.StreamUtils;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
+import com.temenos.microservice.framework.test.streams.ITestProducer;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 
 public class CreatePaymentPOAcceptedITTest extends ITTest {
 
@@ -43,7 +45,7 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 	public static void tearDown() {
 		String inboxTableName = "";
 		inboxTableName = "ms_inbox_events";
-		
+
 		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "c2964e99-22f2-4c70-bd75-bae4866bc869",
 				"eventType", "eq", "string", "POAccepted");
 		daoFacade.closeConnection();
@@ -54,7 +56,12 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 	public void testAingestEvent() throws IOException, InterruptedException {
 		String content = new String(
 				Files.readAllBytes(Paths.get("src/test/resources/binary/4.CreatePaymentPOAccepted.json")));
-		producer.batch().add("paymentorder-event-topic", "1", new String(content).getBytes());
+		if (IngesterUtil.isCloudEvent()) {
+			producer.batch().add("paymentorder-event-topic", "1", IngesterUtil.packageCloudEvent(content.getBytes()));
+		} else {
+			producer.batch().add("paymentorder-event-topic", "1", content.getBytes());
+		}
+
 		try {
 			producer.batch().send();
 		} catch (StreamProducerException e) {
@@ -70,7 +77,7 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 			Thread.sleep(45000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("c2964e99-22f2-4c70-bd75-bae4866bc869", "POAccepted");
-			System.out.println("inboxResultMap  "+inboxResultMap);
+			System.out.println("inboxResultMap  " + inboxResultMap);
 			retryCount = retryCount + 1;
 		} while (inboxResultMap.get(1) == null && retryCount < maxDBReadRetryCount);
 
@@ -87,6 +94,6 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 		assertEquals(inboxAttributesMap.get("eventid"), "c2964e99-22f2-4c70-bd75-bae4866bc869");
 		assertEquals(inboxAttributesMap.get("eventtype"), "POAccepted");
 		assertTrue(inboxAttributesMap.get("payload").contains("{\"eventId\":\"c2964e99-22f2-4c70-bd75-bae4866bc869\""));
-		
+
 	}
 }
