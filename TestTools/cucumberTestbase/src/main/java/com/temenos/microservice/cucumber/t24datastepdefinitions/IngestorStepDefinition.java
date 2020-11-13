@@ -143,13 +143,20 @@ public class IngestorStepDefinition {
 	}
 	   
 	   //To check json data content in topic
-	   @When("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
+	   @Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
 	    public void checkJSONInTopic(String eventId, String eventType, String topicName) throws Exception {
 	       
 	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandType(topicName,eventId, eventType);
 	       assertTrue("There is no entry for the Event Id:"+eventId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
 	   }
 	
+	 //To check json data content in topic(added by Sai Kushaal)
+	   @Then("^check if json data with correlation id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
+	    public void checkJSONInTopicByCorrelationId(String correlationId, String eventType, String topicName) throws Exception {
+	       
+	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCorrelationId(topicName,correlationId, eventType);
+	       assertTrue("There is no entry for the Correlation Id:"+correlationId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
+	   }
 	
 	
 	
