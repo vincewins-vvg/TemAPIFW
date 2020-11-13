@@ -1,7 +1,8 @@
-Feature: CreateReferenceDetailsPaymentOrder1.1
+Feature: CreateReferenceDetailsPaymentOrder3
 
-#In this scenario we are deleting a value that is already exists in the database.
-#Sequence: CreateReference Data >> UpdateReference for the created data >> Delete the value
+#In this scenario we get the values using GET Method that is already available in the DB.
+#Sequence: CreateReference Data >> Add a new value for the already exisiting collection data >> Update the newly added data >> Get the data along with the newly added data
+
 Background: To setup the preconfigs 
 
 	Given create a new MS request with code using Restassured arguments "" 
@@ -23,34 +24,44 @@ Scenario Outline: Create reference details of payment order
 	
 	Examples: 
 		|payload|
-		| {"references":{"testreference5":[{"value":"Married","description":"Married"}],"testreference6":[{"value":"Male","description":"Male"}]}}|
+		| {"references":{"testreference30":[{"value":"Married","description":"Married"}],"testreference31":[{"value":"Male","description":"Male"}]}}|
 		
-		#To update the description of the existing value that is already available in the database
-Scenario Outline: Update the description of an existing Payment Order reference 
+		#To add an additional value to already exisiting collection using POST-AddReferenceDataAPI
+Scenario Outline: Add a value to already existing collection 
+
+	Given MS request URI is "v1.0.0/reference/testreference30" 
+	And post the static MS JSON as payload <payload> 
+	When a "POST" request is sent to MS 
+	And log all MS response in console 
+	Then MS response code should be 200 
+	And MS JSON response string property key "status" should equal value "200" 
+	And MS JSON response string property key "message" should equal value "Operation Successful." 
+	
+	Examples: 
+		|payload|
+		|{"value": "Others","description": "Others"}|
+		
+Scenario Outline: Update the description of the reference that is newly created 
 
 	Given MS request URI is "v1.0.0/reference" 
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200 
+	And MS JSON response string property key "status" should equal value "200" 
 	And MS JSON response string property key "message" should equal value "Operation Successful." 
 	
 	Examples: 
 		|payload|
-		|{"references":{"testreference5":[{"value":"Married","description":"Others"}],"testreference6":[{"value":"Male","description":"Others"}]}}|
+		|{"references":{"testreference30":[{"value":"Others","description":"tester"}]}}|
 		
-Scenario: To delete one of the updated PO reference 
-#To get the payment reference details from the DB for testing purpose
+Scenario: Get the reference data along with the newly added data 
+
 	Given create a new MS request with code using Restassured arguments "" 
-	And MS request URI is "v1.0.0/reference/testreference5?value=Married" 
-	When a "DELETE" request is sent to MS 
+	And MS request URI is "v1.0.0/reference?type=testreference30" 
+	When a "GET" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 200 
 	And MS JSON response string property key "status" should equal value "200" 
-	And MS JSON response string property key "message" should equal value "Delete successful" 
 	
-	
-	
-	
-	
-   
+ 
