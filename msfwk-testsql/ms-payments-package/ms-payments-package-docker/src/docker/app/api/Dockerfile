@@ -10,6 +10,8 @@ ENV JAVA_OPTS ${java_options}
 
 COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
 
+COPY jacocoagent.jar /usr/local/tomcat/webapps/jacocoagent.jar
+
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 RUN sed -i 's/\r//' /wait-for-it.sh

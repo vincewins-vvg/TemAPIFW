@@ -49,7 +49,7 @@ services:
       args:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
-        api_java_options: ${java_options} ${REMOTE_DEBUG}
+        api_java_options: ${java_options} ${REMOTE_DEBUG} ${api_jacoco_jvm_opts}
     image: ${API_IMAGE}
     depends_on:
       - db-service1
@@ -57,6 +57,7 @@ services:
       - db-service3
     ports:
       - "8090:8080"
+      - "36320:36320"
       - "40509:40500"
     environment:
       DATABASE_KEY: mongodb
@@ -194,7 +195,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -202,6 +203,7 @@ services:
       - db-service3
     ports:
       - "40518:40500"
+      - "36330:36330"
       - "8082:8080"
     environment:
       DATABASE_KEY: mongodb
@@ -238,7 +240,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -247,6 +249,7 @@ services:
     ports:
       - "40508:40500"
       - "8083:8080"
+      - "36331:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -277,7 +280,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -286,6 +289,7 @@ services:
     ports:
       - "40510:40500"
       - "8084:8080"
+      - "36334:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -328,7 +332,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -337,6 +341,7 @@ services:
     ports:
       - "40511:40501"
       - "8085:8080"
+      - "36332:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -368,7 +373,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -377,6 +382,7 @@ services:
     ports:
       - "40512:40500"
       - "8086:8080"
+      - "36333:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -406,7 +412,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -415,6 +421,7 @@ services:
     ports:
       - "40513:40500"
       - "8087:8080"
+      - "36335:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -444,7 +451,7 @@ services:
       args:
         BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         artifactid: ${ingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
     depends_on:
       - db-service1
@@ -453,6 +460,7 @@ services:
     ports:
       - "40516:40500"
       - "8088:8080"
+      - "36336:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
@@ -483,7 +491,7 @@ services:
       args:
         BASE_IMAGE: ${FILEINGESTER_BASE_IMAGE}
         artifactid: ${fileingester_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${FILEINGESTER_IMAGE}
     volumes:
       - '/usr/local/tomcat/temp'
@@ -495,6 +503,7 @@ services:
     ports:
       - "40520:40500"
       - "8091:8080"
+      - "36337:36330"
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
