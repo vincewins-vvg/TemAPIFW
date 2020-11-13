@@ -1,4 +1,4 @@
-Feature: CreateReferenceDetailsPaymentOrder1.2 
+Feature: CreateReferenceDetailsPaymentOrder2 
 
 #In this scenario we are updating a value that has already been deleted in the database.
 #Sequence: CreateReference Data >> Delete the value >> Update for for deleted value 
