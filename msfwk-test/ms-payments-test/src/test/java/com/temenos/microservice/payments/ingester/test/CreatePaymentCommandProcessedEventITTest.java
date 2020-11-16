@@ -26,6 +26,7 @@ import com.temenos.microservice.payments.util.StreamUtils;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 
 public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 
@@ -43,7 +44,7 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 	public static void tearDown() {
 		String inboxTableName = "";
 		inboxTableName = "ms_inbox_events";
-		
+
 		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "f75affa2-b53f-4dbc-80d7-e9c0df80442b",
 				"eventType", "eq", "string", "CommandProcessed");
 		daoFacade.closeConnection();
@@ -54,7 +55,11 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 	public void testAingestEvent() throws IOException, InterruptedException {
 		String content = new String(
 				Files.readAllBytes(Paths.get("src/test/resources/binary/1.CreatePaymentCommandProcessedEvent.json")));
-		producer.batch().add("paymentorder-event-topic", "1", new String(content).getBytes());
+		if (IngesterUtil.isCloudEvent()) {
+			producer.batch().add("paymentorder-event-topic", "1", IngesterUtil.packageCloudEvent(content.getBytes()));
+		} else {
+			producer.batch().add("paymentorder-event-topic", "1", content.getBytes());
+		}
 		try {
 			producer.batch().send();
 		} catch (StreamProducerException e) {
@@ -70,7 +75,7 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 			Thread.sleep(45000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442b", "CommandProcessed");
-			System.out.println("inboxResultMap  "+inboxResultMap);
+			System.out.println("inboxResultMap  " + inboxResultMap);
 			retryCount = retryCount + 1;
 		} while (inboxResultMap.get(1) == null && retryCount < maxDBReadRetryCount);
 
@@ -87,6 +92,6 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 		assertEquals(inboxAttributesMap.get("eventid"), "f75affa2-b53f-4dbc-80d7-e9c0df80442b");
 		assertEquals(inboxAttributesMap.get("eventtype"), "CommandProcessed");
 		assertTrue(inboxAttributesMap.get("payload").contains("{\"eventId\":\"f75affa2-b53f-4dbc-80d7-e9c0df80442b\""));
-		
+
 	}
 }

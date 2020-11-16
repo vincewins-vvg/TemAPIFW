@@ -26,6 +26,7 @@ import com.temenos.microservice.payments.util.StreamUtils;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
+import com.temenos.microservice.framework.test.util.IngesterUtil;
 
 public class CreatePaymentCommandFailedEventITTest extends ITTest {
 
@@ -43,7 +44,7 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 	public static void tearDown() {
 		String inboxTableName = "";
 		inboxTableName = "ms_inbox_events";
-		
+
 		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "f75affa2-b53f-4dbc-80d7-e9c0df80442c",
 				"eventType", "eq", "string", "CommandFailed");
 		daoFacade.closeConnection();
@@ -54,7 +55,11 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 	public void testAingestEvent() throws IOException, InterruptedException {
 		String content = new String(
 				Files.readAllBytes(Paths.get("src/test/resources/binary/2.CreatePaymentCommandFailedEvent.json")));
-		producer.batch().add("paymentorder-event-topic", "1", new String(content).getBytes());
+		if (IngesterUtil.isCloudEvent()) {
+			producer.batch().add("paymentorder-event-topic", "1", IngesterUtil.packageCloudEvent(content.getBytes()));
+		} else {
+			producer.batch().add("paymentorder-event-topic", "1", content.getBytes());
+		}
 		try {
 			producer.batch().send();
 		} catch (StreamProducerException e) {
