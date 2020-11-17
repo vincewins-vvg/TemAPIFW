@@ -1,0 +1,12 @@
+{
+   "eventId":"148313a7-ff3a-45d3-b34b-169adbd62002",
+   "dateTime":1576074808386,
+   "correlationId":"148313a7-ff3a-45d3-b34b-169adbd61002",
+   "priority":0,
+   "status":"new",
+   "eventType":"ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted",
+   "payload":{
+      "paymentOrderId":"PO~101~102~USD~200",
+      "descriptions":"postHookBusinessFailure"
+   }
+}
