@@ -17,6 +17,11 @@
 		{
 			"name": "currency",
 			"type": "string"
+		},
+		{
+			"name": "payeeDetails",
+			"type": "userdefined",
+			"childevent": "PayeeDetailsEvent"
 		}
 	]
 }
