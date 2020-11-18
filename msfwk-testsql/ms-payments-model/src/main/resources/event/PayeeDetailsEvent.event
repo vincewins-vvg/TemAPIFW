@@ -1,0 +1,18 @@
+{
+  "name": "PayeeDetailsEvent",
+  "javaPackage": "com.temenos.microservice.payments.event",
+  "properties": [
+    {
+      "name": "payeeId",
+      "type": "number"     
+    },
+    {
+      "name": "payeeName",
+      "type": "string"
+    },
+    {
+      "name": "payeeType",
+      "type": "string"
+    }
+  ]
+}
