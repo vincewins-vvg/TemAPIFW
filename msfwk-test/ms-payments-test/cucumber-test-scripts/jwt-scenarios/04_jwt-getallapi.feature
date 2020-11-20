@@ -1,7 +1,4 @@
-  
-  #BalajiLakshmiNarayanan
-  
-  Feature: 04_jwt-getallapi
+Feature: 04_jwt-getallapi
   
   Background: To set the preconfig for the scenarios
   
@@ -11,6 +8,14 @@
     
    
   Scenario: To verify the responses when a valid jwt token is passed in PO GET All Api
+  
+  #To insert the Payment reference details into the DB for testing purpose
+  Given enter the tablename ms_reference_data
+  And enter data for table
+  | Fields   | type | data|
+  | type | string |paymentref|
+  | value | string |paytestcheck4|
+  | description | string |Payment ref|
   
     #Creating a PO entry for retrieving it in GET Api 
     Given create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
