@@ -1,7 +1,7 @@
   {
   "fromAccount": "111",
   "toAccount": "222",
-  "paymentReference": "paytest11",
+  "paymentReference": "paytestcheck2",
   "paymentDetails": "Success",
   "currency": "USD",
   "amount": 121,

@@ -1,7 +1,4 @@
-  
-  #BalajiLakshmiNarayanan
-  
-  Feature: 02_jwt-putapi
+Feature: 02_jwt-putapi
   
   Background: To set the preconfig for the scenarios
   
@@ -10,6 +7,14 @@
     
    
   Scenario: To verify the responses when a valid jwt token is passed in PO PUT Api
+  
+   #To insert the Payment reference details into the DB for testing purpose
+  Given enter the tablename ms_reference_data
+  And enter data for table
+  | Fields   | type | data|
+  | type | string |paymentref|
+  | value | string |paytestcheck2|
+  | description | string |Payment ref|
   
     #Creating a PO entry for updating it in PUT Api 
     Given create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE" 

@@ -1,7 +1,4 @@
-  
-  #BalajiLakshmiNarayanan
-  
-  Feature: 01_jwt-postapi
+Feature: 01_jwt-postapi
   
   Background: To set the preconfig for the scenarios
   
@@ -16,7 +13,7 @@
   And enter data for table
   | Fields   | type | data|
   | type | string |paymentref|
-  | value | string |paytest11|
+  | value | string |paytestcheck1|
   | description | string |Payment ref|
   
     
