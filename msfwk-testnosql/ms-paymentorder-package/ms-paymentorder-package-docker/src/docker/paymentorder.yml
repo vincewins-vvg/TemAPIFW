@@ -92,7 +92,7 @@ services:
       className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
       className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
       className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
-      className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
+      className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
