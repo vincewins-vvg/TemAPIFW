@@ -52,6 +52,10 @@ spec:
               value: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
             - name: className_deleteReferenceData
               value: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
+            - name: className_UpdateStatus
+              value: com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl
+            - name: className_DeleteWithCondition
+              value: com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl 
             - name: className_FileDownload
               value: com.temenos.microservice.paymentorder.function.FileDownloadImpl
             - name: className_DoInputValidation
@@ -60,6 +64,36 @@ spec:
               value: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
             - name: className_deletePaymentOrder
               value: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
+            - name: className_CreateEmployee
+              value: com.temenos.microservice.payments.function.CreateEmployeeImpl
+            - name: className_GetEmployee
+              value: com.temenos.microservice.payments.function.GetEmployeeImpl
+            - name: className_UpdateEmployee
+              value: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+            - name: className_DeleteEmployee
+              value: com.temenos.microservice.payments.function.DeleteEmployeeImpl
+            - name: className_CreateUser
+              value: com.temenos.microservice.paymentorder.function.CreateUserImpl
+            - name: className_GetUser
+              value: com.temenos.microservice.paymentorder.function.GetUserImpl
+            - name: className_searchUsers
+              value: com.temenos.microservice.paymentorder.function.SearchUsersImpl
+            - name: className_createCustomer
+              value: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
+            - name: className_getCustomers
+              value: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+            - name: className_CreateAccount
+              value: com.temenos.microservice.paymentorder.function.CreateAccountImpl
+            - name: className_GetAccount
+              value: com.temenos.microservice.paymentorder.function.GetAccountImpl
+            - name: className_DeleteAccount
+              value: com.temenos.microservice.paymentorder.function.DeleteAccountImpl
+            - name: className_UpdateAccount
+              value: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
+            - name: className_FileDelete
+              value: com.temenos.microservice.paymentorder.function.FileDeleteImpl
+            - name: className_GetAccountValidate
+              value: com.temenos.microservice.payments.function.GetAccountValidateImpl
             - name: temn.msf.name
               value: PaymentOrder  
             - name: PDP_CONFIG
