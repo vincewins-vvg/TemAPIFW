@@ -72,8 +72,18 @@ spec:
               value: com.temenos.microservice.payments.function.DoInputValidationImpl
             - name: className_GetInputValidation
               value: com.temenos.microservice.payments.function.GetInputValidationImpl
+            - name: className_CreateEmployee
+              value: com.temenos.microservice.payments.function.CreateEmployeeImpl
+            - name: className_GetEmployee
+              value: com.temenos.microservice.payments.function.GetEmployeeImpl
+            - name: className_UpdateEmployee
+              value: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+            - name: className_DeleteEmployee
+              value: com.temenos.microservice.payments.function.DeleteEmployeeImpl
+            - name: className_GetAccountValidate
+              value: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
             - name: API_HEALTH_CHECK_BUSINESS_CONDITION
-              value: com.temenos.microservice.payments.core.BusinessConditionImpl
+              value: com.temenos.microservice.payments.core.BusinessConditionImpl  
             - name: temn.msf.name
               value: PaymentOrder  
             - name: PDP_CONFIG
