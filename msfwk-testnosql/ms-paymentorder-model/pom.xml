@@ -16,6 +16,8 @@
 	<properties>
 		<!-- Enable code gen -->
 		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<!-- Disable function impl code gen -->
+		<msf.function.impl.codegen.enabled>false</msf.function.impl.codegen.enabled>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 
