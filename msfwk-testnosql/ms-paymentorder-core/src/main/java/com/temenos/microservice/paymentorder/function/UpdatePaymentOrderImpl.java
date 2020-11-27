@@ -71,6 +71,16 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				paymentOrder.setExchangeRates(exchangeRates);
 			}
 			paymentOrderDao.saveEntity(paymentOrder);
+			if (paymentOrderOpt.get().getPaymentOrderId().equals("PO~2568~2578~USD~45")
+					&& paymentOrderOpt.get().getPaymentDetails().equals("refDet")) {
+				try {
+					System.out.println("Timed wait started");
+					Thread.sleep(50000);
+					System.out.println("Timed wait Ended");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		} else {
 			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
