@@ -25,6 +25,8 @@ sleep 30
 cd ../../../110_ksvc
 kubectl apply -f 100_paymentorder-create-namespace.yaml
 sleep 10
+kubectl apply -f 102_paymentorder-configmap.yaml
+sleep 10
 kubectl apply -f 110_paymentorder-api.yaml
 sleep 10
 kubectl apply -f 120_paymentorder-ingesters.yaml

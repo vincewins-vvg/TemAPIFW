@@ -1,0 +1,194 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-api-config
+  namespace: paymentorder
+data:
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
+  className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+  className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
+  className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+  className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
+  className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+  className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+  className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
+  className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
+  className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
+  className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
+  className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
+  className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
+  className_UpdateStatus: com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl
+  className_DeleteWithCondition: com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl
+  className_CreateUser: com.temenos.microservice.paymentorder.function.CreateUserImpl
+  className_GetUser: com.temenos.microservice.paymentorder.function.GetUserImpl
+  className_CreateAccount: com.temenos.microservice.paymentorder.function.CreateAccountImpl
+  className_GetAccount: com.temenos.microservice.paymentorder.function.GetAccountImpl
+  className_DeleteAccount: com.temenos.microservice.paymentorder.function.DeleteAccountImpl
+  className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
+  className_createCustomer: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
+  className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+  className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
+  className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+  className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
+  className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
+  className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
+  className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
+  API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: kafka
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn.queue.impl: kafka
+  PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  temn.msf.pdp.resource.type: API
+  temn.msf.pdp.resource.manager: PAYMENT
+  temn.msf.storage.home: path:/usr/local/tomcat/temp
+  FILE_STORAGE_URL: /demo.properties
+  temn.msf.max.file.upload.size: "70"
+  ms.security.tokencheck.enabled: "Y"
+  temn.entitlement.stubbed.service.enabled: "true"
+  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+  JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
+  ID_TOKEN_SIGNED: "true"
+  JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-ingester-avro-config
+  namespace: paymentorder
+data:
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: kafka
+  temn.queue.impl: kafka
+  temn.msf.schema.registry.url: "Payment.Order"
+  temn.msf.ingest.source.stream: table-update-paymentorder
+  temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
+  temn.msf.ingest.sink.error.stream: error-paymentorder
+  temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+  temn.msf.security.authz.enabled: "false"
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+  temn.config.file.path: mapping/
+  temn.msf.ingest.consumer.max.poll.records: "1"
+  temn.ingester.mapping.enabled: "true"
+  EXECUTION_ENVIRONMENT: "TEST"
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  temn.msf.ingest.is.cloud.event: "true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-ingester-command-config
+  namespace: paymentorder
+data:
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: kafka
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
+  temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
+  temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic
+  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+  temn.msf.exec.env: server
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  class.package.name: com.temenos.microservice.paymentorder.function
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.security.authz.enabled: "false"
+  temn.queue.impl: kafka
+  ms.security.tokencheck.enabled: "Y"
+  temn.entitlement.stubbed.service.enabled: "true"
+  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+  JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
+  ID_TOKEN_SIGNED: "true"
+  temn.msf.ingest.is.cloud.event: "true"
+  JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-ingester-event-config
+  namespace: paymentorder
+data:  
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: kafka
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  temn.msf.ingest.source.stream: paymentorder-event-topic
+  temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
+  temn.msf.ingest.sink.error.enabled: "false"
+  temn.msf.ingest.is.cloud.event: "true"
+  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+  temn.msf.exec.env: server
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
+  class.package.name: com.temenos.microservice.paymentorder.function
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.security.authz.enabled: "false"
+  temn.queue.impl: kafka  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-eventdelivery-config
+  namespace: paymentorder
+data:  
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: kafka
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  temn.msf.exec.env: server
+  temn.msf.ingest.is.cloud.event: "true"
+  temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  class.package.name: com.temenos.microservice.paymentorder.function
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn.msf.security.authz.enabled: "false"
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener
+  temn.queue.impl: kafka
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-scheduler-config
+  namespace: paymentorder
+data:  
+  DATABASE_KEY: mongodb
+  MONGODB_DBNAME: ms_paymentorder
+  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
+  temn.msf.name: PaymentOrder
+  temn.msf.security.authz.enabled: "false"
+  temn.queue.impl: kafka
+  temn.msf.isScheduler: "true"
+  operationId: paymentscheduler
+  temn_msf_function_class_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
+  temn.msf.ingest.is.cloud.event: "true"
+  temn.msf.stream.vendor: kafka

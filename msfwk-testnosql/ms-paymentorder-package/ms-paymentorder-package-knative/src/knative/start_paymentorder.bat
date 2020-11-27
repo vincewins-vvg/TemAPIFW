@@ -25,6 +25,8 @@ timeout /t 30 >nul
 cd ../../../110_ksvc
 kubectl apply -f 100_paymentorder-create-namespace.yaml
 timeout /t 10 >nul
+kubectl apply -f 102_paymentorder-configmap.yaml
+timeout /t 10 >nul
 kubectl apply -f 110_paymentorder-api.yaml
 timeout /t 10 >nul
 kubectl apply -f 120_paymentorder-ingesters.yaml
