@@ -7,8 +7,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments
@@ -71,8 +69,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments
@@ -107,8 +103,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments
@@ -150,8 +144,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments
@@ -185,8 +177,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments
@@ -221,8 +211,6 @@ data:
   DATABASE_KEY: sql
   HOST: paymentorder-db-service
   DATABASE_NAME: payments
-  DB_USERNAME: root
-  DB_PASSWORD: password
   DRIVER_NAME: com.mysql.jdbc.Driver
   DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
   DB_CONNECTION_URL: jdbc:mysql://paymentorder-db-service:3306/payments  

@@ -14,6 +14,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: payments-ingester-avro-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -31,6 +43,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: payments-ingester-command-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -48,6 +72,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: payments-ingester-event-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -65,3 +101,15 @@ spec:
           envFrom:
             - configMapRef:
                 name: payments-eventdelivery-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     

@@ -14,3 +14,15 @@ spec:
           envFrom:
             - configMapRef:
                 name: payments-scheduler-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     

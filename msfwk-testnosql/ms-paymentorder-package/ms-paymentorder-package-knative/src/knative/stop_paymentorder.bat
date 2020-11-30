@@ -16,6 +16,7 @@ cd ../110_ksvc
 kubectl delete -f 120_paymentorder-ingesters.yaml
 kubectl delete -f 110_paymentorder-api.yaml
 kubectl delete -f 102_paymentorder-configmap.yaml
+kubectl delete -f 101_paymentorder-secrets.yaml
 kubectl delete -f 100_paymentorder-create-namespace.yaml
 
 cd ../100_db/mongo/rs
