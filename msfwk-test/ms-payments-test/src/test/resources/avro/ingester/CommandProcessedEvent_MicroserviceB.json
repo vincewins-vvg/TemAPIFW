@@ -1,0 +1,23 @@
+{
+   "eventId": "975740c1-effa-4a5c-a690-999b90f31f81",
+   "dateTime": "2020-10-07T13:17:50.528+0000",
+   "correlationId": "28c51c1f-e55f-4707-8bdf-99b44ea608d7",
+   "priority": 0,
+   "status": "PROCESSED",
+   "eventSourceId": "PaymentOrder",
+   "commandType": "PaymentOrder.UpdatePaymentOrder",
+   "eventType": "CommandProcessed",
+   "payload": {
+      "commandId": "28c51c1f-e55f-4707-8bdf-99b44ea608d7",
+      "eventType": "PaymentOrder.UpdatePaymentOrder",
+      "status": "NEW",
+      "businessObject": {
+         "status": 200,
+         "failureMessages": [],
+         "body": {
+            "paymentId": "PO~900~201~INR~483"
+         },
+         "success": true
+      }
+   }
+}
