@@ -83,9 +83,9 @@ data:
   temn.config.file.path: mapping/
   temn.msf.ingest.consumer.max.poll.records: "1"
   temn.ingester.mapping.enabled: "true"
-  EXECUTION_ENVIRONMENT: "TEST"
+  EXECUTION_ENV: "TEST"
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -117,7 +117,7 @@ data:
   JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
   JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
   ID_TOKEN_SIGNED: "true"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
 ---
 apiVersion: v1
@@ -135,7 +135,7 @@ data:
   temn.msf.ingest.source.stream: paymentorder-event-topic
   temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
   temn.msf.ingest.sink.error.enabled: "false"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
   temn.msf.exec.env: server
@@ -161,7 +161,7 @@ data:
   temn.msf.stream.vendor: kafka
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
   temn.msf.exec.env: server
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   class.package.name: com.temenos.microservice.paymentorder.function
@@ -190,5 +190,5 @@ data:
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.stream.vendor: kafka

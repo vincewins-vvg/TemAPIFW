@@ -16,7 +16,7 @@ data:
   className_CreateNewPaymentOrders: com.temenos.microservice.payments.function.CreateNewPaymentOrdersImpl
   className_UpdateNewPaymentOrders: com.temenos.microservice.payments.function.UpdateNewPaymentOrdersImpl
   VALIDATE_PAYMENT_ORDER: "false"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
   className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
   className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
@@ -78,16 +78,15 @@ data:
   tem.msf.disableInbox: "true"
   temn.msf.stream.vendor: kafka
   temn.msf.schema.registry.url: "Payment.Order"
-  temn.msf.stream.kafka.bootstrap.servers: kafka:29092
   temn.msf.ingest.source.stream: table-update-paymentorder
   temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
   temn.msf.ingest.sink.error.stream: error-paymentorder
   temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
   temn.msf.security.authz.enabled: "false"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
   PAYMENT_ORDEREvent: com.temenos.microservice.payments.ingester.PaymentorderIngesterUpdater
-  EXECUTION_ENVIRONMENT: "TEST"
+  EXECUTION_ENV: "TEST"
   temn.queue.impl: kafka
   PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
   temn.config.file.path: mapping/
@@ -121,7 +120,7 @@ data:
   temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
   VALIDATE_PAYMENT_ORDER: "false"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   class.package.name: com.temenos.microservice.payments.function
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
@@ -159,7 +158,7 @@ data:
   temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
   temn.msf.exec.env: server
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
   temn.msf.ingest.event.processor: com.temenos.microservice.payments.ingester.EventHandlerImpl
   class.package.name: com.temenos.microservice.payments.function
@@ -187,7 +186,7 @@ data:
   temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
   temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer
   temn.msf.ingest.sink.error.enabled: "false"
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener
@@ -225,5 +224,5 @@ data:
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
-  temn.msf.ingest.is.cloud.event: "true"
+  #temn.msf.ingest.is.cloud.event: "true"
   temn.msf.stream.vendor: kafka
