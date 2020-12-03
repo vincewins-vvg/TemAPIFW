@@ -26,3 +26,6 @@ pom.xml.tag
 .project
 .classpath
 **/.settings
+
+**/extensions.csproj
+**/obj
