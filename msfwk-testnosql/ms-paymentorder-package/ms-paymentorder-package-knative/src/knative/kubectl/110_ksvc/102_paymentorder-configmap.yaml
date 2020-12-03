@@ -71,17 +71,14 @@ data:
   temn.queue.impl: kafka
   temn.msf.schema.registry.url: "Payment.Order"
   temn.msf.ingest.source.stream: table-update-paymentorder
-  temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
   temn.msf.ingest.sink.error.stream: error-paymentorder
   temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
-  com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
   temn.msf.security.authz.enabled: "false"
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
   temn.config.file.path: mapping/
-  temn.msf.ingest.consumer.max.poll.records: "1"
   temn.ingester.mapping.enabled: "true"
   EXECUTION_ENV: "TEST"
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
