@@ -501,12 +501,15 @@ components:
           type: integer
           format: int64
           nullable: true
+          description: Identifier that indicates the card number
         cardname:
           type: string
           nullable: true
+          description: Identifier that indicates the card name
         cardlimit:
           type: number
           nullable: true
+          description: Identifier that indicates the card limit
     PaymentMethod:
       properties:
         id:
@@ -514,13 +517,16 @@ components:
           format: int64
           minimum: 1
           maximum: 999999
+          description: Identifier that indicates the payment method reference id          
         name:
           type: string
           minLength: 2
           maxLength: 20
+          description: Indicates the payment method name          
         extensionData:
           type: object
           nullable: true
+          description: Indicates the extensionData with the payment method          
         card:
           nullable: true
           allOf:
@@ -531,23 +537,29 @@ components:
           type: integer
           format: int64
           nullable: true
+          description: Indicates the reference id for ExchangeRate          
         name:
           type: string
           nullable: true
+          description: Identifier that indicates the ExchangeRate name          
         value:
           type: number
           nullable: true
+          description: Identifier that indicates the ExchangeRate value          
     PayeeDetails:
       properties:
         payeeName:
           type: string
           nullable: true
+          description: Identifier that indicates the payee name          
         payeeType:
           type: string
           nullable: true
+          description: Identifier that indicates the payee type          
           
     EnumCurrency:
       type: string
+      description: Identifier the currency of type Enum.      
       x-deprictionallowed: true
       enum:
         - USD
@@ -558,16 +570,20 @@ components:
         fromAccount:
           type: string
           nullable: true
+          description: Indicates the Account from which the amount to be debited.          
         toAccount:
           type: string
           nullable: true
+          description: Indicates the Account for which the amount to be credited.
         paymentReference:
           type: string
           x-referencetype: paymentref
           nullable: true
+          description: Identifier that indicates the reference to the payment made.
         paymentDetails:
           type: string
           nullable: true
+          description: Identifier that indicates the details of the payment.
       
     PaymentOrder:
       allOf:
@@ -580,25 +596,31 @@ components:
         amount:
           type: number
           nullable: true
+          description: Identifier that indicate an Total Amount.
         expires:
           type: integer
           format: int64
           nullable: true
+          description: Indicates the expires attribute.
         fileContent:
           type: string
           format: binary
           nullable: true
+          description: Indicates the FileContent.
         fileReadWrite:
           type: string
           format: binary
           nullable: true
+          description: Indicates the FileReadWrite.
         fileOverWrite:
           type: boolean
           nullable: true
+          description: Indicates the FileOverWrite.
         paymentDate:
           type: string
           format: date  
           nullable: true
+          description: Identifier that indicates date of payment.
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"
@@ -614,11 +636,13 @@ components:
         extensionData:
           type: object
           nullable: true
+          description: Indicates the Extension data.
         descriptions:
           type: array
           nullable: true
           items:
             type: string
+          description: Indicates the Payment description.
           
     PaymentOrders:
       type: array
@@ -635,15 +659,20 @@ components:
       properties:
         debitAccount:
           type: string
+          description: Indicates the Account from which the amount to be debited.          
         paymentId:
           type: string
+          description: Indicates the unique reference for the transaction          
         status:
           type: string
+          description: Indicates the status for the transaction
         fileReadWrite:
           type: string
           format: binary
+          description: Indicates the FileReadWrite.          
         details:
           type: string
+          description: Indicates the details of the transaction.
         paymentMethod:
           allOf:
           - $ref: "#/components/schemas/PaymentMethod"

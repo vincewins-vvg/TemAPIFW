@@ -1,18 +1,22 @@
 {
-  "name": "PayeeDetailsEvent",
-  "javaPackage": "com.temenos.microservice.payments.event",
-  "properties": [
-    {
-      "name": "payeeId",
-      "type": "number"     
-    },
-    {
-      "name": "payeeName",
-      "type": "string"
-    },
-    {
-      "name": "payeeType",
-      "type": "string"
-    }
-  ]
+	"name": "PayeeDetailsEvent",
+	"javaPackage": "com.temenos.microservice.payments.event",
+	"description": "Paymee Details Event",
+	"properties": [
+		{
+			"name": "payeeId",
+			"type": "number",
+			"description": "Indicates the unique identifier for the payee"
+		},
+		{
+			"name": "payeeName",
+			"type": "string",
+			"description": "Indicates the payee name"
+		},
+		{
+			"name": "payeeType",
+			"type": "string",
+			"description": "Indicates the payee type"
+		}
+	]
 }
