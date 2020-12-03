@@ -40,6 +40,24 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentOrders"
+  /paymentorderschema/orders:
+    post:
+      summary: Creates a new payment order
+      operationId: CreateNewPaymentOrderSchema
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentOrder'
+      responses:
+        '201':
+          description: Created payment order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'               
 components:
   schemas:
     Card:
@@ -170,3 +188,24 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/PaymentOrder"
+    PaymentStatus:
+      properties:
+        debitAccount:
+          type: string
+        paymentId:
+          type: string
+        status:
+          type: string
+        fileReadWrite:
+          type: string
+          format: binary
+        details:
+          type: string
+        paymentMethod:
+          allOf:
+            - $ref: '#/components/schemas/PaymentMethod'
+        exchangeRates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeRate'
+        
