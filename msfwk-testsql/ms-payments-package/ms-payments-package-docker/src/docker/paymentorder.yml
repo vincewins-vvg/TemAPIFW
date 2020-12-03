@@ -44,38 +44,11 @@ services:
       DB_CONNECTION_URL: jdbc:mysql://db-service:3306/payments
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      className_CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      className_CreateNewPaymentOrders: com.temenos.microservice.payments.function.CreateNewPaymentOrdersImpl
-      className_UpdateNewPaymentOrders: com.temenos.microservice.payments.function.UpdateNewPaymentOrdersImpl
       VALIDATE_PAYMENT_ORDER: "false"
-      className_GetPaymentOrders: com.temenos.microservice.payments.function.GetPaymentOrdersImpl
-      className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
-      className_DeletePaymentOrders: com.temenos.microservice.payments.function.DeletePaymentOrdersImpl
-      className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
-      className_invokePaymentState: com.temenos.microservice.payments.function.InvokePaymentOrderImpl
-      className_GetPaymentOrderCurrency: com.temenos.microservice.payments.function.GetPaymentOrderCurrencyImpl
-      className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl  
-      className_FileUpload: com.temenos.microservice.payments.function.FileUploadImpl
-      className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
-      className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
-      className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
-      className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
-      className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
-      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl
-      className_FileDelete: com.temenos.microservice.payments.function.FileDeleteImpl         
-      className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
-      className_GetInputValidation: com.temenos.microservice.payments.function.GetInputValidationImpl
-      className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
-      className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
-      className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
-      className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
-      className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.name: PaymentOrder
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       serviceadaptor.preprocessorimpl.class: com.temenos.microservice.sample.security.SampleTokenGenerator
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
@@ -130,9 +103,6 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
       temn.msf.scheduler.paymentscheduler.cron.trigger.time: 59 * * ? * *
-      className_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
       className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
       temn.msf.scheduler.sqlInboxCatchup.cron.trigger.time: 59 * * ? * *
@@ -169,10 +139,6 @@ services:
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server
       temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-      class.package.name: com.temenos.microservice.payments.function
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
       tmn.inbox.source.namespace: paymentorder-inbox
       tmn.outbox.source.namespace: paymentorder-outbox
@@ -315,8 +281,6 @@ services:
       temn.iris.fdata.enquiry.base.path: http://10.92.4.84:9089/irf-provider-container/api/v1.0.0/
       temn.iris.fdata.enquiry.resource.path: system/events/pendingEvents
       temn.queue.impl: kafka
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       DATABASE_KEY: sql
       EXECUTION_ENVIRONMENT: TEST
   
@@ -358,8 +322,6 @@ services:
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.payments.ingester.PaymentOrderBusinessIngester
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.is.avro.event.ingester: "false"
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
       
@@ -399,11 +361,7 @@ services:
       temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
       temn.msf.exec.env: server
       temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
       VALIDATE_PAYMENT_ORDER: "false"
-      class.package.name: com.temenos.microservice.payments.function
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       DATABASE_KEY: sql
@@ -432,7 +390,7 @@ services:
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
-    depends_on:
+    de pends_on:
       - db-service
     ports:
       - "40513:40500"
@@ -462,8 +420,6 @@ services:
       temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.ConfigBasedBinaryIngestionFunctionImpl
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.is.avro.event.ingester: "false"
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
@@ -509,9 +465,6 @@ services:
       temn.msf.ingest.event.processor: com.temenos.microservice.payments.ingester.EventHandlerImpl
       temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
       # temn.msf.raise.received.event: "true"
-      class.package.name: com.temenos.microservice.payments.function
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
   fileingester:
