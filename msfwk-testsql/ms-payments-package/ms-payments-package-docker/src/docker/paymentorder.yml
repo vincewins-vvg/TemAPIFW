@@ -390,7 +390,7 @@ services:
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
-    de pends_on:
+    depends_on:
       - db-service
     ports:
       - "40513:40500"
