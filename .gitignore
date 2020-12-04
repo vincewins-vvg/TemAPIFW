@@ -29,3 +29,6 @@ pom.xml.tag
 
 **/extensions.csproj
 **/obj
+
+src-gen-function-impl/
+OperationDetails.properties
