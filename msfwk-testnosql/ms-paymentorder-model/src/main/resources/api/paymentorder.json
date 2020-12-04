@@ -661,12 +661,15 @@ components:
           type: integer
           format: int64
           nullable: true
+          description: Identifier that indicates the card number
         cardname:
           type: string
           nullable: true
+          description: Identifier that indicates the card name
         cardlimit:
           type: number
           nullable: true
+          description: Identifier that indicates the card limit
     PaymentMethod:
       properties:
         id:
@@ -674,10 +677,12 @@ components:
           format: int64
           minimum: 1
           maximum: 999999
+          description: Identifier that indicates the payment method reference id          
         name:
           type: string
           minLength: 2
           maxLength: 20
+          description: Indicates the payment method name          
         extensionData:
           type: object
           nullable: true
@@ -691,22 +696,29 @@ components:
           type: integer
           format: int64
           nullable: true
+          description: Indicates the reference id for ExchangeRate          
         name:
           type: string
           nullable: true
+          description: Identifier that indicates the ExchangeRate name          
         value:
           type: number
           nullable: true
+          description: Identifier that indicates the ExchangeRate value          
     PayeeDetails:
       properties:
         payeeName:
           type: string
           nullable: true
+          description: Identifier that indicates the payee name          
         payeeType:
           type: string
           nullable: true
+          description: Identifier that indicates the payee type          
+          
     EnumCurrency:
       type: string
+      description: Identifier the currency of type Enum.      
       x-deprictionallowed: true
       enum:
         - USD
@@ -716,48 +728,62 @@ components:
         nameOfCriteria:
           type: string
           nullable: true
+          description: Identifier that indicates the name of the criteria
         valueOfCriteria:
           type: string
           nullable: true
+          description: Identifier that indicates the value of the criteria          
     TransactionDetails:
       properties:
         fromAccount:
           type: string
           nullable: true
+          description: Indicates the Account from which the amount to be debited         
         toAccount:
           type: string
           nullable: true
+          description: Indicates the Account for which the amount to be credited
         paymentReference:
           type: string
           x-referencetype: paymentref
           nullable: true
+          description: Identifier that indicates the reference to the payment made
         paymentDetails:
           type: string
           nullable: true
+          description: Identifier that indicates the payment details
     Customer:
       properties:
         customerId:
           type: string
+          description: Identifier that indicates the unique reference id for customer          
         customerName:
           type: string
+          description: Indicates the customer name
         account:
           type: string
+          description: Indicates the customer account details
         loanTypes:
           type: array
+          description: Indicates the customer loan types
           items:
             type: string
         dateOfJoining:
           type: string
           format: date
           nullable: true
+          description: Identifier that indicates the date of joining of the customer
     CustomerStatus:
       properties:
         customerId:
           type: string
+          description: Identifier that indicates the unique reference id for customer
         status:
           type: string
+          description: Indicates the customer currenct status
         accountStatus:
           type: boolean
+          description: Indicates the customer account status
     Customers:
       type: array
       items:
@@ -773,28 +799,35 @@ components:
         amount:
           type: number
           nullable: true
+          description: Identifier that indicate an Total Amount
         expires:
           type: integer
           format: int64
           nullable: true
+          description: Indicates the expires attribute
         fileContent:
           type: string
           format: binary
           nullable: true
+          description: Indicates the FileContent
         fileReadWrite:
           type: string
           format: binary
           nullable: true
+          description: Indicates the FileReadWrite
         fileOverWrite:
           type: boolean
           nullable: true
+          description: Indicates the FileOverWrite
         extensionData:
           type: object
           nullable: true
+          description: Identifier that indicates date of payment
         paymentDate:
           type: string
           format: date
           nullable: true
+          description: Identifier that indicates date of payment
         paymentMethod:
           allOf:
             - $ref: '#/components/schemas/PaymentMethod'
@@ -812,6 +845,8 @@ components:
           nullable: true
           items:
             type: string
+          description: Indicates the Payment description
+          
     PaymentOrders:
       type: array
       items:
@@ -825,15 +860,20 @@ components:
       properties:
         debitAccount:
           type: string
+          description: Indicates the Account from which the amount to be debited
         paymentId:
           type: string
+          description: Indicates the unique reference for the transaction          
         status:
           type: string
+          description: Indicates the status for the transaction
         fileReadWrite:
           type: string
           format: binary
+          description: Indicates the FileReadWrite          
         details:
           type: string
+          description: Indicates the details of the transaction
         paymentMethod:
           allOf:
             - $ref: '#/components/schemas/PaymentMethod'
@@ -861,8 +901,10 @@ components:
       properties:
         code:
           type: string
+          description: Indicates the failure code
         message:
           type: string
+          description: Indicates the failure message
     ErrorSchema:
       type: array
       items:
@@ -872,13 +914,16 @@ components:
       properties:
         documentId:
           type: string
+          description: Identifier that indicates the unique id for the document
         documentName:
           type: string
+          description: Identifier that indicates the document name
     ApiResponse:
       type: object
       properties:
         message:
           type: string
+          description: Identifier that indicates the api response message
     FileUploadRequest:
       type: object
       properties:
@@ -890,6 +935,7 @@ components:
           items:
             type: string
             format: binary
+            description: Identifier that indicates the document file of type array
     DownloadApiResponse:
       type: object
     UpdatePaymentStatus:
@@ -904,49 +950,62 @@ components:
       properties:
         paymentId:
           type: integer
+          description: Identifier that indicates the payment id involved in the payment details
         personalAccNo:
           type: integer
           format: int32
           minimum: 5
           maximum: 50
+          description: Identifier that indicates the personal account number
         branchId:
           type: integer
           format: int64
           minimum: 5
           maximum: 50
+          description: Identifier that indicates the branch id
         monthCount:
           type: number
+          description: Identifier that indicates the month count
         penaltyInterest:
           type: number
           format: decimal
           minimum: 5
           maximum: 50
+          description: Indicates the penalty interest
         yearWiseInterest:
           type: number
           format: double
           minimum: 1
           maximum: 60
+          description: Indicates the year wise interest
         userIdenfication:
           type: number
           format: biginteger
           minimum: 10
           maximum: 90
+          description: Indicates the user identification number
         paymentMethod:
           type: string
+          description: Indicates the payment method
         fileReadWrite:
           type: string
           format: binary
+          description: Indicates the file read write attribute
         paymentDate:
           type: string
           format: timestamp
+          description: Indicates the date of payment
         actualDate:
           type: string
           format: date
+          description: Indicates the actual date of payment
         socialSecurityNo:
           type: string
           format: uuid
+          description: Indicates the social security number
         seniorCitizen:
           type: boolean
+          description: Indicates the customer is a senior citizen or not
         paymentOrders:
           type: array
           items:
@@ -967,10 +1026,13 @@ components:
       properties:
         userId:
           type: string
+          description: Indicates the unique reference id for the user
         name:
           type: string
+          description: Indicates the name of the user
         email:
           type: string
+          description: Indicates the email id of the user
     Users:
           type: array
           items:
@@ -979,88 +1041,123 @@ components:
       properties:
         errorCode:
           type: string
+          description: Indicates the error code for standard error response
     UserStatus:
       properties:
         userId:
           type: string
+          description: Indicates the unique reference id for the user
         status:
           type: string
+          description: Indicates the status of the user          
     Account:
       properties:
         accountId:
           type: string
+          description: Identifier that indicates the account id
         accountName:
           type: string
+          description: Identifier that indicates the account name 
         accountType:
           type: string
+          description: Identifier that indicates the account type
         branch:
           type: string
+          description: Identifier that indicates the branch details
     AccountStatus:
       properties:
         accountId:
           type: string
+          description: Identifier that indicates the account id
         modifiedCount:
           type: integer
+          description: Identifier that indicates the modified count
         status:
           type: string
+          description: Indicates the status
     Balance:
       properties:
         recId:
           type: string
+          description: Indicates the unique record id for the balance
         stmtProcDate:
           type: string
+          description: Indicates the statement processing date
         coCode:
           type: string
+          description: Indicates the company code for the balance
         onlineClearedBal:
           type: string
           format: decimal
+          description: Indicates the online cleared balance
         workingBalance:
           type: string
           format: decimal
+          description: Indicates the working balance
         onlineActualBal:
           type: string
           format: decimal
+          description: Indicates the online actual balance
         currency:
           type: string
+          description: Indicates the currency type
         customer:
           type: string
+          description: Indicates the customer record
         product:
           type: string
+          description: Indicates the product details
         processingTime:
           type: string
           format: date
+          description: Indicates the procesing time
         extensionData:
           type: object
+          description: Indicates the extension data
     Transaction:
       properties:
         recId:
           type: string
+          description: Indicates the unique record id for the transaction
         companyCode:
           type: string
+          description: Indicates the company code for the balance
         amountLcy:
           type: string
+          description: Indicates the amountLcy
         processingDate:
           type: string
+          description: Indicates the procesing date
         transactionCode:
           type: string
+          description: Indicates the transaction code
         valueDate:
           type: string
+          description: Indicates the value date
         accountNumber:
           type: string
+          description: Indicates the account number
         ourReference:
           type: string
+          description: Indicates the internal reference
         theirReference:
           type: string
+          description: Indicates the external reference
         accountOfficer:
           type: string
+          description: Identifier that indicates the account officer
         transReference:
           type: string
+          description: Identifier that indicates the trans reference
         bookingDate:
           type: string
+          description: Indicates the booking date
         customerId:
           type: string
+          description: Indicates the customer id
         currency:
           type: string
+          description: Indicates the customer type
         extensionData:
           type: object
     MultiEventDataModels:
