@@ -11,51 +11,21 @@ spec:
           ports:
           - name: http1
             containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: payments-ingester-avro-config
           env:
-            - name: DATABASE_KEY
-              value: sql
-            - name: HOST
-              value: payments-db-service
-            - name: DATABASE_NAME
-              value: payments
+          # Use secret in real usage
             - name: DB_USERNAME
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
             - name: DB_PASSWORD
-              value: password
-            - name: DRIVER_NAME
-              value: com.mysql.jdbc.Driver
-            - name: DIALECT
-              value: org.hibernate.dialect.MySQL5InnoDBDialect
-            - name: DB_CONNECTION_URL
-              value: jdbc:mysql://paymentorder-db-service:3306/payments
-            - name: MAX_POOL_SIZE
-              value: "5"
-            - name: MIN_POOL_SIZE
-              value: "1"
-            - name: temn.msf.name
-              value: PaymentOrder
-            - name: tem.msf.disableInbox
-              value: "true"
-            - name: temn.msf.security.authz.enabled
-              value: "false"
-            - name: EXECUTION_ENV
-              value: TEST
-            - name: temn.msf.ingest.event.ingester
-              value: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
-            - name: PAYMENT_ORDEREvent
-              value: com.temenos.microservice.payments.entity.PaymentOrder
-            - name: temn.msf.schema.registry.url
-              value: "Payment.Order"
-            - name: temn.config.file.path
-              value: mapping/
-            - name: temn.ingester.mapping.enabled
-              value: "true"
-            - name: temn.msf.stream.kafka.bootstrap.servers
-              value: my-cluster-kafka-bootstrap.kafka:9092
-            - name: temn.msf.ingest.sink.error.stream
-              value: error-paymentorder
-            - name: temn.msf.ingest.sink.error.stream.producer.id
-              value: ms-paymentorder-ingester-error-producer
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -70,77 +40,21 @@ spec:
           ports:
           - name: http1
             containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: payments-ingester-command-config
           env:
-            - name: DATABASE_KEY
-              value: sql
-            - name: HOST
-              value: payments-db-service
-            - name: DATABASE_NAME
-              value: payments
+          # Use secret in real usage
             - name: DB_USERNAME
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
             - name: DB_PASSWORD
-              value: password
-            - name: DRIVER_NAME
-              value: com.mysql.jdbc.Driver
-            - name: DIALECT
-              value: org.hibernate.dialect.MySQL5InnoDBDialect
-            - name: DB_CONNECTION_URL
-              value: jdbc:mysql://paymentorder-db-service:3306/payments
-            - name: MAX_POOL_SIZE
-              value: "5"
-            - name: MIN_POOL_SIZE
-              value: "1"
-            - name: temn.msf.name
-              value: PaymentOrder
-            - name: temn.msf.security.authz.enabled
-              value: "false"
-            - name: temn.msf.stream.vendor
-              value: kafka
-            - name: temn.msf.stream.kafka.bootstrap.servers
-              value: my-cluster-kafka-bootstrap.kafka:9092
-            - name: temn.msf.ingest.source.stream
-              value: ms-paymentorder-inbox-topic
-            - name: temn.msf.ingest.source.stream.consumergroup.id
-              value: ms-paymentorder-ingester-consumer
-            - name: temn.msf.ingest.sink.error.stream
-              value: ms-paymentorder-inbox-error-topic
-            - name: temn.msf.ingest.sink.error.stream.producer.id
-              value: ms-paymentorder-ingester-error-producer
-            - name: temn.msf.ingest.generic.ingester
-              value: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
-            - name: temn.msf.exec.env
-              value: server
-            - name: temn.msf.stream.outbox.topic
-              value: ms-paymentorder-outbox-topic
-            - name: temn.msf.function.class.CreateNewPaymentOrder
-              value: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-            - name: VALIDATE_PAYMENT_ORDER
-              value: "false"
-            - name: class.package.name
-              value: com.temenos.microservice.payments.function
-            - name: class.inbox.dao
-              value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-            - name: class.outbox.dao
-              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-            - name: temn.msf.ingest.is.avro.event.ingester
-              value: "false"
-            - name: temn.queue.impl
-              value: kafka
-            - name: temn.msf.ingest.is.cloud.event
-              value: "true"
-            - name: ms.security.tokencheck.enabled
-              value: "Y"
-            - name: temn.entitlement.stubbed.service.enabled
-              value: "true"
-            - name: JWT_TOKEN_ISSUER
-              value: https://localhost:9443/oauth2/token
-            - name: JWT_TOKEN_PRINCIPAL_CLAIM
-              value: "sub"
-            - name: ID_TOKEN_SIGNED
-              value: "true"
-            - name: JWT_TOKEN_PUBLIC_KEY
-              value: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -155,63 +69,21 @@ spec:
           ports:
           - name: http1
             containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: payments-ingester-event-config
           env:
-            - name: DATABASE_KEY
-              value: sql
-            - name: HOST
-              value: payments-db-service
-            - name: DATABASE_NAME
-              value: payments
+          # Use secret in real usage
             - name: DB_USERNAME
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
             - name: DB_PASSWORD
-              value: password
-            - name: DRIVER_NAME
-              value: com.mysql.jdbc.Driver
-            - name: DIALECT
-              value: org.hibernate.dialect.MySQL5InnoDBDialect
-            - name: DB_CONNECTION_URL
-              value: jdbc:mysql://paymentorder-db-service:3306/payments
-            - name: MAX_POOL_SIZE
-              value: "5"
-            - name: MIN_POOL_SIZE
-              value: "1"
-            - name: temn.msf.name
-              value: PaymentOrder
-            - name: temn.msf.stream.vendor
-              value: kafka
-            - name: temn.queue.impl
-              value: kafka
-            - name: temn.msf.stream.kafka.bootstrap.servers
-              value: my-cluster-kafka-bootstrap.kafka:9092
-            - name: temn.msf.ingest.source.stream
-              value: paymentorder-event-topic
-            - name: temn.msf.ingest.source.stream.consumergroup.id
-              value: ms-paymentorder-ingester-consumer
-            - name: temn.msf.security.authz.enabled
-              value: "false"
-            - name: temn.msf.ingest.sink.error.enabled
-              value: "false"
-            - name: temn.msf.ingest.sink.error.stream.producer.id
-              value: ms-paymentorder-ingester-error-producer
-            - name: temn.msf.ingest.generic.ingester
-              value: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
-            - name: temn.msf.exec.env
-              value: server
-            - name: temn.msf.function.class.CreateNewPaymentOrder
-              value: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-            - name: temn.msf.ingest.event.processor
-              value: com.temenos.microservice.payments.ingester.EventHandlerImpl
-            - name: class.package.name
-              value: com.temenos.microservice.payments.function
-            - name: class.inbox.dao
-              value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-            - name: class.outbox.dao
-              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-            - name: temn.msf.ingest.is.avro.event.ingester
-              value: "false"
-            - name: temn.msf.ingest.is.cloud.event
-              value: "true"
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -226,62 +98,18 @@ spec:
           ports:
           - name: http1
             containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: payments-eventdelivery-config
           env:
-            - name: DATABASE_KEY
-              value: sql
-            - name: HOST
-              value: payments-db-service
-            - name: DATABASE_NAME
-              value: payments
+          # Use secret in real usage
             - name: DB_USERNAME
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
             - name: DB_PASSWORD
-              value: password
-            - name: DRIVER_NAME
-              value: com.mysql.jdbc.Driver
-            - name: DIALECT
-              value: org.hibernate.dialect.MySQL5InnoDBDialect
-            - name: DB_CONNECTION_URL
-              value: jdbc:mysql://paymentorder-db-service:3306/payments
-            - name: MAX_POOL_SIZE
-              value: "5"
-            - name: MIN_POOL_SIZE
-              value: "1"
-            - name: temn.msf.name
-              value: PaymentOrder
-            - name: temn.msf.security.authz.enabled
-              value: "false"
-            - name: temn.msf.stream.vendor
-              value: kafka
-            - name: temn.msf.stream.kafka.bootstrap.servers
-              value: my-cluster-kafka-bootstrap.kafka:9092
-            - name: temn.msf.ingest.source.stream
-              value: ms-paymentorder-inbox-topic
-            - name: temn.msf.ingest.source.stream.consumergroup.id
-              value: ms-paymentorder-ingester-consumer
-            - name: temn.msf.ingest.sink.error.stream
-              value: ms-paymentorder-inbox-error-topic
-            - name: temn.msf.ingest.sink.error.stream.producer.id
-              value: ms-paymentorder-ingester-error-producer
-            - name: temn.msf.ingest.generic.ingester
-              value: com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener
-            - name: temn.msf.exec.env
-              value: server
-            - name: temn.msf.stream.outbox.topic
-              value: ms-paymentorder-outbox-topic
-            - name: temn.msf.function.class.CreateNewPaymentOrder
-              value: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
-            - name: VALIDATE_PAYMENT_ORDER
-              value: "false"
-            - name: class.package.name
-              value: com.temenos.microservice.payments.function
-            - name: class.inbox.dao
-              value: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-            - name: class.outbox.dao
-              value: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-            - name: temn.msf.ingest.is.avro.event.ingester
-              value: "false"
-            - name: temn.queue.impl
-              value: kafka
-            - name: temn.msf.ingest.is.cloud.event
-              value: "true"
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD     
