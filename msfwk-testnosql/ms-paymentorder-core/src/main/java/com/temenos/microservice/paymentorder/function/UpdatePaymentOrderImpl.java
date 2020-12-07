@@ -71,8 +71,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				paymentOrder.setExchangeRates(exchangeRates);
 			}
 			paymentOrderDao.saveEntity(paymentOrder);
-			if (paymentOrderOpt.get().getPaymentOrderId().equals("PO~2568~2578~USD~45")
-					&& paymentOrderOpt.get().getPaymentDetails().equals("refDet")) {
+			if (paymentOrderId.equals("PO~2568~2578~USD~45") && paymentStatus.getStatus().equals("holdUpdate")) {
 				try {
 					System.out.println("Timed wait started");
 					Thread.sleep(50000);
