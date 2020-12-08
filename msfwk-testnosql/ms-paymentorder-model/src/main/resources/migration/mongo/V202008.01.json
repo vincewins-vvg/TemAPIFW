@@ -47,6 +47,7 @@
    "createIndexes":"ms_payment_order_customer",
    "indexes":[
       {
+		 "unique": true
          "key":{
             "customerId":1
          },
