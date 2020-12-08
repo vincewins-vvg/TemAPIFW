@@ -10,22 +10,19 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.temenos.connect.InboxOutbox.logger.InboxOutboxConstants;
 import com.temenos.inboxoutbox.core.GenericCommand;
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
-import com.temenos.microservice.framework.core.function.ResponseStatus;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
@@ -38,13 +35,15 @@ import com.temenos.microservice.framework.core.file.writer.MSStorageWriteAdapter
 import com.temenos.microservice.framework.core.file.writer.StorageWriteException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
-import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.InvocationFailedException;
+import com.temenos.microservice.framework.core.function.OutOfSequenceException;
+import com.temenos.microservice.framework.core.function.Request;
+import com.temenos.microservice.framework.core.function.ResponseStatus;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
-import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.framework.core.util.SequenceUtil;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
 import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
@@ -137,7 +136,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poFailedEvent.setDebitAccount(input.getBody().get().getFromAccount());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PreHookEvent", poFailedEvent));
 	}
-
+	
 	@Override
 	public void postHook(final Context ctx, final ResponseStatus responseStatus, final CreateNewPaymentOrderInput input,
 			final PaymentStatus response) throws FunctionException {
@@ -147,7 +146,6 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poFailedEvent.setCreditAccount(input.getBody().get().getToAccount());
 		poFailedEvent.setCurrency(input.getBody().get().getCurrency().toString());
 		poFailedEvent.setDebitAccount(input.getBody().get().getFromAccount());
-
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PostHookEvent", poFailedEvent));
 	}
 
@@ -172,7 +170,6 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poAcceptedEvent.setCreditAccount(entity.getCreditAccount());
 		poAcceptedEvent.setCurrency(entity.getCurrency());
 		poAcceptedEvent.setDebitAccount(entity.getDebitAccount());
-
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", poAcceptedEvent));
 		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
@@ -263,7 +260,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		updateCommand.setEventId(UUID.randomUUID().toString());
 		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
 		updateCommand.setStatus("New");
-
+		updateCommand.setBusinessKey(entity.getPaymentOrderId());
 		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
 		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
 
@@ -294,6 +291,24 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				throw new InvocationFailedException("Business Failure error generated");
 			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"InfrastructureFailure"))
 				throw new NullPointerException("Infrastructure Failure error generated");
+		}
+	}
+	
+	@Override
+	public void isSequenceValid(final Context ctx) throws FunctionException {
+		Request<String> request = (Request<String>) ctx.getRequest();
+		Map<String,List<String>> headers = request.getHeaders();
+		List<String> businessKeys = headers.get(InboxOutboxConstants.BUSINESS_KEY);
+		List<String> sequenceNos = headers.get(InboxOutboxConstants.SEQUENCE_NO);
+		List<String> sourceIds = headers.get(InboxOutboxConstants.EVENT_SOURCE);
+		String businessKey = (businessKeys != null && !businessKeys.isEmpty()) ? businessKeys.get(0) : null;
+		if (businessKey != null) {
+			Long sequenceNo = (sequenceNos != null && !sequenceNos.isEmpty()) ? Long.valueOf(sequenceNos.get(0)) : null;
+			String sourceId = (sourceIds != null && !sourceIds.isEmpty()) ? sourceIds.get(0) : null;
+			Long expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
+			if (sequenceNo == null || !expectedSequenceNo.equals(sequenceNo)) {
+				throw new OutOfSequenceException("Invalid sequence number: " + sequenceNo);
+			} 
 		}
 	}
 }
