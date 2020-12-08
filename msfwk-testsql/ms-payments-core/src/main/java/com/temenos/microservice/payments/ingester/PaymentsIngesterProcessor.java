@@ -12,5 +12,12 @@ public class PaymentsIngesterProcessor {
 
 	public void ingestPaymentOrder(PaymentOrder paymentOrder) throws DatabaseOperationException, DataAccessException {
 		PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().save(paymentOrder);
+		if (paymentOrder.getCurrency().equals("INR") && paymentOrder.getPaymentOrderId().equals("PI19107122J61FC9")) {
+			try {
+				Thread.sleep(90000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

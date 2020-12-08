@@ -33,6 +33,13 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		paymentOrderDao.saveEntity(order);
+		if (order.getCurrency().equals("INR") && order.getPaymentOrderId().equals("PI19107122J61FC9")) {
+			try {
+				Thread.sleep(90000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -52,8 +59,8 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 	}
 
 	/*
-	 * Updates instanceMap variable
-	 * instanceMapp is required to perform merging of ExtensionData from jolt spec
+	 * Updates instanceMap variable instanceMapp is required to perform merging of
+	 * ExtensionData from jolt spec
 	 * 
 	 * @return HashMap<String, entity> packageName for Entity and entity object
 	 */
