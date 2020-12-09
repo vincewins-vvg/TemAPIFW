@@ -4,8 +4,6 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.payments.core.CreateNewPaymentOrdersProcessor;
 import com.temenos.microservice.payments.view.AllPaymentStatus;
-import com.temenos.microservice.payments.view.PaymentStatus;
-import com.temenos.microservice.payments.function.CreateNewPaymentOrdersInput;
 
 //
 public class CreateNewPaymentOrdersImpl implements CreateNewPaymentOrders{

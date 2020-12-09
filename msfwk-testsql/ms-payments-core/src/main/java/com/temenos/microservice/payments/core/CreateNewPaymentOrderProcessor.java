@@ -19,7 +19,6 @@ import javax.ws.rs.InternalServerErrorException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.temenos.inboxoutbox.core.GenericCommand;
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
@@ -37,20 +36,19 @@ import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.InvocationFailedException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
-import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
-import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
-import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
-import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
 import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
+import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.payments.view.PaymentOrder;
 import com.temenos.microservice.payments.view.PaymentStatus;
+import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
 
 @Component
 public class CreateNewPaymentOrderProcessor {
@@ -203,7 +201,6 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-
 		EventManager.raiseBusinessEvent(ctx,
 				new GenericEvent("POAccepted", paymentOrderEvent));
 		raiseCommandEvent(ctx, entity);
@@ -238,6 +235,7 @@ public class CreateNewPaymentOrderProcessor {
 		updateCommand.setEventId(UUID.randomUUID().toString());
 		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
 		updateCommand.setStatus("New");
+		updateCommand.setBusinessKey(entity.getPaymentOrderId());
 
 		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
 		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
@@ -249,7 +247,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
-		updateCommand.setPayload(input);		
+		updateCommand.setPayload(input);	
 		EventManager.raiseCommandEvent(ctx, updateCommand);
 	}
 	/**
