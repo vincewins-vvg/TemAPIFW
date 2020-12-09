@@ -40,7 +40,10 @@ public class UpdatePaymentOrderProcessor {
 				throw new InvalidInputException(new FailureMessage("Invalid Debit Account Entered",
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
-			paymentOrderOpt.setStatus(paymentStatus.getStatus());
+			if(paymentStatus.getStatus() != null) {
+				paymentOrderOpt.setStatus(paymentStatus.getStatus());
+			}
+			
 			if (paymentStatus.getPaymentMethod() != null) {
 				Card card = new Card();
 				card.setCardid(paymentStatus.getPaymentMethod().getCard().getCardid());
