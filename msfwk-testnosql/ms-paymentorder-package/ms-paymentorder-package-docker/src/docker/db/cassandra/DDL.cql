@@ -71,6 +71,8 @@ eventId text
 , priority int
 , processedTime timestamp
 , status text
+, businessKey text
+, sequenceNo int
 , PRIMARY KEY (eventId,eventType));
 
 CREATE TABLE IF NOT EXISTS ms_paymentorder.ms_outbox_events(
@@ -84,9 +86,21 @@ eventId text
 , userId text
 , priority int
 , eventDetails text
+, businessKey text
+, sequenceNo int
 , creationTime timestamp
 , processedTime timestamp
 , PRIMARY KEY (eventId,eventType));
 
 
+CREATE INDEX inbox_businesskey
+ON ms_paymentorder.ms_inbox_events (businessKey);
 
+CREATE INDEX inbox_sequenceno
+ON ms_paymentorder.ms_inbox_events (sequenceNo);
+
+CREATE INDEX outbox_businesskey
+ON ms_paymentorder.ms_outbox_events (businessKey);
+
+CREATE INDEX outbox_sequenceno
+ON ms_paymentorder.ms_outbox_events (sequenceNo);

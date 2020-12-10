@@ -116,7 +116,7 @@
     | BusinessFailure    | eventId    | eq       | string   | 148313a7-ff3a-45d3-b34b-169adbd62001 | 
     
   #SequenceCompleted with prehook failure event inserted to topic  
-   When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/SequenceCompletedPrehookFailure.json for Application PAYMENT_ORDER
+   When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedPrehookFailure.json for Application PAYMENT_ORDER
    
    And set timeout session for 30 seconds
    
@@ -166,7 +166,7 @@
     | BusinessFailure    | eventId    | eq       | string   | 148313a7-ff3a-45d3-b34b-169adbd62002 | 
     
   #SequenceCompleted with posthook failure event inserted to topic  
-   When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/SequenceCompletedPosthookFailure.json for Application PAYMENT_ORDER
+   When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedPosthookFailure.json for Application PAYMENT_ORDER
    
    And set timeout session for 30 seconds
    
@@ -203,7 +203,7 @@
     | BusinessFailure    | eventId    | eq       | string   | 148313a7-ff3a-45d3-b34b-169adbd62003 | 
     
   #SequenceCompleted with process failure event inserted to topic  
-   When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/SequenceCompletedProcesshookFailure.json for Application PAYMENT_ORDER
+   When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedProcesshookFailure.json for Application PAYMENT_ORDER
    
    And set timeout session for 30 seconds
    

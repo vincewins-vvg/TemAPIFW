@@ -1,26 +1,20 @@
-package com.temenos.microservice.payments.core;
+package com.temenos.microservice.paymentsorder.function;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.ws.rs.InternalServerErrorException;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.stereotype.Component;
 
-import com.temenos.inboxoutbox.core.GenericCommand;
-import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
@@ -34,7 +28,6 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.InvocationFailedException;
-import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
@@ -42,22 +35,29 @@ import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
 import com.temenos.microservice.payments.event.CreatePaymentEvent;
-import com.temenos.microservice.payments.exception.StorageException;
-import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
-import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
-import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
-import com.temenos.microservice.payments.view.PaymentOrder;
+import com.temenos.microservice.payments.view.AllPaymentStatus;
 import com.temenos.microservice.payments.view.PaymentStatus;
-import com.temenos.microservice.payments.view.UpdatePaymentOrderParams;
+import com.temenos.microservice.paymentsorder.view.PaymentOrder;
 
-@Component
-public class CreateNewPaymentOrderProcessor {
+//
+public class CreateNewPaymentOrderSchemaImpl implements CreateNewPaymentOrderSchema{
+
+//	@Override
+//	public AllPaymentStatus invoke(Context ctx, CreateNewPaymentOrdersInput input) throws FunctionException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	@Override
+	public com.temenos.microservice.paymentsorder.view.PaymentStatus invoke(Context ctx, CreateNewPaymentOrderSchemaInput input) throws FunctionException {
+
+		return invokeProcessor(ctx, input);
+	}
+	
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	private boolean isCreated;
 	private String storageURL = "FILE_STORAGE_URL";
 
-	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
-		PaymentOrderFunctionHelper.validateInput(input);
+	public com.temenos.microservice.paymentsorder.view.PaymentStatus invokeProcessor(Context ctx, CreateNewPaymentOrderSchemaInput input) throws FunctionException {
 		PaymentOrder paymentOrder = input.getBody().get();
 		
 		//does validation based on swagger input
@@ -65,9 +65,7 @@ public class CreateNewPaymentOrderProcessor {
 		if(errorList.size()>0) 
 			throw new InvalidInputException(new FailureMessage(errorList.toString()));
 		
-		errorGenerationBasedOnInput(input,"process");
-		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
-		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
+		com.temenos.microservice.paymentsorder.view.PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
 			if(paymentOrder.getFileReadWrite() != null) {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
@@ -90,8 +88,20 @@ public class CreateNewPaymentOrderProcessor {
 				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
 				if(StorageUrl != null && STORAGE_HOME != null) {
 					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
-					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
-					byte[] bytes = IOUtils.toByteArray(is);
+					InputStream is = null;
+					try {
+						is = fileReader.getFileAsInputStream(StorageUrl);
+					} catch (StorageReadException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					byte[] bytes = null;
+					try {
+						bytes = IOUtils.toByteArray(is);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
 					paymentStatus.setFileReadWrite(fileReadWrite);		
 					isCreated = false;
@@ -101,16 +111,10 @@ public class CreateNewPaymentOrderProcessor {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 			}  catch(InternalServerErrorException e) {
 				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			} catch (FileNotFoundException e ) {
-				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			} catch (IOException e) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-			} catch (StorageReadException e) {
-				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			}
+			} 
 		return paymentStatus;
 	}
-	private PaymentStatus executePaymentOrder(Context ctx, PaymentOrder paymentOrder) throws FunctionException {
+	private com.temenos.microservice.paymentsorder.view.PaymentStatus executePaymentOrder(Context ctx, PaymentOrder paymentOrder) throws FunctionException {
 		String paymentOrderId = ("PO~" + paymentOrder.getFromAccount() + "~" + paymentOrder.getToAccount() + "~"
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
 		if (paymentOrderId != null) {
@@ -184,7 +188,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		if (view.getExchangeRates() != null) {
 			List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-			for (com.temenos.microservice.payments.view.ExchangeRate exchangeRt : view.getExchangeRates()) {
+			for (com.temenos.microservice.paymentsorder.view.ExchangeRate exchangeRt : view.getExchangeRates()) {
 				ExchangeRate exchangeRate = new ExchangeRate();
 				exchangeRate.setName(exchangeRt.getName());
 				exchangeRate.setValue(exchangeRt.getValue());
@@ -201,9 +205,7 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		EventManager.raiseBusinessEvent(ctx,
-				new GenericEvent("POAccepted", paymentOrderEvent));
-		raiseCommandEvent(ctx, entity);
+
 		return entity;
 	}
 
@@ -219,44 +221,22 @@ public class CreateNewPaymentOrderProcessor {
 		return paymentStatus;
 	}
 
-	private PaymentStatus readStatus(com.temenos.microservice.payments.entity.PaymentOrder paymentOrder)
+	private com.temenos.microservice.paymentsorder.view.PaymentStatus readStatus(com.temenos.microservice.payments.entity.PaymentOrder paymentOrder)
 			throws FunctionException {
-		PaymentStatus paymentStatus = new PaymentStatus();
+		com.temenos.microservice.paymentsorder.view.PaymentStatus paymentStatus = new com.temenos.microservice.paymentsorder.view.PaymentStatus();
 		paymentStatus.setPaymentId(paymentOrder.getPaymentOrderId());
 		paymentStatus.setStatus(paymentOrder.getStatus());
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
 		return paymentStatus;
 	}
 	
-	public void raiseCommandEvent(Context ctx, com.temenos.microservice.payments.entity.PaymentOrder entity) {
-		GenericCommand updateCommand = new GenericCommand();
-
-		updateCommand.setDateTime(new Date());
-		updateCommand.setEventId(UUID.randomUUID().toString());
-		updateCommand.setEventType(Environment.getMSName() + ".UpdatePaymentOrder");
-		updateCommand.setStatus("New");
-		updateCommand.setBusinessKey(entity.getPaymentOrderId());
-
-		UpdatePaymentOrderParams params = new UpdatePaymentOrderParams();
-		params.setPaymentId(Arrays.asList(entity.getPaymentOrderId()));
-
-		PaymentStatus paymentStatus = new PaymentStatus();
-		paymentStatus.setDebitAccount(entity.getDebitAccount());
-		paymentStatus.setDetails("Payment order updated");
-		paymentStatus.setPaymentId(entity.getPaymentOrderId());
-
-		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
-
-		updateCommand.setPayload(input);	
-		EventManager.raiseCommandEvent(ctx, updateCommand);
-	}
 	/**
 	 * Generates Exception based on "Descriptions" from input payload
 	 * @param input -payload
 	 * @param hookName - prehook,posthook,process
 	 * @throws InvocationFailedException
 	 */
-	public void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName) throws InvocationFailedException {
+	public void errorGenerationBasedOnInput(CreateNewPaymentOrderSchemaInput input, String hookName) throws InvocationFailedException {
 		if (input == null || input.getBody() == null && input.getBody().get() == null)
 			return;
 		if (input.getBody().get().getDescriptions() != null && !input.getBody().get().getDescriptions().isEmpty()) {
