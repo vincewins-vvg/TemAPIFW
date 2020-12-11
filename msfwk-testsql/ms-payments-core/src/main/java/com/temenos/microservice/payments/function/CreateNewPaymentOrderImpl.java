@@ -61,18 +61,13 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 	@Override
 	public void isSequenceValid(final Context ctx) throws FunctionException {
 		Request<String> request = (Request<String>) ctx.getRequest();
-		Map<String,List<String>> headers = request.getHeaders();
-		List<String> businessKeys = headers.get(InboxOutboxConstants.BUSINESS_KEY);
-		List<String> sequenceNos = headers.get(InboxOutboxConstants.SEQUENCE_NO);
-		List<String> sourceIds = headers.get(InboxOutboxConstants.EVENT_SOURCE);
-		String businessKey = (businessKeys != null && !businessKeys.isEmpty()) ? businessKeys.get(0) : null;
-		if (businessKey != null) {
-			Long sequenceNo = (sequenceNos != null && !sequenceNos.isEmpty()) ? Long.valueOf(sequenceNos.get(0)) : null;
-			String sourceId = (sourceIds != null && !sourceIds.isEmpty()) ? sourceIds.get(0) : null;
-			Long expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
-			if (sequenceNo == null || !expectedSequenceNo.equals(sequenceNo)) {
-				throw new OutOfSequenceException("Invalid sequence number: " + sequenceNo);
-			} 
+		Map<String, List<String>> headers = request.getHeaders();
+		String businessKey = headers.get(InboxOutboxConstants.BUSINESS_KEY).get(0);
+		Long sequenceNo = Long.valueOf(headers.get(InboxOutboxConstants.SEQUENCE_NO).get(0));
+		String sourceId = headers.get(InboxOutboxConstants.EVENT_SOURCE).get(0);
+		Long expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
+		if (!expectedSequenceNo.equals(sequenceNo)) {
+			throw new OutOfSequenceException("Invalid sequence number: " + sequenceNo);
 		}
 	}
 }
