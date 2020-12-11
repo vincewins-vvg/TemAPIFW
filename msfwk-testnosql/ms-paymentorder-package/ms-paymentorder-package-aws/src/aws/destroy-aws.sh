@@ -31,6 +31,7 @@ aws dynamodb delete-table --table-name ms_payment_order
 aws dynamodb delete-table --table-name ms_payment_order_customer
 aws dynamodb delete-table --table-name ms_payment_order_balance
 aws dynamodb delete-table --table-name ms_payment_order_transaction
+aws dynamodb delete-table --table-name ms_event_sequence
 
 export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 

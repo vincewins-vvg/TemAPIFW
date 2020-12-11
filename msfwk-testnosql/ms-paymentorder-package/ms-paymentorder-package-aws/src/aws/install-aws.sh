@@ -25,6 +25,8 @@ aws dynamodb create-table --table-name ms_payment_order_balance --attribute-defi
 
 aws dynamodb create-table --table-name ms_payment_order_transaction --attribute-definitions AttributeName=recId,AttributeType=S --key-schema AttributeName=recId,KeyType=HASH  --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
+aws dynamodb create-table --table-name ms_event_sequence --attribute-definitions AttributeName=eventSourceId,AttributeType=S AttributeName=businessKey,AttributeType=S --key-schema AttributeName=eventSourceId,KeyType=HASH  AttributeName=businessKey,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
 export outboxSourceArn=$(aws dynamodb create-table --table-name PaymentOrder.ms_outbox_events --attribute-definitions AttributeName=eventId,AttributeType=S AttributeName=eventType,AttributeType=S --key-schema AttributeName=eventId,KeyType=HASH  AttributeName=eventType,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --stream-specification StreamEnabled=true,StreamViewType=NEW_AND_OLD_IMAGES | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 sleep 10
 

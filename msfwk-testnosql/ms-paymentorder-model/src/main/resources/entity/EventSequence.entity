@@ -1,0 +1,25 @@
+{
+	"name": "EventSequence",
+	"javaPackage": "com.temenos.microservice.paymentorder.entity",
+	"tableName": "ms_event_sequence",
+	"properties": [
+		{
+			"name": "eventSourceId",
+			"type": "string",
+			"attributes" : [
+				"KEY_PARTITION"
+			]
+		},
+		{
+			"name": "businessKey",
+			"type": "string",
+			"attributes" : [
+				"KEY_SORT"
+			]
+		},
+		{
+			"name": "sequenceNo",
+			"type": "number"
+		}
+	]
+}
