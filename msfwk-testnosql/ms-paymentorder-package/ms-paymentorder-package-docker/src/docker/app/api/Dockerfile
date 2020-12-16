@@ -10,4 +10,4 @@ ENV JAVA_OPTS ${java_options}
 
 COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
 
-COPY jacocoagent.jar /usr/local/tomcat/webapps/jacocoagent.jar
+#COPY jacocoagent.jar /usr/local/tomcat/webapps/jacocoagent.jar
