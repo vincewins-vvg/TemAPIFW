@@ -1,8 +1,17 @@
 package com.temenos.microservice.paymentorder.function;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import com.temenos.connect.InboxOutbox.logger.InboxOutboxConstants;
+import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.OutOfSequenceException;
 import com.temenos.microservice.framework.core.function.Request;
@@ -11,19 +20,8 @@ import com.temenos.microservice.framework.core.util.SequenceUtil;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.ExchangeRate;
 import com.temenos.microservice.paymentorder.entity.PaymentMethod;
-
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
-import com.temenos.microservice.paymentorder.function.UpdatePaymentOrder;
-import com.temenos.microservice.paymentorder.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
-import com.temenos.microservice.framework.core.function.FailureMessage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import com.temenos.connect.InboxOutbox.logger.InboxOutboxConstants;
-import com.temenos.microservice.framework.core.FunctionException;
 
 public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 
@@ -104,18 +102,27 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 	@Override
 	public void isSequenceValid(final Context ctx) throws FunctionException {
 		Request<String> request = (Request<String>) ctx.getRequest();
-		Map<String,List<String>> headers = request.getHeaders();
-		List<String> businessKeys = headers.get(InboxOutboxConstants.BUSINESS_KEY);
-		List<String> sequenceNos = headers.get(InboxOutboxConstants.SEQUENCE_NO);
-		List<String> sourceIds = headers.get(InboxOutboxConstants.EVENT_SOURCE);
-		String businessKey = (businessKeys != null && !businessKeys.isEmpty()) ? businessKeys.get(0) : null;
-		if (businessKey != null) {
-			Long sequenceNo = (sequenceNos != null && !sequenceNos.isEmpty()) ? Long.valueOf(sequenceNos.get(0)) : null;
-			String sourceId = (sourceIds != null && !sourceIds.isEmpty()) ? sourceIds.get(0) : null;
-			Long expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
-			if (sequenceNo == null || !expectedSequenceNo.equals(sequenceNo)) {
-				throw new OutOfSequenceException("Invalid sequence number: " + sequenceNo);
-			} 
+		Map<String, List<String>> headers = request.getHeaders();
+		String businessKey = headers.get(InboxOutboxConstants.BUSINESS_KEY).get(0);
+		Long sequenceNo = Long.valueOf(headers.get(InboxOutboxConstants.SEQUENCE_NO).get(0));
+		String sourceId = headers.get(InboxOutboxConstants.EVENT_SOURCE).get(0);
+		Long expectedSequenceNo = null;
+
+		switch (Environment.getDatabase()) {
+		case Environment.DATABASE_MONGODB:
+			expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
+			break;
+		case Environment.DATABASE_DYNAMODB:
+			expectedSequenceNo = PaymentOrderFunctionHelper.validateAndUpdateSequenceNumber(businessKey, sourceId,
+					sequenceNo);
+			break;
+		default:
+			throw new InvalidInputException(
+					new FailureMessage("Invalid database name", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		}
+
+		if (!expectedSequenceNo.equals(sequenceNo)) {
+			throw new OutOfSequenceException("Invalid sequence number: " + sequenceNo);
 		}
 	}
 }

@@ -23,6 +23,9 @@ sleep 5
 aws dynamodb create-table --table-name --region eu-west-2 ms_file_upload --attribute-definitions AttributeName=name,AttributeType=S AttributeName=mimetype,AttributeType=S --key-schema AttributeName=name,KeyType=HASH  AttributeName=mimetype,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://ms-paymentorder-dynamodb:8000
 sleep 5
 
+aws dynamodb create-table --table-name --region eu-west-2 ms_event_sequence --attribute-definitions AttributeName=eventSourceId,AttributeType=S AttributeName=businessKey,AttributeType=S --key-schema AttributeName=eventSourceId,KeyType=HASH  AttributeName=businessKey,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://ms-paymentorder-dynamodb:8000
+sleep 5
+
 aws dynamodb create-table \
      --table-name --region eu-west-2 ms_reference_data \
      --attribute-definitions \

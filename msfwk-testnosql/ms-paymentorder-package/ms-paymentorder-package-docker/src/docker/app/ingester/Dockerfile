@@ -9,7 +9,7 @@ ENV java_options ${java_options}
 ENV JAVA_OPTS ${java_options}
 
 COPY ${artifactid} /app/${artifactid}
-COPY jacocoagent.jar /app/jacocoagent.jar
+#COPY jacocoagent.jar /app/jacocoagent.jar
 
 RUN chmod -R +x /app
 
