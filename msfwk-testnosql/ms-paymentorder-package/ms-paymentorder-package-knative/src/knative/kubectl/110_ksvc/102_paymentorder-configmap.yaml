@@ -70,7 +70,7 @@ data:
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: kafka
   temn.queue.impl: kafka
-  temn.msf.schema.registry.url: "Payment.Order"
+  temn.msf.schema.registry.url: http://schema-registry-svc.kafka.svc.cluster.local
   temn.msf.ingest.sink.error.stream: error-paymentorder
   temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
@@ -80,7 +80,7 @@ data:
   PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
   temn.config.file.path: mapping/
   temn.ingester.mapping.enabled: "true"
-  EXECUTION_ENV: TEST
+  #EXECUTION_ENV: TEST
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
 ---
 apiVersion: v1

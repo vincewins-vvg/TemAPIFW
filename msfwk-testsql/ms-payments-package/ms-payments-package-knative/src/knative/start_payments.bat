@@ -20,6 +20,7 @@ kubectl apply -f 110_payments-ingesters.yaml
 cd ../120_kafka
 kubectl apply -f 100_payments-create-topics.yaml
 kubectl apply -f 110_payments-kafka-source.yaml
+kubectl apply -f 120_strimzi.yaml
 
 cd ../130_scheduler
 kubectl apply -f 130_scheduler.yaml
