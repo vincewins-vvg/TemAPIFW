@@ -5,6 +5,7 @@ REM --------------------------------------------------------------
 
 REM - Stop knative services
 cd kubectl/120_kafka
+kubectl delete -f 120_strimzi.yaml
 kubectl delete -f 110_payments-kafka-source.yaml
 kubectl delete -f 100_payments-create-topics.yaml
 

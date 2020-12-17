@@ -39,6 +39,8 @@ cd ../120_kafka
 kubectl apply -f 100_paymentorder-create-kafka-topics.yaml
 sleep 10
 kubectl apply -f 110_kafka-source.yaml
+sleep 10
+kubectl apply -f 120_strimzi.yaml
 
 sleep 30
 

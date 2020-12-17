@@ -39,6 +39,8 @@ cd ../120_kafka
 kubectl apply -f 100_paymentorder-create-kafka-topics.yaml
 timeout /t 10 >nul
 kubectl apply -f 110_kafka-source.yaml
+timeout /t 10 >nul
+kubectl apply -f 120_strimzi.yaml
 
 timeout /t 30 >nul
 
