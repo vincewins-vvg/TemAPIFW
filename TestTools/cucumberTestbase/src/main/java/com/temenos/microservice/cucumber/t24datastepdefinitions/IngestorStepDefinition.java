@@ -169,11 +169,7 @@ public class IngestorStepDefinition {
           String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
           System.out.println("content:" + content);
           
-          if (IngesterUtil.isCloudEvent()) {
-              producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
-          } else {
               producer.batch().add(topicName, new String(content).getBytes());
-          }
           
           try {
               producer.batch().send();
