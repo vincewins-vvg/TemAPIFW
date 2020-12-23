@@ -1,0 +1,268 @@
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+		{
+				"resourceId": "PO1",
+				"roles": [
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+					
+				],
+				"resourceCategory": "currentPOounts.currentPOountPremium"
+			},
+			{
+				"resourceId": "PO2",
+				"roles": [
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+				],
+				"resourceCategory": "currentPOounts.currentPOountPremium"
+			},
+			{
+				"resourceId": "PO3",
+				"roles": [
+					
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+				],
+				"resourceCategory": "currentPOounts.currentPOountPremium"
+			},
+			{
+				"resourceId": "PO4",
+				"roles": [
+					
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+				],
+				"resourceCategory": "currentPOounts.currentPOountPremium"
+			},
+			{
+				"resourceId": "PO5",
+				"roles": [
+					
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+				],
+				"resourceCategory": "currentPOounts.currentPOountPremium"
+			},
+			{
+				"roles": [
+					
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=100200"
+			},
+			{
+				"roles": [
+				
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200200"
+			},
+			{
+				"roles": [
+					"Policy19",
+					"Policy20",
+					"Policy21",
+					"Policy22",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200300"
+			},
+			{
+				"roles": [
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+				],
+				"resourceFilter": "creditAccount=200400"
+			},
+			{
+				"roles": [
+					
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200500"
+			},
+			{
+				"roles": [
+					
+					"Policy1",
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200600"
+			},
+			{
+				"roles": [
+					
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200700"
+			},
+			{
+				"roles": [
+					
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200800"
+			},
+			{
+				"roles": [
+					
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=200900"
+			},{
+				"roles": [
+					
+					"Policy19",
+					"Policy23",
+					"Policy24",
+					"Policy25",
+					"Policy39",
+					"Policy40"
+               
+				],
+				"resourceFilter": "creditAccount=201000"
+			},
+			{
+				"roles": [
+					"Policy51",
+                    "Policy52",
+                    "Policy53",
+                    "Policy54",
+                    "Policy55",
+                    "Policy56",
+                    "Policy57",
+                    "Policy58",
+                    "Policy59",
+                    "Policy60"
+                    
+				],
+				"resourceFilter": "creditAccount=100100"
+			},
+            {
+				"roles": [
+					"Policy51",
+                    "Policy52",
+                    "Policy53",
+                    "Policy54",
+                    "Policy55",
+                    "Policy56",
+                    "Policy57",
+                    "Policy58",
+                    "Policy59",
+                    "Policy60"
+				],
+				"resourceFilter": "creditAccount=100150"
+			},
+			{
+				"roles": [
+					"Policy51",
+                    "Policy52",
+                    "Policy53",
+                    "Policy54",
+                    "Policy55",
+                    "Policy56",
+                    "Policy57",
+                    "Policy58",
+                    "Policy59",
+                    "Policy60"
+				],
+				"resourceFilter": "creditAccount=100300"
+			}
+      ]
+    }
+  ]
+}
