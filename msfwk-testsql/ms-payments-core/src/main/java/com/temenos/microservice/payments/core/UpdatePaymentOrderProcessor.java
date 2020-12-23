@@ -1,5 +1,6 @@
 package com.temenos.microservice.payments.core;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,6 +72,16 @@ public class UpdatePaymentOrderProcessor {
 				paymentOrderOpt.setExchangeRates(exchangeRates);
 			}
 			PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().save(paymentOrderOpt);
+			if (paymentOrderOpt.getPaymentOrderId().equals("PO~2568~2578~USD~45")
+					&& paymentOrderOpt.getPaymentDetails().equals("refDet")) {
+				try {
+					System.out.println("Timed wait started");
+					Thread.sleep(50000);
+					System.out.println("Timed wait Ended");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		} else {
 			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));

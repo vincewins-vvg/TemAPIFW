@@ -18,6 +18,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -32,6 +33,9 @@ public class PaymentOrder implements ExtendableEntity {
 
 	@Id
 	private String paymentOrderId;
+	
+	@Version
+	private int version;
 
 	private String debitAccount;
 
@@ -169,6 +173,14 @@ public class PaymentOrder implements ExtendableEntity {
 	@Override
 	public Map<String, String> getExtensionData() {
 		return extensionData;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	@Override

@@ -37,7 +37,6 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 	 */
 	private void checkAndBuild(JSONObject jsonObject) {
 		PaymentOrderRecord orderRecord = new PaymentOrderRecord(jsonObject);
-
 		try {
 			order = PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao()
 					.findById(orderRecord.getPaymentOrderId(), PaymentOrder.class);
