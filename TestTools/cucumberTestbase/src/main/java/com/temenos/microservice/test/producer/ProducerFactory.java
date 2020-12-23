@@ -36,11 +36,7 @@ public class ProducerFactory {
 			props.put("acks", "all");
 			props.put("enable.idempotence", true);
 			props.put("key.serializer", StringSerializer.class);
-			if (IngesterUtil.isCloudEvent()) {
-				props.put("value.serializer", StringSerializer.class);
-			} else {
-				props.put("value.serializer", ByteArraySerializer.class);
-			}
+			props.put("value.serializer", ByteArraySerializer.class);
 			props.put("batch.size", 16384);
 			props.put("linger.ms", 1);
 			props.put("buffer.memory", 33554432);
