@@ -35,7 +35,7 @@ public class PaymentorderIngesterUpdater extends BaseIngester {
 		paymentOrderDao.saveEntity(order);
 		if (order.getCurrency().equals("INR") && order.getPaymentOrderId().equals("PI19107122J61FC9")) {
 			try {
-				Thread.sleep(90000);
+				Thread.sleep(30000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
