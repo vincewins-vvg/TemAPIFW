@@ -61,6 +61,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
       className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
@@ -136,6 +138,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
@@ -165,6 +169,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -197,6 +203,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
       temn.msf.name: PaymentOrder
       temn.queue.impl: kafka
@@ -239,6 +247,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -276,6 +286,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -325,6 +337,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -363,6 +377,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -399,6 +415,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -435,6 +453,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -474,6 +494,8 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
