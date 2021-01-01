@@ -14,8 +14,8 @@ services:
     image: ${MONGO_SCRIPT_IMAGE}    
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${KNATIVE_CONTEXT}
+      dockerfile: app/api/Dockerfile
       args:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
@@ -23,8 +23,8 @@ services:
     image: ${API_IMAGE}
   ingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${KNATIVE_CONTEXT}
+      dockerfile: app/ingester/Dockerfile
       args:
         BASE_IMAGE: ${API_BASE_IMAGE}
         artifactid: ${api_artifactid}

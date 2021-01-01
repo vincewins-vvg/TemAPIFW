@@ -4,9 +4,6 @@ metadata:
   name: paymentorder-api-config
   namespace: paymentorder
 data:
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
   className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
@@ -64,9 +61,6 @@ metadata:
   name: paymentorder-ingester-avro-config
   namespace: paymentorder
 data:
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: kafka
   temn.queue.impl: kafka
@@ -89,9 +83,6 @@ metadata:
   name: paymentorder-ingester-command-config
   namespace: paymentorder
 data:
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: kafka
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
@@ -122,9 +113,6 @@ metadata:
   name: paymentorder-ingester-event-config
   namespace: paymentorder
 data:  
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: kafka
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
@@ -150,9 +138,6 @@ metadata:
   name: paymentorder-eventdelivery-config
   namespace: paymentorder
 data:  
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: kafka
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
@@ -174,9 +159,6 @@ metadata:
   name: paymentorder-scheduler-config
   namespace: paymentorder
 data:  
-  DATABASE_KEY: mongodb
-  MONGODB_DBNAME: ms_paymentorder
-  MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017  
   temn.msf.name: PaymentOrder
   temn.msf.security.authz.enabled: "false"
   temn.queue.impl: kafka

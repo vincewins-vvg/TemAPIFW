@@ -6,7 +6,7 @@ REM --------------------------------------------------------------
 if not defined DOCKER_ENV_LOCATION set DOCKER_ENV_LOCATION=config
 
 REM Copy the environment file for docker to resolve
-copy %DOCKER_ENV_LOCATION%\ENV.env .env > NUL
+copy %DOCKER_ENV_LOCATION%\cassandraENV.env .env > NUL
 
 REM Now run Docker Compose
-docker-compose -f paymentorder.yml %*
+docker-compose -f paymentorderCassandra.yml %*

@@ -34,30 +34,30 @@ import com.temenos.microservice.framework.test.streams.AvroProducer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
 
-@Ignore
+//@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConfigBasedMappingITTest extends ITTest {
 
-	@BeforeClass
+//	@BeforeClass
 	public static void initializeData() {
 		daoFacade.openConnection();
 		createReferenceDataRecord("ms_reference_data", "type", "string", "paymentref", "value", "string", "GB0010001",
 				"description", "string", "description");
 	}
 
-	@Before
+//	@Before
 	public void setUp() throws SQLException {
 		this.client = newWebClient();
 	}
 
-	@AfterClass
+	//@AfterClass
 	public static void clearData() {
 		deletePaymentOrderRecord("ms_reference_data", "type", "eq", "string", "paymentref", "value", "eq", "string",
 				"GB0010001");
 		daoFacade.closeConnection();
 	}
 
-	@Test
+	//@Test
 	public void testCBinaryIngesterConfigBasedMapping() {
 		try {
 
@@ -154,7 +154,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 					.getResourceAsStream("PaymentOrderInputAvroData.json");
 			Assert.assertNotNull("avro data is read", inputAvro);
 			String inputAvroReader = convertInputStreamToString(inputAvro);
-			System.out.println("input for avro data" + inputAvroReader);
+			//System.out.println("input for avro data" + inputAvroReader);
 			producer.sendGenericEvent(inputAvroReader, "PAYMENT_ORDEREvent");
 			Map<Integer, List<Attribute>> records = null;
 
@@ -187,7 +187,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testAvroIngesterConfigDateAsCommandEvent() {
 		try {
 			System.setProperty("temn.msf.ingest.sink.stream", "table-update-paymentorder");
@@ -276,7 +276,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		assertTrue(!altKeyRecords.isEmpty());
 	}
 
-	@Test
+//	@Test
 	public void testBGetPaymentOrderWithAltKey() {
 		ClientResponse getResponse;
 

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-cassandra-db-config
+  namespace: paymentorder
+data:
+   DATABASE_KEY: cassandra
+   CASSANDRA_HOST: db-service
+   CASSANDRA_PORT: 9042
+   CASSANDRA_USER: cassandra
+   CASSANDRA_PASS:
+   CASSANDRA_KEYSPACE: ${DB_KEYSPACE}
+   CASSANDRA_SSL: 
+   CASSANDRA_KEYSTORE_FILE_PATH:
+   CASSANDRA_KEYSTORE_PASSWORD: 
+---

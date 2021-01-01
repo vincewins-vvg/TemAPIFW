@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>com.temenos.microservice.paymentorder</groupId>
@@ -19,14 +20,16 @@
 			<artifactId>ms-paymentorder-model</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-framework-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
-
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des</groupId>
 			<artifactId>stream-processor</artifactId>
-
 			<scope>test</scope>
 		</dependency>
 		<dependency>

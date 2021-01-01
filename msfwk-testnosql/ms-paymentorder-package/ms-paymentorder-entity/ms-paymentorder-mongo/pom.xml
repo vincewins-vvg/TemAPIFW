@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-entity</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.paymentorder</groupId>
+	<artifactId>ms-paymentorder-entity-mongo</artifactId>
+	<name>ms-paymentorder-entity-mongo</name>
+	<description>Payment Order entity mongo</description>
+	<packaging>jar</packaging>
+
+	<properties>
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<aws.codegen.enabled>false</aws.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
+
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-paymentorder-entity</assemblyOutputDirectory>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-framework-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

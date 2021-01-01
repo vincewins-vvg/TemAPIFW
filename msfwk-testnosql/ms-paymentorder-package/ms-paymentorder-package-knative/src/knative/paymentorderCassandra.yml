@@ -1,0 +1,33 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:  
+  db-service:
+    build:
+      context: ${DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+    image: ${DB_IMAGE}
+    
+  api:
+    build:
+      context: ${KNATIVE_CONTEXT}
+      dockerfile: app/api/Dockerfile
+      args:
+        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        api_artifactid: ${api_artifactid}
+        api_java_options: ${java_options}
+    image: ${API_IMAGE}
+    
+  ingester:
+    build:
+      context: ${KNATIVE_CONTEXT}
+      dockerfile: app/ingester/Dockerfile
+      args:
+        BASE_IMAGE: ${API_BASE_IMAGE}
+        artifactid: ${api_artifactid}
+        java_options: ${java_options}
+    image: ${INGESTER_IMAGE}

@@ -15,6 +15,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: paymentorder-ingester-avro-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config    
 ---
 #PO Command Ingester 
 apiVersion: serving.knative.dev/v1
@@ -33,6 +35,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: paymentorder-ingester-command-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config    
 ---
 #PO Business event Ingester
 apiVersion: serving.knative.dev/v1
@@ -51,6 +55,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: paymentorder-ingester-event-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config    
 ---
 # Payment Order Outbox Event delivery
 apiVersion: serving.knative.dev/v1
@@ -69,3 +75,5 @@ spec:
           envFrom:
             - configMapRef:
                 name: paymentorder-eventdelivery-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config    

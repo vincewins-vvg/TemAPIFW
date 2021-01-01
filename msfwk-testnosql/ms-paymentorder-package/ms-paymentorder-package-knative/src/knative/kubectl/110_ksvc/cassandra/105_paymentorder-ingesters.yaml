@@ -1,0 +1,79 @@
+#Config based Avro Ingester
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: po-avro-ingester
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: paymentorder-ingester-avro-config
+            - configMapRef:
+                name: paymentorder-cassandra-db-config    
+---
+#PO Command Ingester 
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: po-command-ingester
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: paymentorder-ingester-command-config
+            - configMapRef:
+                name: paymentorder-cassandra-db-config    
+---
+#PO Business event Ingester
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: po-event-ingester
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: paymentorder-ingester-event-config
+            - configMapRef:
+                name: paymentorder-cassandra-db-config    
+---
+# Payment Order Outbox Event delivery
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: po-event-delivery
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: paymentorder-eventdelivery-config
+            - configMapRef:
+                name: paymentorder-cassandra-db-config    
