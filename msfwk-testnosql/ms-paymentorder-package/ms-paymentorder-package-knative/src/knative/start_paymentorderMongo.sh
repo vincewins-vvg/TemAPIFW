@@ -27,15 +27,19 @@ kubectl apply -f 100_paymentorder-create-namespace.yaml
 sleep 10
 kubectl apply -f 101_paymentorder-secrets.yaml
 sleep 10
-kubectl apply -f 102_paymentorder-configmap.yaml
+kubectl apply -f 102_paymentorder-service-configmap.yaml
 sleep 10
-kubectl apply -f 110_paymentorder-api.yaml
+
+cd mongo
+kubectl apply -f 103_paymentorder-mongo-configmap.yml
 sleep 10
-kubectl apply -f 120_paymentorder-ingesters.yaml
+kubectl apply -f 104_paymentorder-api.yaml
+sleep 10
+kubectl apply -f 105_paymentorder-ingesters.yaml
 
 sleep 30
 
-cd ../120_kafka
+cd ../../120_kafka
 kubectl apply -f 100_paymentorder-create-kafka-topics.yaml
 sleep 10
 kubectl apply -f 110_kafka-source.yaml

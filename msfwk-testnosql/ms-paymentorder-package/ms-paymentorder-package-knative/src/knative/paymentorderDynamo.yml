@@ -12,6 +12,7 @@ services:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options}
+        db_artifact: ${db_artifact}
     image: ${API_IMAGE}
   ingester:
     build:
@@ -21,4 +22,5 @@ services:
         BASE_IMAGE: ${API_BASE_IMAGE}
         artifactid: ${api_artifactid}
         java_options: ${java_options}
+        db_artifact: ${db_artifact}
     image: ${INGESTER_IMAGE}

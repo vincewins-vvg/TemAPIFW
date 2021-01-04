@@ -14,3 +14,5 @@ spec:
           envFrom:
             - configMapRef:
                 name: paymentorder-scheduler-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config    
