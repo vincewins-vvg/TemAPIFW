@@ -1,0 +1,26 @@
+{
+	"specversion": "1.0",
+	"id": "g5798d48-4d89-4e0c-b341-0370d18e47b7",
+	"source": "https://temenos.com/microservice/cloudevents/ms-paymentorder",
+	"type": "PaymentOrder.UpdatePaymentOrder",
+	"datacontenttype": "application/json",
+	"subject": "command",
+	"time": "2020-12-04T12:37:06.571Z",
+	"sequenceno": 5,
+	"extension-mscontext": "{\"authorization\":\"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMTkwMDA2MjU4ODQiLCJyb2xlSWQiOiJCYWxhbmNlVmlld2VyIiwiaWF0IjoxNTg5NTkzMTQwLCJleHAiOjE2MjExMjkxNDJ9.KiZCAFf6Iien5ZJE70fhGweJZ6ErmLqaKyz40lZnjVChmzSaFW3z7IUfqdt8370PNufLf_S79C8b0MgNJo1NHtTojhjUSGGtHFn98WTb8s7DJmLtAAnGAwm-RHWzRvhJVVBZO1VbbwA4-QJhBK30OjOxiJg1ujTpZrtOIqhZiFCjgWB9jmfg74iLou5nylVKo8YGR7ZANrVO_qxW5LhLuOfuGY7HKQ5iGUDjAeI_U7XZU7-edmM9UZFlvkaAyAE672G388KK3NCcfFqWfgJ10hqrGUw9xHlZ4tSy3C7JousiMsM_jPNFCQ2p3thirPUn6cPCojokvqxaterPiNFlwA\",\"customfilterid\":\"test\"}",
+	"businesskey": "PO123",
+	"correlationid": "g76c79a5-6802-4754-9622-5a2193acfc9c",
+	"serviceid": "client",
+	"channelid": "web",
+	"data": {
+		"params": {
+			"paymentId": ["PO~419967~7546~USD~124"]
+		},
+		"body": {
+			"debitAccount": "419967",
+			"paymentId": "PO~419967~7546~USD~124",
+			"details": "Payment order updated",
+			"status": "UPDATED"
+		}
+	}
+}
