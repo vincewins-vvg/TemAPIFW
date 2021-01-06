@@ -23,7 +23,8 @@ aws rds delete-db-cluster-parameter-group --db-cluster-parameter-group-name Paym
 aws s3 rb s3://ms-payment-order-sql --force
 
 #Delete scheduler
-aws events remove-targets --rule ms-payments-scheduler-rule --ids "paymentscheduler"
+export schedulerRuleTargetId=$(aws events list-targets-by-rule --rule "ms-payments-scheduler-rule" | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["Targets"] if "arn:aws:lambda:eu-west-2:177642146375:function:paymentscheduler" == api["Arn"]]; print filter[0]["Id"]')
+aws events remove-targets --rule ms-payments-scheduler-rule --ids $schedulerRuleTargetId
 aws events delete-rule --name ms-payments-scheduler-rule
 aws lambda delete-function --function-name paymentscheduler
 

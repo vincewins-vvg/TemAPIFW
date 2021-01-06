@@ -19,7 +19,8 @@ aws s3 rb s3://ms-payment-order --force
 sleep 30
 
 #Delete scheduler
-aws events remove-targets --rule ms-paymentorder-scheduler-rule --ids "paymentorder-scheduler"
+export schedulerRuleTargetId=$(aws events list-targets-by-rule --rule "ms-paymentorder-scheduler-rule" | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["Targets"] if "arn:aws:lambda:eu-west-2:177642146375:function:paymentorder-scheduler" == api["Arn"]]; print filter[0]["Id"]')
+aws events remove-targets --rule ms-paymentorder-scheduler-rule --ids $schedulerRuleTargetId
 aws events delete-rule --name ms-paymentorder-scheduler-rule
 aws lambda delete-function --function-name paymentorder-scheduler
 
