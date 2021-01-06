@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
-		<artifactId>microservice-entity</artifactId>
+		<artifactId>microservice-package-entity-nosql</artifactId>
 		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
 
@@ -21,6 +21,7 @@
 		<msf.codegen.enabled>true</msf.codegen.enabled>
 		<aws.codegen.enabled>false</aws.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
+		<msf.vocabulary.validation.enabled>false</msf.vocabulary.validation.enabled>
 
 		<!-- Directory name inside the final Assembly -->
 		<assemblyOutputDirectory>ms-paymentorder-entity</assemblyOutputDirectory>
