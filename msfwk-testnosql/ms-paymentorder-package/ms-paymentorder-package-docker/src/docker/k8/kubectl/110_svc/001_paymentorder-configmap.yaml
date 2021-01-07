@@ -76,6 +76,7 @@ data:
   temn.msf.stream.vendor: kafka
   temn.queue.impl: kafka
   temn.msf.schema.registry.url: http://schema-registry-svc.kafka.svc.cluster.local
+  temn.msf.ingest.source.stream: table-update-paymentorder
   temn.msf.ingest.sink.error.stream: error-paymentorder
   temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
