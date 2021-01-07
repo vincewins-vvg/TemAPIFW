@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-order-api-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-order-api-nosql
+  template:
+    metadata:
+      labels:
+        app: payment-order-api-nosql
+    spec:
+      containers:
+      - name: payment-order-api-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-service:DEV
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-api-config
+      imagePullSecrets:
+      - name: poacrimage          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payment-order-nosql-svc
+  name: payment-order-api-nosql-svc
+  namespace: paymentorder
+spec:
+  selector:
+    app: payment-order-api-nosql
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer         

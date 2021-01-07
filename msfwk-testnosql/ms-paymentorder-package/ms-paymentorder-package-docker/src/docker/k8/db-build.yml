@@ -1,0 +1,14 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:
+  db-init-service:
+    build:
+      context: ../${DB_MIGRATION_CONTEXT}
+      dockerfile: db/mongo/k8/Dockerfile
+      args:
+        INGESTER_APP_BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        dbMigration-artifactid: ${dbMigration-artifactid}
+    image: ${MONGO_SCRIPT_IMAGE} 

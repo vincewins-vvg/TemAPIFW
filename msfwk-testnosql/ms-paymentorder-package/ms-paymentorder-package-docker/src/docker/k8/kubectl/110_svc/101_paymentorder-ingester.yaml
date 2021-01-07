@@ -1,0 +1,112 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: po-avro-ingester-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: po-avro-ingester-nosql
+  template:
+    metadata:
+      labels:
+        app: po-avro-ingester-nosql
+    spec:
+      containers:
+      - name: po-avro-ingester-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8092
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-ingester-avro-config
+      imagePullSecrets:
+      - name: poregcred
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: po-command-ingester-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: po-command-ingester-nosql
+  template:
+    metadata:
+      labels:
+        app: po-command-ingester-nosql
+    spec:
+      containers:
+      - name: po-command-ingester-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8093
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-ingester-command-config
+      imagePullSecrets:
+      - name: poregcred
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: po-event-ingester-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: po-event-ingester-nosql
+  template:
+    metadata:
+      labels:
+        app: po-event-ingester-nosql
+    spec:
+      containers:
+      - name: po-event-ingester-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8094
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-ingester-event-config
+      imagePullSecrets:
+      - name: poregcred
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: po-event-delivery-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: po-event-delivery-nosql
+  template:
+    metadata:
+      labels:
+        app: po-event-delivery-nosql
+    spec:
+      containers:
+      - name: po-event-delivery-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-inboxoutbox:DEV
+        ports:
+        - containerPort: 8095
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-eventdelivery-config
+      imagePullSecrets:
+      - name: poregcred
+---

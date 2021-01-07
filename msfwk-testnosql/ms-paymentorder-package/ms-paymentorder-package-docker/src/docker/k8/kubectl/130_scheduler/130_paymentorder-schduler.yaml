@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-order-scheduler-nosql
+  namespace: paymentorder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-order-scheduler-nosql
+  template:
+    metadata:
+      labels:
+        app: payment-order-scheduler-nosql
+    spec:
+      containers:
+      - name: payment-order-scheduler-nosql
+        image: ponosqlacr.azurecr.io/temenos/ms-paymentorder-scheduler:DEV
+        ports:
+        - containerPort: 8096
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: paymentorder-scheduler-config
+      imagePullSecrets:
+      - name: poregcred        
+---

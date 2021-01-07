@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongosetup
+spec:
+  template:
+    metadata:
+      name: mongosetup
+    spec:
+      containers:
+      - name: mongosetup
+        image: poacr.azurecr.io/temenos/ms-paymentorder-mongoscripts:DEV
+        env: 
+          - name: database.key
+            value: mongodb
+          - name: database.name
+            value: ms_paymentorder
+          - name: db.connection.url
+            value: mongodb://badri0307:badri0307@mongodb01-shard-00-00.qjebf.azure.mongodb.net:27017,mongodb01-shard-00-01.qjebf.azure.mongodb.net:27017,mongodb01-shard-00-02.qjebf.azure.mongodb.net:27017/test?authSource=admin&gssapiServiceName=mongodb&replicaSet=atlas-kul6fw-shard-0&ssl=true
+          - name: db.scripts.location
+            value: ../migration
+      imagePullSecrets:
+      - name: poacrimage             
+      restartPolicy: OnFailure
