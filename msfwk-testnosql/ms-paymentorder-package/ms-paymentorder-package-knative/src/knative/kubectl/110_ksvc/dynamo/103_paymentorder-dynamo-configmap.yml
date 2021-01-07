@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentorder-dynamo-db-config
+  namespace: paymentorder
+data:
+   DATABASE_KEY: dynamo
+   AWS_ACCESS_KEY_ID: "acbe"
+   AWS_SECRET_ACCESS_KEY: "abcd"
+   DYNAMODB_ENPOINT: "http://localhost:8080"
+---

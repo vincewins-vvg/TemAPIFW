@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-entity-nosql</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.paymentorder</groupId>
+	<artifactId>ms-paymentorder-entity-cassandra</artifactId>
+	<name>ms-paymentorder-entity-cassandra</name>
+	<description>Payment Order entity cassandra</description>
+
+	<properties>
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
+		<msf.codegen.enabled>true</msf.codegen.enabled>
+		<aws.codegen.enabled>false</aws.codegen.enabled>
+		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
+		<msf.vocabulary.validation.enabled>false</msf.vocabulary.validation.enabled>
+		<!-- Directory name inside the final Assembly -->
+		<assemblyOutputDirectory>ms-paymentorder-entity</assemblyOutputDirectory>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.temenos.microservice.framework</groupId>
+			<artifactId>ms-framework-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

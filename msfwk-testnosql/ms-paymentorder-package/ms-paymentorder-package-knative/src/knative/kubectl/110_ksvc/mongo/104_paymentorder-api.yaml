@@ -1,18 +1,18 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: paymentorder-scheduler
+  name: paymentorder-api
   namespace: paymentorder
 spec:
   template:
     spec:
       containers:
-        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+        - image: dev.local/temenos/ms-paymentorder-service:DEV
           ports:
           - name: http1
             containerPort: 8080
           envFrom:
             - configMapRef:
-                name: paymentorder-scheduler-config
+                name: paymentorder-api-config
             - configMapRef:
-                name: paymentorder-mongo-db-config    
+                name: paymentorder-mongo-db-config

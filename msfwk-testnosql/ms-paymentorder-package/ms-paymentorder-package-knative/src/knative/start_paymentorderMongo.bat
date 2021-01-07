@@ -1,12 +1,12 @@
-#!/bin/bash -e
-# --------------------------------------------------------------
-# - Script to start Paymentorder Service
-# --------------------------------------------------------------
+@echo off
+REM --------------------------------------------------------------
+REM - Script to start Paymentorder Service
+REM --------------------------------------------------------------
 
-# Build paymentorder images
-./build.sh build
+REM - Build paymentorder images
+call buildMongo.bat build
 
-# Start knative services
+REM - Start knative services
 cd kubectl/100_db/mongo
 kubectl apply -f 100_create-mongo-ns.yaml
 cd crd
@@ -20,43 +20,43 @@ cd ../rs
 kubectl apply -f 160_rs.yaml
 kubectl apply -f 170_mongo_services.yaml
 
-sleep 30
+timeout /t 30 >nul
 
 cd ../../../110_ksvc
 kubectl apply -f 100_paymentorder-create-namespace.yaml
-sleep 10
+timeout /t 10 >nul
 kubectl apply -f 101_paymentorder-secrets.yaml
-sleep 10
-kubectl apply -f 102_paymentorder-configmap.yaml
-sleep 10
-kubectl apply -f 110_paymentorder-api.yaml
-sleep 10
-kubectl apply -f 120_paymentorder-ingesters.yaml
+timeout /t 10 >nul
+kubectl apply -f 102_paymentorder-service-configmap.yaml
+timeout /t 10 >nul
 
-sleep 30
+cd mongo
+kubectl apply -f 103_paymentorder-mongo-configmap.yml
+timeout /t 10 >nul
+kubectl apply -f 104_paymentorder-api.yaml
+timeout /t 10 >nul
+kubectl apply -f 105_paymentorder-ingesters.yaml
+timeout /t 30 >nul
 
-cd ../120_kafka
+cd ../../120_kafka
 kubectl apply -f 100_paymentorder-create-kafka-topics.yaml
-sleep 10
+timeout /t 10 >nul
 kubectl apply -f 110_kafka-source.yaml
-sleep 10
+timeout /t 10 >nul
 kubectl apply -f 120_strimzi.yaml
 
-sleep 30
+timeout /t 30 >nul
 
 cd ../130_scheduler
 kubectl apply -f 130_scheduler.yaml
-sleep 10
+timeout /t 10 >nul
 kubectl apply -f 131_scheduler_source.yaml
-sleep 10
 
 cd ../../
 
-sleep 30
+timeout /t 30 >nul
 
 cd kubectl/100_db/mongo/rs
 kubectl apply -f mongo-setup.yaml
 
 cd ../../../..
-
-cd ../../
