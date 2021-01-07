@@ -96,16 +96,16 @@ Scenario Outline: payload conditins without account id
 		
 Scenario Outline: payload conditions with junk values
 
-	When post the static MS JSON as payload <payload> 
-	When a "POST" request is sent to MS 
-	And log all MS response in console 
-	Then MS response code should be 400 
-	Then check if actual response matches the expected static response <response> 
-	
-	Examples: 
-	
-		|payload|response|
-		|{sdfghj}|[{"message":"Unexpected error occurred. Check system logs for more details","code":"MSF-002"}]|
+    When post the static MS JSON as payload <payload> 
+    When a "POST" request is sent to MS 
+    And log all MS response in console 
+    Then MS response code should be 400 
+    Then check if actual response matches the expected static response <response> 
+    
+    Examples: 
+    
+        |payload|response|
+        |{sdfghj}|[{"message":"Unexpected error occurred. Check system logs for more details","code":"MSF-002"}]|
 		
 Scenario Outline: payload condition with no payload
 

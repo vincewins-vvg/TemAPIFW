@@ -1,0 +1,142 @@
+Entitlement
+API : http://localhost:8096/ms-entitlement-api/api/v1.0.0/system/entitlements/users/user1
+Scenario 1:
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+        {
+          "resourceId": "PO~ACC5~ACC1~INR~100",
+          "roles": [
+            "PaymentApprover"
+          ]
+        },
+        {
+          "resourceFilter": "creditAccount=acc1",
+          "roles": [
+            "PaymentsCreator"
+          ],
+          "resourceCategory": "saving"
+        }
+      ]
+    }
+  ]
+}
+
+Scenario 2: 
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+        {
+          "resourceId": "PO~ACC5~ACC1~INR~100",
+          "roles": [
+            "PaymentApprover"
+          ]
+        },
+        {
+          "resourceFilter": "creditAccount=acc1",
+          "roles": [
+            "PaymentsDomesticCreator"
+          ],
+          "resourceCategory": "saving"
+        }
+      ]
+    }
+  ]
+}
+
+Scenario 3:
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+        {
+          "resourceId": "PO~ACC5~ACC1~INR~100",
+          "roles": [
+            "PaymentApprover",
+            "PaymentsCreator"
+          ]
+        },
+        {
+          "resourceFilter": "creditAccount=acc1",
+          "roles": [
+            "PaymentApprover"
+          ],
+          "resourceCategory": "saving"
+        }
+      ]
+    }
+  ]
+}
+Scenario 4:
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+        {
+          "resourceId": "PO~ACC5~ACC1~INR~100",
+          "roles": [
+            "PaymentApprover",
+            "PaymentsCreator"
+          ]
+        },{
+          "resourceFilter": "creditAccount=acc1",
+          "roles": [
+            "PaymentApprover"
+          ],
+          "resourceCategory": "saving"
+        },{
+          "resourceFilter": "creditAccount=acc2",
+          "roles": [
+            "PaymentsDomesticCreator"
+          ],
+          "resourceCategory": "saving"
+        }
+      ]
+    }
+  ]
+}
+Scenario 5:
+{
+  "entitlements": [
+    {
+      "serviceid": "string",
+      "channelid": "string",
+      "customfilterid": "string",
+      "resources": [
+        {
+          "resourceId": "PO~ACC5~ACC1~INR~100",
+          "roles": [
+            "PaymentApprover",
+            "PaymentsCreator"
+          ]
+        },{
+          "resourceFilter": "creditAccount=acc1",
+          "roles": [
+            "PaymentApprover"
+          ],
+          "resourceCategory": "saving"
+        },{
+          "resourceFilter": "creditAccount=acc2",
+          "roles": [
+            "PaymentsDomesticCreator"
+          ],
+          "resourceCategory": "saving"
+        }
+      ]
+    }
+  ]
+}

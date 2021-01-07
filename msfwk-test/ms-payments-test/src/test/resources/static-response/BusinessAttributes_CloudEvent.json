@@ -1,0 +1,72 @@
+{
+    "paymentOrder": {
+        "fromAccount": "419967",
+        "toAccount": "7546",
+        "paymentReference": "paybatt",
+        "paymentDetails": "refDe",
+        "currency": "USD",
+        "fileContent": "",
+        "fileOverWrite": false,
+        "paymentDate": "2021-08-01",
+        "paymentMethod": {
+            "id": 100,
+            "name": "paymentmethod",
+            "extensionData": {
+                "array_BusDayCentres": [
+                    "India",
+                    "Aus"
+                ],
+                "paymentOrderProduct": "Temenos",
+                "array_NonOspiType": [
+                    {
+                        "NonOspiType": "DebitCard",
+                        "NonOspiId": "12456"
+                    },
+                    {
+                        "NonOspiType": "UPI",
+                        "NonOspiId": "12456"
+                    },
+                    {
+                        "NonOspiType": "DebitCard",
+                        "NonOspiId": "3163"
+                    }
+                ]
+            },
+            "card": {
+                "cardid": 1,
+                "cardname": "allwin"
+            }
+        },
+        "exchangeRates": [],
+        "payeeDetails": {
+            "payeeName": "paydetail",
+            "payeeType": "visa"
+        },
+        "extensionData": {
+            "array_BusDayCentres": [
+                "India",
+                "Aus"
+            ],
+            "paymentOrderProduct": "Temenos",
+            "array_NonOspiType": [
+                {
+                    "NonOspiType": "DebitCard",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "UPI",
+                    "NonOspiId": "12456"
+                },
+                {
+                    "NonOspiType": "DebitCard",
+                    "NonOspiId": "3163"
+                }
+            ]
+        }
+    },
+    "paymentStatus": {
+        "paymentId": "PO~419967~7546~USD~124",
+        "status": "INITIATED",
+        "details": "refDe"
+    }
+}

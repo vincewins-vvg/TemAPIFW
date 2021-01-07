@@ -106,12 +106,15 @@ services:
       className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
       className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
       className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
-      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl   
+      className_FileDownload: com.temenos.microservice.payments.function.FileDownloadImpl
+      className_FileDelete: com.temenos.microservice.payments.function.FileDeleteImpl         
       className_DoInputValidation: com.temenos.microservice.payments.function.DoInputValidationImpl
+      className_GetInputValidation: com.temenos.microservice.payments.function.GetInputValidationImpl
       className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
       className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
       className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
       className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
+      className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
@@ -134,6 +137,7 @@ services:
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: Y
+      temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
@@ -380,6 +384,12 @@ services:
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
+      ms.security.tokencheck.enabled: Y
+      temn.entitlement.stubbed.service.enabled: "true"
+      JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+      JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
+      ID_TOKEN_SIGNED: "true"
+      JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
