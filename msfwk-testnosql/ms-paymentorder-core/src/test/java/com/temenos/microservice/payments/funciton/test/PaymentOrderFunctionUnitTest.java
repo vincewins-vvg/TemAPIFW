@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.support.DefaultExchange;
+import org.apache.camel.impl.DefaultExchange;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
