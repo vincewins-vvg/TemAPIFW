@@ -13,6 +13,7 @@
 	<artifactId>ms-paymentorder-entity-cassandra</artifactId>
 	<name>ms-paymentorder-entity-cassandra</name>
 	<description>Payment Order entity cassandra</description>
+	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
 		<!-- Enable Model unpack and MSF CodeGen -->
