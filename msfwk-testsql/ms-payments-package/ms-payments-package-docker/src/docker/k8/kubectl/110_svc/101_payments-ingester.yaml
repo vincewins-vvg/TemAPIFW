@@ -1,0 +1,112 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-avro-ingester
+  namespace: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-avro-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-avro-ingester
+    spec:
+      containers:
+      - name: payments-avro-ingester
+        image: paymentsacrrepo.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8092
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-avro-config
+      imagePullSecrets:
+      - name: paymentsregcredentials
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-ingester
+  namespace: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-command-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-ingester
+    spec:
+      containers:
+      - name: payments-command-ingester
+        image: paymentsacrrepo.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8093
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-config
+      imagePullSecrets:
+      - name: paymentsregcredentials
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-ingester
+  namespace: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-event-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-event-ingester
+    spec:
+      containers:
+      - name: payments-event-ingester
+        image: paymentsacrrepo.azurecr.io/temenos/ms-paymentorder-ingester:DEV
+        ports:
+        - containerPort: 8094
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-event-config
+      imagePullSecrets:
+      - name: paymentsregcredentials
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-delivery
+  namespace: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-event-delivery
+  template:
+    metadata:
+      labels:
+        app: payments-event-delivery
+    spec:
+      containers:
+      - name: payments-event-delivery
+        image: paymentsacrrepo.azurecr.io/temenos/ms-paymentorder-inboxoutbox:DEV
+        ports:
+        - containerPort: 8095
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: payments-eventdelivery-config
+      imagePullSecrets:
+      - name: paymentsregcredentials
+---

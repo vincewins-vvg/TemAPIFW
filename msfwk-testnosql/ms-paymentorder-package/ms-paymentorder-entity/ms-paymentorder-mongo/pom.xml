@@ -14,6 +14,7 @@
 	<name>ms-paymentorder-entity-mongo</name>
 	<description>Payment Order entity mongo</description>
 	<packaging>jar</packaging>
+	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
 		<!-- Enable Model unpack and MSF CodeGen -->

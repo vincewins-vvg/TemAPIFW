@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-order-api
+  namespace: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-order-api
+  template:
+    metadata:
+      labels:
+        app: payments-order-api
+    spec:
+      containers:
+      - name: payments-order-api
+        image: paymentsacrrepo.azurecr.io/temenos/ms-paymentorder-service-test:DEV
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: payments-api-config
+      imagePullSecrets:
+      - name: paymentsregcredentials          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-order-svc
+  name: payments-order-api-svc
+  namespace: payments
+spec:
+  selector:
+    app: payments-order-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer         
