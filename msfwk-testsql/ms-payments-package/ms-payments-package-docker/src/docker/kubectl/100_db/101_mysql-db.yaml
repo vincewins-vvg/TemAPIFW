@@ -15,7 +15,7 @@ spec:
         name: paymentorder-db
     spec:
       containers:
-      - image: paymentsacrrepo.azurecr.io/ms-paymentorder-mysql:DEV
+      - image: ms-paymentorder-mysql
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
@@ -24,8 +24,6 @@ spec:
         name: paymentorder-db
         ports:
         - containerPort: 3306
-      imagePullSecrets:
-      - name: paymentsregcredentials
 ---
 apiVersion: v1
 kind: Service

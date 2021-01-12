@@ -17,8 +17,9 @@ kubectl apply -f 001_payments-configmap.yaml
 kubectl apply -f 100_payments-api.yaml
 kubectl apply -f 101_payments-ingester.yaml
 
-REM cd ../120_kafka
-REM kubectl apply -f 100_payments-create-topics.yaml
+cd ../120_kafka
+kubectl apply -f kafka-topics.yaml
+kubectl apply -f schema-registry.yaml
 REM kubectl apply -f 110_payments-kafka-source.yaml
 REM kubectl apply -f 120_strimzi.yaml
 
