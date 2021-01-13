@@ -5,11 +5,15 @@ REM --------------------------------------------------------------
 
 REM - Stop knative services
 
-cd kubectl/110_svc
+cd kubectl/130_scheduler
+kubectl delete -f 100_scheduler-job.yaml
+
+
+cd ../110_svc
 REM kubectl delete -f 120_paymentorder-ingesters.yaml
-kubectl apply -f 100_paymentorder-api.yaml
-kubectl apply -f 001_paymentorder-configmap.yaml
-kubectl apply -f 000_paymentorder-ns.yaml
+kubectl delete -f 100_paymentorder-api.yaml
+kubectl delete -f 001_paymentorder-configmap.yaml
+kubectl delete -f 000_paymentorder-ns.yaml
 
 cd ../100_db/mongo/rs
 kubectl delete -f mongo-setup.yaml

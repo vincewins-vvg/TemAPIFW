@@ -1,0 +1,35 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: paymentorder-scheduler
+  namespace: paymentorder
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: paymentorder-scheduler
+            image: dev.local/temenos/ms-paymentorder-scheduler:DEV
+            imagePullPolicy: Never
+            env:
+              - name: DATABASE_KEY
+                value: mongodb
+              - name: MONGODB_DBNAME
+                value: ms_paymentorder
+              - name: MONGODB_CONNECTIONSTR
+                value: mongodb://badri0307:badri0307@mongodb01-shard-00-00.qjebf.azure.mongodb.net:27017,mongodb01-shard-00-01.qjebf.azure.mongodb.net:27017,mongodb01-shard-00-02.qjebf.azure.mongodb.net:27017/test?authSource=admin&gssapiServiceName=mongodb&replicaSet=atlas-kul6fw-shard-0&ssl=true
+              - name: temn.msf.name
+                value: PaymentOrder
+              - name: temn.msf.security.authz.enabled
+                value: "false"             
+              - name: className_paymentscheduler
+                value: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
+              - name: className_nosqlInboxCatchup
+                value: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
+              - name: className_nosqlOutboxCatchup
+                value: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor          
+              - name: operationId
+                value: paymentscheduler            
+          restartPolicy: OnFailure
