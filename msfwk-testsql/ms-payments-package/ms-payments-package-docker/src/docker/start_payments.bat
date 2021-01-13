@@ -23,8 +23,7 @@ kubectl apply -f schema-registry.yaml
 REM kubectl apply -f 110_payments-kafka-source.yaml
 REM kubectl apply -f 120_strimzi.yaml
 
-REM cd ../130_scheduler
-REM kubectl apply -f 130_scheduler.yaml
-REM kubectl apply -f 131_scheduler_source.yaml
+cd ../130_scheduler
+kubectl apply -f 100_scheduler-job.yaml
 
 cd ../../

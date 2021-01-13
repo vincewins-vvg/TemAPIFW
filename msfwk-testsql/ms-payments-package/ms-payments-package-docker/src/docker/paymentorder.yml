@@ -105,6 +105,7 @@ services:
         BASE_IMAGE: ${SCHEDULER_BASE_IMAGE}
         artifactid: ${scheduler_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
+        SCHEDULER_MAIN_CLASS: ${SCHEDULER_MAIN_CLASS}
     image: ${SCHEDULER_IMAGE}
     depends_on:
       - db-service
