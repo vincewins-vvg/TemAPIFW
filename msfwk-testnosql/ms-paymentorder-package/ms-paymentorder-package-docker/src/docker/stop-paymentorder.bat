@@ -8,6 +8,9 @@ REM - Stop knative services
 cd kubectl/120_kafka
 kubectl delete -f kafka-topics.yaml
 
+cd ../130_scheduler
+kubectl delete -f 100_scheduler-job.yaml
+
 cd ../110_svc
 kubectl delete -f 110_paymentorder-ingester.yaml
 kubectl delete -f 100_paymentorder-api.yaml

@@ -37,20 +37,16 @@ kubectl apply -f 110_paymentorder-ingester.yaml
 
 REM cd ../../..
 
-REM timeout /t 30 >nul
+timeout /t 30 >nul
 
 cd ../120_kafka
 kubectl apply -f kafka-topics.yaml
+timeout /t 30 >nul
 kubectl apply -f schema-registry.yaml
-REM timeout /t 10 >nul
-REM kubectl apply -f 110_kafka-source.yaml
 
-REM timeout /t 30 >nul
-
-REM cd ../130_scheduler
-REM kubectl apply -f 130_scheduler.yaml
-REM timeout /t 10 >nul
-REM kubectl apply -f 131_scheduler_source.yaml
+cd ../130_scheduler
+kubectl apply -f 100_scheduler-job.yaml
+timeout /t 30 >nul
 
 cd ../../
 
