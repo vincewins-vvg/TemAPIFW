@@ -116,6 +116,12 @@ sleep 10
 aws lambda create-function --function-name payment-post-api-validation-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.DoInputValidationFunctionAWS::invoke --description "Payment order handler" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_DoInputValidation=com.temenos.microservice.paymentorder.function.DoInputValidationImpl,class_package_name=com.temenos.microservice.paymentorder.function,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis\}
 sleep 10
 
+aws lambda create-function --function-name initiate-db-migration-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.InitiateDbMigrationFunctionAWS::invoke --description "Handler for NoSQL Initiate Db migration Impl " --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_initiateDbMigration=com.temenos.microservice.framework.dbmigration.core.InitiateDbMigrationImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,ms_security_tokencheck_enabled=N,temn_entitlement_stubbed_service_enabled=true,tem_msf_disableInbox=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_storage_home=s3://paymentorder-file-bucket\}
+sleep 10
+
+aws lambda create-function --function-name get-db-migration-api-handler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.core.function.aws.GetDbMigrationFunctionAWS::invoke --description "Handler for NoSQL Initiate Get migration Impl " --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{,className_getDbMigration=com.temenos.microservice.framework.dbmigration.core.GetDbMigrationImpl,DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,tem_msf_disableInbox=true,ms_security_tokencheck_enabled=N,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_storage_home=s3://paymentorder-file-bucket\}
+sleep 10
+
 # Create event source mapping
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/PaymentOrder-inbox-topic --function-name payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
 
@@ -240,6 +246,20 @@ aws apigateway put-method --rest-api-id $restAPIId --resource-id $validationsId 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $validationsId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-post-api-validation-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"
+
+# Initiate DbMigration and GetDbMigration - /v1.0.0/migration
+export migrationResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "migration" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+# Initiate DbMigration API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:initiate-db-migration-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# GET DbMigration API
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-db-migration-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
 
 export apiKeyId=$(aws apigateway create-api-key --name ms-payment-order-apikey --description "Payment order API Key" --enabled | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
