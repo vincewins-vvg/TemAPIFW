@@ -1,6 +1,6 @@
 @echo off
 REM --------------------------------------------------------------
-REM - Script to stop Traceability Service
+REM - Script to stop Payments Service
 REM --------------------------------------------------------------
 
 REM - Stop knative services
@@ -17,7 +17,6 @@ kubectl delete -f 100_payments-api.yaml
 kubectl delete -f 101_payments-ingester.yaml
 
 cd ../100_db
-kubectl delete -f 101_mysql-db.yaml
 kubectl delete -f 100_payments-create-namespace.yaml
 
 cd ../../

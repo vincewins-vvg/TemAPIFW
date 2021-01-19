@@ -5,12 +5,15 @@ REM --------------------------------------------------------------
 
 REM Buildimageslocally
 
+cd ../..
+
 call build.bat build
+
+cd k8/k8-local
 
 REM - Start knative services
 cd kubectl/100_db
 kubectl apply -f 100_payments-create-namespace.yaml
-kubectl apply -f 101_mysql-db.yaml
 
 cd ../110_svc
 kubectl apply -f 001_payments-configmap.yaml 
