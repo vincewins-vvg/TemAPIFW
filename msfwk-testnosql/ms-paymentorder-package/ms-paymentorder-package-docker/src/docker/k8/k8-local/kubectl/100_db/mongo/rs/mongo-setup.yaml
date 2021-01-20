@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongosetup
+spec:
+  template:
+    metadata:
+      name: mongosetup
+    spec:
+      containers:
+      - name: mongosetup
+        image: dev.local/temenos/ms-paymentorder-mongoscripts:DEV
+        env: 
+          - name: database.key
+            value: mongodb
+          - name: database.name
+            value: ms_paymentorder
+          - name: db.connection.url
+            value: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+          - name: db.scripts.location
+            value: ../migration
+      restartPolicy: OnFailure
