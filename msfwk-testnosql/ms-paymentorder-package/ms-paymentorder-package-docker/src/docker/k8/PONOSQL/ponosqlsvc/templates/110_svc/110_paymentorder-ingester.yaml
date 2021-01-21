@@ -1,0 +1,258 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8092
+        env:
+          - name: DATABASE_KEY
+            value: {{ .Values.env.paymentorderavroingester.DATABASE_KEY }} 
+          - name: MONGODB_DBNAME
+            value: {{ .Values.env.paymentorderavroingester.MONGODB_DBNAME }}
+          - name: MONGODB_CONNECTIONSTR
+            value: {{ .Values.env.paymentorderavroingester.MONGODB_CONNECTIONSTR }}
+          - name: temn.msf.name
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_name }} 
+          - name: temn.msf.stream.vendor
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_stream_vendor }}
+          - name: temn.queue.impl
+            value: {{ .Values.env.paymentorderavroingester.temn_queue_impl }}
+          - name: temn.msf.schema.registry.url
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_schema_registry_url }} 
+          - name: temn.msf.ingest.source.stream
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_ingest_source_stream }}
+          - name: temn.msf.ingest.sink.error.stream
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_ingest_sink_error_stream }} 
+          - name: temn.msf.ingest.sink.error.stream.producer.id
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_ingest_sink_error_stream_producer_id }} 
+          - name: temn.msf.ingest.event.ingester
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_ingest_event_ingester }}
+          - name: temn.msf.security.authz.enabled
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_security_authz_enabled | quote }}   
+          - name: class.inbox.dao
+            value: {{ .Values.env.paymentorderavroingester.class_inbox_dao }} 
+          - name: class.outbox.dao
+            value: {{ .Values.env.paymentorderavroingester.class_outbox_dao }}
+          - name: PAYMENT_ORDEREvent
+            value: {{ .Values.env.paymentorderavroingester.PAYMENT_ORDEREvent }}     
+          - name: temn.config.file.path
+            value: {{ .Values.env.paymentorderavroingester.temn_config_file_path }} 
+          - name: temn.ingester.mapping.enabled
+            value: {{ .Values.env.paymentorderavroingester.temn_ingester_mapping_enabled | quote }}
+          - name: temn.msf.stream.kafka.bootstrap.servers
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_stream_kafka_bootstrap_servers }} 
+          - name: temn.msf.ingest.consumer.max.poll.records
+            value: {{ .Values.env.paymentorderavroingester.temn_msf_ingest_consumer_max_poll_records | quote }}   
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8093
+        env:
+          - name: DATABASE_KEY
+            value: {{ .Values.env.paymentordercommandingester.DATABASE_KEY }} 
+          - name: MONGODB_DBNAME
+            value: {{ .Values.env.paymentordercommandingester.MONGODB_DBNAME }}
+          - name: MONGODB_CONNECTIONSTR
+            value: {{ .Values.env.paymentordercommandingester.MONGODB_CONNECTIONSTR }}
+          - name: temn.msf.name
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_name }} 
+          - name: temn.msf.stream.vendor
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_stream_vendor }}
+          - name: temn.queue.impl
+            value: {{ .Values.env.paymentordercommandingester.temn_queue_impl }}
+          - name: temn.ingester.mapping.enabled
+            value: {{ .Values.env.paymentordercommandingester.temn_ingester_mapping_enabled | quote }}
+          - name: temn.msf.stream.kafka.bootstrap.servers
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_stream_kafka_bootstrap_servers }}   
+          - name: temn.msf.ingest.source.stream
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_source_stream }}
+          - name: temn.msf.ingest.sink.error.stream
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_sink_error_stream }} 
+          - name: temn.msf.ingest.sink.error.stream.producer.id
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_sink_error_stream_producer_id }}   
+          - name: temn.msf.ingest.sink.stream.consumergroup.id
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_source_stream_consumergroup_id }}   
+          - name: PDP_CONFIG
+            value: {{ .Values.env.paymentordercommandingester.PDP_CONFIG }}   
+          - name: IRIS_PROTOCOL
+            value: {{ .Values.env.paymentordercommandingester.IRIS_PROTOCOL | quote }}   
+          - name: IRIS_HOST_IP
+            value: {{ .Values.env.paymentordercommandingester.IRIS_HOST_IP | quote }} 
+          - name: IRIS_PORT
+            value: {{ .Values.env.paymentordercommandingester.IRIS_PORT | quote }}   
+          - name: IRIS_PATH
+            value: {{ .Values.env.paymentordercommandingester.IRIS_PATH | quote }} 
+          - name: IRIS_R18_PATH
+            value: {{ .Values.env.paymentordercommandingester.IRIS_R18_PATH | quote }} 
+          - name: IRIS_VERSION
+            value: {{ .Values.env.paymentordercommandingester.IRIS_VERSION | quote }}  
+          - name: ms.security.tokencheck.enabled
+            value: {{ .Values.env.paymentordercommandingester.ms_security_tokencheck_enabled | quote }}   
+          - name: temn.entitlement.stubbed.service.enabled
+            value: {{ .Values.env.paymentordercommandingester.temn_entitlement_stubbed_service_enabled | quote }} 
+          - name: JWT_TOKEN_ISSUER
+            value: {{ .Values.env.paymentordercommandingester.JWT_TOKEN_ISSUER }} 
+          - name: JWT_TOKEN_PRINCIPAL_CLAIM
+            value: {{ .Values.env.paymentordercommandingester.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
+          - name: ID_TOKEN_SIGNED
+            value: {{ .Values.env.paymentordercommandingester.ID_TOKEN_SIGNED | quote }} 
+          - name: JWT_TOKEN_PUBLIC_KEY
+            value: {{ .Values.env.paymentordercommandingester.JWT_TOKEN_PUBLIC_KEY | quote }}  
+          - name: temn.msf.pdp.resource.type
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_pdp_resource_type }}   
+          - name: temn.msf.pdp.resource.manager
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_pdp_resource_manager }}   
+          - name: temn.msf.ingest.generic.ingester
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_generic_ingester }}   
+          - name: temn.msf.exec.env
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_exec_env }}  
+          - name: temn.msf.function.class.CreateNewPaymentOrder
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_function_class_CreateNewPaymentOrder }}   
+          - name: className_UpdatePaymentOrder
+            value: {{ .Values.env.paymentordercommandingester.className_UpdatePaymentOrder }}   
+          - name: temn.msf.ingest.is.avro.event.ingester
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_ingest_is_avro_event_ingester | quote }}    
+          - name: temn.msf.security.authz.enabled
+            value: {{ .Values.env.paymentordercommandingester.temn_msf_security_authz_enabled | quote }}      
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8094
+        env:
+          - name: DATABASE_KEY
+            value: {{ .Values.env.paymentordereventingester.DATABASE_KEY }} 
+          - name: MONGODB_DBNAME
+            value: {{ .Values.env.paymentordereventingester.MONGODB_DBNAME }}
+          - name: MONGODB_CONNECTIONSTR
+            value: {{ .Values.env.paymentordereventingester.MONGODB_CONNECTIONSTR }}
+          - name: temn.msf.name
+            value: {{ .Values.env.paymentordereventingester.temn_msf_name }} 
+          - name: temn.msf.stream.vendor
+            value: {{ .Values.env.paymentordereventingester.temn_msf_stream_vendor }}
+          - name: temn.queue.impl
+            value: {{ .Values.env.paymentordereventingester.temn_queue_impl }}
+          - name: temn.msf.stream.kafka.bootstrap.servers
+            value: {{ .Values.env.paymentordereventingester.temn_msf_stream_kafka_bootstrap_servers }}    
+          - name: temn.msf.ingest.source.stream
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_source_stream }}
+          - name: temn.msf.ingest.sink.error.stream.producer.id
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_sink_error_stream_producer_id }}   
+          - name: temn.msf.ingest.sink.stream.consumergroup.id
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_source_stream_consumergroup_id }}     
+          - name: temn.msf.ingest.sink.error.enabled
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_sink_error_enabled | quote }}  
+          - name: temn.msf.ingest.generic.ingester
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_generic_ingester }}    
+          - name: temn.msf.exec.env
+            value: {{ .Values.env.paymentordereventingester.temn_msf_exec_env }}  
+          - name: temn.msf.function.class.CreateNewPaymentOrder
+            value: {{ .Values.env.paymentordereventingester.temn_msf_function_class_CreateNewPaymentOrder }} 
+          - name: temn.msf.ingest.event.processor
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_event_processor }}    
+          - name: temn.msf.ingest.event.processor.POAccepted
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_event_processor_POAccepted }}        
+          - name: temn.msf.ingest.is.avro.event.ingester
+            value: {{ .Values.env.paymentordereventingester.temn_msf_ingest_is_avro_event_ingester | quote }}    
+          - name: temn.msf.security.authz.enabled
+            value: {{ .Values.env.paymentordereventingester.temn_msf_security_authz_enabled | quote }}     
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+        image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8095
+        env:
+          - name: DATABASE_KEY
+            value: {{ .Values.env.paymentordereventdelivery.DATABASE_KEY }} 
+          - name: MONGODB_DBNAME
+            value: {{ .Values.env.paymentordereventdelivery.MONGODB_DBNAME }}
+          - name: MONGODB_CONNECTIONSTR
+            value: {{ .Values.env.paymentordereventdelivery.MONGODB_CONNECTIONSTR }}
+          - name: temn.msf.name
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_name }} 
+          - name: temn.msf.stream.vendor
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_stream_vendor }}
+          - name: temn.queue.impl
+            value: {{ .Values.env.paymentordereventdelivery.temn_queue_impl }}
+          - name: temn.msf.stream.kafka.bootstrap.servers
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_stream_kafka_bootstrap_servers }}          
+          - name: temn.msf.exec.env
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_exec_env }}  
+          - name: temn.msf.function.class.CreateNewPaymentOrder
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_function_class_CreateNewPaymentOrder }}  
+          - name: temn.msf.security.authz.enabled
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_security_authz_enabled | quote }}   
+          - name: temn.msf.stream.outbox.topic
+            value: {{ .Values.env.paymentordereventdelivery.temn_msf_stream_outbox_topic }}  
+          - name: tmn.inbox.source.namespace
+            value: {{ .Values.env.paymentordereventdelivery.tmn_inbox_source_namespace }}  
+          - name: tmn.outbox.source.namespace
+            value: {{ .Values.env.paymentordereventdelivery.tmn_outbox_source_namespace }}     
+---

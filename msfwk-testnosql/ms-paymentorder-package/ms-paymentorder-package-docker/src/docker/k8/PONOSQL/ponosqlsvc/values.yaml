@@ -1,0 +1,258 @@
+# Default values for holdingsmsvc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+paymentorderapiReplicaCount: 1
+paymentorderingesterReplicaCount: 1
+topicreplicacount: 1
+schemaregistryreplicacount: 1
+
+retentionms: 7200000
+segmentbytes: 1073741824
+
+topicpartitions: 3
+
+namespace: paymentorder
+kafkanamespace: kafka
+
+apideployment: paymentorder-api
+schemaregistry: schema-registry
+schemaregistrysvc: schema-registry-svc
+
+avrotopic: table-update-paymentorder
+outboxtopic: paymentorder-outbox
+eventstoretopic: ms-eventstore-inbox-topic
+inboxtopic: ms-paymentorder-inbox-topic
+eventtopic: paymentorder-event-topic
+errortopic: error-paymentorder
+inboxerrortopic: ms-paymentorder-inbox-error-topic
+
+
+
+image:
+  paymentorderapi:
+    repository: dev.local/temenos/ms-paymentorder-service
+    tag: DEV
+    pullPolicy: Never
+  paymentorderingester:
+    repository: dev.local/temenos/ms-paymentorder-ingester
+    tag: DEV
+    pullPolicy: Never
+  paymentorderinboxoutbox:
+    repository: dev.local/temenos/ms-paymentorder-inboxoutboxnew
+    tag: DEV
+    pullPolicy: Never  
+  schemaregistry:
+    repository: confluentinc/cp-schema-registry
+    tag: 5.3.0
+    pullPolicy: Never
+  # mongoclient: mongo
+  paymentorderscheduler:
+    repository: dev.local/temenos/ms-paymentorder-scheduler
+    tag: DEV
+    pullPolicy: Never  
+  
+#nameOverride: ""
+#fullnameOverride: ""
+
+env:
+  paymentorderapi: 
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder 
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+    className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
+    className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+    className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
+    className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+    className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
+    className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+    API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
+    className_CreateNewPaymentOrders: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrdersImpl
+    className_UpdateNewPaymentOrders: com.temenos.microservice.paymentorder.function.UpdateNewPaymentOrdersImpl
+    className_DeletePaymentOrders: com.temenos.microservice.paymentorder.function.DeletePaymentOrdersImpl
+    className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+    className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
+    className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
+    className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
+    className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
+    className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
+    className_UpdateStatus: com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl
+    className_DeleteWithCondition: com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl 
+    className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
+    className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+    className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
+    className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
+    className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
+    className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
+    className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+    className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
+    className_CreateUser: com.temenos.microservice.paymentorder.function.CreateUserImpl
+    className_GetUser: com.temenos.microservice.paymentorder.function.GetUserImpl
+    className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
+    className_createCustomer: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
+    className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+    className_CreateAccount: com.temenos.microservice.paymentorder.function.CreateAccountImpl
+    className_GetAccount: com.temenos.microservice.paymentorder.function.GetAccountImpl
+    className_DeleteAccount: com.temenos.microservice.paymentorder.function.DeleteAccountImpl
+    className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
+    className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
+    className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
+    temn_msf_name: PaymentOrder  
+    temn_msf_pdp_resource_type: API
+    temn_msf_pdp_resource_manager: PAYMENT
+    temn_msf_stream_vendor: kafka
+    temn_queue_impl: kafka
+    temn_msf_stream_kafka_bootstrap_servers: my-cluster-kafka-bootstrap.kafka:9092
+    PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+    IRIS_PROTOCOL: "http"
+    IRIS_HOST_IP: "localhost"
+    IRIS_PORT: "9089"
+    IRIS_PATH: "irf-provider-container/api"
+    IRIS_R18_PATH: "irisR18/api"
+    IRIS_VERSION: "v1.0.0"
+    temn.msf.storage.home: "path:/usr/local/tomcat/temp"
+    FILE_STORAGE_URL:  /demo.properties
+    temn_msf_max_file_upload_size: "70"
+    ms_security_tokencheck_enabled: "Y"
+    temn_entitlement_stubbed_service_enabled: "true"
+    JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
+    JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+    ID_TOKEN_SIGNED: "true"
+    JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"  
+  paymentorderavroingester:
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    temn_msf_name: PaymentOrder
+    temn_msf_stream_vendor: kafka
+    temn_queue_impl: kafka
+    temn_msf_schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+    temn_msf_ingest_source_stream: table-update-paymentorder
+    temn_msf_ingest_sink_error_stream: error-paymentorder
+    temn_msf_ingest_sink_error_stream_producer_id: ms-paymentorder-ingester-error-producer
+    temn_msf_ingest_event_ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+    temn_msf_security_authz_enabled: "false"
+    class_inbox_dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+    class_outbox_dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+    PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+    temn_config_file_path: mapping/
+    temn_ingester_mapping_enabled: "true"
+    #EXECUTION_ENV: TEST
+    temn_msf_stream_kafka_bootstrap_servers: my-cluster-kafka-bootstrap.kafka:9092
+    temn_msf_ingest_consumer_max_poll_records: "1"
+  paymentordercommandingester:  
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    temn_msf_name: PaymentOrder
+    temn_msf_stream.vendor: kafka
+    temn_queue_impl: kafka
+    temn_msf_stream_kafka_bootstrap_servers: my-cluster-kafka-bootstrap.kafka:9092
+    temn_msf_ingest_source_stream: ms-paymentorder-inbox-topic
+    temn_msf_ingest_sink_error_stream: ms-paymentorder-inbox-error-topic
+    temn_msf_ingest_sink.error_stream_producer_id: ms-paymentorder-ingester-error-producer
+    temn_msf_ingest_source_stream_consumergroup_id: ms-paymentorder-ingester-consumer 
+    temn_msf_ingest_generic_ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+    temn_msf_exec_env: server
+    temn_msf_function_class_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+    className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+    temn_msf_ingest_is_avro_event_ingester: "false"
+    temn_msf_security_authz_enabled: "false"
+    IRIS_PROTOCOL: "http"
+    IRIS_HOST_IP: "localhost"
+    IRIS_PORT: "9089"
+    IRIS_PATH: "irf-provider-container/api"
+    IRIS_R18_PATH: "irisR18/api"
+    IRIS_VERSION: "v1.0.0"
+    temn_msf_pdp_resource_type: API
+    temn_msf_pdp_resource_manager: PAYMENT
+    PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+    ms_security_tokencheck_enabled: "Y"
+    temn_entitlement_stubbed_service_enabled: "true"
+    JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
+    JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+    ID_TOKEN_SIGNED: "true"
+    JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"  
+  paymentordereventingester:
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    temn_msf_name: PaymentOrder
+    temn_msf_stream.vendor: kafka
+    temn_queue_impl: kafka
+    temn_msf_stream_kafka_bootstrap_servers: my-cluster-kafka-bootstrap.kafka:9092
+    temn_msf_ingest_source_stream: paymentorder-event-topic
+    temn_msf_ingest_sink.error_stream_producer_id: ms-paymentorder-ingester-consumer
+    temn_msf_ingest_source_stream_consumergroup_id: ms-paymentorder-ingester-error-producer 
+    temn_msf_ingest_sink_error_enabled: "false"
+    temn_msf_ingest_generic_ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+    temn_msf_exec_env: server
+    temn_msf_function_class_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+    temn_msf_ingest_event_processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
+    temn_msf_ingest_event_processor_POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
+    # temn.msf.raise.received.event: "true"
+    temn_msf_ingest_is_avro_event_ingester: "false"
+    temn_msf_security_authz_enabled: "false"
+  paymentordereventdelivery:
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    temn_msf_name: PaymentOrder
+    temn_msf_stream_vendor: kafka
+    temn_queue_impl: kafka
+    temn_msf_stream_kafka_bootstrap_servers: my-cluster-kafka-bootstrap.kafka:9092
+    temn_msf_exec_env: server
+    temn_msf_stream_outbox_topic: ms-paymentorder-outbox-topic
+    temn_msf_function_class_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+    temn_msf_security_authz_enabled: "false"
+    tmn_inbox_source_namespace: paymentorder-inbox
+    tmn_outbox_source_namespace: paymentorder-outbox
+  schemaregistry:
+    SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+    SCHEMA_REGISTRY_HOST_NAME: schema-registry
+    SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+    SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+    SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+  paymentorderscheduler:
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder 
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    temn_msf_name: PaymentOrder  
+    temn_msf_security_authz_enabled: "false" 
+    className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
+    className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
+    className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
+    operationId: paymentscheduler
+
+service:
+  paymentorderapi:
+    type: LoadBalancer
+    port: 80
+  schemaregistry:
+    type: ClusterIP
+    port: 80
+    targetport: 8081
+  schemaregistrynp:
+    type: NodePort
+    port: 8081
+    nodeport: 32101    
+requests:
+  paymentorderapi: {}
+  #paymentorderingester: {}
+
+limits:
+  paymentorderapi: {}
+  #paymentorderingester: {}
+
+external:
+  enabled: true
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+      # Set the pull secret name here
+#imagePullSecrets: all-icr-io
