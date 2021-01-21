@@ -84,9 +84,9 @@
      <!-- List of claim that needs to extracted form the token and set into request headers for further processing, eg:TPPId, Consent_id, etc -->
     <beans:bean id="requiredFields" class="com.temenos.irf.web.security.jwt.parser.RequiredFieldsExtractor">
         <beans:property name="claimsToExtract">
-            <beans:list>
-                <beans:value></beans:value>
-            </beans:list>
+            <beans:map>
+                <beans:entry key="" value="" />
+            </beans:map>
         </beans:property>
     </beans:bean>
     <!-- End Claims Extraction -->
