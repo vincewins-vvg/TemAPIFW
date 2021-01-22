@@ -25,10 +25,24 @@ aws events delete-rule --name ms-paymentorder-scheduler-rule
 aws lambda delete-function --function-name paymentorder-scheduler
 
 # Delete tables
-export inboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
+aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events
+aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events
 
+# Delete event source mapping
+export inboxingestorUUID=$(aws lambda list-event-source-mappings --function-name payment-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $inboxingestorUUID
+
+export eventIngesterUUID=$(aws lambda list-event-source-mappings --function-name payment-event-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $eventIngesterUUID
+
+export ingesterUUID=$(aws lambda list-event-source-mappings --function-name paymentorder-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $ingesterUUID
+
+export outboxHandlerUUID=$(aws lambda list-event-source-mappings --function-name outbox-handler | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $outboxHandlerUUID
+
+# Delete tables
 aws dynamodb delete-table --table-name ms_payment_order
-
 aws dynamodb delete-table --table-name ms_payment_order_customer
 aws dynamodb delete-table --table-name ms_payment_order_balance
 aws dynamodb delete-table --table-name ms_payment_order_transaction
@@ -75,4 +89,6 @@ aws lambda delete-function --function-name get-customer-payments
 aws lambda delete-function --function-name payment-post-api-validation-handler
 aws lambda delete-function --function-name initiate-db-migration-api-handler
 aws lambda delete-function --function-name get-db-migration-api-handler
+aws lambda delete-function --function-name payment-put-status-api-handler
+aws lambda delete-function --function-name payment-delete-status-api-handler
 sleep 60
