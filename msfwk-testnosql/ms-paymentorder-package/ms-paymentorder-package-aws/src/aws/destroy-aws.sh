@@ -25,33 +25,32 @@ aws events delete-rule --name ms-paymentorder-scheduler-rule
 aws lambda delete-function --function-name paymentorder-scheduler
 
 # Delete tables
-export inboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
+aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events
+aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events
 
+# Delete event source mapping
+export inboxingestorUUID=$(aws lambda list-event-source-mappings --function-name payment-inbox-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $inboxingestorUUID
+
+export eventIngesterUUID=$(aws lambda list-event-source-mappings --function-name payment-event-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $eventIngesterUUID
+
+export ingesterUUID=$(aws lambda list-event-source-mappings --function-name paymentorder-ingester | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $ingesterUUID
+
+export outboxHandlerUUID=$(aws lambda list-event-source-mappings --function-name outbox-handler | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
+aws lambda delete-event-source-mapping --uuid $outboxHandlerUUID
+
+# Delete tables
 aws dynamodb delete-table --table-name ms_payment_order
-
 aws dynamodb delete-table --table-name ms_payment_order_customer
 aws dynamodb delete-table --table-name ms_payment_order_balance
 aws dynamodb delete-table --table-name ms_payment_order_transaction
 aws dynamodb delete-table --table-name ms_event_sequence
 
-export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
-
 # Delete usage plan
 export usageDeletePlanId=$(aws apigateway get-usage-plans | python -c 'import json,sys; usagePlans=json.load(sys.stdin); filter=[plan for plan in usagePlans["items"] if "ms-payment-order-usageplan" == plan["name"]]; print filter[0]["id"]')
 aws apigateway delete-usage-plan --usage-plan-id $usageDeletePlanId
-
-# Delete event source mapping
-export inboxuuid=$(aws lambda list-event-source-mappings --event-source-arn $inboxSourceArn | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
-
-aws lambda delete-event-source-mapping --uuid inboxuuid
-
-export outboxuuid=$(aws lambda list-event-source-mappings --event-source-arn $outboxSourceArn | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
-
-aws lambda delete-event-source-mapping --uuid outboxuuid
-
-export inboxingesteruuid=$(aws lambda list-event-source-mappings --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/payment-inbox-topic | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["EventSourceMappings"][0]["UUID"]')
-
-aws lambda delete-event-source-mapping --uuid inboxingesteruuid
 
 # Delete lambdas
 aws lambda delete-function --function-name payment-inbox-ingester
@@ -62,15 +61,12 @@ aws lambda delete-function --function-name payment-get-api-handler
 aws lambda delete-function --function-name payment-put-api-handler
 aws lambda delete-function --function-name outbox-handler
 aws lambda delete-function --function-name paymentorder-ingester
-aws lambda delete-function --function-name create-reference-api-handler
-aws lambda delete-function --function-name get-reference-api-handler
-aws lambda delete-function --function-name create-reference-value-api-handler
-aws lambda delete-function --function-name update-reference-api-handler
-aws lambda delete-function --function-name delete-reference-api-handler
 aws lambda delete-function --function-name fileDownload
 aws lambda delete-function --function-name fileUpload
 aws lambda delete-function --function-name fileDelete
 aws lambda delete-function --function-name create-customer-payments
 aws lambda delete-function --function-name get-customer-payments
 aws lambda delete-function --function-name payment-post-api-validation-handler
+aws lambda delete-function --function-name payment-put-status-api-handler
+aws lambda delete-function --function-name payment-delete-status-api-handler
 sleep 60
