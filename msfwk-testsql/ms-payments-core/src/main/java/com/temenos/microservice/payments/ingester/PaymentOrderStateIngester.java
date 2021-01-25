@@ -10,6 +10,8 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
+import com.temenos.microservice.framework.core.ingester.MSStreamProducer;
+import com.temenos.microservice.framework.core.ingester.MSStreamProducerFactory;
 import com.temenos.microservice.framework.core.stream.kafka.MSKafkaStreamProducer;
 import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
@@ -25,12 +27,12 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 		for (int i = 0; i < 3; i++) {
 			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId, headersMap);
 			if (!result) {
-				MSKafkaStreamProducer producer = new MSKafkaStreamProducer();
+				MSStreamProducer producer = MSStreamProducerFactory.getProducer();
 		        producer.sendToStream("table-result", new String("success"));
 				break;
 			}
 			if (i == 2 && result) {
-				MSKafkaStreamProducer producer = new MSKafkaStreamProducer();
+				MSStreamProducer producer = MSStreamProducerFactory.getProducer();
 		        producer.sendToStream("table-result", new String("failure"));
 				break;
 			}
