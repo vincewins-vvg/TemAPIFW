@@ -1,4 +1,3 @@
-
 package com.temenos.microservice.paymentorder.ingester;
 
 import java.util.Arrays;
