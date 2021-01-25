@@ -1,0 +1,100 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-avro-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-avro-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-avro-ingester
+    spec:
+      containers:
+      - name: payments-avro-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8092
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-avro-config
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-command-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-ingester
+    spec:
+      containers:
+      - name: payments-command-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-config
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-event-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-event-ingester
+    spec:
+      containers:
+      - name: payments-event-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8094
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-event-config
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-delivery
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-event-delivery
+  template:
+    metadata:
+      labels:
+        app: payments-event-delivery
+    spec:
+      containers:
+      - name: payments-event-delivery
+        image: {{ .Values.image.paymentseventdelivery.repository }}:{{ .Values.image.paymentseventdelivery.tag }}
+        ports:
+        - containerPort: 8095
+        envFrom:
+          - configMapRef:
+              name: payments-eventdelivery-config
+---
