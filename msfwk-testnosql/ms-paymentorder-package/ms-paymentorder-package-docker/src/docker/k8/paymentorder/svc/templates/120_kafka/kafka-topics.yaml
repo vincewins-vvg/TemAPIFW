@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -19,6 +22,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -33,6 +39,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -47,6 +56,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -61,6 +73,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -75,6 +90,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}
@@ -89,6 +107,9 @@ metadata:
   namespace: {{ .Values.kafkanamespace }}
   labels:
     strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   partitions: {{ .Values.topicpartitions }}
   replicas: {{ .Values.topicreplicacount }}

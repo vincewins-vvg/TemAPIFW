@@ -1,0 +1,106 @@
+# Default values for holdingsmsvc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+paymentorderapiReplicaCount: 1
+paymentorderingesterReplicaCount: 1
+topicreplicacount: 1
+schemaregistryreplicacount: 1
+
+retentionms: 7200000
+segmentbytes: 1073741824
+
+topicpartitions: 3
+
+namespace: paymentorder
+kafkanamespace: kafka
+
+apideployment: paymentorder-api
+schemaregistry: schema-registry
+schemaregistrysvc: schema-registry-svc
+
+avrotopic: table-update-paymentorder
+outboxtopic: paymentorder-outbox
+eventstoretopic: ms-eventstore-inbox-topic
+inboxtopic: ms-paymentorder-inbox-topic
+eventtopic: paymentorder-event-topic
+errortopic: error-paymentorder
+inboxerrortopic: ms-paymentorder-inbox-error-topic
+
+
+
+image:
+  paymentorderapi:
+    repository: dev.local/temenos/ms-paymentorder-service
+    tag: DEV
+    pullPolicy: Never
+  paymentorderingester:
+    repository: dev.local/temenos/ms-paymentorder-ingester
+    tag: DEV
+    pullPolicy: Never
+  paymentorderinboxoutbox:
+    repository: dev.local/temenos/ms-paymentorder-inboxoutboxnew
+    tag: DEV
+    pullPolicy: Never  
+  schemaregistry:
+    repository: confluentinc/cp-schema-registry
+    tag: 5.3.0
+    pullPolicy: Never
+  # mongoclient: mongo
+  paymentorderscheduler:
+    repository: dev.local/temenos/ms-paymentorder-scheduler
+    tag: DEV
+    pullPolicy: Never  
+  
+#nameOverride: ""
+#fullnameOverride: ""
+
+
+env:
+  database:
+    DATABASE_KEY: mongodb
+    MONGODB_DBNAME: ms_paymentorder 
+    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+  kafka:
+    temnmsfstreamvendor: kafka
+    temnqueueimpl: kafka
+    kafkabootstrapservers: my-cluster-kafka-bootstrap.kafka:9092
+    schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+  schemaregistry:
+    SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+    SCHEMA_REGISTRY_HOST_NAME: schema-registry
+    SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+    SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+    SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT  
+
+service:
+  paymentorderapi:
+    type: LoadBalancer
+    port: 80
+  schemaregistry:
+    type: ClusterIP
+    port: 80
+    targetport: 8081
+  schemaregistrynp:
+    type: NodePort
+    port: 8081
+    nodeport: 32101    
+requests:
+  paymentorderapi: {}
+  #paymentorderingester: {}
+
+limits:
+  paymentorderapi: {}
+  #paymentorderingester: {}
+
+external:
+  enabled: true
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+      # Set the pull secret name here
+#imagePullSecrets: all-icr-io
