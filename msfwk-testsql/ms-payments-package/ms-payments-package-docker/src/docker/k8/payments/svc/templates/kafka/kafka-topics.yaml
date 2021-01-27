@@ -1,0 +1,119 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.avrotopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.outboxtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.eventstoretopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.inboxtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.eventtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.errortopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.inboxerrortopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.topicpartitions }}
+  replicas: {{ .Values.topicreplicacount }}
+  config:
+    retention.ms: {{ .Values.retentionms }}
+    segment.bytes: {{ .Values.segmentbytes }}
+---
