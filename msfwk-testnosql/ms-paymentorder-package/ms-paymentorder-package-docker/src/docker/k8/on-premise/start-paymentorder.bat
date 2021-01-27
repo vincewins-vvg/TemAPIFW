@@ -9,7 +9,7 @@ cd ../..
 
 call build.bat build
 
-cd k8/k8-local
+cd k8/on-premise
 
 REM - Start knative services
 

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:    
+  name: paymentorder-db
+  namespace: paymentorder
+spec:
+  selector:
+    matchLabels:
+      name: paymentorder-db
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        name: paymentorder-db
+    spec:
+      containers:
+      - env:
+        - name: CASSANDRA_KEYSPACE
+          value: ms_paymentorder
+        image: ms-paymentorder-cassandra
+        imagePullPolicy: IfNotPresent
+        name: paymentorder-db        
+        ports:
+        - containerPort: 9042
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: paymentorder-db-service
+  name: paymentorder-db-service
+  namespace: paymentorder
+spec:
+  type: NodePort
+  ports:
+  - port: 9042
+    nodePort: 30036
+    name: dbport
+  selector:
+    name: paymentorder-db
+---
