@@ -82,8 +82,8 @@ env:
     temn_msf_name: PaymentOrder  
     temn_msf_security_authz_enabled: "false" 
     className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
-    className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
-    className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
+    className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
+    className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
     operationId: paymentscheduler
 
 service:
