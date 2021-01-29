@@ -1,4 +1,4 @@
-package com.temenos.microservice.payments.core;
+package com.temenos.microservice.paymentorder.function;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -16,23 +16,28 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.framework.core.security.Criteria;
+import com.temenos.microservice.framework.core.security.Criterion;
+import com.temenos.microservice.framework.core.security.CriterionImpl;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
-import com.temenos.microservice.payments.dao.PaymentOrderDao;
-import com.temenos.microservice.payments.entity.Card;
-import com.temenos.microservice.payments.entity.ExchangeRate;
-import com.temenos.microservice.payments.entity.PayeeDetails;
-import com.temenos.microservice.payments.event.CreatePaymentEvent;
-import com.temenos.microservice.payments.function.CreateNewPaymentOrdersInput;
-import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
-import com.temenos.microservice.payments.view.AllPaymentStatus;
-import com.temenos.microservice.payments.view.PaymentOrder;
-import com.temenos.microservice.payments.view.PaymentOrders;
-import com.temenos.microservice.payments.view.PaymentStatus;
+import com.temenos.microservice.paymentorder.entity.Card;
+import com.temenos.microservice.paymentorder.entity.ExchangeRate;
+import com.temenos.microservice.paymentorder.entity.PayeeDetails;
+import com.temenos.microservice.framework.core.data.DaoFactory;
+import com.temenos.microservice.framework.core.data.NoSqlDbDao;
+import com.temenos.microservice.framework.core.data.Operator;
+import com.temenos.microservice.paymentorder.function.CreateNewPaymentOrdersInput;
+import com.temenos.microservice.paymentorder.function.PaymentOrderFunctionHelper;
+import com.temenos.microservice.paymentorder.view.AllPaymentStatus;
+import com.temenos.microservice.paymentorder.view.PaymentOrder;
+import com.temenos.microservice.paymentorder.view.PaymentOrders;
+import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
 
 @Component
-public class CreateNewPaymentOrdersProcessor {
-//
+public class CreateNewPaymentOrdersImpl implements CreateNewPaymentOrders {
+
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	public AllPaymentStatus invoke(Context ctx, CreateNewPaymentOrdersInput input) throws FunctionException {
@@ -43,7 +48,7 @@ public class CreateNewPaymentOrdersProcessor {
 			PaymentOrders paymentOrders = input.getBody().get().getPaymentOrders();
 			if (Objects.nonNull(paymentOrders) && !paymentOrders.isEmpty()) {
 				for (int i = 0; i < paymentOrders.size(); i++) {
-					PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrders.get(0), ctx);
+					PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrders.get(0));
 				}
 				PaymentOrder[] paymentOrderArray = new PaymentOrder[paymentOrders.size()];
 				for (int i = 0; i < paymentOrders.size(); i++) {
@@ -63,32 +68,42 @@ public class CreateNewPaymentOrdersProcessor {
 	private AllPaymentStatus executePaymentOrders(Context ctx, PaymentOrder[] paymentOrderArray)
 			throws FunctionException {
 		String[] paymentOrderId = new String[paymentOrderArray.length];
-		com.temenos.microservice.payments.entity.PaymentOrder[] entity = new com.temenos.microservice.payments.entity.PaymentOrder[paymentOrderArray.length];
+		com.temenos.microservice.paymentorder.entity.PaymentOrder[] entity = new com.temenos.microservice.paymentorder.entity.PaymentOrder[paymentOrderArray.length];
 		for (int i = 0; i < paymentOrderArray.length; i++) {
 			paymentOrderId[i] = ("PO~" + paymentOrderArray[i].getFromAccount() + "~"
 					+ paymentOrderArray[i].getToAccount() + "~" + paymentOrderArray[i].getCurrency() + "~"
 					+ paymentOrderArray[i].getAmount()).toUpperCase();
 			if (paymentOrderId != null) {
-				com.temenos.microservice.payments.entity.PaymentOrder paymentsOrder = (com.temenos.microservice.payments.entity.PaymentOrder) PaymentOrderDao
-						.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-						.findById(paymentOrderId[i], com.temenos.microservice.payments.entity.PaymentOrder.class);
-				if (paymentsOrder != null && paymentsOrder.getPaymentOrderId() != null) {
-					throw new InvalidInputException(new FailureMessage("One or More Of the Records already exists",
-							MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+				NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
+						.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+				
+				List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = null;
+				Criteria criteria = new Criteria();
+				Criterion<Object> criterion = new CriterionImpl("paymentOrderId", paymentOrderId[i],
+						Operator.equal);
+				criteria.add(criterion);
+				entities =paymentOrderDao.getByIndexes(criteria);
+				if(entities!=null&&entities.size()>0) {
+					com.temenos.microservice.paymentorder.entity.PaymentOrder paymentsOrder = entities.get(0);
+					
+					if (paymentsOrder != null && paymentsOrder.getPaymentOrderId() != null) {
+						throw new InvalidInputException(new FailureMessage("One or More Of the Records already exists",
+								MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+					}
 				}
-			}
+			}	
 		}
 		entity = createEntity(ctx, paymentOrderId, paymentOrderArray);
 		return readStatus(entity);
 	}
 
-	private com.temenos.microservice.payments.entity.PaymentOrder[] createEntity(Context ctx, String[] paymentOrderId,
+	private com.temenos.microservice.paymentorder.entity.PaymentOrder[] createEntity(Context ctx, String[] paymentOrderId,
 			PaymentOrder[] view) throws FunctionException {
-		List<com.temenos.microservice.payments.entity.PaymentOrder> entityarrayList = new ArrayList<com.temenos.microservice.payments.entity.PaymentOrder>();
-		com.temenos.microservice.payments.entity.PaymentOrder[] entityarray = new com.temenos.microservice.payments.entity.PaymentOrder[view.length];
+		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entityarrayList = new ArrayList<com.temenos.microservice.paymentorder.entity.PaymentOrder>();
+		com.temenos.microservice.paymentorder.entity.PaymentOrder[] entityarray = new com.temenos.microservice.paymentorder.entity.PaymentOrder[view.length];
 		for (int i = 0; i < view.length; i++) {
-			com.temenos.microservice.payments.entity.PaymentOrder entity = new com.temenos.microservice.payments.entity.PaymentOrder();
-			com.temenos.microservice.payments.entity.PaymentMethod method = new com.temenos.microservice.payments.entity.PaymentMethod();
+			com.temenos.microservice.paymentorder.entity.PaymentOrder entity = new com.temenos.microservice.paymentorder.entity.PaymentOrder();
+			com.temenos.microservice.paymentorder.entity.PaymentMethod method = new com.temenos.microservice.paymentorder.entity.PaymentMethod();
 
 			entity.setPaymentOrderId(paymentOrderId[i]);
 			entity.setAmount(view[i].getAmount());
@@ -114,7 +129,7 @@ public class CreateNewPaymentOrdersProcessor {
 
 			if (view[i].getFileContent() != null) {
 				try {
-					entity.setFileContent(new String(view[i].getFileContent().array(), "UTF-8"));
+					entity.setFileContent(view[i].getFileContent());
 				} catch (Exception e) {
 					throw new RuntimeException(e.getMessage());
 				}
@@ -143,7 +158,7 @@ public class CreateNewPaymentOrdersProcessor {
 
 			if (view[i].getExchangeRates() != null) {
 				List<ExchangeRate> exchangeRates = new ArrayList<ExchangeRate>();
-				for (com.temenos.microservice.payments.view.ExchangeRate exchangeRt : view[i].getExchangeRates()) {
+				for (com.temenos.microservice.paymentorder.view.ExchangeRate exchangeRt : view[i].getExchangeRates()) {
 					ExchangeRate exchangeRate = new ExchangeRate();
 					exchangeRate.setName(exchangeRt.getName());
 					exchangeRate.setValue(exchangeRt.getValue());
@@ -154,8 +169,13 @@ public class CreateNewPaymentOrdersProcessor {
 			entityarrayList.add(entity);
 			entityarray[i] = entity;
 		}
-		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
-				.saveOrMergeEntityList(entityarrayList, false);
+		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
+				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+		
+		
+		paymentOrderDao.saveOrMergeEntityList(entityarrayList, false);
+		
+		
 		for (int j = 0; j < entityarrayList.size(); j++) {
 			CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
 			paymentOrderEvent.setPaymentOrderId(entityarrayList.get(j).getPaymentOrderId());
@@ -169,7 +189,7 @@ public class CreateNewPaymentOrdersProcessor {
 		return entityarray;
 	}
 
-	private AllPaymentStatus readStatus(com.temenos.microservice.payments.entity.PaymentOrder[] paymentOrder) {
+	private AllPaymentStatus readStatus(com.temenos.microservice.paymentorder.entity.PaymentOrder[] paymentOrder) {
 		AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
 		for (int i = 0; i < paymentOrder.length; i++) {
 			PaymentStatus paymentStatus = new PaymentStatus();

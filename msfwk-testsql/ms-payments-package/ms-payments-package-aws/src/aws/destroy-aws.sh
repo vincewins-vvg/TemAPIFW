@@ -55,6 +55,9 @@ aws lambda delete-function --function-name payment-sql-create
 aws lambda delete-function --function-name payment-sql-get
 aws lambda delete-function --function-name payment-sql-getall
 aws lambda delete-function --function-name payment-sql-update
+aws lambda delete-function --function-name payment-post-bulk-api-handler
+aws lambda delete-function --function-name payment-put-bulk-api-handler
+aws lambda delete-function --function-name payment-delete-bulk-api-handler
 aws lambda delete-function --function-name fileDownloadsql
 aws lambda delete-function --function-name fileUploadsql
 aws lambda delete-function --function-name fileDeletesql
