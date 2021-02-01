@@ -700,6 +700,18 @@
 			<groupId>com.temenos.irf</groupId>
 			<artifactId>irf-core</artifactId>
 		</dependency>
+ 	 	<dependency>
+		 	<groupId>com.temenos.security.authz</groupId>
+			<artifactId>authz-decision-adapter</artifactId>
+			<version>${irf-version}</version>
+            <scope>test</scope>	
+            <exclusions>
+            	<exclusion>
+		         	<groupId>org.springframework</groupId>
+		        	<artifactId>spring-core</artifactId>
+		        </exclusion>
+            </exclusions>
+		</dependency> 
 		<dependency>
 			<groupId>com.temenos.irf</groupId>
 			<artifactId>irf-api-importer</artifactId>
