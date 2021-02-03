@@ -38,8 +38,8 @@ services:
     build:
       context: init/kafka/.
       args:
-        kafka_version: 2.2.2
-        kafka_package: kafka_2.12-2.2.2
+        kafka_version: 2.7.0
+        kafka_package: kafka_2.13-2.7.0
     depends_on:
     - kafka
     environment:

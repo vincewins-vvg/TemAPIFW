@@ -1,0 +1,36 @@
+{
+	"name": "CreatePaymentEvent",
+	"javaPackage": "com.temenos.microservice.paymentorder.event",
+	"description": "Create New Payment Order Event",	
+	"properties": [{
+			"name": "paymentOrderId",
+			"type": "string",
+	 "description": "Identifer indicates the Generated Payment Order Id for the Transaction"			
+		},
+		{
+			"name": "debitAccount",
+			"type": "string",
+	 "description": "Indicates the Account from which the amount to be debited"	
+		},
+		{
+			"name": "creditAccount",
+			"type": "string",
+	 "description": "Indicates the Account for which the amount to be credited"
+		},
+		{
+			"name": "amount",
+			"type": "decimal",
+	 "description": "Identifer indicates the Total Amount involved in the transaction"
+		},
+		{
+			"name": "currency",
+			"type": "string",
+	 "description": "Indicates the Currency Type for the transaction"			
+		},
+		{
+			"name": "payeeDetails",
+			"type": "userdefined",
+			"childevent": "PayeeDetailsEvent"
+		}
+	]
+}

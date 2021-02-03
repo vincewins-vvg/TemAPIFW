@@ -71,6 +71,9 @@ aws lambda delete-event-source-mapping --uuid inboxingesteruuid
 aws lambda delete-function --function-name payment-inbox-ingester
 aws lambda delete-function --function-name payment-event-ingester
 aws lambda delete-function --function-name payment-post-api-handler
+aws lambda delete-function --function-name payment-post-bulk-api-handler
+aws lambda delete-function --function-name payment-put-bulk-api-handler
+aws lambda delete-function --function-name payment-delete-bulk-api-handler
 aws lambda delete-function --function-name payment-getall-api-handler
 aws lambda delete-function --function-name payment-get-api-handler
 aws lambda delete-function --function-name payment-put-api-handler
