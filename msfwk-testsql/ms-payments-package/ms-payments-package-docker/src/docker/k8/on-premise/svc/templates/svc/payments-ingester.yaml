@@ -1,0 +1,217 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-avro-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-avro-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-avro-ingester
+    spec:
+      containers:
+      - name: payments-avro-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-avro-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-command-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-ingester
+    spec:
+      containers:
+      - name: payments-command-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-event-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-event-ingester
+    spec:
+      containers:
+      - name: payments-event-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8094
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-event-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-delivery
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-event-delivery
+  template:
+    metadata:
+      labels:
+        app: payments-event-delivery
+    spec:
+      containers:
+      - name: payments-event-delivery
+        image: {{ .Values.image.paymentseventdelivery.repository }}:{{ .Values.image.paymentseventdelivery.tag }}
+        ports:
+        - containerPort: 8095
+        envFrom:
+          - configMapRef:
+              name: payments-eventdelivery-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-data-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-data-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-data-ingester
+    spec:
+      containers:
+      - name: payments-data-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentseventdelivery.tag }}
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-data-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-data-ingester-svc
+  name: payments-data-ingester-svc
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-data-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30007
+  type: NodePort    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-command-ingester-svc
+  name: payments-command-ingester-svc
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-command-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30008
+  type: NodePort  

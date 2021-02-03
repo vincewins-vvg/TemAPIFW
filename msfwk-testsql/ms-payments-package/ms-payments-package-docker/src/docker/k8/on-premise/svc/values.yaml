@@ -1,0 +1,111 @@
+# Default values for holdingsmsvc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+ReplicaCount:
+  paymentsapiReplicaCount: 1
+  paymentsingesterReplicaCount: 1
+  topicreplicacount: 1
+  schemaregistryreplicacount: 1
+
+paymentsnamespace: payments
+
+
+apideployment: payments-api
+schemaregistry: schema-registry
+schemaregistrysvc: schema-registry-svc
+
+kafkatopic:
+  avrotopic: table-update-paymentorder
+  avrodatatopic: table-update
+  outboxtopic: paymentorder-outbox
+  eventstoretopic: ms-eventstore-inbox-topic
+  inboxtopic: ms-paymentorder-inbox-topic
+  eventtopic: paymentorder-event-topic
+  errortopic: error-paymentorder
+  inboxerrortopic: ms-paymentorder-inbox-error-topic
+  sourcestream_consumergroupid: ms-paymentorder-ingester-consumer
+  errorstream_producerid: ms-paymentorder-ingester-error-producer
+  retentionms: 7200000
+  segmentbytes: 1073741824
+  topicpartitions: 3
+
+image:
+  paymentsapi:
+    repository: temenos/ms-paymentorder-service
+    tag: DEV
+    pullPolicy: Never
+  paymentsingester:
+    repository: temenos/ms-paymentorder-ingester
+    tag: DEV
+    pullPolicy: Never
+  paymentseventdelivery:
+    repository: temenos/ms-paymentorder-inboxoutbox
+    tag: DEV
+    pullPolicy: Never
+  schemaregistry:
+    repository: confluentinc/cp-schema-registry
+    tag: 5.3.0
+    pullPolicy: Never
+  paymentorderscheduler:
+    repository: temenos/ms-paymentorder-scheduler
+    tag: DEV
+    pullPolicy: Never 
+  mysql: 
+    repository: ms-paymentorder-mysql
+    tag: latest
+    pullPolicy: Never
+
+
+env:
+  database:
+    database_key: sql
+    host: payments-db-service
+    database_name: payments
+    db_username: root
+    db_password: password
+    driver_name: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    db_connection_url: jdbc:mysql://paymentorder-db-service:3306/payments
+    max_pool_size: "5"
+    min_pool_size: "1"
+  kafka:
+    temnmsfstreamvendor: kafka
+    temnqueueimpl: kafka
+    kafkabootstrapservers: my-cluster-kafka-bootstrap.kafka:9092
+    schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+  schemaregistry:
+    SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+    SCHEMA_REGISTRY_HOST_NAME: schema-registry
+    SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+    SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+    SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+  paymentorderscheduler:
+    temn_msf_name: PaymentOrder  
+    temn_msf_security_authz_enabled: "false" 
+    className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
+    className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
+    className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
+    operationId: paymentscheduler
+
+service:
+  paymentsapi:
+    type: LoadBalancer
+    port: 80
+  schemaregistry:
+    type: ClusterIP
+    port: 80
+    targetport: 8081
+  schemaregistrynp:
+    type: NodePort
+    port: 8081
+    nodeport: 32101 
+
+external:
+  enabled: true
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
