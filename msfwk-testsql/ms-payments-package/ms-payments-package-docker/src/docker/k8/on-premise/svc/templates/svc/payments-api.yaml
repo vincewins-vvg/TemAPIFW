@@ -21,7 +21,19 @@ spec:
           protocol: TCP
         envFrom:
           - configMapRef:
-              name: payments-api-config        
+              name: payments-api-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD                  
 ---
 apiVersion: v1
 kind: Service

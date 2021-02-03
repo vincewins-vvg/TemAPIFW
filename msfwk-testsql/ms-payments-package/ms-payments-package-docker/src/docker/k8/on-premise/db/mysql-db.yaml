@@ -19,7 +19,10 @@ spec:
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
-          value: password
+          valueFrom:
+            secretKeyRef:
+              name: posqldbsecret
+              key: PASSWORD
         imagePullPolicy: IfNotPresent
         name: paymentorder-db
         ports:
@@ -37,6 +40,6 @@ spec:
   ports:
   - name: "3306"
     port: 3306
-    nodePort: 30010
+    nodePort: 30015
   selector:
     name: paymentorder-db

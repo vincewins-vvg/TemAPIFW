@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.avrotopic }}
+  name: {{ .Values.kafkatopic.avrotopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -9,16 +9,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.outboxtopic }}
+  name: {{ .Values.kafkatopic.outboxtopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -26,16 +26,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.eventstoretopic }}
+  name: {{ .Values.kafkatopic.eventstoretopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -43,16 +43,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.inboxtopic }}
+  name: {{ .Values.kafkatopic.inboxtopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -60,16 +60,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.eventtopic }}
+  name: {{ .Values.kafkatopic.eventtopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -77,16 +77,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.errortopic }}
+  name: {{ .Values.kafkatopic.errortopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -94,16 +94,16 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.inboxerrortopic }}
+  name: {{ .Values.kafkatopic.inboxerrortopic }}
   namespace: kafka
   labels:
     strimzi.io/cluster: my-cluster
@@ -111,9 +111,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  partitions: {{ .Values.topicpartitions }}
-  replicas: {{ .Values.topicreplicacount }}
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.ReplicaCount.topicreplicacount }}
   config:
-    retention.ms: {{ .Values.retentionms }}
-    segment.bytes: {{ .Values.segmentbytes }}
----
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
