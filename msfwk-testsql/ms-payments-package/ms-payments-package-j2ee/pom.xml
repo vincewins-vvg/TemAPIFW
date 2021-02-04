@@ -32,6 +32,8 @@
 
 		<!-- Command Ingester App Name -->
 		<web.ingester.command.app.name>ms-payments-command-ingester.war</web.ingester.command.app.name>
+		
+		<web.ingester.file.app.name>ms-payments-file-ingester.war</web.ingester.file.app.name>
 
 		<!-- Ingester for ignite name -->
 		<web.inboxoutbox.app.name>ms-payments-inboxoutbox-app.war</web.inboxoutbox.app.name>
