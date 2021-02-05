@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.schemaregistry }}
-  namespace: {{ .Values.kafkanamespace }}
+  namespace: kafka
 spec:
-  replicas: {{ .Values.schemaregistryreplicacount }}
+  replicas: {{ .Values.replicacount.schemaregistry }}
   selector:
     matchLabels:
       app: {{ .Values.schemaregistry }}
@@ -43,7 +43,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.schemaregistry }}
   name: {{ .Values.schemaregistrysvc }}
-  namespace: {{ .Values.kafkanamespace }}
+  namespace: kafka
 spec:
   type: {{ .Values.service.schemaregistry.type }}
   selector:
@@ -59,7 +59,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.schemaregistry }}
   name: {{ .Values.schemaregistry }}
-  namespace: {{ .Values.kafkanamespace }}
+  namespace: kafka
 spec:
   type: {{ .Values.service.schemaregistrynp.type }}
   selector:

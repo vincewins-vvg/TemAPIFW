@@ -1,11 +1,11 @@
-@echo off
-REM --------------------------------------------------------------
-REM - Script to stop Paymentorder Service
-REM --------------------------------------------------------------
+#@echo off
+#REM --------------------------------------------------------------
+#REM - Script to stop Paymentorder Service
+#REM --------------------------------------------------------------
 
-REM - Stop knative services
+#REM - Stop knative services
 
-cd kubectl/100_db/mongo/rs
+cd 100_db/mongo/rs
 kubectl delete -f mongo-setup.yaml
 kubectl delete -f 170_mongo_services.yaml
 kubectl delete -f 160_rs.yaml
@@ -20,4 +20,4 @@ cd ../
 kubectl delete -f 100_create-mongo-ns.yaml
 
 
-cd ../../..
+cd ../..

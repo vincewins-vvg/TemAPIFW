@@ -1,9 +1,9 @@
-REM - Script to start Paymentorder Service
-REM --------------------------------------------------------------
+#REM - Script to start Paymentorder Service
+#REM --------------------------------------------------------------
 
-REM - Build paymentorder images
+#REM - Build paymentorder images
 
-REM - Start knative services
+#REM - Start knative services
 
 
 cd 100_db/mongo
@@ -19,6 +19,9 @@ cd ../rs
 kubectl apply -f 160_rs.yaml
 kubectl apply -f 170_mongo_services.yaml
 
-timeout /t 180 >nul
+sleep 180
 
 kubectl apply -f mongo-setup.yaml
+
+
+cd ../../..

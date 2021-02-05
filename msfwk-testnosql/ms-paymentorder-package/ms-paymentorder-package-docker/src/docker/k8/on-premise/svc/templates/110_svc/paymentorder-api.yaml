@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.paymentorderapiReplicaCount }}
+  replicas: {{ .Values.replicacount.paymentorderapi }}
 {{- end }}
   selector:
     matchLabels:
@@ -37,3 +37,23 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvc" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvc" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.paymentorderapi.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.paymentorderapi.port }}
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: {{ .Values.apideployment }}              

@@ -63,6 +63,12 @@ data:
   IRIS_PATH: "irf-provider-container/api"
   IRIS_R18_PATH: "irisR18/api"
   IRIS_VERSION: "v1.0.0"
+  className_initiateDbMigration: com.temenos.microservice.framework.dbmigration.core.InitiateDbMigrationImpl
+  className_getDbMigration: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationImpl
+  temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
+  temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
+  temn.msf.scripts.location: "scripts"    
+  TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
   temn.msf.storage.home: "path:/usr/local/tomcat/temp"
   FILE_STORAGE_URL:  /demo.properties
   temn.msf.max.file.upload.size: "70"
@@ -92,13 +98,14 @@ data:
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
-  temn.msf.ingest.source.stream: table-update-paymentorder
-  temn.msf.ingest.sink.error.stream: error-paymentorder
-  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.avrotopic }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
   temn.msf.security.authz.enabled: "false"
-  class_inbox_dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-  class_outbox_dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
   temn.config.file.path: mapping/
   temn.ingester.mapping.enabled: "true"
@@ -123,10 +130,10 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
-  temn.msf.ingest.sink.error.stream: ms-paymentorder-inbox-error-topic
-  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer
-  temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-consumer 
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.inboxtopic }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.inboxerrortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
   temn.msf.exec.env: server
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
@@ -139,9 +146,9 @@ data:
   IRIS_PATH: "irf-provider-container/api"
   IRIS_R18_PATH: "irisR18/api"
   IRIS_VERSION: "v1.0.0"
-  temn.msf.pdp.resource.type: API
-  temn.msf.pdp.resource.manager: PAYMENT
-  PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  #temn.msf.pdp.resource.type: API
+  #temn.msf.pdp.resource.manager: PAYMENT
+  #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
   ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
   JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
@@ -167,9 +174,9 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.ingest.source.stream: paymentorder-event-topic
-  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-consumer
-  temn.msf.ingest.source.stream.consumergroup.id: ms-paymentorder-ingester-error-producer 
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.eventtopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
   temn.msf.ingest.sink.error.enabled: "false"
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
   temn.msf.exec.env: server
@@ -177,7 +184,7 @@ data:
   temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
   temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
   # temn.msf.raise.received.event: "true"
-  temn.msf.ingest.is_avro.event.ingester: "false"
+  temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"  
 ---
 apiVersion: v1
@@ -202,8 +209,45 @@ data:
   temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   temn.msf.security.authz.enabled: "false"
-  tmn_inbox.source.namespace: paymentorder-inbox
+  tmn.inbox.source.namespace: paymentorder-inbox
   tmn.outbox.source.namespace: paymentorder-outbox  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
+  temn.msf.ingest.source.stream: table-update
+  temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+  temn.msf.security.authz.enabled: "false"
+  temn.msf.ingest.consumer.max.poll.records: "1"
+  IRIS_PROTOCOL: "http"
+  IRIS_HOST_IP: "localhost"
+  IRIS_PORT: "9089"
+  IRIS_PATH: "irf-provider-container/api"
+  IRIS_R18_PATH: "irisR18/api"
+  IRIS_VERSION: "v1.0.0"
+  PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  temn.msf.pdp.resource.type: API
+  temn.msf.pdp.resource.manager: PAYMENT
 ---
 apiVersion: v1
 kind: ConfigMap

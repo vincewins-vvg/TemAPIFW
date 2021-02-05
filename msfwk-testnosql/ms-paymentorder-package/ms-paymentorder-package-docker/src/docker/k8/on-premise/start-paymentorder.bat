@@ -9,32 +9,11 @@ cd ../..
 
 call build.bat build
 
-cd k8/on-premise
+cd k8/on-premise/db
 
-REM - Start knative services
+call start-podb-scripts.bat
 
-cd kubectl/110_svc
-REM cd kubectl/110_svc
+cd ../
 
-kubectl apply -f 000_paymentorder-ns.yaml
-timeout /t 30 >nul
-kubectl apply -f 001_paymentorder-configmap.yaml
-timeout /t 30 >nul
-kubectl apply -f 100_paymentorder-api.yaml
-timeout /t 30 >nul
-kubectl apply -f 110_paymentorder-ingester.yaml
-
-REM cd ../../..
-
-timeout /t 30 >nul
-
-cd ../120_kafka
-kubectl apply -f kafka-topics.yaml
-timeout /t 30 >nul
-kubectl apply -f schema-registry.yaml
-
-cd ../130_scheduler
-kubectl apply -f 100_scheduler-job.yaml
-
-cd ../../
+helm install ponosql ./svc
 

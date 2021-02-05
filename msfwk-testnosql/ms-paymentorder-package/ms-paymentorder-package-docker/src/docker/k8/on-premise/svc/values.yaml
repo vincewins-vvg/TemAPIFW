@@ -2,31 +2,29 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-paymentorderapiReplicaCount: 1
-paymentorderingesterReplicaCount: 1
-topicreplicacount: 1
-schemaregistryreplicacount: 1
-
-retentionms: 7200000
-segmentbytes: 1073741824
-
-topicpartitions: 3
-
 namespace: paymentorder
-kafkanamespace: kafka
 
-apideployment: paymentorder-api
-schemaregistry: schema-registry
-schemaregistrysvc: schema-registry-svc
-
-avrotopic: table-update-paymentorder
-outboxtopic: paymentorder-outbox
-eventstoretopic: ms-eventstore-inbox-topic
-inboxtopic: ms-paymentorder-inbox-topic
-eventtopic: paymentorder-event-topic
-errortopic: error-paymentorder
-inboxerrortopic: ms-paymentorder-inbox-error-topic
-
+replicacount:
+  paymentorderapi: 1
+  paymentorderingester: 1
+  schemaregistry: 1
+  
+  
+kafkatopic:
+  topicpartitions: 3
+  retentionms: 7200000
+  segmentbytes: 1073741824
+  replicas: 3
+  avrotopic: table-update-paymentorder
+  outboxtopic: paymentorder-outbox
+  eventstoretopic: ms-eventstore-inbox-topic
+  inboxtopic: ms-paymentorder-inbox-topic
+  eventtopic: paymentorder-event-topic
+  errortopic: error-paymentorder
+  inboxerrortopic: ms-paymentorder-inbox-error-topic
+  errorstreamproducerid: ms-paymentorder-ingester-error-producer
+  consumergroupid: ms-paymentorder-ingester-consumer
+  
 
 
 image:
@@ -46,14 +44,14 @@ image:
     repository: confluentinc/cp-schema-registry
     tag: 5.3.0
     pullPolicy: Never
-  # mongoclient: mongo
   paymentorderscheduler:
     repository: dev.local/temenos/ms-paymentorder-scheduler
     tag: DEV
     pullPolicy: Never  
-  
-#nameOverride: ""
-#fullnameOverride: ""
+
+apideployment: paymentorder-api
+schemaregistry: schema-registry
+schemaregistrysvc: schema-registry-svc
 
 
 env:
@@ -86,13 +84,6 @@ service:
     type: NodePort
     port: 8081
     nodeport: 32101    
-requests:
-  paymentorderapi: {}
-  #paymentorderingester: {}
-
-limits:
-  paymentorderapi: {}
-  #paymentorderingester: {}
 
 external:
   enabled: true
@@ -101,6 +92,6 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-      # Set the pull secret name here
+
+# Set the pull secret name here
 #imagePullSecrets: all-icr-io
