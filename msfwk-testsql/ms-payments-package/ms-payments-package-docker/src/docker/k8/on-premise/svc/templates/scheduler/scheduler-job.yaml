@@ -15,5 +15,16 @@ spec:
             imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
             envFrom:
               - configMapRef:
-                  name: payments-scheduler-config        
+                  name: payments-scheduler-config
+            env:
+              - name: DB_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: posqldbsecret
+                    key: USER_NAME 
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: posqldbsecret
+                    key: PASSWORD                     
           restartPolicy: OnFailure

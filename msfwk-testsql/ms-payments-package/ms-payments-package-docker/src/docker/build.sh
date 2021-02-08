@@ -8,6 +8,6 @@ if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
 cp -f ${DOCKER_ENV_LOCATION}/k8ENV.env .env
 
 # Now run Docker Compose
-docker-compose -f paymentorder.yml %*
+docker-compose -f paymentorder.yml $@
 
 # call kafka.bat up --build -d
