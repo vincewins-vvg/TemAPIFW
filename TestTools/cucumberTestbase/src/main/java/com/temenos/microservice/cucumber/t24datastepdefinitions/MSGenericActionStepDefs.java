@@ -402,6 +402,13 @@ public class MSGenericActionStepDefs implements En {
                 stepConfig.stringRegEx()), (String bundleValue1, String bundleValue2, String separator, String newAppendedBundle ) -> {
                     appendValueToBundle(bundleValue1, bundleValue2, separator, newAppendedBundle);
                 });
+        
+        //Adding steps for appending port number to server URL at run time as an env variable
+        And(format("^(?:I ?)*server URL set to {0} with data ingester port$", stepConfig.stringRegEx()),
+                (String serverURLWithoutPortNo) -> setServerURLWithPort(serverURLWithoutPortNo,"data"));
+        
+        And(format("^(?:I ?)*server URL set to {0} with binary ingester port$", stepConfig.stringRegEx()),
+                (String serverURLWithoutPortNo) -> setServerURLWithPort(serverURLWithoutPortNo,"binary"));
     }
 
     
@@ -411,6 +418,24 @@ public class MSGenericActionStepDefs implements En {
 //    public MSGenericActionStepDefs() {
 //        // TODO Auto-generated constructor stub
 //    }
+    
+    public void setServerURLWithPort(String serverURLWithoutPortNo, String ingesterType) {
+        
+        if(ingesterType.equals("data"))
+                {
+        String serverURLWithPortFromEnv = serverURLWithoutPortNo+Environment.getEnvironmentVariable("DATAINGESTERPORT", "").toString();
+        System.out.println("The server URL with Port No is : "+serverURLWithPortFromEnv);
+        cucumberInteractionSession.baseuri(serverURLWithPortFromEnv);
+        }
+        else if(ingesterType.equals("binary"))
+        {
+            String serverURLWithPortFromEnv = serverURLWithoutPortNo+Environment.getEnvironmentVariable("BINARYINGESTERPORT", "").toString();
+            System.out.println("The server URL with Port No is : "+serverURLWithPortFromEnv);
+            cucumberInteractionSession.baseuri(serverURLWithPortFromEnv);
+            
+        }
+        
+    }
     
     public Object appendTwoBundleValues(String bundleValue1, String bundleValue2, String separator, String newAppendedBundle) {
         
