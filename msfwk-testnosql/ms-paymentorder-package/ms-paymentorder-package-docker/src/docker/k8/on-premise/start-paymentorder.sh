@@ -7,7 +7,7 @@
 
 cd ../..
 
-./build.sh build
+./build.sh create --build
 
 cd k8/on-premise/db
 
