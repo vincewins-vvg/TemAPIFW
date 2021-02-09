@@ -33,6 +33,8 @@
 		<!-- Command Ingester App Name -->
 		<web.ingester.command.app.name>ms-paymentorder-command-ingester.war</web.ingester.command.app.name>
 
+		<web.ingester.file.app.name>ms-paymentorder-file-ingester.war</web.ingester.file.app.name>
+
 		<!-- Ingester for ignite name -->
 		<web.inboxoutbox.app.name>ms-paymentorder-inboxoutbox-app.war</web.inboxoutbox.app.name>
 		<web.ms-framework-scheduler-web.name>ms-paymentorder-scheduler-web.war</web.ms-framework-scheduler-web.name>
