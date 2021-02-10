@@ -1,0 +1,36 @@
+{
+    "paymentOrders":[
+            {
+                "fromAccount": "1001",
+                "toAccount": "10001",
+                "paymentDetails": "Success",
+                "currency": "INR",
+                "amount": 100,
+                "expires": 10,
+                "fileContent": "test",
+                "paymentDate": "2020-06-01",
+                "exchangeRates": [
+                    {
+                        "id": 1,
+                        "name": "allwin",
+                        "value": 1
+                    }
+                ]
+            },
+            {
+                "fromAccount": "1002",
+                "toAccount": "10002",
+                "paymentDetails": "Success",
+                "currency": "INR",
+                "amount": 200,
+                "expires": 10,
+                "fileContent": "test",
+                "paymentDate": "2020-06-01",
+                "exchangeRates": [
+                {
+                    "id": 1,
+                    "name": "allwin",
+                    "value": 1
+                }
+            ]
+            }]}
