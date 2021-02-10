@@ -1,0 +1,15 @@
+diff a/msfwk-testnosql/ms-paymentorder-package/ms-paymentorder-package-knative/src/knative/kubectl/110_ksvc/102_paymentorder-service-configmap.yaml b/msfwk-testnosql/ms-paymentorder-package/ms-paymentorder-package-knative/src/knative/kubectl/110_ksvc/102_paymentorder-service-configmap.yaml	(rejected hunks)
+@@ -78,6 +78,13 @@
+ +<<<<<<< HEAD:msfwk-testnosql/ms-paymentorder-package/ms-paymentorder-package-knative/src/knative/kubectl/110_ksvc/102_paymentorder-service-configmap.yaml
+ +  temn.msf.stream.vendor: kafka
+ +  temn.queue.impl: kafka
+++=======
++   temn.msf.disableInbox: "true"
++   temn.msf.security.authz.enabled: "false"
++   #EXECUTION_ENV: TEST
++   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
++   PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+++>>>>>>> MSF-2637 New currency api, which doesnt involves db interaction. added.:msfwk-testsql/ms-payments-package/ms-payments-package-docker/src/docker/k8/onpremise/kubectl/110_svc/001_payments-configmap.yaml
+    temn.msf.schema.registry.url: http://schema-registry-svc.kafka.svc.cluster.local
+ +  temn.msf.ingest.sink.error.stream: error-paymentorder
+ +  temn.msf.ingest.sink.error.stream.producer.id: ms-paymentorder-ingester-error-producer

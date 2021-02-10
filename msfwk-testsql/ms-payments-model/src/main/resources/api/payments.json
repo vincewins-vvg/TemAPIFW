@@ -493,6 +493,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentStatus'
 
+  /currency:
+    get:
+      summary: Get Single Account
+      operationId: GetCurrency
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnumCurrencies'
 components:
   schemas:
     Card:
@@ -564,6 +575,10 @@ components:
       enum:
         - USD
         - INR
+    EnumCurrencies:
+      type: array
+      items:
+        $ref: '#/components/schemas/EnumCurrency'
         
     TransactionDetails:
       properties:
