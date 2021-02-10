@@ -1,0 +1,47 @@
+{
+    "paymentStatus":[
+            {
+                "debitAccount": "1001",
+                "toAccount": "10001",
+                "paymentId":"PO~1001~10001~INR~100",
+                "paymentDetails": "Success",
+                "currency": "INR",
+                "amount": 101,
+                "expires": 10,
+                "fileContent": "test",
+                "paymentDate": "2020-06-01",
+                "exchangeRates": [
+                    {
+                        "id": 1,
+                        "name": "allwin",
+                        "value": 1
+                    }
+                ],
+                "paymentMethod": {
+                    "id": 100,
+                    "name": "paymentmethod",
+                    "card": {
+                        "cardid": 1,
+                        "cardname": "allwin",
+                        "cardlimit": 1
+                    }
+                }
+            },
+            {
+                "debitAccount": "1002",
+                "paymentId":"PO~1002~10002~INR~200",
+                "toAccount": "10002",
+                "paymentDetails": "Success",
+                "currency": "INR",
+                "amount": 202,
+                "expires": 10,
+                "fileContent": "test",
+                "paymentDate": "2020-06-01",
+                "exchangeRates": [
+                {
+                    "id": 1,
+                    "name": "allwin",
+                    "value": 1
+                }
+            ]
+            }]}
