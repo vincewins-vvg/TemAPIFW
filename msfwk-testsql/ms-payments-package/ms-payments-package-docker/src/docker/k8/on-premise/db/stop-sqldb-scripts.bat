@@ -5,9 +5,9 @@ REM --------------------------------------------------------------
 
 REM - Stop knative services
 
-cd kubectl/100_db
 
-kubectl delete -f 101_mysql-db.yaml
+kubectl delete -f mysql-db.yaml
 
+kubectl delete -f namespace.yaml
 
-cd ../..
+kubectl delete -f db-secrets.yaml

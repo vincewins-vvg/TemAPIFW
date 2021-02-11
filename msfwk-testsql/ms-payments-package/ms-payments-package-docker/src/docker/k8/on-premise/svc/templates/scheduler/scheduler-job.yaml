@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: payments-scheduler
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: payments-scheduler
+            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+            envFrom:
+              - configMapRef:
+                  name: payments-scheduler-config
+            env:
+              - name: DB_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: posqldbsecret
+                    key: USER_NAME 
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: posqldbsecret
+                    key: PASSWORD                     
+          restartPolicy: OnFailure

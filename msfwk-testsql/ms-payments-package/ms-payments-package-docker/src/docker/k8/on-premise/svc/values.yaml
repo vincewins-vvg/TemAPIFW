@@ -1,16 +1,11 @@
 # Default values for holdingsmsvc.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-paymentsapiReplicaCount: 1
-paymentsingesterReplicaCount: 1
-topicreplicacount: 1
-schemaregistryreplicacount: 1
-
-retentionms: 7200000
-segmentbytes: 1073741824
-
-topicpartitions: 3
+ReplicaCount:
+  paymentsapiReplicaCount: 1
+  paymentsingesterReplicaCount: 1
+  topicreplicacount: 1
+  schemaregistryreplicacount: 1
 
 paymentsnamespace: payments
 
@@ -19,13 +14,20 @@ apideployment: payments-api
 schemaregistry: schema-registry
 schemaregistrysvc: schema-registry-svc
 
-avrotopic: table-update-paymentorder
-outboxtopic: paymentorder-outbox
-eventstoretopic: ms-eventstore-inbox-topic
-inboxtopic: ms-paymentorder-inbox-topic
-eventtopic: paymentorder-event-topic
-errortopic: error-paymentorder
-inboxerrortopic: ms-paymentorder-inbox-error-topic
+kafkatopic:
+  avrotopic: table-update-paymentorder
+  avrodatatopic: table-update
+  outboxtopic: paymentorder-outbox
+  eventstoretopic: ms-eventstore-inbox-topic
+  inboxtopic: ms-paymentorder-inbox-topic
+  eventtopic: paymentorder-event-topic
+  errortopic: error-paymentorder
+  inboxerrortopic: ms-paymentorder-inbox-error-topic
+  sourcestream_consumergroupid: ms-paymentorder-ingester-consumer
+  errorstream_producerid: ms-paymentorder-ingester-error-producer
+  retentionms: 7200000
+  segmentbytes: 1073741824
+  topicpartitions: 3
 
 image:
   paymentsapi:
@@ -98,12 +100,6 @@ service:
     type: NodePort
     port: 8081
     nodeport: 32101 
-
-requests:
-  paymentsapi: {}
-
-limits:
-  paymentsapi: {}
 
 external:
   enabled: true

@@ -21,7 +21,19 @@ spec:
           protocol: TCP
         envFrom:
           - configMapRef:
-              name: payments-api-config        
+              name: payments-api-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD                  
 ---
 apiVersion: v1
 kind: Service
@@ -38,4 +50,21 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 8080
-  type: LoadBalancer         
+  type: LoadBalancer    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-order-svc-np
+  name: payments-order-api-svc-np
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-order-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30020
+  type: NodePort    

@@ -3,8 +3,8 @@ REM --------------------------------------------------------------
 REM - Script to start Payments Service
 REM --------------------------------------------------------------
 
-cd kubectl/100_db
+kubectl apply -f namespace.yaml
 
-kubectl apply -f 101_mysql-db.yaml
+kubectl apply -f mysql-db.yaml
 
-cd ../..
+kubectl apply -f db-secrets.yaml

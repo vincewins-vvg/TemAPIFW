@@ -4,7 +4,7 @@ metadata:
   name: schema-registry
   namespace: kafka
 spec:
-  replicas: 1
+  replicas: {{ .Values.schemaregistryreplicacount }}
   selector:
     matchLabels:
       app: schema-registry
@@ -15,23 +15,23 @@ spec:
     spec:
       containers:
       - name: schema-registry
-        image: confluentinc/cp-schema-registry:5.3.0
+        image: "{{ .Values.image.schemaregistry.repository }}:{{ .Values.image.schemaregistry.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8081
         env:
           # Use secret in real usage
         - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
-          value: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS }} 
         - name: SCHEMA_REGISTRY_HOST_NAME
-          value: schema-registry
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_HOST_NAME }} 
         - name: SCHEMA_REGISTRY_LISTENERS
-          value: http://0.0.0.0:8081
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_LISTENERS }} 
         - name: SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT
-          value: "500"
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT | quote }} 
         - name: SCHEMA_REGISTRY_CUB_ZK_TIMEOUT
-          value: "500"             
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_CUB_ZK_TIMEOUT | quote }}             
         - name: SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL
-          value: PLAINTEXT
+          value: {{ .Values.env.schemaregistry.SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL }} 
         command:
         - bash
         - -c
@@ -45,12 +45,12 @@ metadata:
   name: schema-registry-svc
   namespace: kafka
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.schemaregistry.type }}
   selector:
     app: schema-registry
   ports:
-  - port: 80
-    targetPort: 8081
+  - port: {{ .Values.service.schemaregistry.port }}
+    targetPort: {{ .Values.service.schemaregistry.targetport }}
     protocol: TCP
 ---
 apiVersion: v1
@@ -61,9 +61,9 @@ metadata:
   name: schema-registry
   namespace: kafka
 spec:
-  type: NodePort
+  type: {{ .Values.service.schemaregistrynp.type }}
   selector:
     app: schema-registry
   ports:
-  - port: 8081 
-    nodePort: 32101    
+  - port: {{ .Values.service.schemaregistrynp.port }} 
+    nodePort: {{ .Values.service.schemaregistrynp.nodeport }}    
