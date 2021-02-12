@@ -56,4 +56,24 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    app: {{ .Values.apideployment }}              
+    app: {{ .Values.apideployment }}    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvcnp" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvcnp" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      nodePort: 30020
+  selector:
+    app: {{ .Values.apideployment }}        

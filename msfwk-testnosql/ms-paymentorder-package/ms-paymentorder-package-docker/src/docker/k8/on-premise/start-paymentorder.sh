@@ -9,11 +9,15 @@ cd ../..
 
 ./build.sh create --build
 
-cd k8/on-premise/db
+#cd k8/on-premise/db
 
-./start-podb-scripts.sh
+#./start-podb-scripts.sh
 
-cd ../
+#cd ../
+
+cd k8/on-premise/
+
+sleep 60
 
 helm install ponosql ./svc
 
