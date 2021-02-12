@@ -1,0 +1,119 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.avrotopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.outboxtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.eventstoretopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.inboxtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.eventtopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.errortopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.inboxerrortopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---

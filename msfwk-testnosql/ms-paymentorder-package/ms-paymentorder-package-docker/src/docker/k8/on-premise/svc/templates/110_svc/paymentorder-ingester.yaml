@@ -1,0 +1,160 @@
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8092
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-avro-config" }}
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}      
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8094
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}  
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+        image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8095
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}  
+---
+#Data Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+    spec:
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}    
+---
+#Data Ingester Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc" }}
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30007
+  type: NodePort    
+---
+#Command Ingester Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc" }}
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30008
+  type: NodePort  

@@ -1,0 +1,274 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
+  className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+  className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
+  className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
+  className_GetPaymentOrderCurrency: com.temenos.microservice.paymentorder.function.GetPaymentOrderCurrencyImpl
+  className_getHealthCheck: com.temenos.microservice.framework.core.health.GetHealthCheckImpl
+  API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
+  className_CreateNewPaymentOrders: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrdersImpl
+  className_UpdateNewPaymentOrders: com.temenos.microservice.paymentorder.function.UpdateNewPaymentOrdersImpl
+  className_DeletePaymentOrders: com.temenos.microservice.paymentorder.function.DeletePaymentOrdersImpl
+  className_FileUpload: com.temenos.microservice.paymentorder.function.FileUploadImpl
+  className_createReferenceData: com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataImpl
+  className_getReferenceData: com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataImpl
+  className_updateReferenceData: com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataImpl
+  className_addReferenceData: com.temenos.microservice.framework.core.data.referencedata.AddReferenceDataImpl
+  className_deleteReferenceData: com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataImpl
+  className_UpdateStatus: com.temenos.microservice.paymentorder.function.UpdatePaymentStatusImpl
+  className_DeleteWithCondition: com.temenos.microservice.paymentorder.function.DeleteWithConditionImpl 
+  className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
+  className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+  className_GetInputValidation: com.temenos.microservice.paymentorder.function.GetInputValidationImpl
+  className_deletePaymentOrder: com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl
+  className_CreateEmployee: com.temenos.microservice.payments.function.CreateEmployeeImpl
+  className_GetEmployee: com.temenos.microservice.payments.function.GetEmployeeImpl
+  className_UpdateEmployee: com.temenos.microservice.payments.function.UpdateEmployeeImpl
+  className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
+  className_CreateUser: com.temenos.microservice.paymentorder.function.CreateUserImpl
+  className_GetUser: com.temenos.microservice.paymentorder.function.GetUserImpl
+  className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
+  className_createCustomer: com.temenos.microservice.paymentorder.function.CreateCustomerImpl
+  className_getCustomers: com.temenos.microservice.paymentorder.function.GetCustomerImpl
+  className_CreateAccount: com.temenos.microservice.paymentorder.function.CreateAccountImpl
+  className_GetAccount: com.temenos.microservice.paymentorder.function.GetAccountImpl
+  className_DeleteAccount: com.temenos.microservice.paymentorder.function.DeleteAccountImpl
+  className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
+  className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
+  className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
+  temn.msf.name: PaymentOrder  
+  temn.msf.pdp.resource.type: API
+  temn.msf.pdp.resource.manager: PAYMENT
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  IRIS_PROTOCOL: "http"
+  IRIS_HOST_IP: "localhost"
+  IRIS_PORT: "9089"
+  IRIS_PATH: "irf-provider-container/api"
+  IRIS_R18_PATH: "irisR18/api"
+  IRIS_VERSION: "v1.0.0"
+  className_initiateDbMigration: com.temenos.microservice.framework.dbmigration.core.InitiateDbMigrationImpl
+  className_getDbMigration: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationImpl
+  temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
+  temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
+  temn.msf.scripts.location: "scripts"    
+  TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
+  temn.msf.storage.home: "path:/usr/local/tomcat/temp"
+  FILE_STORAGE_URL:  /demo.properties
+  temn.msf.max.file.upload.size: "70"
+  ms.security.tokencheck.enabled: "Y"
+  temn.entitlement.stubbed.service.enabled: "true"
+  JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
+  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+  ID_TOKEN_SIGNED: "true"
+  JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-avro-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-avro-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.avrotopic }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+  temn.msf.security.authz.enabled: "false"
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+  temn.config.file.path: mapping/
+  temn.ingester.mapping.enabled: "true"
+  #EXECUTION_ENV: TEST
+  temn.msf.ingest.consumer.max.poll.records: "1"  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.inboxtopic }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.inboxerrortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+  temn.msf.exec.env: server
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.security.authz.enabled: "false"
+  IRIS_PROTOCOL: "http"
+  IRIS_HOST_IP: "localhost"
+  IRIS_PORT: "9089"
+  IRIS_PATH: "irf-provider-container/api"
+  IRIS_R18_PATH: "irisR18/api"
+  IRIS_VERSION: "v1.0.0"
+  #temn.msf.pdp.resource.type: API
+  #temn.msf.pdp.resource.manager: PAYMENT
+  #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  ms.security.tokencheck.enabled: "Y"
+  temn.entitlement.stubbed.service.enabled: "true"
+  JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
+  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+  ID_TOKEN_SIGNED: "true"
+  JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.eventtopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
+  temn.msf.ingest.sink.error.enabled: "false"
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
+  temn.msf.exec.env: server
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
+  temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
+  # temn.msf.raise.received.event: "true"
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.security.authz.enabled: "false"  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.exec.env: server
+  temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  temn.msf.security.authz.enabled: "false"
+  tmn.inbox.source.namespace: paymentorder-inbox
+  tmn.outbox.source.namespace: paymentorder-outbox  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.name: PaymentOrder
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
+  temn.msf.ingest.source.stream: table-update
+  temn.msf.ingest.source.stream.consumergroup.id: msf-paymentorder-ingester-consumer
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+  temn.msf.security.authz.enabled: "false"
+  temn.msf.ingest.consumer.max.poll.records: "1"
+  IRIS_PROTOCOL: "http"
+  IRIS_HOST_IP: "localhost"
+  IRIS_PORT: "9089"
+  IRIS_PATH: "irf-provider-container/api"
+  IRIS_R18_PATH: "irisR18/api"
+  IRIS_VERSION: "v1.0.0"
+  PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  temn.msf.pdp.resource.type: API
+  temn.msf.pdp.resource.manager: PAYMENT
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-scheduler-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-scheduler-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.name: PaymentOrder  
+  temn.msf.security.authz.enabled: "false" 
+  className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
+  className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
+  className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
+  operationId: paymentscheduler  
