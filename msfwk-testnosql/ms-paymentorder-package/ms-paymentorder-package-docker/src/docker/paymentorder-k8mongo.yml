@@ -1,0 +1,47 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:
+  db-service1:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo1'
+    ports:
+      - "9042:9042"
+    command: ["--port", "9042"]
+  db-service2:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo2'
+    ports:
+      - "9142:9142"
+    command: ["--port", "9142"]
+  db-service3:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo3'
+    ports:
+      - "9242:9242"
+    command: ["--port", "9242"]
+  mongosetup:
+    container_name: 'mongoinit'
+    build:
+      context: ${MONGO_INIT_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    depends_on:
+      - db-service1
+      - db-service2
+      - db-service3
