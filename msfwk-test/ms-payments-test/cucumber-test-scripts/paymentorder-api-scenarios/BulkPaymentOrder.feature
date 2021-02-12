@@ -20,9 +20,20 @@
     Then MS response code should be 200
     And MS JSON property "paymentId" should exist
     
-   Scenario: To get created PO
+   Scenario: To get created PO1
 
     And MS request URI is "v1.0.0/payments/orders/PO~1002~10002~INR~200"
+    And MS request header "serviceid" is set to "client"
+    And MS request header "channelid" is set to "web"
+    And MS request header "customfilterid" is set to "test"
+    When a "GET" request is sent to MS
+    And MS query parameter for Azure env is set to value ""
+    And log all MS response in console
+    Then MS response code should be 200
+    
+     Scenario: To get created PO2
+
+    And MS request URI is "v1.0.0/payments/orders/PO~1001~10001~INR~100"
     And MS request header "serviceid" is set to "client"
     And MS request header "channelid" is set to "web"
     And MS request header "customfilterid" is set to "test"
@@ -41,7 +52,7 @@
     And log all MS response in console
     Then MS response code should be 200
     
-    Scenario Outline: To get Updated PO
+    Scenario Outline: To get Updated PO1
 
     And MS request header "serviceid" is set to "client"
     And MS request header "channelid" is set to "web"
@@ -57,6 +68,21 @@
     |response|
     |{"paymentOrder":{"fromAccount":"1001","toAccount":"10001","paymentDetails":"Success","currency":"INR","fileOverWrite":false,"paymentDate":"2020-06-01","paymentMethod":{"id":100,"name":"paymentmethod","extensionData":{},"card":{"cardid":1,"cardname":"allwin"}},"exchangeRates":[{"name":"allwin"}],"extensionData":{}},"paymentStatus":{"paymentId":"PO~1001~10001~INR~100","details":"Success"}}|
     
+    Scenario Outline: To get Updated PO2
+
+    And MS request header "serviceid" is set to "client"
+    And MS request header "channelid" is set to "web"
+    And MS request header "customfilterid" is set to "test"
+    And MS request URI is "v1.0.0/payments/orders/PO~1002~10002~INR~200"
+    When a "GET" request is sent to MS
+    And MS query parameter for Azure env is set to value ""
+    And log all MS response in console
+    Then MS response code should be 200
+    Then check if actual response matches the expected static response <response>
+    
+    Examples:
+    |response|
+    |{"paymentOrder":{"fromAccount":"1002","toAccount":"10002","paymentDetails":"Success","currency":"INR","fileOverWrite":false,"extensionData":{},"paymentDate":"2020-06-01"},"paymentStatus":{"paymentId":"PO~1002~10002~INR~200","details":"Success"}}|
     
    Scenario: Delete exisitng Bulk Payment Order
     
@@ -67,13 +93,37 @@
     And log all MS response in console
     Then MS response code should be 200
     
-    Scenario: To get Deleted PO
+    Scenario Outline: To get Deleted PO1
 
-    And MS request URI is "v1.0.0/payments/orders"
+    And MS request header "serviceid" is set to "client"
+    And MS request header "channelid" is set to "web"
+    And MS request header "customfilterid" is set to "test"
+    And MS request URI is "v1.0.0/payments/orders/PO~1002~10002~INR~200"
     When a "GET" request is sent to MS
     And MS query parameter for Azure env is set to value ""
     And log all MS response in console
-    Then MS response code should be 200
+    #Then MS response code should be 404
+    Then check if actual response matches the expected static response <response>
+    
+    Examples:
+    |response|
+    |{}|
+    
+    Scenario Outline: To get Deleted PO2
+
+    And MS request header "serviceid" is set to "client"
+    And MS request header "channelid" is set to "web"
+    And MS request header "customfilterid" is set to "test"
+    And MS request URI is "v1.0.0/payments/orders/PO~1001~10001~INR~100"
+    When a "GET" request is sent to MS
+    And MS query parameter for Azure env is set to value ""
+    And log all MS response in console
+    #Then MS response code should be 404
+    Then check if actual response matches the expected static response <response>
+    
+    Examples:
+    |response|
+    |{}|
 
     
     
