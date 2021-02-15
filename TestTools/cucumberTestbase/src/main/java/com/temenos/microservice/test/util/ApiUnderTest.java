@@ -11,6 +11,8 @@ public enum ApiUnderTest {
     EVENT_STORE("EVENT_STORE"),
     FAMS("FAMS"),
     AMS("AMS"),
+    ADAPTER("ADAPTER"),
+    MICROSERVICE("MICROSERVICE"),
     DUMMY_API("DUMMY");
 
     String name;
