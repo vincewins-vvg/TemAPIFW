@@ -653,6 +653,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /currency:
+    get:
+      summary: Get Single Account
+      operationId: GetCurrency
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnumCurrencies'  
+                
 components:
   schemas:
     Card:
@@ -723,6 +735,10 @@ components:
       enum:
         - USD
         - INR
+    EnumCurrencies:
+      type: array
+      items:
+        $ref: '#/components/schemas/EnumCurrency'
     CriteriaDetails:
       properties:
         nameOfCriteria:
