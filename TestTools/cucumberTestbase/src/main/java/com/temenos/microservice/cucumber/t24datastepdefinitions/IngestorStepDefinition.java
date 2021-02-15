@@ -73,7 +73,7 @@ public class IngestorStepDefinition {
 		}
 	}
 
-	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS) API$")
+	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
 		this.apiName = apiName;
 	}
