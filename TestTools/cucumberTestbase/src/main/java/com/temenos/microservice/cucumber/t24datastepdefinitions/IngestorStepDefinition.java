@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -169,7 +170,7 @@ public class IngestorStepDefinition {
           String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
           System.out.println("content:" + content);
           
-              producer.batch().add(topicName, new String(content).getBytes());
+              producer.batch().add(topicName, UUID.randomUUID().toString(), new String(content).getBytes());
           
           try {
               producer.batch().send();
