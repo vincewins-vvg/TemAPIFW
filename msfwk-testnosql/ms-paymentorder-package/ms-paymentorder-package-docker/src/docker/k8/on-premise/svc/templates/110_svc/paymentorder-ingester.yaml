@@ -123,6 +123,56 @@ spec:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}    
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentorder-file-ingester
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: paymentorder-file-ingester
+  template:
+    metadata:
+      labels:
+        app: paymentorder-file-ingester
+    spec:
+      volumes:
+      - name: filestorage
+        hostPath:
+          path: /c/testing
+          type: DirectoryOrCreate
+      - name: fileprocessed
+        hostPath:
+          path: /c/testing/processed
+          type: DirectoryOrCreate
+      containers:
+      - name: payments-file-ingester
+        image: {{ .Values.image.fileingester.repository }}:{{ .Values.image.fileingester.tag }}
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /var/lib/fileingesterstorage
+          name: filestorage
+        - mountPath: /var/lib
+          name: fileprocessed
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-file-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD                   
+---
 #Data Ingester Service
 apiVersion: v1
 kind: Service

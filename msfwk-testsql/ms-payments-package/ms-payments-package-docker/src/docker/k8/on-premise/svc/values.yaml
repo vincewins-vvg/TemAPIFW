@@ -54,6 +54,10 @@ image:
     repository: ms-paymentorder-mysql
     tag: latest
     pullPolicy: Never
+  fileingester:
+    repository: temenos/ms-fileingester
+    tag: DEV
+    pullPolicy: Never
 
 
 env:
