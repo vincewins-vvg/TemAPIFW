@@ -148,7 +148,7 @@ spec:
           path: /c/testing/processed
           type: DirectoryOrCreate
       containers:
-      - name: payments-file-ingester
+      - name: paymentorder-file-ingester
         image: {{ .Values.image.fileingester.repository }}:{{ .Values.image.fileingester.tag }}
         ports:
         - containerPort: 8080
@@ -159,7 +159,7 @@ spec:
           name: fileprocessed
         envFrom:
           - configMapRef:
-              name: payments-ingester-file-config
+              name: paymentorder-ingester-file-config
         env:
           # Use secret in real usage
           - name: DB_USERNAME
