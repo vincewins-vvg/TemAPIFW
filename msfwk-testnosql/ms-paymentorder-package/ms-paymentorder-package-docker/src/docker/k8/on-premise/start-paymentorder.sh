@@ -5,6 +5,9 @@
 
 #REM - Build paymentorder images
 
+export MONGODB_CONNECTIONSTR=""
+
+
 cd ../..
 
 ./build.sh create --build
@@ -17,7 +20,5 @@ cd ../..
 
 cd k8/on-premise/
 
-sleep 60
-
-helm install ponosql ./svc
+helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR
 

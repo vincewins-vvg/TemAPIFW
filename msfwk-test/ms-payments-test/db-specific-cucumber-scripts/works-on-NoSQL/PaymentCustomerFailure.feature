@@ -32,7 +32,7 @@ Scenario Outline: create customer of same unique ID
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
 	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "Mongodao operation exception while 'saveEntity' onE11000 duplicate key error collection: ms_paymentorder.ms_payment_order_customer index"
+	And MS JSON response string property key "message" should contain value "Mongodao operation exception while 'saveEntity' onE11000 duplicate key error collection"
     And MS JSON response string property key "code" should contain value "MSF-999"
 	
 	

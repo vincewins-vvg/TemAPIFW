@@ -8,7 +8,7 @@ cd ../..
 
 cd k8/on-premise/db
 
-call start-sqldb-scripts.sh
+./start-sqldb-scripts.sh
 
 cd ../
 
