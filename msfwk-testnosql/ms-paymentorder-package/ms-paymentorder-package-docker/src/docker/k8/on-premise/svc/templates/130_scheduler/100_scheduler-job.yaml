@@ -8,6 +8,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: {{ include "paymentorder.name" . }}{{ "-scheduler" }}      
         spec:
           containers:
           - name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
