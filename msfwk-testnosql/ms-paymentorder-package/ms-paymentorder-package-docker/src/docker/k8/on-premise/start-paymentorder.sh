@@ -5,7 +5,8 @@
 
 #REM - Build paymentorder images
 
-export MONGODB_CONNECTIONSTR=""
+export DB_NAME=ms_paymentorder
+export MONGODB_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net/$DB_NAME
 
 
 cd ../..
