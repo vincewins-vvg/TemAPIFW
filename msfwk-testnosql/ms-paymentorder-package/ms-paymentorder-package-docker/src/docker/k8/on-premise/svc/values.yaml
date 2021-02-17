@@ -37,7 +37,7 @@ image:
     tag: DEV
     pullPolicy: Never
   paymentorderinboxoutbox:
-    repository: dev.local/temenos/ms-paymentorder-inboxoutboxnew
+    repository: dev.local/temenos/ms-paymentorder-inboxoutbox
     tag: DEV
     pullPolicy: Never  
   schemaregistry:

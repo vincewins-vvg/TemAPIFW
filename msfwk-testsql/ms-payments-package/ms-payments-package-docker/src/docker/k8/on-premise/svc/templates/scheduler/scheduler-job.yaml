@@ -10,7 +10,7 @@ spec:
       template:
         metadata:
           labels:
-            app: payments-scheduler   
+            app: payments-scheduler     
         spec:
           containers:
           - name: payments-scheduler
