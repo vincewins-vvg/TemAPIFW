@@ -8,6 +8,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: payments-scheduler     
         spec:
           containers:
           - name: payments-scheduler
