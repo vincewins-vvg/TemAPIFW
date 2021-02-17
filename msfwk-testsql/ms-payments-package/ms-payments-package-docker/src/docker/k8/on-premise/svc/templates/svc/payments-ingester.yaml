@@ -200,11 +200,11 @@ spec:
       volumes:
       - name: filestorage
         hostPath:
-          path: /c/testing
+          path: /var/lib/fileingesterstorage
           type: DirectoryOrCreate
       - name: fileprocessed
         hostPath:
-          path: /c/testing/processed
+          path: /var/lib
           type: DirectoryOrCreate
       containers:
       - name: payments-file-ingester

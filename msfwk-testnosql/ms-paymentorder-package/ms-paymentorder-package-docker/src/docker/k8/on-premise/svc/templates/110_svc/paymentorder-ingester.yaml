@@ -141,11 +141,11 @@ spec:
       volumes:
       - name: filestorage
         hostPath:
-          path: /c/testing
+          path: /var/lib/fileingesterstorage
           type: DirectoryOrCreate
       - name: fileprocessed
         hostPath:
-          path: /c/testing/processed
+          path: /var/lib
           type: DirectoryOrCreate
       containers:
       - name: paymentorder-file-ingester
@@ -165,12 +165,12 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: ponosqldbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: ponosqldbsecret
                 key: PASSWORD                   
 ---
 #Data Ingester Service
