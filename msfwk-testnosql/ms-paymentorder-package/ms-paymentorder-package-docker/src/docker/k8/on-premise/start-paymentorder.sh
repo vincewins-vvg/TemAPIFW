@@ -22,4 +22,3 @@ cd ../..
 cd k8/on-premise/
 
 helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR
-

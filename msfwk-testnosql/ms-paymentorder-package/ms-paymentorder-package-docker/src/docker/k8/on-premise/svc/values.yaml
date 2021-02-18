@@ -47,7 +47,11 @@ image:
   paymentorderscheduler:
     repository: dev.local/temenos/ms-paymentorder-scheduler
     tag: DEV
-    pullPolicy: Never  
+    pullPolicy: Never
+  fileingester:
+    repository: dev.local/temenos/ms-fileingester
+    tag: DEV
+    pullPolicy: Never     
 
 apideployment: paymentorder-api
 schemaregistry: schema-registry

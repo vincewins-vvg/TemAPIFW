@@ -293,3 +293,34 @@ data:
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
   operationId: paymentscheduler
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payments-ingester-file-config
+  namespace: {{.Values.paymentsnamespace}}
+  labels:
+    app.kubernetes.io/name: payments
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.database_key | quote }}
+  HOST: {{ .Values.env.database.host | quote }}
+  DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
+  DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
+  DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
+  MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
+  temn.msf.name: PaymentOrder
+  temn.msf.security.authz.enabled: "false"
+  VALIDATE_PAYMENT_ORDER: "false"
+  temn.msf.ingest.file.source.path: /var/lib/fileingesterstorage
+  temn.msf.ingest.file.procesed.path: /var/lib
+  temn.msf.ingest.file.ingester: com.temenos.microservice.payments.ingester.PoFileIngester 
+  temn.msf.stream.vendor: kafka
+  temn.msf.ingest.sink.stream: table-update-splitData
+  temn.msf.ingest.client.id: split-group
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.ingest.max.load.topic: "2" 
