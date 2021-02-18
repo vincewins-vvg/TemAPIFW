@@ -1,16 +1,17 @@
 export mongo_path={{ mongo_path }}/bin
 export PATH=$PATH:$mongo_path
-export MONGO_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net/test
+export DB_NAME="ms_paymentorder"
+export MONGO_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net
 
-mongosh $MONGO_CONNECTIONSTR <<EOF
+mongo $MONGO_CONNECTIONSTR <<EOF
   rs.status();
-  use ms_paymentorder
+  use $DB_NAME
   db.createUser(
     {
       user: "root",
       pwd: "root",  
       roles: [
-         { role: "readWrite", db: "ms_paymentorder" }
+         { role: "readWrite", db: "$DB_NAME" }
       ]
     }
   );
