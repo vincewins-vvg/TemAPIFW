@@ -46,10 +46,11 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
 			PaymentOrder paymentOrder = paymentOrderOpt.get();
-			if(paymentStatus.getStatus() != null) {
+			if (paymentStatus.getStatus() != null) {
 				paymentOrder.setStatus(paymentStatus.getStatus());
+				paymentOrder.setExtensionData((Map<String, String>) paymentStatus.getExtensionData());
 			}
-			
+
 			if (paymentStatus.getPaymentMethod() != null) {
 				Card card = new Card();
 				card.setCardid(paymentStatus.getPaymentMethod().getCard().getCardid());
@@ -107,7 +108,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 		}
 		return paymentStatus;
 	}
-	
+
 	@Override
 	public void isSequenceValid(final Context ctx) throws FunctionException {
 		Request<String> request = (Request<String>) ctx.getRequest();
