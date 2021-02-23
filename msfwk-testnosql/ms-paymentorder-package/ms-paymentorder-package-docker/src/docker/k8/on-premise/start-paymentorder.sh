@@ -6,7 +6,7 @@
 #REM - Build paymentorder images
 
 export DB_NAME=ms_paymentorder
-export MONGODB_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net/$DB_NAME
+export MONGODB_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net
 
 
 cd ../..
@@ -21,4 +21,4 @@ cd ../..
 
 cd k8/on-premise/
 
-helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR
+helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR --set env.database.MONGODB_DBNAME=$DB_NAME 
