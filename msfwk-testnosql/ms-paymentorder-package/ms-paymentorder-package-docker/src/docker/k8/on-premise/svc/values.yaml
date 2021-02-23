@@ -61,8 +61,8 @@ schemaregistrysvc: schema-registry-svc
 env:
   database:
     DATABASE_KEY: mongodb
-    MONGODB_DBNAME: ms_paymentorder 
-    MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    MONGODB_DBNAME: 
+    MONGODB_CONNECTIONSTR:
   kafka:
     temnmsfstreamvendor: kafka
     temnqueueimpl: kafka
