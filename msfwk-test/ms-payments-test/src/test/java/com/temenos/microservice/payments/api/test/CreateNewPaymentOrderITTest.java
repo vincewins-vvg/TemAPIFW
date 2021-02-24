@@ -142,8 +142,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 				"PaymentOrder_paymentOrderId".equalsIgnoreCase(multivalueArrayExtensionEntry.get(0).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(0).getValue(), "PO~123~124~USD~100");
 		assertTrue("Value mismatch", "value".equalsIgnoreCase(multivalueArrayExtensionEntry.get(1).getName()));
-		assertEquals(multivalueArrayExtensionEntry.get(1).getValue(),
-				"[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]");
+		assertNotNull(multivalueArrayExtensionEntry.get(1).getValue());
 		assertTrue("Value mismatch", "name".equalsIgnoreCase(multivalueArrayExtensionEntry.get(2).getName()));
 		assertEquals(multivalueArrayExtensionEntry.get(2).getValue(), "array_NonOspiType");
 	}
