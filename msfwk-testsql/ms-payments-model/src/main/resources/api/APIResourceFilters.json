@@ -1,0 +1,17 @@
+{
+  "APIResourceFilters": [
+    {
+      "operationId": "GetPaymentOrders",
+      "fields": [
+        "pageNumber"
+      ]
+    },
+    {
+      "operationId": "CreateNewPaymentOrder",
+      "fields": [
+        "amount",
+        "currency"
+      ]
+    }
+  ]
+}
