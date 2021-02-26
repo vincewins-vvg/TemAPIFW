@@ -1,0 +1,11 @@
+{
+  "EntityResourceFilters": [
+    {
+      "name": "PaymentOrder",
+      "fields": [
+        "currency",
+        "creditAccount"
+      ]
+    }
+  ]
+}
