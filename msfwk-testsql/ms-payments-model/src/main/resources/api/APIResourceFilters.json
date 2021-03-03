@@ -1,0 +1,18 @@
+//In this file, We can configure the API resourcefilters fields and it can be used to create a resourceFilter in entitlement MS
+{
+  "APIResourceFilters": [
+    {
+      "operationId": "GetPaymentOrders",
+      "fields": [
+        "pageNumber"
+      ]
+    },
+    {
+      "operationId": "CreateNewPaymentOrder",
+      "fields": [
+        "amount",
+        "currency"
+      ]
+    }
+  ]
+}
