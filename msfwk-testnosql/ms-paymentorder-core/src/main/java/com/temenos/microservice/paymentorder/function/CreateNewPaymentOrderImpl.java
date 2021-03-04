@@ -48,6 +48,7 @@ import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
 import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
 import com.temenos.microservice.paymentorder.event.POFailedEvent;
+import com.temenos.microservice.paymentorder.event.PayeeDetailsEvent;
 import com.temenos.microservice.paymentorder.exception.StorageException;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
@@ -70,12 +71,12 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		PaymentOrderFunctionHelper.validateInput(input);
 
 		PaymentOrder paymentOrder = input.getBody().get();
-		
-		List<String> errorList= paymentOrder.doValidate();
-		if(errorList.size()>0)
+
+		List<String> errorList = paymentOrder.doValidate();
+		if (errorList.size() > 0)
 			throw new InvalidInputException(new FailureMessage(errorList.toString()));
-		
-		errorGenerationBasedOnInput(input,"process");
+
+		errorGenerationBasedOnInput(input, "process");
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
@@ -125,7 +126,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		}
 		return paymentStatus;
 	}
-	
+
 	@Override
 	public void preHook(final Context ctx, final CreateNewPaymentOrderInput input) throws FunctionException {
 		errorGenerationBasedOnInput(input, "preHook");
@@ -136,7 +137,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poFailedEvent.setDebitAccount(input.getBody().get().getFromAccount());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PreHookEvent", poFailedEvent));
 	}
-	
+
 	@Override
 	public void postHook(final Context ctx, final ResponseStatus responseStatus, final CreateNewPaymentOrderInput input,
 			final PaymentStatus response) throws FunctionException {
@@ -170,7 +171,10 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		poAcceptedEvent.setCreditAccount(entity.getCreditAccount());
 		poAcceptedEvent.setCurrency(entity.getCurrency());
 		poAcceptedEvent.setDebitAccount(entity.getDebitAccount());
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", poAcceptedEvent));
+		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
+		payeeDetails.setPayeeName("Google pay");
+		poAcceptedEvent.setPayeeDetails(payeeDetails);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", poAcceptedEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
 	}
@@ -267,33 +271,36 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		PaymentStatus paymentStatus = new PaymentStatus();
 		paymentStatus.setDebitAccount(entity.getDebitAccount());
 		paymentStatus.setDetails("Payment order updated");
+		paymentStatus.setStatus("Updated");
 		paymentStatus.setPaymentId(entity.getPaymentOrderId());
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
 		updateCommand.setPayload(input);
-		EventManager.raiseCommandEvent(ctx, updateCommand);
+		EventManager.raiseCommandEvent(ctx, updateCommand, entity);
 	}
-	
+
 	/**
 	 * Generates Exception based on "Descriptions" from input payload
-	 * @param input -payload
+	 * 
+	 * @param input    -payload
 	 * @param hookName - prehook,posthook,process
 	 * @throws InvocationFailedException
 	 */
-	private void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName) throws InvocationFailedException {
+	private void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName)
+			throws InvocationFailedException {
 		if (input == null || input.getBody() == null && input.getBody().get() == null)
 			return;
 		if (input.getBody().get().getDescriptions() != null && !input.getBody().get().getDescriptions().isEmpty()) {
-			if(input.getBody().get().getDescriptions().get(0)==null)
+			if (input.getBody().get().getDescriptions().get(0) == null)
 				return;
-			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"BusinessFailure"))
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName + "BusinessFailure"))
 				throw new InvocationFailedException("Business Failure error generated");
-			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"InfrastructureFailure"))
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName + "InfrastructureFailure"))
 				throw new NullPointerException("Infrastructure Failure error generated");
 		}
 	}
-	
+
 	@Override
 	public void isSequenceValid(final Context ctx) throws FunctionException {
 		Request<String> request = (Request<String>) ctx.getRequest();

@@ -42,6 +42,7 @@ import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
 import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.event.PayeeDetailsEvent;
 import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
 import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
@@ -59,57 +60,63 @@ public class CreateNewPaymentOrderProcessor {
 	public PaymentStatus invoke(Context ctx, CreateNewPaymentOrderInput input) throws FunctionException {
 		PaymentOrderFunctionHelper.validateInput(input);
 		PaymentOrder paymentOrder = input.getBody().get();
-		
-		//does validation based on swagger input
-		List<String> errorList= paymentOrder.doValidate();
-		if(errorList.size()>0) 
+
+		// does validation based on swagger input
+		List<String> errorList = paymentOrder.doValidate();
+		if (errorList.size() > 0)
 			throw new InvalidInputException(new FailureMessage(errorList.toString()));
-		
-		errorGenerationBasedOnInput(input,"process");
+
+		errorGenerationBasedOnInput(input, "process");
 		PaymentOrderFunctionHelper.validatePaymentOrder(paymentOrder, ctx);
 		PaymentStatus paymentStatus = executePaymentOrder(ctx, paymentOrder);
 		try {
-			if(paymentOrder.getFileReadWrite() != null) {
+			if (paymentOrder.getFileReadWrite() != null) {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
-				if(StorageUrl != null) {
-					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();				
-						byte[] dst = new byte[paymentOrder.getFileReadWrite().remaining()];
-						paymentOrder.getFileReadWrite().get(dst);
-						InputStream content = new ByteArrayInputStream(dst); 
-						if(paymentOrder.getFileOverWrite() == true) {
-							fileWriter.uploadFileAsInputStream(StorageUrl, content,true);		
-						}
-						else {
-							fileWriter.uploadFileAsInputStream(StorageUrl, content,false);	
-						}
-						isCreated = true;
-				}	
+				if (StorageUrl != null) {
+					MSStorageWriteAdapter fileWriter = MSStorageWriteAdapterFactory.getStorageWriteAdapterInstance();
+					byte[] dst = new byte[paymentOrder.getFileReadWrite().remaining()];
+					paymentOrder.getFileReadWrite().get(dst);
+					InputStream content = new ByteArrayInputStream(dst);
+					if (paymentOrder.getFileOverWrite() == true) {
+						fileWriter.uploadFileAsInputStream(StorageUrl, content, true);
+					} else {
+						fileWriter.uploadFileAsInputStream(StorageUrl, content, false);
+					}
+					isCreated = true;
+				}
 			}
-			if(isCreated) {
+			if (isCreated) {
 				String StorageUrl = Environment.getEnvironmentVariable(storageURL, null);
-				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
-				if(StorageUrl != null && STORAGE_HOME != null) {
+				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME,
+						FileReaderConstants.EMPTY);
+				if (StorageUrl != null && STORAGE_HOME != null) {
 					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
 					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
 					byte[] bytes = IOUtils.toByteArray(is);
 					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
-					paymentStatus.setFileReadWrite(fileReadWrite);		
+					paymentStatus.setFileReadWrite(fileReadWrite);
 					isCreated = false;
 				}
 			}
-			} catch (StorageWriteException e) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			}  catch(InternalServerErrorException e) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			} catch (FileNotFoundException e ) {
-				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			} catch (IOException e) {
-				throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
-			} catch (StorageReadException e) {
-				throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
-			}
+		} catch (StorageWriteException e) {
+			throw new InvalidInputException(
+					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		} catch (InternalServerErrorException e) {
+			throw new InvalidInputException(
+					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		} catch (FileNotFoundException e) {
+			throw new StorageException(
+					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		} catch (IOException e) {
+			throw new InvalidInputException(
+					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		} catch (StorageReadException e) {
+			throw new StorageException(
+					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+		}
 		return paymentStatus;
 	}
+
 	private PaymentStatus executePaymentOrder(Context ctx, PaymentOrder paymentOrder) throws FunctionException {
 		String paymentOrderId = ("PO~" + paymentOrder.getFromAccount() + "~" + paymentOrder.getToAccount() + "~"
 				+ paymentOrder.getCurrency() + "~" + paymentOrder.getAmount()).toUpperCase();
@@ -165,7 +172,8 @@ public class CreateNewPaymentOrderProcessor {
 		if (view.getPaymentMethod() != null) {
 			entity.getPaymentMethod().setId(view.getPaymentMethod().getId());
 			entity.getPaymentMethod().setName(view.getPaymentMethod().getName());
-			entity.getPaymentMethod().setExtensionData((Map<String, String>) view.getPaymentMethod().getExtensionData());
+			entity.getPaymentMethod()
+					.setExtensionData((Map<String, String>) view.getPaymentMethod().getExtensionData());
 			if (view.getPaymentMethod().getCard() != null) {
 				Card card = new Card();
 				card.setCardid(view.getPaymentMethod().getCard().getCardid());
@@ -201,8 +209,10 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
 		paymentOrderEvent.setCurrency(entity.getCurrency());
 		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
-		EventManager.raiseBusinessEvent(ctx,
-				new GenericEvent("POAccepted", paymentOrderEvent));
+		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
+		payeeDetails.setPayeeName("Google pay");
+		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return entity;
 	}
@@ -227,7 +237,7 @@ public class CreateNewPaymentOrderProcessor {
 		paymentStatus.setDetails(paymentOrder.getPaymentDetails());
 		return paymentStatus;
 	}
-	
+
 	public void raiseCommandEvent(Context ctx, com.temenos.microservice.payments.entity.PaymentOrder entity) {
 		GenericCommand updateCommand = new GenericCommand();
 
@@ -243,28 +253,32 @@ public class CreateNewPaymentOrderProcessor {
 		PaymentStatus paymentStatus = new PaymentStatus();
 		paymentStatus.setDebitAccount(entity.getDebitAccount());
 		paymentStatus.setDetails("Payment order updated");
+		paymentStatus.setStatus("Updated");
 		paymentStatus.setPaymentId(entity.getPaymentOrderId());
 
 		UpdatePaymentOrderInput input = new UpdatePaymentOrderInput(params, paymentStatus);
 
-		updateCommand.setPayload(input);	
-		EventManager.raiseCommandEvent(ctx, updateCommand);
+		updateCommand.setPayload(input);
+		EventManager.raiseCommandEvent(ctx, updateCommand, entity);
 	}
+
 	/**
 	 * Generates Exception based on "Descriptions" from input payload
-	 * @param input -payload
+	 * 
+	 * @param input    -payload
 	 * @param hookName - prehook,posthook,process
 	 * @throws InvocationFailedException
 	 */
-	public void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName) throws InvocationFailedException {
+	public void errorGenerationBasedOnInput(CreateNewPaymentOrderInput input, String hookName)
+			throws InvocationFailedException {
 		if (input == null || input.getBody() == null && input.getBody().get() == null)
 			return;
 		if (input.getBody().get().getDescriptions() != null && !input.getBody().get().getDescriptions().isEmpty()) {
-			if(input.getBody().get().getDescriptions().get(0)==null)
+			if (input.getBody().get().getDescriptions().get(0) == null)
 				return;
-			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"BusinessFailure"))
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName + "BusinessFailure"))
 				throw new InvocationFailedException("Business Failure error generated");
-			if (input.getBody().get().getDescriptions().get(0).equals(hookName+"InfrastructureFailure"))
+			if (input.getBody().get().getDescriptions().get(0).equals(hookName + "InfrastructureFailure"))
 				throw new NullPointerException("Infrastructure Failure error generated");
 		}
 	}

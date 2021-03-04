@@ -890,6 +890,9 @@ components:
         details:
           type: string
           description: Indicates the details of the transaction
+        extensionData:
+          type: object
+          description: placeholder to get the extension data   
         paymentMethod:
           allOf:
             - $ref: '#/components/schemas/PaymentMethod'

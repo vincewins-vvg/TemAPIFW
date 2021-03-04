@@ -3,6 +3,7 @@ package com.temenos.microservice.payments.core;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,11 @@ public class UpdatePaymentOrderProcessor {
 				throw new InvalidInputException(new FailureMessage("Invalid Debit Account Entered",
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
-			if(paymentStatus.getStatus() != null) {
+			if (paymentStatus.getStatus() != null) {
 				paymentOrderOpt.setStatus(paymentStatus.getStatus());
+				paymentOrderOpt.setExtensionData((Map<String, String>) paymentStatus.getExtensionData());
 			}
-			
+
 			if (paymentStatus.getPaymentMethod() != null) {
 				Card card = new Card();
 				card.setCardid(paymentStatus.getPaymentMethod().getCard().getCardid());
