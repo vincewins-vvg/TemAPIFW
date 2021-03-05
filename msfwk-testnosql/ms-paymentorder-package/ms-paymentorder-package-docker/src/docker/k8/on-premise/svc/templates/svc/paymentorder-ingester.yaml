@@ -208,3 +208,93 @@ spec:
       port: 8080
       nodePort: 30008
   type: NodePort  
+---
+#Data Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30330
+  type: NodePort    
+---
+#Avro Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-avro-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-avro-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30331
+  type: NodePort    
+---
+#Event Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-event-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-event-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30336
+  type: NodePort    
+---
+#Command Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30334
+  type: NodePort 
+---
+#File Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-file-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-file-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-file-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30337
+  type: NodePort   
