@@ -158,6 +158,14 @@ public class IngestorStepDefinition {
 	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCorrelationId(topicName,correlationId, eventType);
 	       assertTrue("There is no entry for the Correlation Id:"+correlationId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
 	   }
+	   
+	   //To check avro data content in topic(added by Sai Kushaal)
+	   @Then("^check if avro data with event id ([^\\s]+) is present in topic ([^\\s]+)$")
+	    public void checkAvroInTopicByEventId(String eventId,String topicName) throws Exception {
+	       
+	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getAvroTopicValueByEventId(topicName,eventId);
+	       assertTrue("There is no entry for the event Id:"+eventId+" in the topic: "+topicName,!streamTopicResult.isEmpty());
+	   }
 	
 	
 	
