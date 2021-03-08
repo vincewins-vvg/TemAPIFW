@@ -113,3 +113,32 @@ spec:
                 secretKeyRef:
                   name: posqldbsecret
                   key: PASSWORD     
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: payments-ingester-data
+  namespace: payments
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: payments-data-config
+          env:
+          # Use secret in real usage
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: USER_NAME 
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: posqldbsecret
+                  key: PASSWORD 
