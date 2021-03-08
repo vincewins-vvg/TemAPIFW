@@ -6,18 +6,18 @@
 #REM - Start knative services
 
 
-cd 100_db/mongo
-kubectl apply -f 100_create-mongo-ns.yaml
+cd database/mongo
+kubectl apply -f create-mongo-ns.yaml
 cd crd
-kubectl apply -f 110_mongo_crd.yaml
+kubectl apply -f mongo_crd.yaml
 cd ../operator
-kubectl apply -f 120_operator.yaml
-kubectl apply -f 130_role_binding.yaml
-kubectl apply -f 140_role.yaml
-kubectl apply -f 150_service_account.yaml
+kubectl apply -f operator.yaml
+kubectl apply -f role_binding.yaml
+kubectl apply -f role.yaml
+kubectl apply -f service_account.yaml
 cd ../rs
-kubectl apply -f 160_rs.yaml
-kubectl apply -f 170_mongo_services.yaml
+kubectl apply -f rs.yaml
+kubectl apply -f mongo_services.yaml
 
 sleep 180
 

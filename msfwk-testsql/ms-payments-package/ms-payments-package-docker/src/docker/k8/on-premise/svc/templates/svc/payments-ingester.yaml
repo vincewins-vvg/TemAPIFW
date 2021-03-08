@@ -265,3 +265,88 @@ spec:
       port: 8080
       nodePort: 30008
   type: NodePort  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-data-ingester-svc-jacoco
+  name: payments-data-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-data-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30330
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-avro-ingester-svc-jacoco
+  name: payments-avro-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-avro-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30331
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-command-ingester-svc-jacoco
+  name: payments-command-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-command-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30334
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-event-ingester-svc-jacoco
+  name: payments-event-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-event-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30336
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-file-ingester-svc-jacoco
+  name: payments-file-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-file-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30337
+  type: NodePort  

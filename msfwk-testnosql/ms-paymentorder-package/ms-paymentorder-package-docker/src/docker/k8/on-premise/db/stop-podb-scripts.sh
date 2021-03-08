@@ -5,19 +5,19 @@
 
 #REM - Stop knative services
 
-cd 100_db/mongo/rs
+cd database/mongo/rs
 kubectl delete -f mongo-setup.yaml
-kubectl delete -f 170_mongo_services.yaml
-kubectl delete -f 160_rs.yaml
+kubectl delete -f mongo_services.yaml
+kubectl delete -f rs.yaml
 cd ../operator
-kubectl delete -f 150_sa.yaml
-kubectl delete -f 140_role.yaml
-kubectl delete -f 130_rb.yaml
-kubectl delete -f 120_operator.yaml
+kubectl delete -f service_acount.yaml
+kubectl delete -f role.yaml
+kubectl delete -f role_binding.yaml
+kubectl delete -f operator.yaml
 cd ../crd
-kubectl delete -f 110_mongo_crd.yaml
+kubectl delete -f mongo_crd.yaml
 cd ../
-kubectl delete -f 100_create-mongo-ns.yaml
+kubectl delete -f create-mongo-ns.yaml
 
 
 cd ../..

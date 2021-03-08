@@ -77,3 +77,23 @@ spec:
       nodePort: 30020
   selector:
     app: {{ .Values.apideployment }}        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvc-jacoco" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvc-jacoco" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 36320
+      protocol: TCP
+      nodePort: 30320
+  selector:
+    app: {{ .Values.apideployment }}    
