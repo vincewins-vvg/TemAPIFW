@@ -94,4 +94,6 @@ aws lambda delete-function --function-name initiate-db-migration-api-handler
 aws lambda delete-function --function-name get-db-migration-api-handler
 aws lambda delete-function --function-name payment-put-status-api-handler
 aws lambda delete-function --function-name payment-delete-status-api-handler
+aws lambda delete-function --function-name account-post-api-handler
+aws lambda delete-function --function-name account-put-api-handler
 sleep 60
