@@ -39,6 +39,12 @@ data:
   className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
   API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
   temn.msf.name: PaymentOrder
+  IRIS_PROTOCOL: http
+  IRIS_HOST_IP: "10.92.14.71"
+  IRIS_PORT: "9089"
+  IRIS_PATH: irf-provider-container/api
+  IRIS_R18_PATH: irisR18/api
+  IRIS_VERSION: "v1.0.0"
   PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
   temn.msf.pdp.resource.type: API
   temn.msf.pdp.resource.manager: PAYMENT

@@ -37,6 +37,12 @@ data:
   API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
   temn.msf.ingest.is.cloud.event: "true"
   temn.msf.name: PaymentOrder
+  IRIS_PROTOCOL: http
+  IRIS_HOST_IP: "10.92.14.71"
+  IRIS_PORT: "9089"
+  IRIS_PATH: irf-provider-container/api
+  IRIS_R18_PATH: irisR18/api
+  IRIS_VERSION: "v1.0.0"
   temn.msf.stream.vendor: kafka
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
