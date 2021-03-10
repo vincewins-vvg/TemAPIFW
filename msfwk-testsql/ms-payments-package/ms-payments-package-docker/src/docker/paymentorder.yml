@@ -26,6 +26,8 @@ services:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
+        keystore_pass: ${KEYSTORE_PASS}
+        ssl_enabled: ${SSL_ENABLED}
     image: ${API_IMAGE}
     depends_on:
       - db-service
