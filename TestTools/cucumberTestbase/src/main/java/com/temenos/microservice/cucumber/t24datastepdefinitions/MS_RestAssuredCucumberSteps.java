@@ -1314,8 +1314,8 @@ public class MS_RestAssuredCucumberSteps {
      FileInputStream(System.getProperty("user.dir") + "/" +
      expectedJSONFilePath));
     
-    
-     System.out.println(expectedResponse);
+     System.out.println("Actual: " + actualJSONResponse);
+     System.out.println("Expected: " + expectedResponse);
      //Lenient mode will ignore any missing fields in JSON
      //JSONAssert.assertEquals(expected, data, false);
      assertThat(actualJSONResponse,sameJSONAs(expectedResponse).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
