@@ -22,7 +22,7 @@
             <version>0.8.6</version>    
             <executions>
                 <execution>
-                    <id>port30320</id>
+                    <id>port3620</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>prepare-agent-integration</goal>
@@ -30,14 +30,14 @@
                     </goals>
                     <configuration>
                         <address>localhost</address>
-                        <port>30320</port>   
-                        <destFile>${dest_file}/sql_30320.exec</destFile>
+                        <port>36320</port>   
+                        <destFile>${dest_file}/sql_36320.exec</destFile>
                         <reset>false</reset>
                         <append>false</append>
                     </configuration>
                 </execution>
                  <execution>
-                    <id>port30330</id>
+                    <id>port36330</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>prepare-agent-integration</goal>
@@ -45,14 +45,14 @@
                     </goals>
                     <configuration>
                         <address>localhost</address>
-                        <port>30330</port>   
-                        <destFile>${dest_file}/sql_30330.exec</destFile>
+                        <port>36330</port>   
+                        <destFile>${dest_file}/sql_36330.exec</destFile>
                         <reset>false</reset>
                         <append>false</append>
                     </configuration>
                 </execution>
                 <execution>
-                    <id>port30331</id>
+                    <id>port36331</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>prepare-agent-integration</goal>
@@ -60,14 +60,14 @@
                     </goals>
                     <configuration>
                         <address>localhost</address>
-                        <port>30331</port>   
-                        <destFile>${dest_file}/sql_30331.exec</destFile>
+                        <port>36331</port>   
+                        <destFile>${dest_file}/sql_36331.exec</destFile>
                         <reset>false</reset>
                         <append>false</append>
                     </configuration>
                 </execution>
                 <execution>
-                    <id>port30334</id>
+                    <id>port36332</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>prepare-agent-integration</goal>
@@ -75,14 +75,14 @@
                     </goals>
                     <configuration>
                         <address>localhost</address>
-                        <port>30334</port>   
-                        <destFile>${dest_file}/sql_30334.exec</destFile>
+                        <port>36332</port>   
+                        <destFile>${dest_file}/sql_36332.exec</destFile>
                         <reset>false</reset>
                         <append>false</append>
                     </configuration>
                 </execution>
                 <execution>
-                    <id>port30336</id>
+                    <id>port36333</id>
                     <phase>post-integration-test</phase>
                     <goals>
                         <goal>prepare-agent-integration</goal>
@@ -90,8 +90,53 @@
                     </goals>
                     <configuration>
                         <address>localhost</address>
-                        <port>30336</port>   
-                        <destFile>${dest_file}/sql_30336.exec</destFile>
+                        <port>36333</port>   
+                        <destFile>${dest_file}/sql_36333.exec</destFile>
+                        <reset>false</reset>
+                        <append>false</append>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>port36334</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>prepare-agent-integration</goal>
+                        <goal>dump</goal>
+                    </goals>
+                    <configuration>
+                        <address>localhost</address>
+                        <port>36334</port>   
+                        <destFile>${dest_file}/sql_36334.exec</destFile>
+                        <reset>false</reset>
+                        <append>false</append>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>port36335</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>prepare-agent-integration</goal>
+                        <goal>dump</goal>
+                    </goals>
+                    <configuration>
+                        <address>localhost</address>
+                        <port>36335</port>   
+                        <destFile>${dest_file}/sql_36335.exec</destFile>
+                        <reset>false</reset>
+                        <append>false</append>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>port36336</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>prepare-agent-integration</goal>
+                        <goal>dump</goal>
+                    </goals>
+                    <configuration>
+                        <address>localhost</address>
+                        <port>36336</port>   
+                        <destFile>${dest_file}/sql_36336.exec</destFile>
                         <reset>false</reset>
                         <append>false</append>
                     </configuration>
