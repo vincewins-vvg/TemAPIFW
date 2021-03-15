@@ -28,7 +28,7 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 		
 	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test1.json for Application PAYMENT_ORDER 
 	
-	And set timeout session for 30 seconds 
+	And set timeout session for 80 seconds 
 	
 	#Check the entries in Inbox
 	Then Set the following data criteria 
