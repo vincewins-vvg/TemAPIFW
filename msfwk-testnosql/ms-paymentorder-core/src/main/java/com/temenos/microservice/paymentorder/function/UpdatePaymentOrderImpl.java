@@ -122,10 +122,13 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 		case Environment.DATABASE_MONGODB:
 			expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
 			break;
+		case Environment.DATABASE_POSTGRESQL:
+			expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
+			break;					
 		case Environment.DATABASE_DYNAMODB:
 			expectedSequenceNo = PaymentOrderFunctionHelper.validateAndUpdateSequenceNumber(businessKey, sourceId,
 					sequenceNo);
-			break;
+			break;		
 		default:
 			throw new InvalidInputException(
 					new FailureMessage("Invalid database name", MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));

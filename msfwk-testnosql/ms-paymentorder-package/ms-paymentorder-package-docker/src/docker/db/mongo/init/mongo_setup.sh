@@ -52,7 +52,6 @@ mongo --host mongo1:27017 <<EOF
   db.createCollection("ms_payments_user");
   db.createCollection("ms_payments_account"); 
   db.createCollection("ms_payment_order_customer");
-  db.ms_payment_order_customer.createIndex( { "customerId": 1 }, { unique: true } )
   db.createCollection("ms_payment_order_balance");
   db.createCollection("ms_payment_order_transaction");
 EOF
