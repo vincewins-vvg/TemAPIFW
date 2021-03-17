@@ -65,3 +65,20 @@ spec:
       apiVersion: serving.knative.dev/v1
       kind: Service
       name: payments-ingester-command
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: KafkaSource
+metadata:
+  name: po-kafka-source-data
+  namespace: payments
+spec:
+  consumerGroup: po-consumer-group-data
+  bootstrapServers:
+  - my-cluster-kafka-bootstrap.kafka:9092 # note the kafka namespace
+  topics:
+  - table-update
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: payments-ingester-data

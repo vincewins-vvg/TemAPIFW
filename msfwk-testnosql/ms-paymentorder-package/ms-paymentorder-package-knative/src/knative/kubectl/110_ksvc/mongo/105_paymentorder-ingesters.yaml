@@ -77,3 +77,23 @@ spec:
                 name: paymentorder-eventdelivery-config
             - configMapRef:
                 name: paymentorder-mongo-db-config    
+---
+# Payment Order Outbox Event delivery
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: po-data-ingester
+  namespace: paymentorder
+spec:
+  template:
+    spec:
+      containers:
+        - image: dev.local/temenos/ms-paymentorder-ingester:DEV
+          ports:
+          - name: http1
+            containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: paymentorder-data-config
+            - configMapRef:
+                name: paymentorder-mongo-db-config   
