@@ -56,9 +56,7 @@ public class IngestorStepDefinition {
 	private static final Logger log = LoggerFactory.getLogger(RetryUtil.class);
 	private static final String REPLACE_COMPANY = "COMPANY_ID_HERE";
 	private static final String REPLACE_TESTCASE_ID = "TEST_CASE_ID_HERE";
-	private static final String DB_NAME = Environment.getEnvironmentVariable("DB_NAME", "");
-	private static final String VENDOR_NAME = Environment.getEnvironmentVariable("DB_VENDOR", "");
-	private DaoFacade daoFacade = DaoFactory.getInstance();
+	private DaoFacade daoFacade = null;
 
 	private String apiName;
 
@@ -67,14 +65,9 @@ public class IngestorStepDefinition {
 	private ProducerFactory createStreamProducer;
 	private ITestProducer t24Producer;
 	private List<Criterion> dataCriterions = null;
+	private String dbName;
+	private String vendorName;
 	Map<Integer, List<Attribute>> dataMap = null;
-
-	@Before
-	public void setUp() {
-		if (daoFacade != null) {
-			daoFacade.openConnection();
-		}
-	}
 
 	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
@@ -91,6 +84,8 @@ public class IngestorStepDefinition {
 
 	@Given("^Delete Record in the table ([^\\s]+) for the following criteria$")
 	public void deleteRecordsInTable(String tableName, DataTable dataTable) throws Exception {
+		 dbName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataCriterions = new ArrayList<>();
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
@@ -101,14 +96,17 @@ public class IngestorStepDefinition {
 						tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 			}
 		});
-		if (isAwsInboxOutboxTable(tableName)) {
-			tableName = DB_NAME.replace('_', '-') + "." + tableName;
+		if (isAwsInboxOutboxTable(tableName,vendorName,dbName)) {
+			tableName = dbName.replace('_', '-') + "." + tableName;
 		}
 		log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
+		daoFacade = DaoFactory.getInstance();
+		daoFacade.openConnection();
 		daoFacade.deleteItems(tableName, dataCriterions);
 	}
-	private boolean isAwsInboxOutboxTable(String tableName) {
-		return "DYNAMODB".equalsIgnoreCase(VENDOR_NAME) && DB_NAME.contains("_")
+	
+	private boolean isAwsInboxOutboxTable(String tableName, String vendorName,String dbName) {
+		return "DYNAMODB".equalsIgnoreCase(vendorName) && dbName.contains("_")
 				&& ((tableName.contains("ms_inbox_events")) || (tableName.contains("ms_outbox_events")));
 	}
 
@@ -303,13 +301,17 @@ public class IngestorStepDefinition {
 
 	@Then("^Validate the below details from the db table ([^\\s]+)$")
 	public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
+		 dbName = Environment.getEnvironmentVariable("DB_NAME", "");
+		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance();
+			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
 		List<Attribute> data = dataMap.get(Integer.valueOf(1));
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
@@ -318,9 +320,9 @@ public class IngestorStepDefinition {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
 						assertEquals(
 								getDataMismatchErrorLog(
-										(isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName
+										(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName
 												: tableName,
-								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 										attribute.getValue()),
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
@@ -330,10 +332,44 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
+	
+	@Then("^Validate the below details from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void validateDetailsFromDB(String tableName,String vendorName, String dbName, DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: "
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						assertEquals(
+								getDataMismatchErrorLog(
+										tableName,
+								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+										attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
+					}
+				});
+			}
+		});
+		daoFacade.closeConnection();
+	}
 
 	@Then("^Validate the below details and bundle value from the db table ([^\\s]+)$")
 	public void validateDetailsAndBundleValueFromDB(String tableName, DataTable dataTable) throws Exception {
 		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance();
+			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: " + tableName);
@@ -376,13 +412,17 @@ public class IngestorStepDefinition {
 	
 	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+)$")
 	    public void validateColumnContainValuesInDB(String tableName, DataTable dataTable) throws Exception {
+		   dbName =Environment.getEnvironmentVariable("DB_NAME", "");
+		   vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 	      dataMap = RetryUtil.getWithRetry(300, () -> {
+	    	daoFacade = DaoFactory.getInstance();
+	  		daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
 					dataCriterions);
 	            return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
 	        List<Attribute> data = dataMap.get(Integer.valueOf(1));
 	        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 	        tableValues.forEach(tableValue -> {
@@ -406,7 +446,8 @@ public class IngestorStepDefinition {
 	// To check if an entry is not present in DB
 	@Then("^Validate if below details not present in db table ([^\\s]+)$")
 	public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
-//      dataMap = RetryUtil.getWithRetry(60, () -> {
+		daoFacade = DaoFactory.getInstance();
+		daoFacade.openConnection();
 		Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
 		System.out.println("map content" + dataMap);
 		System.out.println("map size" + dataMap.size());
@@ -421,13 +462,17 @@ public class IngestorStepDefinition {
 	@Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
 	public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable)
 			throws Exception {
+		 dbName =Environment.getEnvironmentVariable("DB_NAME", "");
+		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance();
+			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
 		if (dataMap.size() != recordCount) {
 			throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
 					+ " specified in step");
@@ -440,7 +485,7 @@ public class IngestorStepDefinition {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
 						assertEquals(
 								getDataMismatchErrorLog(
-										(isAwsInboxOutboxTable(tableName)) ? DB_NAME.replace('_', '-') + "." + tableName
+										(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName
 												: tableName,
 								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
@@ -453,11 +498,54 @@ public class IngestorStepDefinition {
 		});
 	}
 	
-	
+	// To check entries in DB table and also the no of rows for the mentioned
+		// criteria/condition
+		@Then("^Validate the below details from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+) and check no of record is (.*)$")
+		public void validateDetailsFromDBAndRecordCount(String tableName,String vendorName, String dbName,int recordCount,DataTable dataTable)
+				throws Exception {
+			dataMap = RetryUtil.getWithRetry(300, () -> {
+				daoFacade = DaoFactory.getInstance(vendorName);
+				daoFacade.openConnection(vendorName, dbName);
+				Map<Integer, List<Attribute>> dataMap = daoFacade
+						.readItems((isAwsInboxOutboxTable(tableName, vendorName, dbName))
+								? dbName.replace('_', '-') + "." + tableName
+								: tableName, dataCriterions);
+				return (dataMap.size() != 0 ? dataMap : null);
+			}, " Getting DB records from table: " + ((isAwsInboxOutboxTable(tableName, vendorName, dbName))
+					? dbName.replace('_', '-') + "." + tableName
+					: tableName));
+			if (dataMap.size() != recordCount) {
+				throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
+						+ " specified in step");
+			}
+			List<Attribute> data = dataMap.get(Integer.valueOf(1));
+			List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+			tableValues.forEach(tableValue -> {
+				if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+					data.forEach(attribute -> {
+						if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+							assertEquals(
+									getDataMismatchErrorLog(
+											(isAwsInboxOutboxTable(tableName, vendorName, dbName))
+													? dbName.replace('_', '-') + "." + tableName
+													: tableName,
+											tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+											tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+											attribute.getValue()),
+									tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+									attribute.getValue().toString());
+						}
+					});
+				}
+			});
+			daoFacade.closeConnection();
+		}
 	
 	@Then("^associate below column values with bundle from the db table ([^\\s]+)$")
     public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
         dataMap = RetryUtil.getWithRetry(300, () -> {
+        	daoFacade = DaoFactory.getInstance();
+    		daoFacade.openConnection();
             Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
             return (dataMap.size() != 0 ? dataMap : null);
         }, " Getting DB records from table: " + tableName);
