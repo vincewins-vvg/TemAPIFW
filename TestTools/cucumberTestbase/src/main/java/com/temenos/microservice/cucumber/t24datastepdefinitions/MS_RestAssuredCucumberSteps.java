@@ -1093,6 +1093,31 @@ public class MS_RestAssuredCucumberSteps {
         }
 
     }
+    
+    /*
+    * To split and store comma separated response values
+    *
+    */
+
+     
+
+    @Then("^split and store the response data from restassured json response \"(.*)\" in keyvalue pair \"(.*)\" from file path \"(.*)\"$")
+    public void splitStoreResponsePropertyField(String key, String value, String fileName) throws Throwable {
+    JsonPath responseBody = JsonPath.from(response.body().asString());
+    String propertyKey = responseBody.getString(value);
+    String[] arrSplit = propertyKey.split(",");
+
+     
+
+    for (int i = 0; i < arrSplit.length; i++) {
+    String KeyName = key + i;
+    propertyKey = arrSplit[i];
+    resuableObject.storeKeyValues(KeyName, propertyKey, fileName);
+    }
+
+     
+
+    }
 
     // validate multiple array/object values from the response --- validate from
     // feature file
