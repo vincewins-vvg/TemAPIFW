@@ -197,6 +197,7 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
+      temn.msf.ingest.is.cloud.event: "true"      
   ingester:
     build:
       context: ${INGESTER_CONTEXT}

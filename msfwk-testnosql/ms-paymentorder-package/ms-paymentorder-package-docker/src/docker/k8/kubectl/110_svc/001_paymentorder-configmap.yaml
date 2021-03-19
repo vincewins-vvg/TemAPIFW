@@ -190,6 +190,7 @@ data:
   temn.msf.stream.kafka.sasl.mechanism: PLAIN
   temn.msf.stream.kafka.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://paymentorder-kafka.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DHfwH+NdA85PvYnrDI3FLGWTb5hiy8s1dRQ9uyVNKs8=";
   temn.msf.stream.kafka.ssl.enabled: "true"
+  temn.msf.ingest.is.cloud.event: "true"
 ---
 apiVersion: v1
 kind: ConfigMap

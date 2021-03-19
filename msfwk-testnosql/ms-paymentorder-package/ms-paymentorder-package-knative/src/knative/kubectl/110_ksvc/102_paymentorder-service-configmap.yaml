@@ -158,6 +158,7 @@ data:
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener
   temn.queue.impl: kafka
+  temn.msf.ingest.is.cloud.event: "true"
 ---
 apiVersion: v1
 kind: ConfigMap
