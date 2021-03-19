@@ -3,6 +3,9 @@
 #-----------------------------------------------------------
 ---
 version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
 services:
   db-service:
     build:

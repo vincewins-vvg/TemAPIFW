@@ -6,7 +6,7 @@ version: '3.6'
 networks:
  default:
   external:
-   name: ms-eventstore-docker_default
+   name: ${DEFAULT_NETWORK_NAME}
 services:
   api:
     build:
