@@ -25,7 +25,7 @@ public class MSStepIntegration implements En {
 
 	private Item item;
 
-	public static DaoFacade daoFacade = DaoFactory.getInstance();
+	public static DaoFacade daoFacade = null;
 
 	private String deleteTableName;
 
@@ -76,6 +76,7 @@ public class MSStepIntegration implements En {
 			attribute.setValue(inputList.get(index).get("data"));
 			attributeList.add(attribute);
 		});
+		daoFacade = DaoFactory.getInstance();
 		daoFacade.openConnection();
 		item.setAttributes(attributeList);
 		daoFacade.updateItem(item, criterionList);
@@ -111,6 +112,7 @@ public class MSStepIntegration implements En {
 								inputList.get(index).get("type"), inputList.get(index).get("data")));
 			}
 		});
+		daoFacade = DaoFactory.getInstance();
 		daoFacade.openConnection();
 		assertTrue(daoFacade.deleteItems(deleteTableName, criterionList));
 		daoFacade.closeConnection();
@@ -147,6 +149,7 @@ public class MSStepIntegration implements En {
 			}
 		});
 		item.setAttributes(attributeList);
+		daoFacade = DaoFactory.getInstance();
 		daoFacade.openConnection();
 		daoFacade.createRecord(item);
 		daoFacade.closeConnection();
