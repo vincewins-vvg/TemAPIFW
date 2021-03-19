@@ -19,6 +19,7 @@
 		<module>ms-paymentorder-dynamo</module>
 		<module>ms-paymentorder-mongo</module>
 		<module>ms-paymentorder-cassandra</module>
+		<module>ms-paymentorder-postgresql</module>
 	</modules>
 
 </project>

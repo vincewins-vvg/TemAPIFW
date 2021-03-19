@@ -314,6 +314,9 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		case Environment.DATABASE_MONGODB:
 			expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
 			break;
+		case Environment.DATABASE_POSTGRESQL:
+			expectedSequenceNo = SequenceUtil.generateSequenceNumber(businessKey, sourceId);
+			break;			
 		case Environment.DATABASE_DYNAMODB:
 			expectedSequenceNo = PaymentOrderFunctionHelper.validateAndUpdateSequenceNumber(businessKey, sourceId,
 					sequenceNo);
