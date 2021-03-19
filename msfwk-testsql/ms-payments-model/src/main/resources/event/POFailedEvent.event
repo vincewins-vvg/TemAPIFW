@@ -1,27 +1,28 @@
 {
 	"name": "POFailedEvent",
 	"javaPackage": "com.temenos.microservice.payments.event",
-	"description": "Payment Order Failed Event",	
+	"description": "Payment Order Failed Event",
+	"type": "event",
 	"properties": [
 		{
 			"name": "debitAccount",
 			"type": "string",
-	 "description": "Indicates the Account from which the amount to be debited"			
+			"description": "Indicates the Account from which the amount to be debited"
 		},
 		{
 			"name": "creditAccount",
 			"type": "string",
-	 "description": "Indicates the Account for which the amount to be credited"	
+			"description": "Indicates the Account for which the amount to be credited"
 		},
 		{
 			"name": "amount",
 			"type": "decimal",
-	 "description": "Identifer indicates the Total Amount involved in the transaction"		
+			"description": "Identifer indicates the Total Amount involved in the transaction"
 		},
 		{
 			"name": "currency",
 			"type": "string",
-	 "description": "Indicates the Currency Type for the transaction"		
+			"description": "Indicates the Currency Type for the transaction"
 		},
 		{
 			"name": "payeeDetails",

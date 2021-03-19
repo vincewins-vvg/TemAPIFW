@@ -2,6 +2,7 @@
 	"name": "POAcceptedEvent",
 	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"description": "Create New Payment Order Event",
+	"type": "event",
 	"properties": [
 		{
 			"name": "paymentOrderId",
