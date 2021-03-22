@@ -53,4 +53,4 @@ Scenario: To Validate CommandProcessed event type is available in ms-eventstore-
 	#Validate CreateNewPaymentOrder event type is available in ms-eventstore-inbox-topic
 	And set timeout session for 30 seconds
 	And set timeout session for 30 seconds
-	Then check if json data with correlation id 5a316d88-3c17-4b59-ad7e-77a3961a912 and type CommandProcessed is present in topic ms-eventstore-inbox-topic
+	Then check if json data with correlation id 5a316d88-3c17-4b59-ad7e-77a3961a912 and cloudeventtype CommandProcessed is present in topic ms-eventstore-inbox-topic
