@@ -211,6 +211,7 @@ data:
   temn.msf.security.authz.enabled: "false"
   tmn.inbox.source.namespace: paymentorder-inbox
   tmn.outbox.source.namespace: paymentorder-outbox  
+  temn.msf.ingest.is.cloud.event: "true"
 ---
 apiVersion: v1
 kind: ConfigMap
