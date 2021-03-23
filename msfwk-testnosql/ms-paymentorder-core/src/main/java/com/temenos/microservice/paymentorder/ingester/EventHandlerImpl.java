@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.inboxoutbox.util.LoggingConstants;
-import com.temenos.logger.Logger;
+import com.temenos.microservice.framework.core.log.Logger;
 import com.temenos.microservice.framework.core.EventProcessor;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
@@ -37,7 +37,7 @@ public class EventHandlerImpl implements EventProcessor {
 			try {
 				paymentOrderId = JsonUtil.readField(event.getPayload(), "paymentOrderId");
 			} catch (IOException e) {
-				FUNCTION_DIAGNOSTIC.prepareDebug(e);
+				FUNCTION_DIAGNOSTIC.prepareDebug(e.getMessage());
 			}
 			paymentOrder = noSqlDao.getByPartitionKey(paymentOrderId).get();
 			paymentOrder.setStatus("Completed");

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.inboxoutbox.util.LoggingConstants;
-import com.temenos.logger.Logger;
+import com.temenos.microservice.framework.core.log.Logger;
 import com.temenos.microservice.framework.core.EventProcessor;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
