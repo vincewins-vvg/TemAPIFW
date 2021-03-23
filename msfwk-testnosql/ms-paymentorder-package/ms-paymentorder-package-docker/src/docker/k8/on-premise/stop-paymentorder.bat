@@ -13,6 +13,8 @@ cd db
 
 call stop-podb-scripts.bat
 
+REM stop-opm-operator.bat
+
 cd ../
 
 
