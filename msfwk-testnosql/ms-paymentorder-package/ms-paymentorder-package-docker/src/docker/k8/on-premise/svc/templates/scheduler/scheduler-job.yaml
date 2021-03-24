@@ -23,6 +23,17 @@ spec:
                 value: {{ .Values.env.database.MONGODB_DBNAME }} 
               - name: MONGODB_CONNECTIONSTR
                 value: {{ .Values.env.database.MONGODB_CONNECTIONSTR }} 
+          # Use secret in real usage
+              - name: POSTGRESQL_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: ponosqldbsecret
+                    key: USER_NAME 
+              - name: POSTGRESQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: ponosqldbsecret
+                    key: PASSWORD  
             envFrom:
               - configMapRef:
                   name: paymentorder-scheduler-config                

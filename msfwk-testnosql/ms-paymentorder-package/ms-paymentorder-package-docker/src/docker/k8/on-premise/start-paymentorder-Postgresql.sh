@@ -13,12 +13,12 @@ cd ../..
 
 ./build.sh create --build
 
-#cd k8/on-premise/db
+cd k8/on-premise/db
 
-#./start-podb-scripts.sh
+./start-postgresqldb-scripts.sh
 
-#cd ../
+cd ../
 
 cd k8/on-premise/
 
-helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR --set env.database.MONGODB_DBNAME=$DB_NAME --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=mongodb
+helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=$MONGODB_CONNECTIONSTR --set env.database.MONGODB_DBNAME=$DB_NAME --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=postgresql

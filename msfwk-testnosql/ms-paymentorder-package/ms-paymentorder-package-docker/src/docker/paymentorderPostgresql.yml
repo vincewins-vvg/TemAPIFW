@@ -3,6 +3,9 @@
 #-----------------------------------------------------------
 
 version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
 services:
   postgresdb:
     build:
@@ -10,6 +13,7 @@ services:
       dockerfile: Dockerfile
       args:
         DB_BASE_IMAGE: ${POSTGRESQL_DB_BASE_IMAGE}
+    image: ${POSTGRESQL_DB_IMAGE}
     container_name: 'paymentorderppgdb'
     command: postgres -c 'max_connections=200'
     ports:

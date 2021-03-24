@@ -37,6 +37,19 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+          env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+
 ---
 apiVersion: v1
 kind: Service
@@ -76,7 +89,7 @@ spec:
       protocol: TCP
       nodePort: 30020
   selector:
-    app: {{ .Values.apideployment }}        
+    app: {{ .Values.apideployment }}  
 ---
 apiVersion: v1
 kind: Service
@@ -97,3 +110,4 @@ spec:
       nodePort: 30320
   selector:
     app: {{ .Values.apideployment }}    
+    app: {{ .Values.apideployment }}            

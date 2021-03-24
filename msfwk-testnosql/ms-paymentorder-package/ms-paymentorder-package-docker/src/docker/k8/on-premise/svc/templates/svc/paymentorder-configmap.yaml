@@ -12,6 +12,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
   className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
@@ -93,6 +94,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -126,6 +128,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -170,6 +173,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -201,6 +205,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -227,6 +232,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -264,6 +270,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -288,6 +295,7 @@ data:
   DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: PaymentOrder
   temn.msf.security.authz.enabled: "false"
   VALIDATE_PAYMENT_ORDER: "false"
