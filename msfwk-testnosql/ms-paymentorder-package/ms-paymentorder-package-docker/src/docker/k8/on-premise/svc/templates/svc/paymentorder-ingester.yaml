@@ -22,6 +22,18 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-ingester-avro-config" }}
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
 ---
 #Command Ingester
 apiVersion: apps/v1
@@ -46,7 +58,19 @@ spec:
         - containerPort: 8093
         envFrom:
           - configMapRef:
-              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}      
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}    
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD    
 ---
 #Event Ingester Ingester
 apiVersion: apps/v1
@@ -72,6 +96,18 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}  
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
 ---
 #Event Delivery
 apiVersion: apps/v1
@@ -96,7 +132,19 @@ spec:
         - containerPort: 8095
         envFrom:
           - configMapRef:
-              name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}  
+              name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }} 
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD   
 ---
 #Data Ingester
 apiVersion: apps/v1
@@ -121,7 +169,19 @@ spec:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}    
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }} 
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD     
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -171,7 +231,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD                   
+                key: PASSWORD        
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD             
 ---
 #Data Ingester Service
 apiVersion: v1
