@@ -12,7 +12,7 @@ import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.paymentorder.view.Customer;
 import com.temenos.microservice.paymentorder.view.CustomerStatus;
 
-public class CreateCustomerImpl implements CreateCustomer {
+public class CreateCustomerImpl extends CreateCustomerAbstractFunction implements CreateCustomer {
 
 	@Override
 	public CustomerStatus invoke(Context ctx, CreateCustomerInput input) throws FunctionException {
