@@ -13,5 +13,5 @@ REM Now run Docker Compose
 docker-compose -f db-build.yml %*
 
 REM Now run Docker Compose
-docker-compose -f paymentorder.yml %*
+docker-compose -f paymentordermongo.yml %*
 

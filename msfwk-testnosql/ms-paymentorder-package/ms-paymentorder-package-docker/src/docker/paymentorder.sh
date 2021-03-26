@@ -9,4 +9,4 @@ if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
 cp -f ${DOCKER_ENV_LOCATION}/ENV.env .env
 
 # Now run Docker Compose
-docker-compose -f kafka.yml -f paymentorder.yml $@
+docker-compose -f kafka.yml -f paymentordermongo.yml $@
