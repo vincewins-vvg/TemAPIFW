@@ -7,21 +7,44 @@ networks:
   default:
     name: ${DEFAULT_NETWORK_NAME}
 services:
-  postgresdb:
+  db-service1:
     build:
-      context: ${POSTGRESQL_DB_CONTEXT}
+      context: ${MONGO_DB_CONTEXT}
       dockerfile: Dockerfile
       args:
-        DB_BASE_IMAGE: ${POSTGRESQL_DB_BASE_IMAGE}
-    image: ${POSTGRESQL_DB_IMAGE}
-    container_name: 'paymentorderppgdb'
-    command: postgres -c 'max_connections=200'
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo1'
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: paymentorderusr
-      POSTGRES_PASSWORD: paymentorderpass
-      POSTGRES_DB: paymentorderdb
+      - "30001:27017"
+  db-service2:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo2'
+    ports:
+      - "30002:27017" 
+  db-service3:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo3'
+    ports:
+      - "30003:27017"
+  mongosetup:
+    container_name: 'mongoinit'
+    build:
+      context: ${MONGO_INIT_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    depends_on:
+      - db-service1
+      - db-service2
+      - db-service3
   api:
     build:
       context: ${API_CONTEXT}
@@ -30,17 +53,22 @@ services:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
+        keystore_pass: ${KEYSTORE_PASS}
+        ssl_enabled: ${SSL_ENABLED}
     image: ${API_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "8090:8080"
       - "40509:40500"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
       className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
@@ -115,14 +143,17 @@ services:
         SCHEDULER_MAIN_CLASS: ${SCHEDULER_MAIN_CLASS}
     image: ${SCHEDULER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40515:40500"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
@@ -142,15 +173,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
     depends_on:
-      - postgresdb      
+      - db-service1
+      - db-service2
+      - db-service3      
     ports:
       - "40514:40500"
       - "8089:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -163,7 +197,7 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
-      temn.msf.ingest.is.cloud.event: "true"
+      temn.msf.ingest.is.cloud.event: "true"      
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -174,15 +208,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40518:40500"
       - "8082:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass     
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
       temn.msf.name: PaymentOrder
       temn.queue.impl: kafka
       temn.msf.stream.vendor: kafka
@@ -215,15 +252,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40508:40500"
       - "8083:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
@@ -251,15 +291,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40510:40500"
       - "8084:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -299,15 +342,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40511:40501"
       - "8085:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -336,15 +382,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40512:40500"
       - "8086:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -371,15 +420,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40513:40500"
       - "8087:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -406,15 +458,18 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40516:40500"
       - "8088:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -430,7 +485,7 @@ services:
       # temn.msf.raise.received.event: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
-      temn.queue.impl: kafka
+      temn.queue.impl: kafka  
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
@@ -444,18 +499,21 @@ services:
       - '/usr/local/tomcat/temp'
       - '/usr/local/tomcat'
     depends_on:
-      - postgresdb
+      - db-service1
+      - db-service2
+      - db-service3
     ports:
       - "40520:40500"
       - "8091:8080"
     environment:
-      DATABASE_KEY: postgresql
-      POSTGRESQL_CONNECTIONURL: jdbc:postgresql://postgresdb:5432/paymentorderdb
-      POSTGRESQL_USERNAME: paymentorderusr
-      POSTGRESQL_PASSWORD: paymentorderpass
+      DATABASE_KEY: mongodb
+      MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
       temn.msf.name: PaymentOrder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
-      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
+      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester      

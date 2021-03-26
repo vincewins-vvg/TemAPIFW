@@ -4,7 +4,7 @@
 # --------------------------------------------------------------
 
 if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
-export DATABASE=postgresql ;fi
+export DATABASE=mongo ;fi
 export MSF_NAME=ms-paymentorder ;fi
 
 # Copy the environment file for docker to resolve
@@ -16,5 +16,7 @@ cp -f ${DOCKER_ENV_LOCATION}/ENV.env .env
 ./repackbuild.sh ms-framework-scheduler ms-paymentorder-scheduler.jar $@
 ./repackbuild.sh fileingester ms-fileingester.jar $@  
 
+
+
 # Now run Docker Compose
-docker-compose -f kafka.yml -f paymentorderPostgresql.yml $@
+docker-compose -f kafka.yml -f paymentordermongo.yml $@

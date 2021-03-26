@@ -16,4 +16,4 @@ call start-postgresqldb-scripts.bat
 
 cd ../
 
-helm install ponosql ./svc --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb  --set env.database.MONGODB_DBNAME=%DB_NAME% --set env.database.DATABASE_KEY=postgresql
+helm install ponosql ./svc --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb  --set env.database.MONGODB_DBNAME=%DB_NAME% --set env.database.DATABASE_KEY=postgresql	

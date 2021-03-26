@@ -16,6 +16,8 @@
 	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
+		<!-- msf name -->
+		<msf.name>ms-paymentorder</msf.name>
 		<!-- Enable Model unpack and MSF CodeGen -->
 		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
