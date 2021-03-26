@@ -17,7 +17,6 @@ import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.stereotype.Component;
 
-import com.temenos.logger.Logger;
 import com.temenos.logger.diagnostics.Diagnostic;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
@@ -28,6 +27,7 @@ import com.temenos.microservice.framework.core.function.BinaryData;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.log.Logger;
 import com.temenos.microservice.payments.dao.FileUploadDao;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.FileDetails;

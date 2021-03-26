@@ -1,9 +1,10 @@
 package com.temenos.microservice.payments.function;
 
-import com.temenos.logger.Logger;
+
 import com.temenos.logger.diagnostics.Diagnostic;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.log.Logger;
 import com.temenos.microservice.payments.core.FileUploadProcessor;
 import com.temenos.microservice.payments.view.ApiResponse;
 
