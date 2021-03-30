@@ -12,7 +12,7 @@ import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.view.EmployeeRequest;
 import com.temenos.microservice.payments.view.EmployeeStatus;
 
-public class CreateEmployeeImpl implements CreateEmployee {
+public class CreateEmployeeImpl extends CreateEmployeeAbstractFunction implements CreateEmployee {
 
 	@Override
 	public EmployeeStatus invoke(Context ctx, CreateEmployeeInput input) throws FunctionException {
