@@ -19,6 +19,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<!-- msf name -->
+		<msf.name>ms-paymentorder</msf.name>
 		<!-- Enable code gen -->
 		<msf.codegen.enabled>true</msf.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
