@@ -15,12 +15,11 @@ SET _archievefileext=%_archievefilename:~-3%
 if NOT "%_dockercommand%" == "down" (
  
    if "%_archievefileext%" == "war" (
-      if exist %_pack%\WEB-INF\lib\*-entity-* del /f %_pack%\WEB-INF\lib\*-entity-*
-      xcopy app\dbjars\%_msfname%-entity-%_database%.jar %_pack%\WEB-INF\lib\%_msfname%-entity-%_database%.jar* /d
+      xcopy app\dbjars\%_msfname%-entity-%_database%.jar %_pack%\WEB-INF\lib\ms-entity.jar* /d
       cd app\api
-      jar -uvf %_archievefilename% WEB-INF/lib/%_msfname%-entity-%_database%%_timestamp%.jar
+      jar -uvf %_archievefilename% WEB-INF/lib/ms-entity.jar
       cd ../../
-      rmdir /s /q %_pack%\WEB-INF 	
+      rmdir /s /q %_pack%\WEB-INF 
    )   
    
    if "%_archievefileext%" == "jar" (
