@@ -49,6 +49,14 @@ inboxingesteruuidCommand="aws lambda list-event-source-mappings --event-source-a
 export inboxingesteruuid=$(eval "$inboxingesteruuidCommand")
 aws lambda delete-event-source-mapping --uuid $inboxingesteruuid
 
+inboxingesteruuidCommand="aws lambda list-event-source-mappings --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/${DEPLOYMENT_ENVIRONMENT}-paymentorder-event-topic | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[\"EventSourceMappings\"][0][\"UUID\"]'"
+export inboxingesteruuid=$(eval "$inboxingesteruuidCommand")
+aws lambda delete-event-source-mapping --uuid $inboxingesteruuid
+
+inboxingesteruuidCommand="aws lambda list-event-source-mappings --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/${DEPLOYMENT_ENVIRONMENT}-table-update-paymentorder | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[\"EventSourceMappings\"][0][\"UUID\"]'"
+export inboxingesteruuid=$(eval "$inboxingesteruuidCommand")
+aws lambda delete-event-source-mapping --uuid $inboxingesteruuid
+
 # Delete lambdas
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-ingester
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-event-ingester
