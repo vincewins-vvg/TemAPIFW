@@ -274,8 +274,8 @@ public final class JsonUtil implements En {
 
             URL obj = new URL(servicePointUrlUpdated);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-            postConnection.setConnectTimeout(100000);
-            postConnection.setReadTimeout(100000);
+            postConnection.setConnectTimeout(900000);
+            postConnection.setReadTimeout(900000);
             postConnection.setRequestMethod("POST");
             // postConnection.setRequestProperty("User-Agent", userAgent);
             //   postConnection.setRequestProperty("password", passWord);
@@ -377,8 +377,8 @@ public final class JsonUtil implements En {
 
             URL obj = new URL(servicePointUrlUpdated);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-            postConnection.setConnectTimeout(300000);
-            postConnection.setReadTimeout(300000);
+            postConnection.setConnectTimeout(900000);
+            postConnection.setReadTimeout(900000);
             postConnection.setRequestMethod("POST");
             // postConnection.setRequestProperty("User-Agent", userAgent);
             //   postConnection.setRequestProperty("password", passWord);
