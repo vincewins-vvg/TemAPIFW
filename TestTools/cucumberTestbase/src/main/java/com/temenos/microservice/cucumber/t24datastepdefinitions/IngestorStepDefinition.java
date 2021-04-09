@@ -105,6 +105,34 @@ public class IngestorStepDefinition {
 		daoFacade.deleteItems(tableName, dataCriterions);
 	}
 	
+	// To delete records in multiple databases
+	@Given("^Delete Record in the table ([^\\s]+) for the following criteria vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void deleteRecordsInTableMultiDb(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
+		dataCriterions = new ArrayList<>();		
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+						tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+			}
+			else {
+				dataCriterions.clear();
+			}
+		});
+		
+		if (isAwsInboxOutboxTable(tableName,vendorName,dbName)) {
+			tableName = dbName.replace('_', '-') + "." + tableName;
+		}
+		
+		log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
+		daoFacade = DaoFactory.getInstance(vendorName);
+		daoFacade.openConnection(vendorName, dbName);
+		daoFacade.deleteItems(tableName, dataCriterions);
+		daoFacade.closeConnection();
+	}	
+		
 	private boolean isAwsInboxOutboxTable(String tableName, String vendorName,String dbName) {
 		return "DYNAMODB".equalsIgnoreCase(vendorName) && dbName.contains("_")
 				&& ((tableName.contains("ms_inbox_events")) || (tableName.contains("ms_outbox_events")));
@@ -418,6 +446,52 @@ public class IngestorStepDefinition {
 		});
 	}
 	
+	@Then("^Validate the below details and bundle value from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void validateDetailsAndBundleValueFromMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+	    	daoFacade = DaoFactory.getInstance(vendorName);
+	  		daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + tableName);
+
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))
+							&& cucumberInteractionSession.scenarioBundle()
+									.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())) != null) {
+						assertEquals(
+								getDataMismatchErrorLog(tableName,
+										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										cucumberInteractionSession.scenarioBundle().getString(
+												tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
+										attribute.getValue()),
+								cucumberInteractionSession.scenarioBundle()
+										.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
+								attribute.getValue());
+						
+						System.out.println("Bundle value :" + cucumberInteractionSession.scenarioBundle()
+						.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					}
+
+					else if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						assertEquals(getDataMismatchErrorLog(tableName,
+								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
+						
+						System.out.println("Bundle value :" + cucumberInteractionSession.scenarioBundle()
+						.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					}
+				});
+			}
+		});
+        daoFacade.closeConnection();
+	}
 	
 	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+)$")
 	    public void validateColumnContainValuesInDB(String tableName, DataTable dataTable) throws Exception {
@@ -451,7 +525,37 @@ public class IngestorStepDefinition {
 	        });
 	    }
 	
-
+	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	    public void validateColumnContainValuesInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
+	      dataMap = RetryUtil.getWithRetry(300, () -> {
+	    	daoFacade = DaoFactory.getInstance(vendorName);
+	  		daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					dataCriterions);
+	            return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: "
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+	        List<Attribute> data = dataMap.get(Integer.valueOf(1));
+	        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+	        tableValues.forEach(tableValue -> {
+	            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+	                data.forEach(attribute -> {
+	                    if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
+						assertTrue(
+								"Actual value against column " + attribute.getName() + " in DB ie :"
+										+ attribute.getValue() + " doesnt contain value mentioned in script ie: "
+										+ tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString().contains(
+										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString()));
+	                    }
+	                });
+	            }
+	        });
+	        daoFacade.closeConnection();
+	    }
+	  	  
+	  
 	// To check if an entry is not present in DB
 	@Then("^Validate if below details not present in db table ([^\\s]+)$")
 	public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
@@ -550,7 +654,7 @@ public class IngestorStepDefinition {
 			daoFacade.closeConnection();
 		}
 	
-	@Then("^associate below column values with bundle from the db table ([^\\s]+)$")
+	@Then("^Associate below column values with bundle from the db table ([^\\s]+)$")
     public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
         dataMap = RetryUtil.getWithRetry(300, () -> {
         	daoFacade = DaoFactory.getInstance();
@@ -578,7 +682,37 @@ public class IngestorStepDefinition {
         });
     }
 	
-	
+	@Then("^Associate below column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
+    public void assocDBValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
+        dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade
+					.readItems((isAwsInboxOutboxTable(tableName, vendorName, dbName))
+							? dbName.replace('_', '-') + "." + tableName
+							: tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + ((isAwsInboxOutboxTable(tableName, vendorName, dbName))
+				? dbName.replace('_', '-') + "." + tableName
+				: tableName));        
+        
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+						
+						 System.out.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						 System.out.println(" Attribute Value " + attribute.getValue());
+						
+						 cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(), attribute.getValue());
+					}
+				});
+			}
+		});               
+        daoFacade.closeConnection();
+    }
 	
 
 	private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
