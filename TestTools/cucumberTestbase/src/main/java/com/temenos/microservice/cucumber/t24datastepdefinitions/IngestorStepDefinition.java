@@ -654,7 +654,7 @@ public class IngestorStepDefinition {
 			daoFacade.closeConnection();
 		}
 	
-	@Then("^Associate below column values with bundle from the db table ([^\\s]+)$")
+	@Then("^Associate the below column values with bundle from the db table ([^\\s]+)$")
     public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
         dataMap = RetryUtil.getWithRetry(300, () -> {
         	daoFacade = DaoFactory.getInstance();
@@ -671,18 +671,18 @@ public class IngestorStepDefinition {
             if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
                 data.forEach(attribute -> {
                     if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-                     
-                        cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()), tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString());
-                    }
-                    
-                    System.out.println(DataTablesColumnNames.COLUMN_NAME.getName().toString()+"value is "+DataTablesColumnNames.COLUMN_VALUE.getName().toString());
-
+                    	
+						 System.out.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						 System.out.println(" Attribute Value " + attribute.getValue());
+						 
+                    	cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(), attribute.getValue());
+                    }                    
                 });
             }
         });
     }
 	
-	@Then("^Associate below column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	@Then("^Associate the below column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
     public void assocDBValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
         dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance(vendorName);
