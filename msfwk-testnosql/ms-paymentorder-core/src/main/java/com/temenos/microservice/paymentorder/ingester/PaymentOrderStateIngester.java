@@ -11,7 +11,6 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 import com.temenos.microservice.framework.core.ingester.MSStreamProducer;
 import com.temenos.microservice.framework.core.ingester.MSStreamProducerFactory;
-import com.temenos.microservice.framework.core.stream.kafka.MSKafkaStreamProducer;
 import com.temenos.microservice.framework.core.util.EventStreamCheckUtility;
 
 public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
@@ -22,8 +21,10 @@ public class PaymentOrderStateIngester extends BinaryIngesterUpdater {
 		String topic = Environment.getEnvironmentVariable("temn.ingester.business.topic", "table-update-business");
 		boolean result = false;
 		Map<String, List<String>> headersMap = new HashMap<>();
+		Map<String, List<String>> topicConsumerInfo = new HashMap<>();
+		topicConsumerInfo.put(businessGroupId, Arrays.asList(topic));
 		for (int i = 0; i < 3; i++) {
-			result = EventStreamCheckUtility.isConsumerGroupInLag(Arrays.asList(topic), businessGroupId, headersMap);
+			result = EventStreamCheckUtility.isConsumerGroupInLag(topicConsumerInfo, headersMap);
 			if (!result) {
 				MSStreamProducer producer = MSStreamProducerFactory.getProducer();
 		        producer.sendToStream("table-result", new String("success"));
