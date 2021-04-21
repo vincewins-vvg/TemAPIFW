@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+./repackbuild.sh ms-paymentorder postgresql
+
 export DEPLOYMENT_ENVIRONMENT="postgres"
 
 export JWT_TOKEN_PRINCIPAL_CLAIM="sub"

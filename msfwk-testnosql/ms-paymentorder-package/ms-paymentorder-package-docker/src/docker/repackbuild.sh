@@ -3,9 +3,9 @@
 # - Script to start Traceability Service
 # --------------------------------------------------------------
 
-if [ -z "$_pack" ]; then export _pack=%1 ;fi
-if [ -z "$_archievefilename" ]; then export _archievefilename=%2 ;fi
-if [ -z "$_dockercommand" ]; then export _dockercommand=%3 ;fi
+if [ -z "$_pack" ]; then export _pack=$1 ;fi
+if [ -z "$_archievefilename" ]; then export _archievefilename=$2 ;fi
+if [ -z "$_dockercommand" ]; then export _dockercommand=$3 ;fi
 if [ -z "$_msfname" ]; then export _msfname=${MSF_NAME} ;fi
 if [ -z "$_database" ]; then export _database=${DATABASE} ;fi
 
@@ -13,7 +13,7 @@ if [ -z "$_database" ]; then export _database=${DATABASE} ;fi
 # retriving archive file extension
 if [ -z "$_archievefileext" ]; then export _archievefileext=${_archievefilename: -3} ;fi
 
-if [ ${_dockercommand} != "up" ] 
+if [ ${_dockercommand} != "down" ] 
 then 
 	if [ ${_archievefileext} == "war" ] 
 	then 
