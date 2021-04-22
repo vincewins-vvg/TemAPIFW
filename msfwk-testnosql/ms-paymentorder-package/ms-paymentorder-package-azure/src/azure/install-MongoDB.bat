@@ -1,4 +1,7 @@
 @echo on
+
+CALL db/repackbuild.bat ms-paymentorder mongo
+
 REM configuration details
 SET RESOURCE_GROUP_NAME="paymentorder"
 SET LOCATION="UK South"
