@@ -1,4 +1,8 @@
 #!/bin/bash -x
+
+# repacking db entity jar with api jar
+./db/repackbuild.sh ms-paymentorder cassandra
+
 # configuration details
 export RESOURCE_GROUP_NAME="paymentorder"
 export LOCATION="UK South"

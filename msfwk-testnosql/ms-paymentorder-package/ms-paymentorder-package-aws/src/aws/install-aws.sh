@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+./repackbuild.sh ms-paymentorder dynamo
+
 export JWT_TOKEN_PRINCIPAL_CLAIM="sub"
 export JWT_TOKEN_ISSUER="https://localhost:9443/oauth2/token"
 export ID_TOKEN_SIGNED="true"

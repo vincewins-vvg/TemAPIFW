@@ -1,4 +1,7 @@
 @echo off
+
+CALL db/repackbuild.bat ms-paymentorder mongo
+
 set /P input="Enter 1.Production Settings 2.Slot Settings (1/2) ? "
 
 IF "%input%" NEQ "1" (
