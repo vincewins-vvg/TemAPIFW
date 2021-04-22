@@ -27,8 +27,7 @@ then
    
     if [ ${_archievefileext} == "jar" ] 
 	then 
-	  echo "inside jar"	
-      mkdir -p ${_pack}/repack 
+	  mkdir -p ${_pack}/repack 
       cp ${_pack}/${_archievefilename} ${_pack}/repack/ 	  
       cd ${_pack}/repack
       jar xf ${_archievefilename}
