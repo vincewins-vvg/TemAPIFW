@@ -44,7 +44,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3      
   api:
     build:
       context: ${API_CONTEXT}
@@ -132,6 +132,10 @@ services:
       #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
     #extra_hosts:
       #- "entitlement-api:10.93.23.73"
+      temn.msf.tracer.name: ms_paymentorder_api
+      temn.msf.tracer.disabled: "false"
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}
@@ -145,7 +149,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40515:40500"
     environment:
@@ -163,6 +167,10 @@ services:
       className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
+      temn.msf.tracer.name: ms_paymentorder_scheduler 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -175,7 +183,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3      
+      - db-service3       
     ports:
       - "40514:40500"
       - "8089:8080"
@@ -197,7 +205,11 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
-      temn.msf.ingest.is.cloud.event: "true"      
+      temn.msf.ingest.is.cloud.event: "true"
+      temn.msf.tracer.name: ms_paymentorder_inboxoutboxprocessor 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -210,7 +222,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40518:40500"
       - "8082:8080"
@@ -242,6 +254,10 @@ services:
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.tracer.name: ms_paymentorder_ingester 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -254,7 +270,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3      
     ports:
       - "40508:40500"
       - "8083:8080"
@@ -281,6 +297,10 @@ services:
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
+      temn.msf.tracer.name: ms_paymentorder_configavroingester 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -293,7 +313,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3      
     ports:
       - "40510:40500"
       - "8084:8080"
@@ -332,6 +352,10 @@ services:
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
       JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+      temn.msf.tracer.name: ms_paymentorder_ingesterbinary 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -344,7 +368,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3      
     ports:
       - "40511:40501"
       - "8085:8080"
@@ -372,6 +396,10 @@ services:
       temn.msf.security.authz.enabled: "false"
       EXECUTION_ENVIRONMENT: TEST
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_stateingester  
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -384,7 +412,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40512:40500"
       - "8086:8080"
@@ -410,6 +438,10 @@ services:
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_businessingester 
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -422,7 +454,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40513:40500"
       - "8087:8080"
@@ -448,6 +480,10 @@ services:
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_configBinaryIngester   
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -460,7 +496,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40516:40500"
       - "8088:8080"
@@ -486,6 +522,10 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka  
+      temn.msf.tracer.name: ms_paymentorder_eventingester  
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
@@ -501,7 +541,7 @@ services:
     depends_on:
       - db-service1
       - db-service2
-      - db-service3
+      - db-service3     
     ports:
       - "40520:40500"
       - "8091:8080"
@@ -516,4 +556,8 @@ services:
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
-      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester      
+      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester  
+      temn.msf.tracer.name: ms_paymentorder_fileingester    
+      temn.msf.tracer.disabled: "false"      
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831      

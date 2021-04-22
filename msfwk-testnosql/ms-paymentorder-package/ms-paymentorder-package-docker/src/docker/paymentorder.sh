@@ -19,4 +19,4 @@ cp -f ${DOCKER_ENV_LOCATION}/ENV.env .env
 
 
 # Now run Docker Compose
-docker-compose -f kafka.yml -f paymentordermongo.yml $@
+docker-compose -f monitor.yml -f kafka.yml -f paymentordermongo.yml $@

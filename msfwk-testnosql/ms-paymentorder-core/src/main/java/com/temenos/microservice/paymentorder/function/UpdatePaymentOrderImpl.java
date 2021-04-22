@@ -15,6 +15,7 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.OutOfSequenceException;
 import com.temenos.microservice.framework.core.function.Request;
+import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.framework.core.util.SequenceUtil;
 import com.temenos.microservice.paymentorder.entity.Card;
@@ -37,11 +38,13 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 		if (paymentOrderOpt.isPresent()) {
 			if (paymentOrderOpt.get().getPaymentOrderId() != null && paymentStatus.getPaymentId() != null
 					&& !paymentOrderOpt.get().getPaymentOrderId().equalsIgnoreCase(paymentStatus.getPaymentId())) {
+				Tracer.getSpan().addEvent("PaymentOrder updation failed due to invalid input");
 				throw new InvalidInputException(new FailureMessage("Invalid Payment order Id Entered in Json Body",
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
 			if (paymentOrderOpt.get().getDebitAccount() != null && debitAccount != null
 					&& !paymentOrderOpt.get().getDebitAccount().equalsIgnoreCase(debitAccount)) {
+				Tracer.getSpan().addEvent("PaymentOrder updation failed due to invalid input");
 				throw new InvalidInputException(new FailureMessage("Invalid Debit Account Entered",
 						MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 			}
@@ -88,9 +91,11 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				}
 			}
 		} else {
+			Tracer.getSpan().addEvent("PaymentOrder updation failed due to invalid input");
 			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
+		Tracer.getSpan().addEvent("PaymentOrder updated sucessfully");
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}
 

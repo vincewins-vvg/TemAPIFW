@@ -10,6 +10,7 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.function.Context;
+import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.scheduler.function.SchedulerCommandInput;
 import com.temenos.microservice.framework.scheduler.function.SchedulerCommandOutput;
 import com.temenos.microservice.framework.scheduler.function.SchedulerFunctionInterface;
@@ -38,6 +39,7 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 //				.prepareInfo("*** Payment order Scheduler run has completed... ***" + new Date().toString()
 //						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count)
 //				.log();
+		Tracer.getSpan().addEvent("PaymentOrder scheduler run has completed");
 		return schedulerCommandOutput;
 	}
 
