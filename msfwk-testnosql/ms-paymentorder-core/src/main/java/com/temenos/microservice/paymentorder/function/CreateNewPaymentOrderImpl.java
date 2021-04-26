@@ -41,6 +41,7 @@ import com.temenos.microservice.framework.core.function.OutOfSequenceException;
 import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.function.ResponseStatus;
 import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.framework.core.util.SequenceUtil;
@@ -109,21 +110,27 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				}
 			}
 		} catch (StorageWriteException e) {
+			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (InternalServerErrorException e) {
+			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (FileNotFoundException e) {
+			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (IOException e) {
+			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (StorageReadException e) {
+			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
+		Tracer.getSpan().addEvent("PaymentOrder Creation Completed");
 		return paymentStatus;
 	}
 

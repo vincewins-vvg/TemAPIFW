@@ -24,6 +24,7 @@ import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.EnumCurrency;
 import com.temenos.microservice.paymentorder.view.ExchangeRate;
@@ -123,15 +124,19 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 					paymentStatus.setFileReadWrite(fileReadWrite);
 				}
 				} catch (FileNotFoundException e ) {
+					Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to " + e.getMessage());
 					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				} catch (IOException e) {
+					Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to " + e.getMessage());
 					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				} catch (StorageReadException e) {
+					Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to " + e.getMessage());
 					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
 				}
 			}
 			paymentOrderStatus.setPaymentOrder(order);
 			paymentOrderStatus.setPaymentStatus(paymentStatus);
+			Tracer.getSpan().addEvent("PaymentOrder Retrived Sucessfully");
 			return paymentOrderStatus;
 		}
 		return new PaymentOrderStatus();
@@ -140,13 +145,16 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 	private void validateParam(GetPaymentOrderParams params) throws InvalidInputException {
 		List<String> paymentIds = params.getPaymentId();
 		if (paymentIds == null || paymentIds.isEmpty()) {
+			Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to invalid Input");
 			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
 		}
 		if (paymentIds.size() != 1) {
+			Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to invalid Input");
 			throw new InvalidInputException(
 					new FailureMessage("Invalid paymentId param. Only one paymentId expected", "PAYM-PORD-A-2002"));
 		}
 		if (paymentIds.get(0).isEmpty()) {
+			Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to invalid Input");
 			throw new InvalidInputException(
 					new FailureMessage("Invalid paymentId param. PaymentId is empty", "PAYM-PORD-A-2003"));
 		}
@@ -154,6 +162,7 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 
 	private void validateInput(GetPaymentOrderInput input) throws InvalidInputException {
 		if (!input.getParams().isPresent()) {
+			Tracer.getSpan().addEvent("PaymentOrder retrieval failed due to invalid Input");
 			throw new InvalidInputException(new FailureMessage("Input param is empty", "PAYM-PORD-A-2001"));
 		}
 	}
