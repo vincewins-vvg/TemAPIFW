@@ -30,7 +30,7 @@ public class UpdatePaymentStatusImpl implements UpdateStatus{
 
 	@Override
     public PaymentStatus invoke(Context ctx, UpdateStatusInput input) throws FunctionException {
-        String paymentStatus = null;
+        PaymentStatus paymentStatus = null;
         if(input.getBody() != null && input.getBody().get().getStatus() != null) {
             paymentStatus = input.getBody().get().getStatus();
         } else {
@@ -65,13 +65,33 @@ public class UpdatePaymentStatusImpl implements UpdateStatus{
             }
         }
         CriteriaUpdate updaeCriteria = new CriteriaUpdate();
-        if(paymentStatus != null && paymentStatus.length() > 0){
-            updaeCriteria.add(new CriterionUpdateImpl("status", paymentStatus));
+        if(paymentStatus.getStatus() != null && paymentStatus.getStatus().length() > 0){
+            updaeCriteria.add(new CriterionUpdateImpl("status", paymentStatus.getStatus()));
         }   
         else {
             throw new InvalidInputException(new FailureMessage("Invalid or Null status value entered",
                     MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
         }
+        if(paymentStatus.getDebitAccount() != null && paymentStatus.getDebitAccount().length() > 0){
+            updaeCriteria.add(new CriterionUpdateImpl("debitAccount", paymentStatus.getDebitAccount()));
+        }
+        if(paymentStatus.getPaymentId() != null && paymentStatus.getPaymentId().length() > 0){
+            updaeCriteria.add(new CriterionUpdateImpl("paymentId", paymentStatus.getPaymentId()));
+        }
+        if(paymentStatus.getFileReadWrite() != null){
+            updaeCriteria.add(new CriterionUpdateImpl("fileReadWrite", paymentStatus.getFileReadWrite()));
+        }
+        if(paymentStatus.getExtensionData() != null){
+            updaeCriteria.add(new CriterionUpdateImpl("extensionData", paymentStatus.getExtensionData()));
+        }
+        if(paymentStatus.getPaymentMethod() != null){
+            updaeCriteria.add(new CriterionUpdateImpl("paymentMethod", paymentStatus.getPaymentMethod()));
+        }
+        if(paymentStatus.getExchangeRates() != null){
+            updaeCriteria.add(new CriterionUpdateImpl("exchangeRates", paymentStatus.getExchangeRates()));
+        }
+        
+        
         long updatedCount = paymentOrderDao.updateEntity(criteria, updaeCriteria, com.temenos.microservice.paymentorder.entity.PaymentOrder.class);   
         PaymentStatus payStatus = new PaymentStatus();
         payStatus.setStatus("Updated "+updatedCount +" PaymentIds which satisfy this Criteria");
