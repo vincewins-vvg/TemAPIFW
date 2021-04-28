@@ -963,6 +963,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CriteriaDetails'
+        status:
+          type: string    
         paymentStatus:
           allOf:
             - $ref: '#/components/schemas/PaymentStatus'
