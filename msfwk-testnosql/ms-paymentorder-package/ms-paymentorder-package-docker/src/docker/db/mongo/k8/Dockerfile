@@ -5,4 +5,4 @@ ADD dbMigration/ /app/temp/
 
 WORKDIR app/temp/lib
 
-CMD java -cp "ms-framework-db-migration-DEV.0.0-SNAPSHOT.jar:libs/*:" com.temenos.microservice.framework.tools.dbMigration.MSFDataMigration
+CMD java -cp "ms-framework-db-migration.jar:libs/*:" com.temenos.microservice.framework.tools.dbMigration.MSFDataMigration
