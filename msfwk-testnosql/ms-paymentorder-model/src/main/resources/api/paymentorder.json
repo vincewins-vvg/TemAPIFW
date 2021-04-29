@@ -964,7 +964,11 @@ components:
           items:
             $ref: '#/components/schemas/CriteriaDetails'
         status:
-          type: string
+          type: string    
+        paymentStatus:
+          allOf:
+            - $ref: '#/components/schemas/PaymentStatus'
+          
     PaymentDetails:
       properties:
         paymentId:
