@@ -714,7 +714,46 @@ public class IngestorStepDefinition {
         daoFacade.closeConnection();
     }
 	
+	@Then("^Associate the value of below element present in column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void assocElementValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable)
+			throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
+					dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: "
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
 
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+
+						System.out.println("Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						System.out.println("Attribute Value " + attribute.getValue());
+
+						String elementName = tableValue.get(DataTablesColumnNames.ELEMENT_NAME.getName());
+						String elementValue = attribute.getValue().toString().split(elementName)[1].split("\"")[2];
+						
+						System.out.println("Element Name: " + elementName);
+						System.out.println("Element Value: " + elementValue);
+
+						cucumberInteractionSession.scenarioBundle().put(
+								tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(), elementValue);
+					}
+				});
+			}
+		});
+		daoFacade.closeConnection();
+	}
+	
 	private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
 		return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: " + tableName + " for column"
 				+ columnName.toString() + " expected value: " + expected.toString() + " actual value: "
