@@ -8,7 +8,8 @@ public enum DataTablesColumnNames {
     COLUMN_VALUE("ColumnValue"),
     AVRO_JSON("AvroJson"),
     APPLICATION_NAME("ApplicationName"),
-    BUNDLE_NAME("BundleName");
+    BUNDLE_NAME("BundleName"),
+    ELEMENT_NAME("ElementName");
 
     private String name;
 
