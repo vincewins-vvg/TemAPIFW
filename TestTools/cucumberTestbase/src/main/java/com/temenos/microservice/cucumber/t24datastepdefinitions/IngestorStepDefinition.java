@@ -153,7 +153,9 @@ public class IngestorStepDefinition {
 			throws Exception {
 
 		if (topicName.equals("ms-paymentorder-inbox-topic") == true
-				|| topicName.equals("paymentorder-event-topic") == true)
+				|| topicName.equals("paymentorder-event-topic") == true
+				|| topicName.equals("ms-adapterservice-event-topic") == true
+				|| topicName.equals("ms-adapterservice-second-event-topic") == true)
 
 		{
 			StreamProducer producer = ProducerFactory.createStreamProducer("itest",
