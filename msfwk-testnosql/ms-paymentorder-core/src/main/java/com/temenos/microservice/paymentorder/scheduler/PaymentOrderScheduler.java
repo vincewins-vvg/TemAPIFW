@@ -39,7 +39,6 @@ public class PaymentOrderScheduler implements SchedulerFunctionInterface {
 //				.prepareInfo("*** Payment order Scheduler run has completed... ***" + new Date().toString()
 //						+ "....Operation ID: " + input.getOperationId() + " Total count of payment orders: " + count)
 //				.log();
-		Tracer.getSpan().addEvent("PaymentOrder scheduler run has completed");
 		return schedulerCommandOutput;
 	}
 
