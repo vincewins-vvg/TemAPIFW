@@ -110,27 +110,21 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 				}
 			}
 		} catch (StorageWriteException e) {
-			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (InternalServerErrorException e) {
-			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (FileNotFoundException e) {
-			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (IOException e) {
-			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new InvalidInputException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		} catch (StorageReadException e) {
-			Tracer.getSpan().addEvent("PaymentOrder creation failed due to " + e.getMessage());
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
-		Tracer.getSpan().addEvent("PaymentOrder Creation Completed");
 		return paymentStatus;
 	}
 
