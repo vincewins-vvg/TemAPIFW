@@ -231,6 +231,10 @@ services:
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.ingest.multipart.source.stream: multipart-topic
+      temn.msf.ingest.reprocess.source.stream: reprocess-event
+      temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+      temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
