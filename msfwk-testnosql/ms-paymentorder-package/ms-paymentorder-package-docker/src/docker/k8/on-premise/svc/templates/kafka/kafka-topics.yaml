@@ -117,3 +117,21 @@ spec:
     retention.ms: {{ .Values.kafkatopic.retentionms }}
     segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
 ---
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.kafkatopic.multiparttopic }}
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: my-cluster
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  partitions: {{ .Values.kafkatopic.topicpartitions }}
+  replicas: {{ .Values.kafkatopic.replicas }}
+  config:
+    retention.ms: {{ .Values.kafkatopic.retentionms }}
+    segment.bytes: {{ .Values.kafkatopic.segmentbytes }}
+---

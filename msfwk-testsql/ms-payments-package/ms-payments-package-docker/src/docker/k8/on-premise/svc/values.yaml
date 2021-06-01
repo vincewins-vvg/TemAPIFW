@@ -23,6 +23,7 @@ kafkatopic:
   eventtopic: paymentorder-event-topic
   errortopic: error-paymentorder
   inboxerrortopic: ms-paymentorder-inbox-error-topic
+  multiparttopic: multipart-topic
   sourcestream_consumergroupid: ms-paymentorder-ingester-consumer
   errorstream_producerid: ms-paymentorder-ingester-error-producer
   retentionms: 7200000

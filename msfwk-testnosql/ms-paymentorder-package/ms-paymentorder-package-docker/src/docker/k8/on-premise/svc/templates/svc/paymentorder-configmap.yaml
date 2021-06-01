@@ -112,7 +112,11 @@ data:
   temn.config.file.path: mapping/
   temn.ingester.mapping.enabled: "true"
   #EXECUTION_ENV: TEST
-  temn.msf.ingest.consumer.max.poll.records: "1"  
+  temn.msf.ingest.consumer.max.poll.records: "1"
+  temn.msf.ingest.multipart.source.stream: multipart-topic
+  temn.msf.ingest.reprocess.source.stream: reprocess-event
+  temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 ---
 apiVersion: v1
 kind: ConfigMap

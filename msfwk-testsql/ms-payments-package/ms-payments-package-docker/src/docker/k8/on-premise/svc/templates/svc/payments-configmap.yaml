@@ -103,6 +103,11 @@ data:
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.sourcestream_consumergroupid | quote }}
   temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic | quote }}
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstream_producerid | quote }}
+  temn.msf.ingest.multipart.source.stream: multipart-topic
+  temn.msf.ingest.reprocess.source.stream: reprocess-event
+  temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1
+  
 ---
 apiVersion: v1
 kind: ConfigMap

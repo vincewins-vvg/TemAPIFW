@@ -24,6 +24,7 @@ kafkatopic:
   inboxerrortopic: ms-paymentorder-inbox-error-topic
   errorstreamproducerid: ms-paymentorder-ingester-error-producer
   consumergroupid: ms-paymentorder-ingester-consumer
+  multiparttopic: multipart-topic
   
 
 
