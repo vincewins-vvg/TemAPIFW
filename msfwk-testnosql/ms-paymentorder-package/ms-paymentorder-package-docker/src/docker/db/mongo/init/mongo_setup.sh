@@ -54,4 +54,5 @@ mongo --host mongo1:27017 <<EOF
   db.createCollection("ms_payment_order_customer");
   db.createCollection("ms_payment_order_balance");
   db.createCollection("ms_payment_order_transaction");
+  db.createCollection("ms_error");
 EOF

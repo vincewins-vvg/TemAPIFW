@@ -46,4 +46,5 @@ mongo --host mongo1:9042 <<EOF
   db.ms_payment_order_customer.createIndex( { "customerId": 1 }, { unique: true } )
   db.createCollection("ms_payment_order_balance");
   db.createCollection("ms_payment_order_transaction");
+  db.createCollection("ms_error");
 EOF

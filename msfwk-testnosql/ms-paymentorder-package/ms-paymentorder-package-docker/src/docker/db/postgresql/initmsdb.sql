@@ -9,6 +9,7 @@ CREATE TABLE ms_payments_account ( data jsonb );
 CREATE TABLE ms_payment_order_customer ( data jsonb );
 CREATE TABLE ms_payment_order_balance ( data jsonb );
 CREATE TABLE ms_payment_order_transaction ( data jsonb );
+CREATE TABLE ms_error ( data jsonb );
 
 CREATE UNIQUE INDEX msaltkey ON ms_altkey ((data->'alternateKey'), (data->'alternateName'));
 CREATE UNIQUE INDEX msreftypevalue ON ms_reference_data ((data->'type'), (data->'value'));
