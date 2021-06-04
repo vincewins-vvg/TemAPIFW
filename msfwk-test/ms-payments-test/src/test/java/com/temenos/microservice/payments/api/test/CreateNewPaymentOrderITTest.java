@@ -45,7 +45,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@AfterClass
 	public static void clearData() {
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
-				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ||  "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ) {
 			clearRecords("PO~123~124~USD~100", "123");
 		} else {
 			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
@@ -83,7 +83,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
-				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) || "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			validateSQLExtensionData();
 		} else {
 			validateNoSQLExtensionData(entry);
