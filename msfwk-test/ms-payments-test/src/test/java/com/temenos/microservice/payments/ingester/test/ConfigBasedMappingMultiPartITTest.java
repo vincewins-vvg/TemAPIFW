@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -23,12 +24,19 @@ import static org.junit.Assert.assertTrue;
 import com.temenos.microservice.framework.test.dao.Attribute;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ConfigBasedMappingMultiPartITTest  extends ITTest{
-
+public class ConfigBasedMappingMultiPartITTest extends ITTest{
+	static String sinkStreamValue;
+	
 	@BeforeClass
 	public static void initializeData() {
+		ConfigBasedMappingMultiPartITTest.sinkStreamValue = System.getProperty("temn.msf.ingest.sink.stream");
 		daoFacade.openConnection();
-	}	
+	}
+	
+	@AfterClass
+	public static void afterTest() {
+		System.setProperty("temn.msf.ingest.sink.stream", ConfigBasedMappingMultiPartITTest.sinkStreamValue);
+	}
 	
 
 	@Test
@@ -47,7 +55,7 @@ public class ConfigBasedMappingMultiPartITTest  extends ITTest{
 			
 			 Map<Integer, List<Attribute>> records = null;
 			 
-				int maxDBReadRetryCount = 3;
+				int maxDBReadRetryCount = 5;
 				int retryCount = 0;
 				do {
 					System.out.println("Sleeping for 15 sec before reading data from database...");
@@ -63,9 +71,6 @@ public class ConfigBasedMappingMultiPartITTest  extends ITTest{
 				assertNotNull("ms_error table record should not be null", records);
 				assertNotNull("ms_error table Key set should not be null", records.keySet().size());
 				assertNotNull("ms_error table Values should not be null", records.values().size());
-				if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
-						|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
-				}
 			 
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
