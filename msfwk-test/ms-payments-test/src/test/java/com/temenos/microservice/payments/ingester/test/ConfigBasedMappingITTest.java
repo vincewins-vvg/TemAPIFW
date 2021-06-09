@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -182,6 +183,38 @@ public class ConfigBasedMappingITTest extends ITTest {
 				validateNoSQLExtensionData(records.get(1));
 				validateAltKeyData("ms_altkey");
 			}
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void testAvroAssembledEvent() {
+		try {
+			AvroProducer producer = new AvroProducer("paymentorder-assembled",
+					Environment.getEnvironmentVariable("localSchemaNamesAsCSVOrRemoteSchemaURL", "localhost:8081"));
+			InputStream inputAvro = ConfigBasedMappingITTest.class.getClassLoader()
+					.getResourceAsStream("POAvroAssembledInputData.json");
+			Assert.assertNotNull("avro data is read", inputAvro);
+			String inputAvroReader = convertInputStreamToString(inputAvro);
+			System.out.println("input for avro data" + inputAvroReader);
+			producer.sendAssembledEvent(Collections.singletonMap("PAYMENT_ORDEREvent", inputAvroReader));
+			Map<Integer, List<Attribute>> records = null;
+			int maxDBReadRetryCount = 3;
+			int retryCount = 0;
+			do {
+				System.out.println("Sleeping for 15 sec before reading data from database...");
+				Thread.sleep(15000);
+				System.out.println("Reading record back from db, try=" + (retryCount + 1));
+				records = readPaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string",
+						"PI19107122J61AB55", "debitAccount", "eq", "string", "10995");
+				System.out.println(records);
+				retryCount = retryCount + 1;
+			} while ((records == null || records.isEmpty()) && retryCount < maxDBReadRetryCount);
+			assertTrue(!records.isEmpty());
+			assertNotNull("Product record should not be null", records);
+			assertNotNull("Key set should not be null", records.keySet().size());
+			assertNotNull("Values should not be null", records.values().size());
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
