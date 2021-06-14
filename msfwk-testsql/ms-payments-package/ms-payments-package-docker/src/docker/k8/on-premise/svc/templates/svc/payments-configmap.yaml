@@ -46,6 +46,9 @@ data:
   className_DeleteEmployee: com.temenos.microservice.payments.function.DeleteEmployeeImpl
   className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
   API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
+  className_ReprocessEvents: com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl
+  className_GetErrorEvents: com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl
+  temn.msf.ingest.reprocess.source.stream: reprocess-event
   IRIS_PROTOCOL: http
   IRIS_HOST_IP: "10.92.14.71"
   IRIS_PORT: "9089"
