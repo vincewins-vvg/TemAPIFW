@@ -188,7 +188,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		}
 	}
 
-	/*@Test
+	@Test
 	public void testAvroAssembledEvent() {
 		try {
 			AvroProducer producer = new AvroProducer("paymentorder-assembled",
@@ -218,7 +218,7 @@ public class ConfigBasedMappingITTest extends ITTest {
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
-	}*/
+	}
 
 	@Test
 	public void testAvroIngesterConfigDateAsCommandEvent() {
