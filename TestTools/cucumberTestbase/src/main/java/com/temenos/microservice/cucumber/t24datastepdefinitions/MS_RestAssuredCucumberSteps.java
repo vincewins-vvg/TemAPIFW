@@ -283,6 +283,23 @@ public class MS_RestAssuredCucumberSteps {
         request.header(headerName, headerValue);
     }
     
+    @Given("^MS request header \"([^\"]*)\" is set with jwt token \"(.*)\"$")
+    public void givenKeyCloakRequestHeader(String headerName, String headerValue) throws Throwable {
+        
+        if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+        {
+            
+        System.out.println("Keycloak Auth code: "+System.getProperty("keyCloak_Authorization").toString());
+        request.header(headerName, System.getProperty("keyCloak_Authorization").toString());
+        
+        }
+        
+        else
+        {
+            request.header(headerName, headerValue);
+        }
+    }
+    
     @Given("^MS request form-data \"([^\"]*)\" is set to \"(.*)\"$")
     public void setFormData(String formDataKey, String formDataValue) throws Throwable {
         request.multiPart(formDataKey, formDataValue);
