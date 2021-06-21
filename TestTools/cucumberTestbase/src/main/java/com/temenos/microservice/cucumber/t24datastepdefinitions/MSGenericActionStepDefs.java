@@ -229,6 +229,27 @@ public class MSGenericActionStepDefs implements En {
         And(format("^set request header key {0} with bundle value {0}$", stepConfig.stringRegEx()),
                 (String key, String bundleValue) -> setHeaderWithBundleValue(key,bundleValue)); 
         
+        //This uses either harcoded JWT token or token from KeycloakServer based on the env variable KeycloakEnabled
+        And(format("^set request header key {0} with jwt token {0}$", stepConfig.stringRegEx()),
+                (String key, String Value) ->{ 
+                    
+                    if(key.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+                    {
+                        
+                    System.out.println("Keycloak Auth code from end-point.properties: "+System.getProperty("keyCloak_Authorization").toString());
+                    
+                    
+                    setJwtHeaderValue(key,System.getProperty("keyCloak_Authorization").toString());
+                    
+                    }
+                    
+                    else
+                    {
+                        setJwtHeaderValue(key,Value);
+                    }
+            
+        }); 
+        
         /* Example:
          * And the enquiry payload has link with href value should contain string "enqPctCustomers()" for Rel "next"
          */
@@ -807,6 +828,11 @@ public class MSGenericActionStepDefs implements En {
                 normalString.getBytes(StandardCharsets.UTF_8));
         cucumberInteractionSession.header(HttpHeaders.AUTHORIZATION, "Basic "+ encodedString);
         
+    }
+    
+    public void setJwtHeaderValue(String key, String Value) {
+        
+        cucumberInteractionSession.header(key, Value);
     }
     
     public void setHeaderWithBundleValue(String key, String bundleValue) {
