@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -98,7 +99,7 @@ public class MS_RestAssuredCucumberSteps {
     private HeaderStepDefs headerStepDefs;
 
     ReusableTestDataFunctionRestAssured resuableObject = new ReusableTestDataFunctionRestAssured();
-
+    Properties endpointProperties = new Properties();
     private String authToken = null;
     private String authTokenFilePath = null;
     
@@ -286,11 +287,12 @@ public class MS_RestAssuredCucumberSteps {
     @Given("^MS request header \"([^\"]*)\" is set with jwt token \"(.*)\"$")
     public void givenKeyCloakRequestHeader(String headerName, String headerValue) throws Throwable {
         
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
         if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
         {
             
-        System.out.println("Keycloak Auth code: "+System.getProperty("keyCloak_Authorization").toString());
-        request.header(headerName, System.getProperty("keyCloak_Authorization").toString());
+        System.out.println("Keycloak Auth code: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+        request.header(headerName, endpointProperties.getProperty("keyCloak_Authorization").toString());
         
         }
         

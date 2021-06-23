@@ -10,6 +10,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,6 +27,7 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +65,7 @@ public class MSGenericActionStepDefs implements En {
     private CucumberInteractionSession cucumberInteractionSession;
     @Autowired
     private ScenarioBundleStepDefs scenarioBundleStepDefs;
-
+    Properties endpointProperties = new Properties();
     public static Map<String, String> DbcolumnValues = new HashMap<>(); // key - columnName, Value -
     private static String currentDate;
     private static String dateAfterIncrement;
@@ -233,13 +236,14 @@ public class MSGenericActionStepDefs implements En {
         And(format("^set request header key {0} with jwt token {0}$", stepConfig.stringRegEx()),
                 (String key, String Value) ->{ 
                     
+                    endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
                     if(key.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
                     {
                         
-                    System.out.println("Keycloak Auth code from end-point.properties: "+System.getProperty("keyCloak_Authorization").toString());
+                    System.out.println("Keycloak Auth code from end-point.properties: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
                     
                     
-                    setJwtHeaderValue(key,System.getProperty("keyCloak_Authorization").toString());
+                    setJwtHeaderValue(key,endpointProperties.getProperty("keyCloak_Authorization").toString());
                     
                     }
                     
