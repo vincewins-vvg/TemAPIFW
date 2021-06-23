@@ -68,7 +68,7 @@ public class IngestorStepDefinition {
 	private String dbName;
 	private String vendorName;
 	Map<Integer, List<Attribute>> dataMap = null;
-
+	
 	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
 		this.apiName = apiName;
@@ -99,10 +99,10 @@ public class IngestorStepDefinition {
 		if (isAwsInboxOutboxTable(tableName,vendorName,dbName)) {
 			tableName = dbName.replace('_', '-') + "." + tableName;
 		}
-		log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
+		log.info("Deleting records in table {} for testcase {}", getTableName(tableName), testCase.getTestCaseID());
 		daoFacade = DaoFactory.getInstance();
 		daoFacade.openConnection();
-		daoFacade.deleteItems(tableName, dataCriterions);
+		daoFacade.deleteItems(getTableName(tableName), dataCriterions);
 	}
 	
 	// To delete records in multiple databases
@@ -346,11 +346,11 @@ public class IngestorStepDefinition {
 			daoFacade = DaoFactory.getInstance();
 			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : getTableName(tableName),
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : getTableName(tableName)));
 		List<Attribute> data = dataMap.get(Integer.valueOf(1));
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
@@ -360,7 +360,7 @@ public class IngestorStepDefinition {
 						assertEquals(
 								getDataMismatchErrorLog(
 										(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName
-												: tableName,
+												: getTableName(tableName),
 										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 										attribute.getValue()),
@@ -370,6 +370,13 @@ public class IngestorStepDefinition {
 				});
 			}
 		});
+	}
+	
+	private String getTableName(String tableName) {
+		String[] tableNameSplit = tableName.split("\\.");
+		if("SQLSERVER".equalsIgnoreCase(vendorName) && tableNameSplit.length == 2)
+			tableName = tableNameSplit[1];
+		return tableName;
 	}
 	
 	@Then("^Validate the below details from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
@@ -782,5 +789,7 @@ public class IngestorStepDefinition {
 			daoFacade.closeConnection();
 		}
 	}
+	
+
 
 }
