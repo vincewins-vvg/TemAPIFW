@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: posql-ingress
+spec:
+  rules:
+  - host: posqlapi.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: payments-order-api-svc-np
+          servicePort: 8080
