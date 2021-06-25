@@ -6,11 +6,13 @@ import static com.temenos.microservice.payments.util.ITConstants.BASE_URI;
 import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_NAME;
 import static com.temenos.microservice.payments.util.ITConstants.JWT_TOKEN_HEADER_VALUE;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,7 +37,7 @@ public class ITTest {
 
 	public static DaoFacade daoFacade = DaoFactory.getInstance();
 	protected WebClient client;
-
+	static Properties endpointProperties = new Properties();
 	/**
 	 * Returns new web client.
 	 * 
@@ -46,7 +48,12 @@ public class ITTest {
 		WebClient.Builder builder = WebClient.builder();
 		builder.baseUrl(getUri());
 		builder.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		builder.defaultHeader(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE);
+		try {
+			givenKeyCloakRequestHeader(builder,JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (!StringUtil.isNullOrEmpty(apiKey)) {
 			builder.defaultHeader(API_KEY, apiKey);
 		}
@@ -54,7 +61,7 @@ public class ITTest {
 	}
 
 	/**
-	 * Return URI from system property if missing in system property then use
+	 * Return URI from system property if missing in system property then usegivenKeyCloakRequestHeader
 	 * default.
 	 * 
 	 * @return uri
@@ -155,4 +162,22 @@ public class ITTest {
 		deleteAllRecords("ExchangeRate");
 		deleteAllRecords("PayeeDetails");
 	}
+	
+    private static void givenKeyCloakRequestHeader(WebClient.Builder builder,String headerName, String headerValue) throws Throwable {
+        
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+       
+        if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+        {
+           
+        System.out.println("Keycloak Auth code: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+        builder.defaultHeader(headerName, endpointProperties.getProperty("keyCloak_Authorization").toString());
+       
+        }
+       
+        else
+        {
+        	builder.defaultHeader(headerName, headerValue);
+        }
+    }
 }
