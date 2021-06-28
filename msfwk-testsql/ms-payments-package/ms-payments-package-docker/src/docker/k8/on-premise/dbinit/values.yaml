@@ -1,0 +1,43 @@
+# Default values for dbInitialisation.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  sqlinit:
+    repository: temenos/ms-serviceorchestrator-initscripts
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: DEV
+
+# Set the pull secret name here
+#imagePullSecrets: all-icr-io
+
+restartPolicy: OnFailure
+
+env:
+  sqlinit:
+    ##MySQL
+    databaseKey:
+    databaseName: ms_service_orchestrator
+    dbdialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    dbusername: root
+    dbpassword: password
+    dbconnectionurl: jdbc:mysql://<IP>:30108 
+    
+    ##MSSQL
+    # databaseKey: sql
+    # databaseName: ms_metering
+    # dbdialect: org.hibernate.dialect.SQLServer2012Dialect
+    # dbusername: sa
+    # dbpassword: Rootroot@12345
+    # dbconnectionurl: jdbc:sqlserver://localhost:1433  
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
