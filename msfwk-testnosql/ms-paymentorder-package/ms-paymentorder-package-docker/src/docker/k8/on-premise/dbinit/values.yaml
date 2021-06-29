@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  sqlinit:
-    repository: temenos/ms-paymentorder-initscripts
+  mongoinit:
+    repository: dev.local/temenos/ms-paymentorder-mongoscripts
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: DEV
@@ -17,22 +17,11 @@ image:
 restartPolicy: OnFailure
 
 env:
-  sqlinit:
-    ##MySQL
-    databaseKey:
-    databaseName: 
-    dbdialect: 
-    dbusername: 
-    dbpassword:
-    dbconnectionurl:
-    
-    ##MSSQL
-    # databaseKey: sql
-    # databaseName: ms_metering
-    # dbdialect: org.hibernate.dialect.SQLServer2012Dialect
-    # dbusername: sa
-    # dbpassword: Rootroot@12345
-    # dbconnectionurl: jdbc:sqlserver://localhost:1433  
+  mongoinit:
+    databaseKey: mongodb
+    databaseName: ms_paymentorder
+    dbConnectionUrl: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    migration: ../migration
 
 autoscaling:
   enabled: false
