@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ponosql-ingress
+spec:
+  rules:
+  - host: ponosqlapi.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: paymentorder-poapisvcnp
+          servicePort: 8080
