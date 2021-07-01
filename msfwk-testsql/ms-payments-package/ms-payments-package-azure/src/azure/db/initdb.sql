@@ -1,0 +1,1 @@
+CREATE TABLE testtable (id int(10), name varchar(50),description varchar(50),PRIMARY KEY (id )); 

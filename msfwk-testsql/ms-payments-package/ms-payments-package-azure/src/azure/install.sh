@@ -73,7 +73,7 @@ export EXECUTION_ENVIRONMENT="TEST"
 export SCHEDULER_TIME="0 */50 * * * *"
 export OPERATION_ID="paymentscheduler"
 export CLOUD_EVENT_FLAG="true"
-
+export SCRIPTPATH="db/dbinit.sql"
 
 # Create a resource resourceGroupName
 az group create --name "${RESOURCE_GROUP_NAME}"   --location "${LOCATION}"
@@ -116,3 +116,6 @@ az functionapp config appsettings set --name "${APP_NAME}" --resource-group "${R
 # Environment variable settings
 az functionapp config appsettings set --name "${OUTBOX_LISTENER_APP_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --settings className_CreateNewPaymentOrder="${CREATEPAYMENT}" className_createReferenceData="${CREATE_REFERENCE_DATA}" className_getReferenceData="${GET_REFERENCE_DATA}" className_updateReferenceData="${UPDATE_REFERENCE_DATA}" className_addReferenceData="${ADD_REFERENCE_DATA}" className_deleteReferenceData="${DELETE_REFERENCE_DATA}" className_GetPaymentOrders="${GETPAYMENTS}" className_UpdatePaymentOrder="${UPDATEPAYMENT}" className_GetPaymentOrder="${GETPAYMENT}" className_invokePaymentState="${INVEPAYMENT}" className_getHealthCheck="${HEATHCHECK}"  DATABASE_NAME="${DATABASE_NAME}" DB_PASSWORD="${DB_PASSWORD}" DB_USERNAME="${DB_USERNAME}" JAVA_OPTS="${JAVA_OPTS}" DB_CONNECTION_URL="${DB_CONNECTION_URL}" DRIVER_NAME="${DRIVER_NAME}" DIALECT="${DIALECT}" languageWorkers:java:defaultExecutablePath="${defaultExecutablePath}" temn.msf.security.authz.enabled="${AUTHZ_ENABLED}" WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_event_ingester="${INGEST_EVENT_INGESTER}" temn_msf_ingest_sink_error_stream="${ERROR_STREAM}" temn_msf_name="${MSF_NAME}" temn_msf_schema_registry_url="${REGISTRY_URL}" EXECUTION_ENV="${EXECUTION_ENV}" DATABASE_KEY=sql eventHubConnection="${eventHubConnection}" VALIDATE_PAYMENT_ORDER="${VALIDATE_PAYMENT_ORDER}" eventHubName="${EVENT_HUB_OUTBOX}" eventHubConsumerGroup="${EVENT_HUB_OUTBOX_CG}" class.outbox.dao="${OUTBOX_DAO}" class.outbox.dao="${OUTBOX_DAO}" class.inbox.dao="${INBOX_DAO}" DATABASE_KEY=sql temn.msf.ingest.source.stream="${INGEST_SOURCE_STREAM}" temn.msf.ingest.sink.error.stream="${SINK_ERROR_STREAM}"
 temn.msf.ingest.generic.ingester="${INBOXOUTBOX_INGESTER}" temn.exec.env="${EXEC_ENV}" temn.msf.stream.outbox.topic="${OUTBOX_TOPIC}" class.package.name="${PACKAGE_NAME}" temn.msf.function.class.CreateNewPaymentOrder="${CreateNewPaymentOrder}" temn.msf.ingest.is.avro.event.ingester="${AVRO_INGEST_EVENT}" temn.queue.impl="${%QUEUE_IMPL}" temn.msf.stream.kafka.sasl.enabled="${SSL_ENABLED}" temn.msf.stream.kafka.sasl.jaas.config="${SASL_JASS_CONFIG}" temn.msf.stream.kafka.bootstrap.servers="${KAFKA_SERVER}" temn.msf.stream.vendor.outbox="${%QUEUE_IMPL}" temn.msf.ingest.consumer.max.poll.records="${MAX_POLL_RECORDS}" temn.msf.ingest.is.cloud.event="${CLOUD_EVENT_FLAG}"
+
+#Command to execute init scripts
+#java -cp target/azure-functions/paymentsapp/lib/microservice-package-azure-resources-DEV.0.0-SNAPSHOT.jar -Drds_instance_host=$DB_CONNECTION_URL -Drds_instance_username=$DB_USERNAME -Drds_instance_password=$DB_PASSWORD -DScript_Path=$SCRIPTPATH com.temenos.microservice.azure.query.execution.AzurePostgresqlScriptExecution
