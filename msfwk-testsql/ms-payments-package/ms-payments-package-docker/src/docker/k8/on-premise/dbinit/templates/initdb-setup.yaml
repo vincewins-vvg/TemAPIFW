@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "dbinit.name" . }}{{ "-sql-init" }}
+  labels:
+    app.kubernetes.io/name: {{ include "dbinit.name" . }}{{ "-sql-init" }}
+    helm.sh/chart: {{ include "dbinit.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}  
+spec:
+  template:
+    metadata:
+      name: {{ include "dbinit.name" . }}{{ "-sql-init" }}
+    spec:
+   {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }} 
+    {{- end }}    
+      containers:
+      - name: {{ include "dbinit.name" . }}{{ "-sql-init" }}
+        image: "{{ .Values.image.sqlinit.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        env: 
+          - name: database.key
+            value: {{ .Values.env.sqlinit.databaseKey }}
+          - name: database.name
+            value: {{ .Values.env.sqlinit.databaseName }}
+          - name: db.dialect
+            value: {{ .Values.env.sqlinit.dbdialect }}
+          - name: db.connection.url
+            value: {{ .Values.env.sqlinit.dbconnectionurl }}      
+          - name: db.username
+            value: {{ .Values.env.sqlinit.dbusername }}
+          - name: db.password
+            value: {{ .Values.env.sqlinit.dbpassword }}              
+      restartPolicy: {{ .Values.restartPolicy }} 
