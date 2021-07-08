@@ -136,7 +136,10 @@ services:
     #extra_hosts:
       #- "entitlement-api:10.93.23.73"
       temn.msf.tracer.name: ms_paymentorder_api
-      temn.msf.tracer.enabled: "true"     
+      temn.msf.tracer.enabled: "true"
+      temn.msf.logger.socketHost: #"192.168.1.36"
+      temn.msf.logger.socketPort: #4560
+      temn.msf.logger.exportType: #socket (console,socket)     
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}
