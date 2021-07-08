@@ -49,6 +49,7 @@ public class GenerateKeyCloakTokenForMSITTest {
 //        } 
         
         URL = (String) endpointProperties.getProperty("keyCloak_URI");
+        System.out.println("URL: "+URL);
         String client_secret=(String) endpointProperties.getProperty("keyCloak_client_secret");
         System.out.println("Client Secret: "+client_secret);
         Form form = new Form();
