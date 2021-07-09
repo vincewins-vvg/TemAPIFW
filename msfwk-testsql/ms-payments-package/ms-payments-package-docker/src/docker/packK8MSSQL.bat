@@ -58,4 +58,4 @@ cd ../../
 
 
 rem Pack the images as a zip
-jar -cMf ../payments-helm-mssql-pack.zip payments/
+REM jar -cMf ../payments-helm-mssql-pack.zip payments/

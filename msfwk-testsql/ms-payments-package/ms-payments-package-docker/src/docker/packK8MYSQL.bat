@@ -57,4 +57,4 @@ cd ../../
 
 
 rem Pack the images as a zip
-jar -cMf ../payments-helm-mysql-pack.zip payments/
+REM jar -cMf ../payments-helm-mysql-pack.zip payments/

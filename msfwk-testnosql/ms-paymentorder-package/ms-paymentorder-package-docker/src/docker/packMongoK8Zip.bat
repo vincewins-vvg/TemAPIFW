@@ -68,4 +68,4 @@ cd ../../
 
 
 rem Pack the images as a zip
-jar -cMf ../paymentorder-helm-mongo-pack.zip paymentorder/
+REM jar -cMf ../paymentorder-helm-mongo-pack.zip paymentorder/

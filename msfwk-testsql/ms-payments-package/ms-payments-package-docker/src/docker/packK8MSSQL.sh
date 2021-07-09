@@ -56,4 +56,4 @@ docker image save temenos/ms-paymentorder-initscripts:DEV > ms-paymentorder-init
 cd ../../
 
 # Pack the images as a zip
-jar -cMf ../payments-helm-mssql-pack-$releaseVersion.zip payments/
+# jar -cMf ../payments-helm-mssql-pack-$releaseVersion.zip payments/
