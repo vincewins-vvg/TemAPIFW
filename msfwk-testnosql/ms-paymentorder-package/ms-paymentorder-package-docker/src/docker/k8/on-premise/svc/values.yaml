@@ -98,6 +98,11 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
+  
+logging:
+  socketHost: #"192.168.1.36"
+  socketPort: #"4560"
+  exportType: #socket (console,socket)
 
 # Set the pull secret name here
 #imagePullSecrets: all-icr-io
