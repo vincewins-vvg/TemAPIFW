@@ -664,7 +664,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnumCurrencies'  
-                
+  /config/getConfig:
+    get:
+      summary: Get Single Account
+      operationId: GetConfig
+      parameters:
+        - name: configName
+          in: query
+          description: Config Name
+          required: true
+          schema:
+            type: string
+        - name: configGroup
+          in: query
+          description: Config Group
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'                  
 components:
   schemas:
     Card:
@@ -1193,3 +1215,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Balance"
+    Config:
+      properties:
+        ConfigName:
+          type: string
+          description: Identifier that indicates the Config Name
+        ConfigGroup:
+          type: string
+          description: Identifier that indicates the Config Group
