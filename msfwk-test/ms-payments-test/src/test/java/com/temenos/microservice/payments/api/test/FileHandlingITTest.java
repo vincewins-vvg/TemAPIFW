@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
@@ -23,10 +24,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -79,8 +82,14 @@ public class FileHandlingITTest extends ITTest {
 		final MultiPart multiPart = new FormDataMultiPart().field("documentDetails", jsonToSend.toString())
 				.bodyPart(fileDataBodyPart);
 		multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
-		ClientResponse response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
-				.header(JWT_TOKEN_HEADER_NAME, JWT_TOKEN_HEADER_VALUE).post(ClientResponse.class, multiPart);
+		Builder builder = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE);
+		try {
+			givenKeyCloakRequestHeader(builder,JWT_TOKEN_HEADER_NAME,JWT_TOKEN_HEADER_VALUE);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ClientResponse response=builder.post(ClientResponse.class, multiPart);
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_file_upload", "name", "eq", "string",
 				"testupload.txt", "mimetype", "eq", "string", "text/plain");
 		List<Attribute> entry = insertedRecord.get(1);
@@ -109,4 +118,22 @@ public class FileHandlingITTest extends ITTest {
 			Assert.fail(e.getMessage());
 		}
 	}
+	
+    private static void givenKeyCloakRequestHeader(Builder builder,String headerName, String headerValue) throws Throwable {
+        
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+       
+        if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+        {
+           
+        System.out.println("Keycloak Auth code: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+        builder.header(headerName, endpointProperties.getProperty("keyCloak_Authorization").toString());
+       
+        }
+       
+        else
+        {
+        	builder.header(headerName, headerValue);
+        }
+    }
 }
