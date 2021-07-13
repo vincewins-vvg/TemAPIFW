@@ -138,9 +138,9 @@ services:
       #- "entitlement-api:10.93.23.73"
       temn.msf.tracer.name: ms_paymentorder_api
       temn.msf.tracer.enabled: "false"
-      temn.msf.security.authz.enabled: "false" 
-      temn.ms.secutiy.tokengen.oauth.url: "http://10.92.200.219:8180/auth/realms/msf/protocol/openid-connect/token"
-      temn.ms.secutiy.tokengen.client.secret: "e38b38fe-4e3f-4de7-865a-f3749d068ab3"
+      temn.msf.logger.socketHost: #"192.168.1.36"
+      temn.msf.logger.socketPort: #4560
+      temn.msf.logger.exportType: #socket (console,socket)     
       temn.ms.secutiy.tokengen.oauth.grant.type: "client_credentials"
       temn.ms.secutiy.tokengen.oauth.client.id : "msfauthcode"   
       temn.ms.secutiy.tokengen.oauth.scope: "openid"

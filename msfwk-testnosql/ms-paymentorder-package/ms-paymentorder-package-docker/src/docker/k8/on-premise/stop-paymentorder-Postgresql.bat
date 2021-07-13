@@ -8,6 +8,8 @@ REM - Build paymentorder images
 
 helm uninstall ponosql
 
+kubectl delete namespace paymentorder
+
 
 cd db
 
@@ -28,3 +30,5 @@ kubectl delete kafkatopics -n kafka ms-paymentorder-inbox-topic
 kubectl delete kafkatopics -n kafka error-paymentorder
 
 kubectl delete kafkatopics -n kafka ms-paymentorder-inbox-error-topic
+
+kubectl delete kafkatopics -n kafka multipart-topic
