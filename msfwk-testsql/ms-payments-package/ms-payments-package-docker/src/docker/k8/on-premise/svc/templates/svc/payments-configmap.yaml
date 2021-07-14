@@ -71,6 +71,14 @@ data:
   ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
   JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.security.authz.enabled: "false" 
+  temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
+  temn.config.service.base.path: http://10.92.201.101:7006/ms-genericconfig-api/api/v1.0.0/
+  temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}  
 ---
 apiVersion: v1
 kind: ConfigMap

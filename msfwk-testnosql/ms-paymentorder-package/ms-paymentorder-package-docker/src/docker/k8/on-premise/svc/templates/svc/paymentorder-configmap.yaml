@@ -90,6 +90,12 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
+  temn.msf.security.authz.enabled: "false" 
+  temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"  
 
 ---
 apiVersion: v1
