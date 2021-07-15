@@ -21,7 +21,7 @@ if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
 cp -f ${DOCKER_ENV_LOCATION}/k8ENV.env .env
 
 # Now run Docker Compose
-docker-compose -f paymentorder-mssql.yml $@
+docker-compose -f paymentorder.yml $@
 
 docker-compose -f db-build.yml $@
 
@@ -34,7 +34,6 @@ cd ../
 cp -r k8/on-premise/svc payments/helm-chart/svc
 
 cp -r k8/on-premise/dbinit payments/helm-chart/dbinit
-
 
 cd payments
 
@@ -56,4 +55,4 @@ docker image save temenos/ms-paymentorder-initscripts:DEV > ms-paymentorder-init
 cd ../../
 
 # Pack the images as a zip
-jar -cMf ../payments-helm-mssql-pack-$releaseVersion.zip payments/
+#jar -cMf ../payments-helm-mysql-pack-$releaseVersion.zip payments/

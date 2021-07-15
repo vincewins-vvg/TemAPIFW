@@ -71,4 +71,4 @@ docker image save dev.local/temenos/ms-paymentorder-mongoscripts:DEV > ms-paymen
 cd ../../
 
 # Pack the images as a zip
-jar -cMf ../paymentorder-helm-postgres-pack-$releaseVersion.zip paymentorder/
+# jar -cMf ../paymentorder-helm-postgres-pack-$releaseVersion.zip paymentorder/
