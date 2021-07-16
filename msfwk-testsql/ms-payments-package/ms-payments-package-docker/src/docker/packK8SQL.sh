@@ -42,9 +42,9 @@ mkdir images
 # Docker save 
 cd images
 
-docker image save temenos/ms-paymentorder-service:DEV > ms-paymentorder-service:DEV.tar
+docker image save temenos/ms-paymentorder-service:DEV > ms-paymentorder-serviceDEV.tar
 
-docker image save temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingester:DEV.tar
+docker image save temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingesterDEV.tar
 
 docker image save temenos/ms-paymentorder-inboxoutbox:DEV > ms-paymentorder-inboxoutboxDEV.tar
 
