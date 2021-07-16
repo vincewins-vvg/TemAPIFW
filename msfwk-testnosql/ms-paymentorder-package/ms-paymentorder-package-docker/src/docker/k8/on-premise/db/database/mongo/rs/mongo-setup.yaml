@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: mongosetup
-        image: dev.local/temenos/ms-paymentorder-mongoscripts:DEV
+        image: dev.local/temenos/ms-paymentorder-dbscripts:DEV
         env: 
           - name: database.key
             value: mongodb

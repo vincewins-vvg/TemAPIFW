@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   mongoinit:
-    repository: dev.local/temenos/ms-paymentorder-mongoscripts
+    repository: dev.local/temenos/ms-paymentorder-dbscripts
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: DEV
