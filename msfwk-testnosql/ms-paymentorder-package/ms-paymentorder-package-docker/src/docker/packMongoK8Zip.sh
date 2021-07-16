@@ -15,9 +15,9 @@ cd target
 
 jar xf ms-paymentorder-package-docker-*.zip
 
-cd paymentorder-Docker
+cd ms-paymentorder-Docker
 
-find . -name '*' | xargs dos2unix
+# find . -name '*' | xargs dos2unix
 
 if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
 export DATABASE=mongo
