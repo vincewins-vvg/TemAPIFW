@@ -7,8 +7,8 @@ services:
   db-init-service:
     build:
       context: ${DB_MIGRATION_CONTEXT}
-      dockerfile: db/mongo/k8/Dockerfile
+      dockerfile: db/k8/Dockerfile
       args:
         INGESTER_APP_BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
         dbMigration-artifactid: ${dbMigration-artifactid}
-    image: ${MONGO_SCRIPT_IMAGE} 
+    image: ${DB_SCRIPT_IMAGE} 

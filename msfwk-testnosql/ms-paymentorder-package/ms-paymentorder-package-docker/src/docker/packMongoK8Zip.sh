@@ -69,7 +69,7 @@ docker image save dev.local/temenos/ms-paymentorder-inboxoutbox:DEV > ms-payment
 
 docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedulerDEV.tar
 
-docker image save dev.local/temenos/ms-paymentorder-mongoscripts:DEV > ms-paymentorder-mongoscriptsDEV.tar
+docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
 
 cd ../../
