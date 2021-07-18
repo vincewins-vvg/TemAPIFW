@@ -20,6 +20,7 @@
 		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
+		<packager.dataIncludeArtifactId>ms-payments-data</packager.dataIncludeArtifactId>		
 
 		<!-- Directory name inside the final Assembly -->
 		<assemblyOutputDirectory>payments-j2ee</assemblyOutputDirectory>
