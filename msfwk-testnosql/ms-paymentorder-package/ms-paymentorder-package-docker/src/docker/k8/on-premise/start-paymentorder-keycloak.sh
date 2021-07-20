@@ -17,7 +17,7 @@ export JWT_TOKEN_PUBLIC_KEY=""
 
 cd ../..
 
-call build.bat build
+./build.bat build
 
 cd k8/on-premise/db
 
