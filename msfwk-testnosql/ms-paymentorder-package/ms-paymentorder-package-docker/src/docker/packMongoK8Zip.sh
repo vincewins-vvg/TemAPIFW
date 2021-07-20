@@ -15,9 +15,9 @@ cd target
 
 jar xf ms-paymentorder-package-docker-*.zip
 
-cd paymentorder-Docker
+cd ms-paymentorder-Docker
 
-find . -name '*' | xargs dos2unix
+# find . -name '*' | xargs dos2unix
 
 if [ -z "$DOCKER_ENV_LOCATION" ]; then export DOCKER_ENV_LOCATION=config ;fi
 export DATABASE=mongo
@@ -69,10 +69,10 @@ docker image save dev.local/temenos/ms-paymentorder-inboxoutbox:DEV > ms-payment
 
 docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedulerDEV.tar
 
-docker image save dev.local/temenos/ms-paymentorder-mongoscripts:DEV > ms-paymentorder-mongoscriptsDEV.tar
+docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
 
 cd ../../
 
 # Pack the images as a zip
-jar -cMf ../paymentorder-helm-mongo-pack-$releaseVersion.zip paymentorder/
+#jar -cMf ../paymentorder-helm-mongo-pack-$releaseVersion.zip paymentorder/

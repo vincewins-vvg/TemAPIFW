@@ -49,6 +49,11 @@ spec:
               secretKeyRef:
                 name: ponosqldbsecret
                 key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+            valueFrom:
+              secretKeyRef:
+                name: clientsecret
+                key: CLIENT_SECRET 
 
 ---
 apiVersion: v1

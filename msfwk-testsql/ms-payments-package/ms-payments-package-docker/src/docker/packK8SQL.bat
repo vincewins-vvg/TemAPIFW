@@ -17,7 +17,7 @@ REM Copy the environment file for docker to resolve
 copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 
 REM Now run Docker Compose
-docker-compose -f paymentorder-mssql.yml %*
+docker-compose -f paymentorder.yml %*
 
 docker-compose -f db-build.yml %*
 
@@ -35,7 +35,6 @@ xcopy k8\on-premise\svc payments\helm-chart\svc /s /e
 
 xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e
 
-
 cd payments
 
 mkdir images
@@ -44,9 +43,9 @@ mkdir images
 REM Docker save 
 cd images
 
-docker image save temenos/ms-paymentorder-service:DEV > ms-paymentorder-service:DEV.tar
+docker image save temenos/ms-paymentorder-service:DEV > ms-paymentorder-serviceDEV.tar
 
-docker image save temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingester:DEV.tar
+docker image save temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingesterDEV.tar
 
 docker image save temenos/ms-paymentorder-inboxoutbox:DEV > ms-paymentorder-inboxoutboxDEV.tar
 
@@ -58,4 +57,4 @@ cd ../../
 
 
 rem Pack the images as a zip
-jar -cMf ../payments-helm-mssql-pack.zip payments/
+REM jar -cMf ../payments-helm-mysql-pack.zip payments/
