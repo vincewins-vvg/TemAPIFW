@@ -504,6 +504,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnumCurrencies'
+  /config/getConfig:
+    get:
+      summary: Get Single Account
+      operationId: GetConfig
+      parameters:
+        - name: ConfigName
+          in: query
+          description: Config Name
+          required: true
+          schema:
+            type: string
+        - name: ConfigGroup
+          in: query
+          description: Config Group
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An account object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'  
 components:
   schemas:
     Card:
@@ -960,3 +983,8 @@ components:
         count:
           type: integer
           description: Indicates the count of the employees
+    Config:
+      properties:
+        ConfigName:
+          type: string
+          description: Identifier that indicates the Config Name

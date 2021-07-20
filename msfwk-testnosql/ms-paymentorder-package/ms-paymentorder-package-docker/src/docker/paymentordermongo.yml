@@ -97,6 +97,7 @@ services:
       className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
       className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
       className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
+      className_GetConfig: com.temenos.microservice.paymentorder.function.GetGenericConfigDetails
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
       temn.msf.name: PaymentOrder
       temn.msf.stream.vendor: kafka
@@ -136,10 +137,16 @@ services:
     #extra_hosts:
       #- "entitlement-api:10.93.23.73"
       temn.msf.tracer.name: ms_paymentorder_api
-      temn.msf.tracer.enabled: "true"
+      temn.msf.tracer.enabled: "false"
       temn.msf.logger.socketHost: #"192.168.1.36"
       temn.msf.logger.socketPort: #4560
-      temn.msf.logger.exportType: #socket (console,socket)     
+      temn.msf.logger.exportType: #socket (console,socket)    
+      temn.msf.security.tokengen.oauth.url: "http://10.92.200.219:8180/auth/realms/msf/protocol/openid-connect/token"
+      temn.msf.security.tokengen.client.secret: "e38b38fe-4e3f-4de7-865a-f3749d068ab3" 
+      temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+      temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+      temn.msf.security.tokengen.oauth.scope: "openid"
+      serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken" 
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}

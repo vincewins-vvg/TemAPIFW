@@ -33,7 +33,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: posqldbsecret
-                key: PASSWORD                  
+                key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+            valueFrom:
+              secretKeyRef:
+                name: clientsecret
+                key: CLIENT_SECRET                  
 ---
 apiVersion: v1
 kind: Service
@@ -67,6 +72,10 @@ spec:
       protocol: TCP
       port: 8080
       nodePort: 30020
+    - name: debug
+      protocol: TCP
+      port: 40500
+      nodePort: 30031
   type: NodePort    
 ---
 apiVersion: v1
