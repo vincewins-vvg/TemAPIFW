@@ -1,0 +1,436 @@
+{
+	"tables": [
+		{
+			"name": "Account",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_payments_account",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "accountId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "accountHolderName",
+					"type": "string"
+				},
+				{
+					"name": "accountType",
+					"type": "string"
+				},
+				{
+					"name": "branch",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "Balance",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"isExtendable": true,
+			"tableName": "ms_payment_order_balance",
+			"properties": [
+				{
+					"name": "recId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "stmtProcDate",
+					"type": "string"
+				},
+				{
+					"name": "coCode",
+					"type": "string"
+				},
+				{
+					"name": "onlineClearedBal",
+					"type": "decimal"
+				},
+				{
+					"name": "workingBalance",
+					"type": "decimal"
+				},
+				{
+					"name": "onlineActualBal",
+					"type": "decimal"
+				},
+				{
+					"name": "currency",
+					"type": "string"
+				},
+				{
+					"name": "customer",
+					"type": "string"
+				},
+				{
+					"name": "product",
+					"type": "string"
+				},
+				{
+					"name": "processingTime",
+					"type": "date"
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "cardid",
+					"type": "number"
+				},
+				{
+					"name": "cardname",
+					"type": "string"
+				},
+				{
+					"name": "cardlimit",
+					"type": "decimal"
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_payment_order_customer",
+			"properties": [
+				{
+					"name": "customerId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "customerName",
+					"type": "string",
+					"attributes": [
+						"KEY_SORT"
+					]
+				},
+				{
+					"name": "account",
+					"type": "string"
+				},
+				{
+					"name": "loanTypes",
+					"type": "string",
+					"collection": "true"
+				},
+				{
+					"name": "dateOfJoining",
+					"type": "date"
+				},
+				{
+					"name": "activeStatus",
+					"type": "Boolean"
+				}
+			]
+		},
+		{
+			"name": "DocumentDetails",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "id",
+					"type": "string"
+				},
+				{
+					"name": "documentId",
+					"type": "string"
+				},
+				{
+					"name": "documentName",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "EventSequence",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_event_sequence",
+			"properties": [
+				{
+					"name": "eventSourceId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "businessKey",
+					"type": "string",
+					"attributes": [
+						"KEY_SORT"
+					]
+				},
+				{
+					"name": "sequenceNo",
+					"type": "number"
+				}
+			]
+		},
+		{
+			"name": "ExchangeRate",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "id",
+					"type": "number",
+					"attributes": [
+						"GENERATEDVALUE"
+					]
+				},
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "value",
+					"type": "decimal"
+				}
+			]
+		},
+		{
+			"name": "FileDetails",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_file_upload",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "name",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "mimetype",
+					"type": "string"
+				},
+				{
+					"name": "documentdetails",
+					"type": "userdefined",
+					"childentity": "DocumentDetails"
+				}
+			]
+		},
+		{
+			"name": "PayeeDetails",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "payeeId",
+					"type": "number"
+				},
+				{
+					"name": "payeeName",
+					"type": "string"
+				},
+				{
+					"name": "payeeType",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "PaymentMethod",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "id",
+					"type": "number"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "card",
+					"type": "userdefined",
+					"childentity": "Card"
+				}
+			]
+		},
+		{
+			"name": "PaymentOrder",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_payment_order",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "paymentOrderId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "debitAccount",
+					"type": "string",
+					"attributes": [
+						"KEY_SORT"
+					]
+				},
+				{
+					"name": "creditAccount",
+					"type": "string"
+				},
+				{
+					"name": "paymentReference",
+					"type": "string"
+				},
+				{
+					"name": "paymentDetails",
+					"type": "string"
+				},
+				{
+					"name": "paymentDate",
+					"type": "date",
+					"dateFormat": "yyyy-MM-dd"
+				},
+				{
+					"name": "amount",
+					"type": "decimal"
+				},
+				{
+					"name": "currency",
+					"type": "string"
+				},
+				{
+					"name": "status",
+					"type": "string"
+				},
+				{
+					"name": "paymentMethod",
+					"type": "userdefined",
+					"childentity": "PaymentMethod"
+				},
+				{
+					"name": "exchangeRates",
+					"type": "userdefined",
+					"childentity": "ExchangeRate",
+					"collection": true
+				},
+				{
+					"name": "payeeDetails",
+					"type": "userdefined",
+					"childentity": "PayeeDetails"
+				},
+				{
+					"name": "fileContent",
+					"type": "binary"
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"isExtendable": true,
+			"tableName": "ms_payment_order_transaction",
+			"properties": [
+				{
+					"name": "recId",
+					"type": "string",
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "companyCode",
+					"type": "string",
+					"attributes": []
+				},
+				{
+					"name": "amountLcy",
+					"type": "string"
+				},
+				{
+					"name": "processingDate",
+					"type": "date"
+				},
+				{
+					"name": "transactionCode",
+					"type": "string"
+				},
+				{
+					"name": "valueDate",
+					"type": "date"
+				},
+				{
+					"name": "accountNumber",
+					"type": "number"
+				},
+				{
+					"name": "ourReference",
+					"type": "string"
+				},
+				{
+					"name": "theirReference",
+					"type": "string"
+				},
+				{
+					"name": "accountOfficer",
+					"type": "string"
+				},
+				{
+					"name": "transReference",
+					"type": "string"
+				},
+				{
+					"name": "bookingDate",
+					"type": "date"
+				},
+				{
+					"name": "customerId",
+					"type": "string"
+				},
+				{
+					"name": "currency",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "User",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_payments_user",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "userId",
+					"type": "string",
+					"autoGenerate": true,
+					"attributes": [
+						"KEY_PARTITION"
+					]
+				},
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "email",
+					"type": "string"
+				}
+			]
+		}
+	]
+}

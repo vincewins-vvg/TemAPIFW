@@ -18,4 +18,7 @@ call repackbuild.bat app\ms-framework-scheduler ms-paymentorder-scheduler.jar %*
 call repackbuild.bat app\fileingester ms-fileingester.jar %*  
 
 REM Now run Docker Compose
+docker-compose -f db-appinit-build.yml %*
+
+REM Now run Docker Compose
 docker-compose -f paymentorderPostgresql.yml %*

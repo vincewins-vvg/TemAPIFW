@@ -1,0 +1,35 @@
+# Default values for dbInitialisation.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  mongoinit:
+    repository: dev.local/temenos/ms-paymentorder-mongoscripts
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: DEV
+
+# Set the pull secret name here
+#imagePullSecrets: all-icr-io
+
+restartPolicy: OnFailure
+
+env:
+  mongoinit:
+    databaseKey: mongodb
+    databaseName: ms_paymentorder
+    dbConnectionUrl: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    migration: path:database/install/
+    dbUserName: 
+    dbPassword: 
+    msVersion: DEV.0.0-SNAPSHOT
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+

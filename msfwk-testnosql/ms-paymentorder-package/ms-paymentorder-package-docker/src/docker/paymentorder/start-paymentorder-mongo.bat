@@ -20,6 +20,8 @@ cd helm-chart
 
 kubectl create namespace mongopaymentorder
 
+helm install appinit ./appinit -n mongopaymentorder --set env.mongoinit.databaseKey=mongodb --set env.mongoinit.migration=path:database/install/ --set env.mongoinit.databaseName=ms_paymentorder --set env.mongoinit.dbUserName=root --set env.mongoinit.dbPassword=root --set env.mongoinit.msVersion=DEV.0.0-SNAPSHOT
+
 helm install dbinit ./dbinit -n mongopaymentorder
 
 timeout /t 90 >nul

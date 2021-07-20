@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "dbinit.name" . }}{{ "-mongo-init" }}
+  labels:
+    app.kubernetes.io/name: {{ include "dbinit.name" . }}{{ "-mongo-init" }}
+    helm.sh/chart: {{ include "dbinit.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}  
+spec:
+  template:
+    metadata:
+      name: {{ include "dbinit.name" . }}{{ "-mongo-init" }}
+    spec:
+   {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }} 
+    {{- end }}    
+      containers:
+      - name: {{ include "dbinit.name" . }}{{ "-mongo-init" }}
+        image: "{{ .Values.image.mongoinit.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        env: 
+          - name: database.key
+            value: {{ .Values.env.mongoinit.databaseKey }} 
+          - name: database.name
+            value: {{ .Values.env.mongoinit.databaseName }} 
+          - name: db.connection.url
+            value: {{ .Values.env.mongoinit.dbConnectionUrl }} 
+          - name: db.username
+            value: {{ .Values.env.mongoinit.dbUserName }} 
+          - name: db.password
+            value: {{ .Values.env.mongoinit.dbPassword }}           
+          - name: ms.version
+            value: {{ .Values.env.mongoinit.msVersion }}              
+          - name: db.scripts.location
+            value: {{ .Values.env.mongoinit.migration }}  
+      restartPolicy: {{ .Values.restartPolicy }} 

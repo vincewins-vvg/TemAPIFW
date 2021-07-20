@@ -22,6 +22,8 @@ cd helm-chart
 
 kubectl create namespace postgresqlpaymentorder
 
+helm install appinit ./appinit -n postgresqlpaymentorder --set env.mongoinit.databaseKey=postgresql --set env.mongoinit.migration=path:database/install/ --set env.mongoinit.databaseName=ms_paymentorder --set env.mongoinit.dbUserName=paymentorderusr --set env.mongoinit.dbPassword=paymentorderpass --set env.mongoinit.dbConnectionUrl=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.mongoinit.msVersion=DEV.0.0-SNAPSHOT
+
 helm install dbinit ./dbinit -n postgresqlpaymentorder
 
 timeout /t 90 >nul
