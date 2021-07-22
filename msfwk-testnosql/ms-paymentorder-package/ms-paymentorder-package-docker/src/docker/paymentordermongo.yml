@@ -34,17 +34,17 @@ services:
     container_name: 'mongo3'
     ports:
       - "30003:27017"
-  mongosetup:
-    container_name: 'mongoinit'
-    build:
-      context: ${MONGO_INIT_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    depends_on:
-      - db-service1
-      - db-service2
-      - db-service3      
+  # mongosetup:
+    # container_name: 'mongoinit'
+    # build:
+      # context: ${MONGO_INIT_CONTEXT}
+      # dockerfile: Dockerfile
+      # args:
+        # DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    # depends_on:
+      # - db-service1
+      # - db-service2
+      # - db-service3      
   api:
     build:
       context: ${API_CONTEXT}
