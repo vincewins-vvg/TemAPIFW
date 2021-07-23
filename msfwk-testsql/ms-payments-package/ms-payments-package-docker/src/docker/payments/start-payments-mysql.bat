@@ -17,10 +17,14 @@ kubectl create namespace dbinitpayments
 
 kubectl create namespace payments
 
+kubectl create namespace appinitpayments
+
 cd helm-chart
 
 
-helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://<IP>:30015
+helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306
+
+helm install appinit ./appinit -n appinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments --set env.sqlinit.msversion=DEV.0.0-SNAPSHOT --set env.sqlinit.migration=path:database/install/ --set env.sqlinit.dbdriver=com.mysql.jdbc.Driver
 
 
 helm install svc ./svc -n payments --set env.database.host=paymentorder-db-service-np --set env.database.db_username=root --set env.database.db_password=password --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=com.mysql.jdbc.Driver --set env.database.dialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.database.db_connection_url=jdbc:mysql://paymentorder-db-service:3306/payments --set pit.JWT_TOKEN_ISSUER=%JWT_TOKEN_ISSUER% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%JWT_TOKEN_PRINCIPAL_CLAIM% --set pit.ID_TOKEN_SIGNED=%ID_TOKEN_SIGNED% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED% --set pit.JWT_TOKEN_PUBLIC_KEY=%JWT_TOKEN_PUBLIC_KEY%
