@@ -9,7 +9,7 @@ set DATABASE=mongo
 set MSF_NAME=ms-paymentorder
 
 REM Copy the local log4j2.properties to the ingester jar
-jar uf %INGESTER_ENV_LOCATION%/ms-paymentorder-ingester.jar -C %INGESTER_ENV_LOCATION% log4j2.properties
+REM jar uf %INGESTER_ENV_LOCATION%/ms-paymentorder-ingester.jar -C %INGESTER_ENV_LOCATION% log4j2.properties
 
 
 call repackbuild.bat app\api ms-paymentorder-api.war %*  
