@@ -21,4 +21,7 @@ REM Now run Docker Compose
 docker-compose -f db-appinit-build.yml %*
 
 REM Now run Docker Compose
+docker-compose -f db-build.yml %*
+
+REM Now run Docker Compose
 docker-compose -f paymentorderPostgresql.yml %*
