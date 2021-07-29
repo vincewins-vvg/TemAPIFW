@@ -64,13 +64,9 @@
 						<configuration>
 							<files>
 								<file>
-									<source>src-gen/entity</source>
+									<source>src-gen/database</source>
 									<outputDirectory>target/${project.artifactId}-${project.version}.jar</outputDirectory>
-								</file>
-								<file>
-									<source>src-gen/scripts</source>
-									<outputDirectory>target/${project.artifactId}-${project.version}.jar</outputDirectory>
-								</file>
+								</file>								 
 							</files>
 						</configuration>
 					</execution>
