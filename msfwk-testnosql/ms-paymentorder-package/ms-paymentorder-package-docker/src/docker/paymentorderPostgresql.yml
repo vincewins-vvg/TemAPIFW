@@ -95,7 +95,6 @@ services:
       temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
       temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
-      temn.msf.scripts.location: "scripts"    
       ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
