@@ -71,7 +71,7 @@ docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentor
 
 docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
-docker image save dev.local/temenos/ms-paymentorder-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
+docker image save dev.local/temenos/ms-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
 
 
 cd ../../

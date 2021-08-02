@@ -41,6 +41,8 @@ find . -name 'repackbuild.sh' | xargs dos2unix
 #REM Now run Docker Compose
 docker-compose -f paymentorderPostgresql.yml $@
 
+docker-compose -f db-build.yml $@
+
 cd paymentorder
 
 mkdir helm-chart
@@ -68,7 +70,7 @@ docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentor
 
 docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
-docker image save dev.local/temenos/ms-paymentorder-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
+docker image save dev.local/temenos/ms-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
 
 cd ../../
 
