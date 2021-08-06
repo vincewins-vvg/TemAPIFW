@@ -38,8 +38,12 @@ find . -name 'repackbuild.sh' | xargs dos2unix
 ./repackbuild.sh app/inboxoutbox ms-paymentorder-inboxoutbox.jar $@
 ./repackbuild.sh app/ms-framework-scheduler ms-paymentorder-scheduler.jar $@
 
+
 #REM Now run Docker Compose
 docker-compose -f paymentorderPostgresql.yml $@
+
+#REM Now run Docker Compose
+docker-compose -f db-build.yml $@
 
 #REM Now run Docker Compose
 docker-compose -f db-appinit-build.yml $@
