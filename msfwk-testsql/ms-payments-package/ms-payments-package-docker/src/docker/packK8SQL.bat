@@ -21,6 +21,8 @@ docker-compose -f paymentorder.yml %*
 
 docker-compose -f db-build.yml %*
 
+docker-compose -f db-appinit-build.yml %*
+
 cd payments
 
 mkdir helm-chart
@@ -34,6 +36,8 @@ cd ../../
 xcopy k8\on-premise\svc payments\helm-chart\svc /s /e
 
 xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e
+
+xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e
 
 cd payments
 
@@ -53,7 +57,9 @@ docker image save temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedu
 
 docker image save temenos/ms-paymentorder-initscripts:DEV > ms-paymentorder-initscripts-DEV.tar
 
-docker image save dev.local/temenos/ms-paymentorder-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
+docker image save dev.local/temenos/ms-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
+
+docker image save temenos/ms-paymentorder-appinit:DEV > ms-paymentorder-appinitDEV.tar
 
 cd ../../
 

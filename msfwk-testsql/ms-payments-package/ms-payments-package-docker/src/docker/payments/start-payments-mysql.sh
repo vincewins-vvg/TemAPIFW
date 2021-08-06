@@ -23,7 +23,6 @@ kubectl create namespace appinitpayments
 
 cd helm-chart
 
-
 helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306
 
 helm install appinit ./appinit -n appinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments --set env.sqlinit.msversion=DEV.0.0-SNAPSHOT --set env.sqlinit.migration=path:database/install/ --set env.sqlinit.dbdriver=com.mysql.jdbc.Driver

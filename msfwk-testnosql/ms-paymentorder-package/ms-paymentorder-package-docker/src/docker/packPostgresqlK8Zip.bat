@@ -27,6 +27,9 @@ call repackbuild.bat app\ms-framework-scheduler ms-paymentorder-scheduler.jar %*
 REM Now run Docker Compose
 docker-compose -f paymentorderPostgresql.yml %*
 
+REM Now run Docker Compose
+docker-compose -f db-appinit-build.yml %*
+
 cd paymentorder
 
 mkdir helm-chart
@@ -42,6 +45,8 @@ cd ../../
 xcopy k8\on-premise\svc paymentorder\helm-chart\svc /s /e
 
 xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e
+
+xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e
 
 
 cd paymentorder
@@ -63,6 +68,8 @@ docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentor
 docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
 docker image save dev.local/temenos/ms-paymentorder-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
+
+docker image save dev.local/temenos/ms-paymentorder-appinit:DEV > ms-paymentorder-appinitDEV.tar
 
 
 
