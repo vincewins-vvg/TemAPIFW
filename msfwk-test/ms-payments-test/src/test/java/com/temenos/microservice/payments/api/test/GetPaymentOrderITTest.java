@@ -45,7 +45,7 @@ public class GetPaymentOrderITTest extends ITTest {
 		daoFacade.closeConnection();
 	}
 
-	@Test
+	//@Test
 	public void testGetPaymentOrderFunction() {
 		ClientResponse createResponse, getResponse;
 		do {
@@ -64,7 +64,7 @@ public class GetPaymentOrderITTest extends ITTest {
 				"\"extensionData\":{\"array_BusDayCentres\":[\"India\",\"Aus\"],\"paymentOrderProduct\":\"Temenos\",\"array_NonOspiType\":[{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"UPI\",\"NonOspiId\":\"12456\"},{\"NonOspiType\":\"DebitCard\",\"NonOspiId\":\"3163\"}]}"));
 	}
 
-	@Test
+	//@Test
 	public void testXcamlGetPaymentOrderFunction() {
 		ClientResponse createResponse, getResponse;
 		do {
