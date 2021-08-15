@@ -93,4 +93,5 @@
 			<artifactId>javax.jms-api</artifactId>
 			<scope>test</scope>
 		</dependency>
+        </dependencies>
 </project>
