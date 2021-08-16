@@ -56,7 +56,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		daoFacade.closeConnection();
 	}
 
-	//@Test
+	@Test
 	public void testCreateNewPaymentOrderFunction() {
 		ClientResponse createResponse;
 		String paymentOrderId = null;
