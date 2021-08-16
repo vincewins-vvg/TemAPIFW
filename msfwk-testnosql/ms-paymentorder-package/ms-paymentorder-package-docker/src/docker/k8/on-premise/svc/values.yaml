@@ -100,8 +100,8 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   
 logging:
-  socketHost: #"192.168.1.36"
-  socketPort: #"4560"
+#  socketHost: #ipaddress
+#  socketPort: #port
   exportType: #socket (console,socket)
 
 pit:

@@ -78,6 +78,13 @@ data:
   serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
   temn.config.service.base.path: http://10.92.201.101:7006/ms-genericconfig-api/api/v1.0.0/
   temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}  
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -117,7 +124,13 @@ data:
   temn.msf.ingest.reprocess.source.stream: reprocess-event
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1
-  
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -158,6 +171,13 @@ data:
   temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic | quote }}
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstream_producerid | quote }}
   temn.msf.security.authz.enabled: "false"
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -206,7 +226,13 @@ data:
   JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
   ID_TOKEN_SIGNED: "true"
   JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
-
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -243,6 +269,13 @@ data:
 # temn.msf.raise.received.event: "true"
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -277,6 +310,13 @@ data:
   tmn.outbox.thread.pool.count: "10"
   VALIDATE_PAYMENT_ORDER: "false"
   temn.msf.ingest.is.cloud.event: "true"  
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -309,6 +349,13 @@ data:
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
   operationId: paymentscheduler
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -340,3 +387,10 @@ data:
   temn.msf.ingest.client.id: split-group
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.ingest.max.load.topic: "2" 
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}  

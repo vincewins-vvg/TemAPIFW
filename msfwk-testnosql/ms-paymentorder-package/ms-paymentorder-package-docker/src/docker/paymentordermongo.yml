@@ -138,9 +138,9 @@ services:
       #- "entitlement-api:10.93.23.73"
       temn.msf.tracer.name: ms_paymentorder_api
       temn.msf.tracer.enabled: "false"
-      temn.msf.logger.socketHost: #"192.168.1.36"
-      temn.msf.logger.socketPort: #4560
-      temn.msf.logger.exportType: #socket (console,socket)    
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)     
       temn.msf.security.tokengen.oauth.url: "http://10.92.200.219:8180/auth/realms/msf/protocol/openid-connect/token"
       temn.msf.security.tokengen.client.secret: "e38b38fe-4e3f-4de7-865a-f3749d068ab3" 
       temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
@@ -179,7 +179,10 @@ services:
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.tracer.name: ms_paymentorder_scheduler 
-      temn.msf.tracer.enabled: "true"        
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -216,7 +219,10 @@ services:
       tmn.outbox.thread.pool.count: 10
       temn.msf.ingest.is.cloud.event: "true"
       temn.msf.tracer.name: ms_paymentorder_inboxoutboxprocessor 
-      temn.msf.tracer.enabled: "true"      
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -262,11 +268,14 @@ services:
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
       temn.msf.tracer.name: ms_paymentorder_ingester 
-      temn.msf.tracer.enabled: "true"
+      temn.msf.tracer.enabled: "false"
       temn.msf.ingest.multipart.source.stream: multipart-topic
       temn.msf.ingest.reprocess.source.stream: reprocess-event
       temn.msf.ingest.sink.stream.data.multipart: multipart-topic
-      temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1      
+      temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1 
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)              
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -307,7 +316,10 @@ services:
       temn.ingester.mapping.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
       temn.msf.tracer.name: ms_paymentorder_configavroingester 
-      temn.msf.tracer.enabled: "true"       
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -360,7 +372,10 @@ services:
       ID_TOKEN_SIGNED: "true"
       JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
       temn.msf.tracer.name: ms_paymentorder_ingesterbinary 
-      temn.msf.tracer.enabled: "true"      
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -402,7 +417,10 @@ services:
       EXECUTION_ENVIRONMENT: TEST
       temn.queue.impl: kafka
       temn.msf.tracer.name: ms_paymentorder_stateingester  
-      temn.msf.tracer.enabled: "true"      
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -442,7 +460,10 @@ services:
       DATABASE_KEY: sql
       temn.queue.impl: kafka
       temn.msf.tracer.name: ms_paymentorder_businessingester 
-      temn.msf.tracer.enabled: "true"         
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -482,7 +503,10 @@ services:
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
       temn.msf.tracer.name: ms_paymentorder_configBinaryIngester   
-      temn.msf.tracer.enabled: "true"       
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -522,7 +546,10 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka  
       temn.msf.tracer.name: ms_paymentorder_eventingester  
-      temn.msf.tracer.enabled: "true"         
+      temn.msf.tracer.enabled: "false" 
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
@@ -555,4 +582,7 @@ services:
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester  
       temn.msf.tracer.name: ms_paymentorder_fileingester    
-      temn.msf.tracer.enabled: "true"   
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
