@@ -45,7 +45,7 @@ public class GetPaymentOrdersITTest extends ITTest {
 		daoFacade.closeConnection();
 	}
 
-	//@Test
+	@Test
 	public void testGetPaymentOrdersFunction() {
 		ClientResponse createResponse, getResponse;
 
