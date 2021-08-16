@@ -27,6 +27,7 @@
 		<!-- Directory name inside the final Assembly -->
 		<assemblyOutputDirectory>ms-paymentorder-AWS</assemblyOutputDirectory>
 		<sonar.skip>true</sonar.skip>
+		<skip.assembly>true</skip.assembly>
 	</properties>
 
 	<dependencies>

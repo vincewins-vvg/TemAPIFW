@@ -35,7 +35,9 @@ sleep 10
 # upload files
 aws s3 mb s3://ms-payment-order
 sleep 30
-aws s3 cp app/ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar s3://ms-payment-order --storage-class REDUCED_REDUNDANCY
+# Get the app file name for deployment
+export serviceFileName=$(ls app | grep -e dynamo)
+aws s3 cp app/${serviceFileName} s3://${DEPLOYMENT_ENVIRONMENT}-ms-payment-order --storage-class REDUCED_REDUNDANCY
 
 # Create lambdas for scheduler function
 aws lambda create-function --function-name paymentorder-scheduler --runtime java8 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.CloudWatchSchedulerProcessor::handleRequest --description "Scheduler for payment order" --timeout 120 --memory-size 1024 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order",S3Key=ms-paymentorder-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_function_class_paymentscheduler=com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler,temn_msf_security_authz_enabled=false,TEST_ENVIRONMENT=MOCK,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,DATABASE_KEY=dynamodb,operationId=paymentscheduler,parameters=\''{"source":"JSON"}'\'\}
