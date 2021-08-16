@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-export DEPLOYMENT_ENVIRONMENT="postgres"
+export DEPLOYMENT_ENVIRONMENT="mongo"
 
 # Delete streams
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-inbox-topic
@@ -9,8 +9,6 @@ aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-outbox
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-table-update-paymentorder
 
-aws rds delete-db-instance  --db-instance-identifier PaymentOrderPosgres --skip-final-snapshot
-sleep 600
 
 # Delete and remove APIs from ApiGateway
 restDeleteAPIIdCommand="aws apigateway get-rest-apis | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis[\"items\"] if \"${DEPLOYMENT_ENVIRONMENT}-ms-payment-order-api\" == api[\"name\"]]; print filter[0][\"id\"]'"

@@ -30,6 +30,7 @@
 		<sonar.skip>true</sonar.skip>
 		<applicationName>paymentorderapp</applicationName>
 		<applicationListenerName>paymentorderapplistener</applicationListenerName>
+		<skip.io.profile>true</skip.io.profile>
 	</properties>
 	<dependencies>
 		<dependency>
