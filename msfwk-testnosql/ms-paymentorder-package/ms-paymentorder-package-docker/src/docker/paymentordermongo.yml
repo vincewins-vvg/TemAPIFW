@@ -124,8 +124,7 @@ services:
       # temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
       temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
-      temn.msf.scripts.location: "scripts"    
-      ms.security.tokencheck.enabled: Y
+      ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
@@ -365,7 +364,7 @@ services:
       #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       #temn.msf.pdp.resource.type: API
       #temn.msf.pdp.resource.manager: PAYMENT
-      ms.security.tokencheck.enabled: Y
+      ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"

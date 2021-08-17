@@ -49,4 +49,29 @@
 			<artifactId>ms-framework-core</artifactId>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>truezip-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>update-project</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<files>
+								<file>
+									<source>src-gen/database</source>
+									<outputDirectory>target/${project.artifactId}-${project.version}.jar</outputDirectory>
+								</file>								 
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>	
 </project>

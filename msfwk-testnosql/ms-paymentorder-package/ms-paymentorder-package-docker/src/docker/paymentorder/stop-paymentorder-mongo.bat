@@ -1,3 +1,5 @@
+helm uninstall appinit -n mongopaymentorder
+
 helm uninstall dbinit -n mongopaymentorder
 
 helm uninstall paymentorder -n paymentorder

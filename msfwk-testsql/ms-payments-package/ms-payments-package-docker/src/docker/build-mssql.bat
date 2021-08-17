@@ -13,5 +13,7 @@ docker-compose -f paymentorder-mssql.yml %*
 
 docker-compose -f db-build.yml %*
 
+docker-compose -f db-appinit-build.yml %*
+
 REM call kafka.bat up --build -d
 

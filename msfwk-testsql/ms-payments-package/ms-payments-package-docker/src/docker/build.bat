@@ -10,8 +10,10 @@ copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 
 REM Now run Docker Compose
 docker-compose -f paymentorder.yml %*
-
+ 
 docker-compose -f db-build.yml %*
+
+docker-compose -f db-appinit-build.yml %*
 
 
 REM call kafka.bat up --build -d

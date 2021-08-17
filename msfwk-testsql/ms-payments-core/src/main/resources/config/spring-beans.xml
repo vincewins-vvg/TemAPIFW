@@ -91,7 +91,7 @@
 				<prop key="hibernate.dialect">#{dbProperties['dialect']}</prop>
 				<prop key="javax.persistence.schema-generation.database.action">none</prop>
 				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">#{dbProperties['jpaEnabled']}</prop>
 				<prop key="database">#{dbProperties['database']}</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 			</props>

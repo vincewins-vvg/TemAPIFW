@@ -18,6 +18,9 @@ cp -f ${DOCKER_ENV_LOCATION}/k8ENV.env .env
 ./repackbuild.sh app/fileingester ms-fileingester.jar $@  
 
 #REM Now run Docker Compose
+#REM docker-compose -f db-appinit-build.yml $@
+
+#REM Now run Docker Compose
 #REM docker-compose -f db-build.yml $@
 
 #REM Now run Docker Compose
