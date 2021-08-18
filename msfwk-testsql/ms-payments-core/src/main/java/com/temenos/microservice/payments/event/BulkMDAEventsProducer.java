@@ -3,28 +3,21 @@ package com.temenos.microservice.payments.event;
 import static com.temenos.microservice.framework.core.logger.constants.LoggerConstants.SCHEDULER_DIAGNOSTIC;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.bulk.BulkEntities;
-import com.temenos.microservice.framework.core.bulk.BulkEventProducer;
+import com.temenos.microservice.framework.core.bulk.IBulkEventProducer;
 import com.temenos.microservice.framework.core.data.Entity;
-import com.temenos.microservice.framework.core.data.Operator;
-import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.mdal.MdaEvent;
 import com.temenos.microservice.framework.core.mdal.MdalKeys;
 import com.temenos.microservice.framework.core.mdal.ParametersEvent;
-import com.temenos.microservice.framework.core.security.Criteria;
-import com.temenos.microservice.framework.core.security.CriterionImpl;
-import com.temenos.microservice.party.entity.Addresses;
-import com.temenos.microservice.partyv4.util.DaoUtils;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 
 /* 
  * BulkMDALEventsProducer prepares MDAL Events for all the entities provided. 
  * BulkMDALEventsProducer raised events are used to synchronize data in MDALCACHE
  * */
-public class BulkMDAEventsProducer implements BulkEventProducer {
+public class BulkMDAEventsProducer implements IBulkEventProducer {
 
 	public MdaEvent constructEvents(BulkEntities bulkEntities) {
 
