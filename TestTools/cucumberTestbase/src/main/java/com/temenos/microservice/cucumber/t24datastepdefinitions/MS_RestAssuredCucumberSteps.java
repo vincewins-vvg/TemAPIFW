@@ -302,6 +302,44 @@ public class MS_RestAssuredCucumberSteps {
         }
     }
     
+    @Given("^MS request header \"([^\"]*)\" is set with jwt token with bearer prefix \"(.*)\"$")
+    public void givenBearerKeyCloakRequestHeader(String headerName, String headerValue) throws Throwable {
+       
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+        if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+        {
+           
+        System.out.println("Keycloak Auth code: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+        request.header(headerName, "Bearer "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+       
+        }
+       
+        else
+        {
+            request.header(headerName, headerValue);
+        }
+    }
+    
+    @Given("^MS request header \"([^\"]*)\" is set with tampered signature token \"(.*)\"$")
+    public void tamperedTokenSignature(String headerName, String headerValue) throws Throwable {
+       
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+        if(headerName.equals("Authorization") && Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+        {
+           
+        System.out.println("Keycloak Auth code: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+        String keyCloakToken = endpointProperties.getProperty("keyCloak_Authorization").toString();
+        String tamperedToken = keyCloakToken.substring(0, keyCloakToken.length()-3);
+        System.out.println("Signature Tampered token "+tamperedToken);
+        request.header(headerName, tamperedToken);     
+        }
+       
+        else
+        {
+            request.header(headerName, headerValue);
+        }
+    }
+    
     @Given("^MS request form-data \"([^\"]*)\" is set to \"(.*)\"$")
     public void setFormData(String formDataKey, String formDataValue) throws Throwable {
         request.multiPart(formDataKey, formDataValue);
