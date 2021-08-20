@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: party-mdal-extract-job
-  namespace: party
+  name: payments-mdal-extract-job
+  namespace: {{.Values.paymentsnamespace}}
 spec:
   template:
     spec:
       containers:
-      - name: partyms-job
+      - name: paymentms-job
         image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
         imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
 		envFrom:
