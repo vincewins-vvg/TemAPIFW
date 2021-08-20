@@ -357,18 +357,6 @@ data:
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
-  temn.msf.scheduler.mdalcacheupdate.cron.trigger.time: 59 * * ? * *
-  temn_msf_function_class_mdalcacheupdate: com.temenos.microservice.framework.core.bulk.InvokeEntityExtractFunction
-  temn.msf.data.entity.class.paymentorder: com.temenos.microservice.payments.entity.PaymentOrder
-  temn.msf.disableInbox: "true"
-  temn.msf.mdal.bulk.eventproducer.paymentorder: com.temenos.microservice.payments.event.BulkMDAEventsProducer
-  temn.msf.name: PaymentOrder
-  temn.msf.security.authz.enabled: "false"
-  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.stream.vendor: kafka
-  temn.msf.entityExtractFunction.param.pageSize: "2"
-  temn.msf.entityExtractFunction.param.entityName: paymentorder
-  temn.msf.entityExtractFunction.param.query.currency: USD
   operationId: paymentscheduler
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
