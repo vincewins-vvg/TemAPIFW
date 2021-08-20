@@ -69,7 +69,7 @@ public class BulkMDAEventsProducer implements IBulkEventProducer {
 
 		ArrayList<ParametersEvent> parametersList = new ArrayList<>();
 		ParametersEvent parameters = new ParametersEvent();
-		parameters.setKey("paymentOrderId");
+		parameters.setKey("paymentId");
 		parameters.setValue(payment.getPaymentOrderId());
 		parametersList.add(parameters);
 		event.setParameters(parametersList);
