@@ -352,7 +352,7 @@ data:
   temn_msf_function_class_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: PaymentOrder  
+  temn_msf_name: paymentorder  
   temn_msf_security_authz_enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
@@ -428,7 +428,7 @@ data:
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: PaymentOrder  
+  temn_msf_name: paymentorder  
   temn_msf_security_authz_enabled: "false" 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor

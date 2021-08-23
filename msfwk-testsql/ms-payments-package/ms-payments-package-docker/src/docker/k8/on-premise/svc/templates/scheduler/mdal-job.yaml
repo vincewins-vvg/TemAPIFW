@@ -2,13 +2,13 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: payments-mdal-extract-job
-  namespace: {{.Values.paymentsnamespace}}
+  namespace: payments
 spec:
   template:
     spec:
       containers:
       - name: paymentms-job
-        image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+        image: temenos/ms-paymentorder-scheduler:DEV
         envFrom:
           - configMapRef:
               name: payments-mdal-config                  
@@ -23,4 +23,4 @@ spec:
               secretKeyRef:
                 name: posqldbsecret
                 key: PASSWORD                     
-      restartPolicy: OnFailure          
+      restartPolicy: OnFailure
