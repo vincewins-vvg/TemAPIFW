@@ -19,7 +19,7 @@ kafkatopic:
   avrodatatopic: table-update
   outboxtopic: paymentorder-outbox
   eventstoretopic: ms-eventstore-inbox-topic
-  inboxtopic: PaymentOrder-inbox-topic
+  inboxtopic: paymentorder-inbox-topic
   eventtopic: paymentorder-event-topic
   errortopic: error-paymentorder
   inboxerrortopic: ms-paymentorder-inbox-error-topic
