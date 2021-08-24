@@ -55,7 +55,7 @@ data:
   IRIS_PATH: irf-provider-container/api
   IRIS_R18_PATH: irisR18/api
   IRIS_VERSION: "v1.0.0"
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
   temn.msf.pdp.resource.type: API
   temn.msf.pdp.resource.manager: PAYMENT
@@ -109,7 +109,7 @@ data:
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   temn.msf.disableInbox: "true"
   temn.msf.security.authz.enabled: "false"
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
@@ -201,7 +201,7 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   temn.msf.ingest.source.stream: {{ .Values.kafkatopic.inboxtopic | quote }}
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.sourcestream_consumergroupid | quote }}
   temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.inboxerrortopic | quote }}
@@ -225,6 +225,15 @@ data:
   JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
   JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
   ID_TOKEN_SIGNED: "true"
+  temn.msf.mdal.keys.MDLPAT.Paymentorder.paymentorder: getCustomerProfile
+  temn.msf.mdal.operationId.getCustomerProfile: GetPaymentOrder
+  temn.cache.host: "192.168.1.34"
+  temn.cache.port: "6060"
+  temn.config.service.base.path: http://192.168.1.34:7006/ms-genericconfig-api/
+  temn.config.service.resource.path: api/v2.0.0/system/configurationGroups/{}/configuration/{}
+  temn.msf.exec.env: server
+  temn.msf.function.class.ProcessBulkMdalEvent: com.temenos.microservice.framework.core.mdal.ProcessBulkMdalEventImpl
+  className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
   JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
@@ -256,7 +265,7 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   temn.msf.ingest.source.stream: {{ .Values.kafkatopic.eventtopic | quote }}
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.sourcestream_consumergroupid | quote }}
   temn.msf.ingest.sink.error.enabled: "false"
@@ -299,7 +308,7 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   temn.msf.exec.env: server
   temn.msf.stream.outbox.topic: paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
@@ -343,7 +352,7 @@ data:
   temn_msf_function_class_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: PaymentOrder  
+  temn_msf_name: paymentorder  
   temn_msf_security_authz_enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
@@ -376,7 +385,7 @@ data:
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
-  temn.msf.name: PaymentOrder
+  temn.msf.name: paymentorder
   temn.msf.security.authz.enabled: "false"
   VALIDATE_PAYMENT_ORDER: "false"
   temn.msf.ingest.file.source.path: /var/lib/fileingesterstorage
@@ -393,4 +402,52 @@ data:
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payments-mdal-config
+  namespace: {{.Values.paymentsnamespace}}
+  labels:
+    app.kubernetes.io/name: payments
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.database_key | quote }}
+  HOST: {{ .Values.env.database.host | quote }}
+  DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
+  DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
+  DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
+  MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn_msf_name: paymentorder  
+  temn_msf_security_authz_enabled: "false" 
+  className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
+  className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
+  temn.msf.scheduler.mdalcacheupdate.cron.trigger.time: 59 * * ? * *
+  temn_msf_function_class_mdalcacheupdate: com.temenos.microservice.framework.core.bulk.InvokeEntityExtractFunction
+  temn.msf.data.entity.class.paymentorder: com.temenos.microservice.payments.entity.PaymentOrder
+  temn.msf.disableInbox: "true"
+  temn.msf.mdal.bulk.eventproducer.paymentorder: com.temenos.microservice.payments.event.BulkMDAEventsProducer
+  temn.msf.security.authz.enabled: "false"
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.entityExtractFunction.param.pageSize: "2"
+  temn.msf.entityExtractFunction.param.entityName: paymentorder
+  temn.msf.entityExtractFunction.param.query.currency: USD
+  operationId: mdalcacheupdate
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
 {{- end }}  
+---

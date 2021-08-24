@@ -19,7 +19,7 @@ kafkatopic:
   avrodatatopic: table-update
   outboxtopic: paymentorder-outbox
   eventstoretopic: ms-eventstore-inbox-topic
-  inboxtopic: ms-paymentorder-inbox-topic
+  inboxtopic: paymentorder-inbox-topic
   eventtopic: paymentorder-event-topic
   errortopic: error-paymentorder
   inboxerrortopic: ms-paymentorder-inbox-error-topic
@@ -59,6 +59,7 @@ image:
     repository: temenos/ms-fileingester
     tag: DEV
     pullPolicy: Never
+
 
 
 env:

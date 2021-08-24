@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: payments-mdal-extract-job
+  namespace: payments
+spec:
+  template:
+    spec:
+      containers:
+      - name: paymentms-job
+        image: temenos/ms-paymentorder-scheduler:DEV
+        envFrom:
+          - configMapRef:
+              name: payments-mdal-config                  
+        env:
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD                     
+      restartPolicy: OnFailure
