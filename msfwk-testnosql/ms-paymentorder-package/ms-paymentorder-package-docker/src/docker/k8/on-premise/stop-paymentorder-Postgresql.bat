@@ -17,18 +17,10 @@ call stop-postgresqldb-scripts.bat
 
 cd ../
 
-kubectl delete kafkatopics -n kafka table-update-paymentorder
+cd streams/kafka
 
-kubectl delete kafkatopics -n kafka paymentorder-outbox
+kubectl delete -f kafka-topics.yaml
 
-kubectl delete kafkatopics -n kafka ms-eventstore-inbox-topic
+kubectl delete -f schema-registry.yaml
 
-kubectl delete kafkatopics -n kafka paymentorder-event-topic
-
-kubectl delete kafkatopics -n kafka ms-paymentorder-inbox-topic
-
-kubectl delete kafkatopics -n kafka error-paymentorder
-
-kubectl delete kafkatopics -n kafka ms-paymentorder-inbox-error-topic
-
-kubectl delete kafkatopics -n kafka multipart-topic
+cd ../..
