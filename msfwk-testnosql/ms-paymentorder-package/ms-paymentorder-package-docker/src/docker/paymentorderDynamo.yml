@@ -71,7 +71,7 @@ services:
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
       className_searchUsers: com.temenos.microservice.paymentorder.function.SearchUsersImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
@@ -117,7 +117,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.queue.impl: kafka
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -160,7 +160,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -198,7 +198,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -239,7 +239,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -278,7 +278,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -315,7 +315,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -352,7 +352,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: paymentorder-event-topic
@@ -390,7 +390,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server

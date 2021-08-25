@@ -57,7 +57,7 @@ services:
       className_FileDownload: com.temenos.microservice.paymentorder.function.FileDownloadImpl
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -99,7 +99,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -144,7 +144,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -187,7 +187,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -233,7 +233,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD:
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -277,7 +277,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD:
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -320,7 +320,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD:
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -363,7 +363,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: paymentorder-event-topic
@@ -406,7 +406,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server

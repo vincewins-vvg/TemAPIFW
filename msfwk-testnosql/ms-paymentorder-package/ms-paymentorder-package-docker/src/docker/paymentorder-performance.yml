@@ -98,7 +98,7 @@ services:
       className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
       className_GetAccountValidate: com.temenos.microservice.paymentorder.function.GetAccountValidateImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
@@ -146,7 +146,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
       temn.msf.scheduler.paymentscheduler.cron.trigger.time: 59 * * ? * *
@@ -177,7 +177,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server
@@ -212,7 +212,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.queue.impl: kafka
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -256,7 +256,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -295,7 +295,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -346,7 +346,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -386,7 +386,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -424,7 +424,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -462,7 +462,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: paymentorder-event-topic
@@ -504,7 +504,7 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
