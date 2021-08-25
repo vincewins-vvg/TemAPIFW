@@ -1,92 +1,11 @@
 {
-	"specversion": "1.0",
-	"type": "PaymentOrder.CreateNewPaymentOrder",
-	"subject": "command",
-	"source": "https://temenos.com/microservice/cloudevents/ms-paymentorder",
-	"id": "9225e8-3ca-9-b-8801",
-	"time": "2018-04-05T17:31:00Z",
-	"correlationid": "9216e8-3ca-9-b-8321",	
-	"serviceid": "client",
-	"channelid": "web",
-	"organizationid": "org",
-	"tenantid": "ten",
-	"extension-mscontext": {
-		"authorization": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw",
-		"customfilterid": "test",
-		"operationinstanceid": null,
-		"sequenceinstanceid": "seqinst",
-		"priority": 1
-	},
-	"datacontenttype": "application/json",
-	"data": {
-		"body": {
-			"fromAccount": "419967",
-			"toAccount": "7546",
-			"paymentReference": "paybatt",
-			"paymentDetails": "refDe",
-			"currency": "USD",
-			"amount": 124,
-			"expires": 1,
-			"fileContent": "",
-			"paymentDate": "2021-08-01",
-			"extensionData": {
-				"array_BusDayCentres": [
-					"India",
-					"Aus"
-				],
-				"paymentOrderProduct": "Temenos",
-				"array_NonOspiType": [{
-						"NonOspiType": "DebitCard",
-						"NonOspiId": "12456"
-					},
-					{
-						"NonOspiType": "UPI",
-						"NonOspiId": "12456"
-					},
-					{
-						"NonOspiType": "DebitCard",
-						"NonOspiId": "3163"
-					}
-				]
-			},
-			"paymentMethod": {
-				"id": 100,
-				"name": "paymentmethod",
-				"extensionData": {
-					"array_BusDayCentres": [
-						"India",
-						"Aus"
-					],
-					"paymentOrderProduct": "Temenos",
-					"array_NonOspiType": [{
-							"NonOspiType": "DebitCard",
-							"NonOspiId": "12456"
-						},
-						{
-							"NonOspiType": "UPI",
-							"NonOspiId": "12456"
-						},
-						{
-							"NonOspiType": "DebitCard",
-							"NonOspiId": "3163"
-						}
-					]
-				},
-				"card": {
-					"cardid": 1,
-					"cardname": "allwin",
-					"cardlimit": 1
-				}
-			},
-			"payeeDetails": {
-				"payeeName": "paydetail",
-				"payeeType": "visa"
-			},
-			"descriptions": [
-				"success"
-			]
-		}
-	},
-	"businesskey": "PO123",
-	"sequenceno": 1
+   "eventId":"148313a7-ff3a-45d7-b34b-169adbd61147",
+   "dateTime":1576074808386,
+   "correlationId":"148313a7-ff3a-45d3-b34b-169adbd61cfa",
+   "priority":0,
+   "status":"new",
+   "eventType":"POAccepted",
+   "payload":{
+      "paymentOrderId":"PO~111~123~USD~100"
+   }
 }
