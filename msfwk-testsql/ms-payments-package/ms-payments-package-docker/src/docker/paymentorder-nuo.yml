@@ -121,7 +121,7 @@ services:
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
       DATABASE_KEY: sql
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       serviceadaptor.preprocessorimpl.class: com.temenos.microservice.sample.security.SampleTokenGenerator
@@ -173,7 +173,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -222,7 +222,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -268,7 +268,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -317,7 +317,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -362,7 +362,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10        
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -421,7 +421,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -468,7 +468,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -513,7 +513,7 @@ services:
       DB_CONNECTION_URL: jdbc:com.nuodb.hib://db-service/payments?schema=ms_paymentorder
       MAX_POOL_SIZE: 150
       MIN_POOL_SIZE: 10  
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server

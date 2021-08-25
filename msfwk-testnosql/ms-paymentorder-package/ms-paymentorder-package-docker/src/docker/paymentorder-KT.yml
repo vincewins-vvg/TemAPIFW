@@ -50,7 +50,7 @@ services:
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
       className_DoInputValidation: com.temenos.microservice.paymentorder.function.DoInputValidationImpl
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -126,7 +126,7 @@ services:
       CASSANDRA_SSL: 
       CASSANDRA_KEYSTORE_FILE_PATH:
       CASSANDRA_KEYSTORE_PASSWORD: 
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: paymentorder-event-topic
