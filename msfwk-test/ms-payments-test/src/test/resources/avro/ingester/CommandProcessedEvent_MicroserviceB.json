@@ -5,11 +5,11 @@
    "priority": 0,
    "status": "PROCESSED",
    "eventSourceId": "PaymentOrder",
-   "commandType": "PaymentOrder.UpdatePaymentOrder",
+   "commandType": "ms-paymentorder.UpdatePaymentOrder",
    "eventType": "CommandProcessed",
    "payload": {
       "commandId": "28c51c1f-e55f-4707-8bdf-99b44ea608d7",
-      "eventType": "PaymentOrder.UpdatePaymentOrder",
+      "eventType": "ms-paymentorder.UpdatePaymentOrder",
       "status": "NEW",
       "businessObject": {
          "status": 200,

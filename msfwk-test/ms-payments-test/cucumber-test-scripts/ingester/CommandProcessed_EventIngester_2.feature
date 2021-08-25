@@ -21,7 +21,7 @@ Scenario: Send Microservice B data to paymentorder-event-topic and validate Even
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-EventIngester-001  | eventId    | eq       | string   | 975740c1-effa-4a5c-a690-999b90f31f81 |
       | MS-Test-PO-EventIngester-001  | eventType  | eq       | string   | CommandProcessed |
-      | MS-Test-PO-EventIngester-001  | commandType  | eq       | string   | PaymentOrder.UpdatePaymentOrder |
+      | MS-Test-PO-EventIngester-001  | commandType  | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1    
       | TestCaseID                   | ColumnName | ColumnValue |

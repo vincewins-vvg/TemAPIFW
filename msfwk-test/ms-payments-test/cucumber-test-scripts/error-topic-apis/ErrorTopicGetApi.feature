@@ -1,5 +1,4 @@
 #BalajiLakshminarayanan
-
 Feature: ErrorTopicGetApi
 
   Scenario: Send Data to topic and validate error table

@@ -53,7 +53,7 @@
 #    And Validate the below details from the db table ms_inbox_events
 #      | TestCaseID                           | ColumnName     | ColumnValue |
 #      | XACMLValidation       | eventId    | 4316e8-3ca-9-b-1002 |
-#      | XACMLValidation       | eventType    | PaymentOrder.CreateNewPaymentOrder |
+#      | XACMLValidation       | eventType    | ms-paymentorder.CreateNewPaymentOrder |
 #      | XACMLValidation       | status    | PROCESSED |
 #    
 #    

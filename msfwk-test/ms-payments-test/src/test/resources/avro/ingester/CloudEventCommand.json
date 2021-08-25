@@ -1,6 +1,6 @@
 {
 	"specversion": "1.0",
-	"type": "PaymentOrder.CreateNewPaymentOrder",
+	"type": "ms-paymentorder.CreateNewPaymentOrder",
 	"subject": "command",
 	"source": "https://temenos.com/microservice/cloudevents/PaymentOrder",
 	"id": "4216e8-3ca-9-b-1001",
