@@ -37,7 +37,7 @@ public class PaymentOrderRecord {
 
 	private void transform() {
 		JSONObject payload = sourceRecord.getJSONObject("payload");
-		if("".equalsIgnoreCase(payload.optString("recId"))) {
+		if ("".equalsIgnoreCase(payload.optString("recId"))) {
 			throw new RuntimeException("Paymentorder id null");
 		}
 		this.paymentOrderId = payload.optString("recId");
@@ -47,12 +47,13 @@ public class PaymentOrderRecord {
 		this.creditAccount = payload.getString("CreditAccount"); // 18
 		this.currency = payload.getString("PaymentCurrency"); // 65
 		try {
-			this.paymentDate = DataTypeConverter.toDate(
-					payload.getString("PaymentExecutionDate")); // 69
+			this.paymentDate = DataTypeConverter.toDate(payload.getString("PaymentExecutionDate")); // 69
 		} catch (JSONException | ParseException e) {
 			return;
 		}
-		this.status = payload.getString("PaymentSystemStatus"); // 98
+		this.status = payload.has("PaymentSystemStatus") && !payload.isNull("PaymentSystemStatus")
+				? payload.getString("PaymentSystemStatus")
+				: "INITIATED"; // 98
 		this.amount = new BigDecimal(payload.getString("TotalDebitAmount")); // 169
 	}
 
