@@ -1,4 +1,3 @@
-
   Feature: CheckInboxOutboxEntriesForPOST
   
 
@@ -34,7 +33,7 @@
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-Payments-MS-001       | eventId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
-      | MS-Test-Payments-MS-001       | eventType    | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+      | MS-Test-Payments-MS-001       | eventType    | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
     
@@ -87,12 +86,12 @@
     #Then Set the following data criteria
       #| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
       #| MS-Test-Payments-MS-001       | correlationid    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
-      #| MS-Test-Payments-MS-001       | eventtype    | eq       | string   | PaymentOrder.UpdatePaymentOrder  |  
+      #| MS-Test-Payments-MS-001       | eventtype    | eq       | string   | ms-paymentorder.UpdatePaymentOrder  |  
       #
     #And Validate the below details from the db table ms_outbox_events
       #| TestCaseID                    | ColumnName | ColumnValue |
       #| MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
-      #| MS-Test-Payments-MS-001       | eventtype    | PaymentOrder.UpdatePaymentOrder |
+      #| MS-Test-Payments-MS-001       | eventtype    | ms-paymentorder.UpdatePaymentOrder |
       #| MS-Test-Payments-MS-001       | status    | DELIVERED |
       
     

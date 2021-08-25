@@ -37,7 +37,7 @@
 #    Then Set the following data criteria
 #      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
 #      | CloudEventCommand| eventId    | eq       | string   | 4216e8-3ca-9-b-1001 |
-#      | CloudEventCommand| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+#      | CloudEventCommand| eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
 #    And Validate the below details from the db table ms_inbox_events and check no of record is 1
 #      | TestCaseID                    | ColumnName | ColumnValue |
@@ -79,11 +79,11 @@
 #    Then Set the following data criteria 
 #      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
 #      | CloudEventCommand| correlationId    | eq       | string   | 4216e8-3ca-9-b-1001  |
-#      | CloudEventCommand| eventType    | eq       | string   | PaymentOrder.UpdatePaymentOrder |
+#      | CloudEventCommand| eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
     
 #    And Validate the below details from the db table ms_outbox_events and check no of record is 1
 #      | TestCaseID            | ColumnName     | ColumnValue |
-#      | CloudEventCommand| eventType    | PaymentOrder.UpdatePaymentOrder |
+#      | CloudEventCommand| eventType    | ms-paymentorder.UpdatePaymentOrder |
     
 #   	And Validate if the below columns contains values from the db table ms_outbox_events
 #     	| TestCaseID                           | ColumnName     | ColumnValue |      

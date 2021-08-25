@@ -30,7 +30,7 @@ Feature: CommandBinaryIngesterFailure
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
       | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
-      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                    | ColumnName | ColumnValue |
@@ -92,7 +92,7 @@ Feature: CommandBinaryIngesterFailure
     Then Set the following data criteria
      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
      | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
-     | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+     | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
      | TestCaseID                    | ColumnName | ColumnValue |
@@ -160,7 +160,7 @@ Feature: CommandBinaryIngesterFailure
     And Validate the below details from the db table ms_inbox_events
       | TestCaseID                           | ColumnName     | ColumnValue |
       | WithoutJWTToken       | eventId    | 1a316d88-3c7-4-ad7e-1001 |
-      | WithoutJWTToken       | eventType    | PaymentOrder.CreateNewPaymentOrder |
+      | WithoutJWTToken       | eventType    | ms-paymentorder.CreateNewPaymentOrder |
       
     And Validate if the below columns contains values from the db table ms_inbox_events
       | TestCaseID                           | ColumnName     | ColumnValue |      
@@ -239,7 +239,7 @@ Feature: CommandBinaryIngesterFailure
     And Validate the below details from the db table ms_inbox_events
       | TestCaseID                           | ColumnName     | ColumnValue |
       | BusinessFailure       | eventId    | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
-      | BusinessFailure       | eventType    | PaymentOrder.CreateNewPaymentOrder |
+      | BusinessFailure       | eventType    | ms-paymentorder.CreateNewPaymentOrder |
       
     And Validate if the below columns contains values from the db table ms_inbox_events
       | TestCaseID            | ColumnName     | ColumnValue |      
@@ -317,7 +317,7 @@ Feature: CommandBinaryIngesterFailure
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                           | ColumnName     | ColumnValue |
       | BusinessFailure       | eventId    | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002 |
-      | BusinessFailure       | eventType    | PaymentOrder.CreateNewPaymentOrder |
+      | BusinessFailure       | eventType    | ms-paymentorder.CreateNewPaymentOrder |
       
     And Validate if the below columns contains values from the db table ms_inbox_events
       | TestCaseID            | ColumnName     | ColumnValue |      
@@ -423,7 +423,7 @@ Feature: CommandBinaryIngesterFailure
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                           | ColumnName     | ColumnValue |
       | BusinessFailure       | eventId    | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003 |
-      | BusinessFailure       | eventType    | PaymentOrder.CreateNewPaymentOrder |
+      | BusinessFailure       | eventType    | ms-paymentorder.CreateNewPaymentOrder |
       
     And Validate if the below columns contains values from the db table ms_inbox_events
       | TestCaseID            | ColumnName     | ColumnValue |      
@@ -471,15 +471,15 @@ Feature: CommandBinaryIngesterFailure
       | BusinessFailure       | payload         | "status":200   |
       | BusinessFailure       | status         | DELIVERED  |
       
-   #3.Check the entries in outbox for correlationId & eventType "PaymentOrder.UpdatePaymentOrder"
+   #3.Check the entries in outbox for correlationId & eventType "ms-paymentorder.UpdatePaymentOrder"
     Then Set the following data criteria 
       | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
       | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | PaymentOrder.UpdatePaymentOrder |
+      | BusinessFailure| eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
     
     And Validate the below details from the db table ms_outbox_events and check no of record is 1
       | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | PaymentOrder.UpdatePaymentOrder |
+      | BusinessFailure| eventType    | ms-paymentorder.UpdatePaymentOrder |
     
    	And Validate if the below columns contains values from the db table ms_outbox_events
      	| TestCaseID                           | ColumnName     | ColumnValue |      

@@ -35,7 +35,7 @@ Feature: CommandBinaryIngester
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
       | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-b-8728 |
-      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                    | ColumnName | ColumnValue |
@@ -107,7 +107,7 @@ Feature: CommandBinaryIngester
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue         |
       | MS-Test-PO-CommandIngester-001| eventId    | eq       | string   | 4316e8-3ca-9-ab-8728 |
-      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+      | MS-Test-PO-CommandIngester-001| eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1
       | TestCaseID                    | ColumnName | ColumnValue |

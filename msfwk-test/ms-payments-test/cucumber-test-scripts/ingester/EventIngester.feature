@@ -46,7 +46,7 @@
     Then Set the following data criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-EventIngester-001  | eventId    | eq       | string   | 6f7cd466-2dea-45ac-999b-c61eb54ae81d11 |
-      | MS-Test-PO-EventIngester-001  | eventType  | eq       | string   | PaymentOrder.CreateNewPaymentOrder.SequenceCompleted |
+      | MS-Test-PO-EventIngester-001  | eventType  | eq       | string   | ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted |
 
     And Validate the below details from the db table ms_inbox_events and check no of record is 1    
       | TestCaseID                   | ColumnName | ColumnValue |

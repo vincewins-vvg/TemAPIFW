@@ -3,7 +3,7 @@
   "dateTime": "2019-10-21T00:49:35",
   "organizationId": null,
   "status": "new",
-  "eventType": "PaymentOrder.CreateNewPaymentOrder.SequenceCompleted",
+  "eventType": "ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted",
   "payload": {
     "paymentOrderId": "PO~100-CBE~232-EVEN~INR~125" 
   }

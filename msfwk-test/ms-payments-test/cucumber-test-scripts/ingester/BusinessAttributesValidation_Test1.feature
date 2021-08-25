@@ -35,7 +35,7 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 	Then Set the following data criteria 
 		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
 		| MS-Test-PO-CloudEvent-001       | eventId    | eq       | string   | 9225e8-3ca-9-b-8801 |
-		| MS-Test-PO-CloudEvent-001       | eventType    | eq       | string   | PaymentOrder.CreateNewPaymentOrder |
+		| MS-Test-PO-CloudEvent-001       | eventType    | eq       | string   | ms-paymentorder.CreateNewPaymentOrder |
 		
 	And Validate the below details from the db table ms_inbox_events and check no of record is 1 
 	
@@ -69,7 +69,7 @@ Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED
 	Then Set the following data criteria 
 		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
 		| MS-Test-PO-CloudEvent-002       | eventId    | eq       | string   | f5798d48-4d89-4e0c-b341-0370d18e47b7 |
-		| MS-Test-PO-CloudEvent-002       | eventType    | eq       | string   | PaymentOrder.UpdatePaymentOrder |
+		| MS-Test-PO-CloudEvent-002       | eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
 		
 	And Validate the below details from the db table ms_inbox_events and check no of record is 1 
 	

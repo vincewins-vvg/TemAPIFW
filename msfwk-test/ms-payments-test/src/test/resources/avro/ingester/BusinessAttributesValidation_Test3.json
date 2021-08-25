@@ -2,7 +2,7 @@
 	"specversion": "1.0",
 	"id": "g5798d48-4d89-4e0c-b341-0370d18e47b7",
 	"source": "https://temenos.com/microservice/cloudevents/ms-paymentorder",
-	"type": "PaymentOrder.UpdatePaymentOrder",
+	"type": "ms-paymentorder.UpdatePaymentOrder",
 	"datacontenttype": "application/json",
 	"subject": "command",
 	"time": "2020-12-04T12:37:06.571Z",

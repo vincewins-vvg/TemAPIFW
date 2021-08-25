@@ -10,7 +10,7 @@
 	  "channelid":"web",
 	  "customfilterid":"test"
 	},
-	"eventType": "PaymentOrder.CreateNewPaymentOrder",
+	"eventType": "ms-paymentorder.CreateNewPaymentOrder",
 	"payload": {
 		"body": {
 			"fromAccount": "1005",
