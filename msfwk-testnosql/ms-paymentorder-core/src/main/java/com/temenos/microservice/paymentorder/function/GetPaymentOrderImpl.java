@@ -55,13 +55,19 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		String sortKey = null;
-		String  paymentOrderId = null;
-		if(params.getPaymentId() != null && params.getPaymentId().get(0) != null) {
-			paymentOrderId = params.getPaymentId().get(0).replace("PO~","");
-			sortKey = paymentOrderId.substring(0,paymentOrderId.indexOf("~"));
+		String paymentOrderId = null;
+		if (params.getPaymentId() != null && params.getPaymentId().get(0) != null) {
+			paymentOrderId = params.getPaymentId().get(0).replace("PO~", "");
+			if (paymentOrderId.contains("~")) {
+				sortKey = paymentOrderId.substring(0, paymentOrderId.indexOf("~"));
+			}
 		}
-		Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = paymentOrderDao
-		.getByPartitionKeyAndSortKey(params.getPaymentId().get(0),sortKey);
+		Optional<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderOpt = null;
+		if (sortKey != null && !sortKey.isEmpty())
+			paymentOrderOpt = paymentOrderDao.getByPartitionKeyAndSortKey(params.getPaymentId().get(0), sortKey);
+		else
+			paymentOrderOpt = paymentOrderDao.getByPartitionKey(params.getPaymentId().get(0));
+
 		if (paymentOrderOpt.isPresent()) {
 			com.temenos.microservice.paymentorder.entity.PaymentOrder paymentOrder = paymentOrderOpt.get();
 			PaymentStatus paymentStatus = new PaymentStatus();
@@ -112,23 +118,27 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 				payeeDtls.setPayeeType(paymentOrder.getPayeeDetails().getPayeeType());
 				order.setPayeeDetails(payeeDtls);
 			}
-			if(params.getGetFromStorageFile()!= null && params.getGetFromStorageFile().get(0) != null) {
-			try {
-				String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
-				String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME, FileReaderConstants.EMPTY);
-				if(StorageUrl != null && STORAGE_HOME != null) {
-					MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
-					InputStream is = fileReader.getFileAsInputStream(StorageUrl);
-					byte[] bytes = IOUtils.toByteArray(is);
-					ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
-					paymentStatus.setFileReadWrite(fileReadWrite);
-				}
-				} catch (FileNotFoundException e ) {
-					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+			if (params.getGetFromStorageFile() != null && params.getGetFromStorageFile().get(0) != null) {
+				try {
+					String StorageUrl = Environment.getEnvironmentVariable("FILE_STORAGE_URL", null);
+					String STORAGE_HOME = Environment.getEnvironmentVariable(Environment.TEMN_MSF_STORAGE_HOME,
+							FileReaderConstants.EMPTY);
+					if (StorageUrl != null && STORAGE_HOME != null) {
+						MSStorageReadAdapter fileReader = MSStorageReadAdapterFactory.getStorageReadAdapterInstance();
+						InputStream is = fileReader.getFileAsInputStream(StorageUrl);
+						byte[] bytes = IOUtils.toByteArray(is);
+						ByteBuffer fileReadWrite = ByteBuffer.wrap(bytes);
+						paymentStatus.setFileReadWrite(fileReadWrite);
+					}
+				} catch (FileNotFoundException e) {
+					throw new StorageException(
+							new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				} catch (IOException e) {
-					throw new InvalidInputException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
+					throw new InvalidInputException(
+							new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				} catch (StorageReadException e) {
-					throw new StorageException(new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));	
+					throw new StorageException(
+							new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 				}
 			}
 			paymentOrderStatus.setPaymentOrder(order);

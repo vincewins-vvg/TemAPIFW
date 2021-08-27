@@ -14,6 +14,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
@@ -51,6 +56,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
@@ -88,6 +98,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
@@ -125,6 +140,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
         image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
@@ -162,6 +182,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
