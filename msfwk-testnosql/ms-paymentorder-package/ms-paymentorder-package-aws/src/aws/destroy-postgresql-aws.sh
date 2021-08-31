@@ -8,6 +8,7 @@ aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-e
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-error-topic
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-outbox
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-table-update-paymentorder
+aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-outbox
 
 aws rds delete-db-instance  --db-instance-identifier PaymentOrderPosgres --skip-final-snapshot
 sleep 600
@@ -91,4 +92,5 @@ aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-ord
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-get-validation
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-search-users
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-get-account-validate
+
 sleep 60
