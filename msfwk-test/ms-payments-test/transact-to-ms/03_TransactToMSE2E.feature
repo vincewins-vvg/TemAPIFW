@@ -54,10 +54,10 @@ Scenario: Create a new Payment Order
 	Then  verify if entry for "PaymentOrderId" is present in t24 table "FBNK_PAYMENT_ORDER" 
 	
 	#  To check entry in F_DATA_EVENTS table for the created PO
-	Then  verify if entry for "PaymentOrderId" is present in t24 table "F_DATA_EVENTS" 
+	Then  verify if entry for "PaymentOrderId" is present in t24 table "FBNK_DATA_EVENTS" 
 	
 	#   To check entry in F_DATA_EVENTS table for the created PO is processed
-	Then  check if the "PaymentOrderId" in t24 table "F_DATA_EVENTS" has been processed 
+	Then  check if the "PaymentOrderId" in t24 table "FBNK_DATA_EVENTS" has been processed 
 	#	
 	#	#Scenario: To validate whether the created payment order is available in the ms_payment_order database	
 	Then Set the following data criteria with bundle value 
