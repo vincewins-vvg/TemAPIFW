@@ -42,4 +42,4 @@ Scenario: To create RR Param for Payment Order
 	Then  verify if entry for "PaymentOrderId" is present in t24 table "FBNK_PAYMENT_ORDER" 
 	
 	#  To check entry in F_DATA_EVENTS table for the created PO
-	Then  verify if entry for "PaymentOrderId" is present in t24 table "F_DATA_EVENTS"
+	Then  verify if entry for "PaymentOrderId" is present in t24 table "FBNK_DATA_EVENTS"
