@@ -1035,7 +1035,7 @@
 						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true"/>
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">getDbMigration</AttributeValue>
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">getDbMigrationStatus</AttributeValue>
 						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true"/>
 					</Match>
 					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
