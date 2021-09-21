@@ -65,15 +65,13 @@ image:
 env:
   database:
     database_key: sql
-    host: payments-db-service
+    host: host.docker.internal
     database_name: payments
-    db_username: root
-    db_password: password
-    driver_name: com.mysql.jdbc.Driver
-    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    db_connection_url: jdbc:mysql://paymentorder-db-service:3306/payments
-    max_pool_size: "5"
-    min_pool_size: "1"
+    driver_name: oracle.jdbc.OracleDriver
+    dialect: org.hibernate.dialect.Oracle10gDialect
+    db_connection_url: jdbc:oracle:thin:@host.docker.internal:1521:orcl
+    max_pool_size: "150"
+    min_pool_size: "10" 
   kafka:
     temnmsfstreamvendor: kafka
     temnqueueimpl: kafka
