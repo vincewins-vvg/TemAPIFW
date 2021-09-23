@@ -50,7 +50,7 @@ image:
     tag: DEV
     pullPolicy: Never
   fileingester:
-    repository: dev.local/temenos/ms-fileingester
+    repository: dev.local/temenos/ms-paymentorder-fileingester
     tag: DEV
     pullPolicy: Never     
 
