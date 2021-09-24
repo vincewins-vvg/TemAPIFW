@@ -19,7 +19,7 @@
 		<!-- Disable function impl code gen -->
 		<msf.function.impl.codegen.enabled>false</msf.function.impl.codegen.enabled>
 		<sonar.skip>true</sonar.skip>
-		<msf.appinit.enabled>true</msf.appinit.enabled>
+		<!--<msf.appinit.enabled>true</msf.appinit.enabled>-->
 	</properties>
 
 	<dependencies>
