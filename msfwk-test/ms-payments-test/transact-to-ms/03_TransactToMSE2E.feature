@@ -15,11 +15,11 @@ Scenario: Create a new Payment Order
 		| description | string |Payment ref|
 		
 		#To create a RR PARAM entry for PAYMENT.ORDER application
-	And I post an OFS Message "RR.PARAM,/I/PROCESS//0,INPUTT/123456,PAYMENT.ORDER" 
+	And I post an OFS Message "RR.PARAM,/I/PROCESS//0,INPUTT/123456,FBNK_PAYMENT_ORDER" 
 	And set wait time of 10 seconds 
 	
 	#To check if entry created for PAYMENT.ORDER Group in RR PARAM table
-	Then verify if entry for "PAYMENT.ORDER" is present in t24 table "F_RR_PARAM" 
+	Then verify if entry for "FBNK_PAYMENT_ORDER" is present in t24 table "F_RR_PARAM" 
 	And set wait time of 10 seconds 
 	
 	#To create customer
