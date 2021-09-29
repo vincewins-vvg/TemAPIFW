@@ -3,11 +3,11 @@ Feature: 01_CreateRRParamForPaymentOrder
 Scenario: To create RR Param for Payment Order 
 
 #To create a RR PARAM entry for PAYMENT.ORDER application
-	Given I post an OFS Message "RR.PARAM,/I/PROCESS//0,INPUTT/123456,PAYMENT.ORDER" 
+	Given I post an OFS Message "RR.PARAM,/I/PROCESS//0,INPUTT/123456,FBNK.PAYMENT.ORDER" 
 	And set wait time of 10 seconds 
 	
 	#To check if entry created for PAYMENT.ORDER Group in RR PARAM table
-	Then verify if entry for "PAYMENT.ORDER" is present in t24 table "F_RR_PARAM" 
+	Then verify if entry for "FBNK.PAYMENT.ORDER" is present in t24 table "F_RR_PARAM" 
 	And set wait time of 10 seconds 
 	
 	#To create customer
