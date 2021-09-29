@@ -30,9 +30,7 @@ spec:
           - name: db.username
             value: {{ .Values.env.appinit.dbUserName }} 
           - name: db.password
-            value: {{ .Values.env.appinit.dbPassword }}           
-          - name: ms.version
-            value: {{ .Values.env.appinit.msVersion }}              
-          - name: db.scripts.location
-            value: {{ .Values.env.appinit.migration }}  
+            value: {{ .Values.env.appinit.dbPassword }}
+          - name: db.auto.upgrade
+            value: {{ .Values.env.appinit.dbautoupgrade }}              
       restartPolicy: {{ .Values.restartPolicy }} 
