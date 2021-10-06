@@ -36,5 +36,5 @@ spec:
           - name: db.password
             value: {{ .Values.env.sqlinit.dbpassword }}
           - name: db.auto.upgrade
-            value: {{ .Values.env.sqlinit.dbautoupgrade }}               
+            value: {{ .Values.env.sqlinit.dbautoupgrade | quote }}               
       restartPolicy: {{ .Values.restartPolicy }} 

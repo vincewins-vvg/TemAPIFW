@@ -26,7 +26,7 @@ env:
     dbpassword: 
     dbconnectionurl:
     dbdriver:
-    dbautoupgrade: N    
+    dbautoupgrade: "N"    
     
     ##MSSQL
     # databaseKey: sql
