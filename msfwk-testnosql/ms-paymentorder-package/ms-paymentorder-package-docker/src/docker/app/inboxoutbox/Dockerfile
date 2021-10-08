@@ -9,8 +9,9 @@ ENV java_options ${java_options}
 ENV JAVA_OPTS ${java_options}
 
 COPY ${artifactid} /app/${artifactid}
-RUN chown -R appuser:appgroup /target
-RUN chmod -R +x /target
+RUN mkdir -p /target
+
+RUN mkdir -p /target/logs
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 RUN chown -R appuser:appgroup /usr
