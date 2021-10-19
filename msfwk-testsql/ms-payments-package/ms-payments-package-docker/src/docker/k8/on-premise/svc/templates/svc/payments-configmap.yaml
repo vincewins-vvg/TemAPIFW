@@ -85,8 +85,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -138,8 +138,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -192,8 +192,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -263,8 +263,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -313,13 +313,13 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
-{{- end }}  
+{{- end }} 
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -361,8 +361,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -407,13 +407,13 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
-{{- end }}  
+{{- end }} 
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -452,8 +452,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
@@ -506,8 +506,8 @@ data:
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
 {{- end }}  
-{{- if .Values.metrics.metricsDisabled }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled }}            
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
