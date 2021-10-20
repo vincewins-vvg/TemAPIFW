@@ -4,6 +4,10 @@ FROM ${DB_BASE_IMAGE}
 # Switch to root user for access to apt-get install
 USER root
 
+RUN apt update
+
+RUN apt install ca-certificates
+
 # Install node/npm
 RUN apt-get -y update  && \
         apt-get install -y curl && \

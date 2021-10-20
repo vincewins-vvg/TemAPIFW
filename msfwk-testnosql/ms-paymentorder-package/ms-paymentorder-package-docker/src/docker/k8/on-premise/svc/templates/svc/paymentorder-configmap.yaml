@@ -51,7 +51,8 @@ data:
   className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
   className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
   className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
-  temn.msf.name: ms-paymentorder  
+  temn.msf.name: ms-paymentorder
+  temn.msf.service: API  
   temn.msf.pdp.resource.type: API
   temn.msf.pdp.resource.manager: PAYMENT
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -120,6 +121,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: AvroIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -173,6 +175,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: CommandIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -232,6 +235,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: EventIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -278,6 +282,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: EventDelivery
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -319,6 +324,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: DataIngester
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -373,7 +379,8 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.name: ms-paymentorder  
+  temn.msf.name: ms-paymentorder
+  temn.msf.service: Scheduler  
   temn.msf.security.authz.enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
@@ -411,6 +418,7 @@ data:
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   temn.msf.name: ms-paymentorder
+  temn.msf.service: FileIngester 
   temn.msf.security.authz.enabled: "false"
   VALIDATE_PAYMENT_ORDER: "false"
   temn.msf.ingest.file.source.path: /var/lib/fileingesterstorage
