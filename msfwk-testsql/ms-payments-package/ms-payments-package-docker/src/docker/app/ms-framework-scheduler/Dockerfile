@@ -12,9 +12,15 @@ ENV SCHEDULER_MAIN_CLASS ${SCHEDULER_MAIN_CLASS}
 
 COPY ${artifactid} /app/${artifactid}
 
+RUN mkdir -p /target
+
+RUN mkdir -p /target/logs
+
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 RUN chown -R appuser:appgroup /usr
 RUN chmod -R +x /usr
+RUN chown -R appuser:appgroup /target
+RUN chmod -R +x /target
 USER appuser
 
 WORKDIR app/
