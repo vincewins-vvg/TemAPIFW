@@ -26,7 +26,10 @@ env:
     dbpassword: 
     dbconnectionurl:
     dbdriver:
-    dbautoupgrade: "N"    
+    dbautoupgrade: "N"
+    exportType: socket
+    socketHost: 
+    socketPort: 4560     
     
     ##MSSQL
     # databaseKey: sql

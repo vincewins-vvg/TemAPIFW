@@ -32,5 +32,11 @@ spec:
           - name: db.password
             value: {{ .Values.env.appinit.dbPassword }}
           - name: db.auto.upgrade
-            value: {{ .Values.env.appinit.dbautoupgrade | quote }}              
+            value: {{ .Values.env.appinit.dbautoupgrade | quote }}    
+          - name: temn.msf.logger.exportType
+            value: {{ .Values.env.appinit.exportType }} 
+          - name: temn.msf.logger.socketHost
+            value: {{ .Values.env.appinit.socketHost | quote }} 
+          - name: temn.msf.logger.socketPort
+            value: {{ .Values.env.appinit.socketPort | quote }}             
       restartPolicy: {{ .Values.restartPolicy }} 
