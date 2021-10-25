@@ -25,9 +25,8 @@ env:
     dbusername: 
     dbpassword: 
     dbconnectionurl:
-    dbdriver: 
-    msversion: DEV.0.0-SNAPSHOT   
-    migration: path:database/install/    
+    dbdriver:
+    dbautoupgrade: "N"    
     
     ##MSSQL
     # databaseKey: sql

@@ -1,0 +1,23 @@
+{
+	"entities": [
+		{
+			"name": "PaymentOrder",
+			"javaPackage": "com.temenos.microservice.paymentorder.entity",
+			"tableName": "ms_payment_order",
+			"isExtendable": true,
+			"properties": [
+				{
+					"name": "paymentDetails",
+					"type": "string",
+					"attributes": [
+						"INDEX"
+					]
+				},
+				{
+					"name": "txnRef",
+					"type": "string"
+				}
+			]
+		}
+	]
+}

@@ -34,9 +34,7 @@ spec:
           - name: db.username
             value: {{ .Values.env.sqlinit.dbusername }}
           - name: db.password
-            value: {{ .Values.env.sqlinit.dbpassword }}      
-          - name: ms.version
-            value: {{ .Values.env.sqlinit.msversion }}
-          - name: db.scripts.location
-            value: {{ .Values.env.sqlinit.migration }}         
+            value: {{ .Values.env.sqlinit.dbpassword }}
+          - name: db.auto.upgrade
+            value: {{ .Values.env.sqlinit.dbautoupgrade | quote }}               
       restartPolicy: {{ .Values.restartPolicy }} 

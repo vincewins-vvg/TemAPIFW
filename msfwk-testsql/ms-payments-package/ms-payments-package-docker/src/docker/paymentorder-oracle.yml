@@ -76,7 +76,7 @@ services:
       temn.msf.storage.home: ${MS_STORAGE_HOME}
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
       className_initiateDbMigration: com.temenos.microservice.framework.dbmigration.core.InitiateDbMigrationImpl
-      className_getDbMigration: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationImpl
+      className_getDbMigrationStatus: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationStatusImpl
       className_ReprocessEvents: com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl
       className_GetErrorEvents: com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl
       temn.msf.ingest.reprocess.source.stream: reprocess-event      
