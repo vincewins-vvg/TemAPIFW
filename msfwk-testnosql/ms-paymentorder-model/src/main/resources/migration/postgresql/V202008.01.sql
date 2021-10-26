@@ -1,3 +1,9 @@
+--
+-- *******************************************************************************
+-- * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+-- *******************************************************************************
+--
+
 CREATE TABLE ms_payment_order ( data jsonb );
 CREATE TABLE ms_inbox_events ( data jsonb );
 CREATE TABLE ms_outbox_events ( data jsonb );
