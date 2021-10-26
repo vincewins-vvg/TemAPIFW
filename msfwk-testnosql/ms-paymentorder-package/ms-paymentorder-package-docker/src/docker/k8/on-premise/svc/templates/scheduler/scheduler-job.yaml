@@ -38,3 +38,44 @@ spec:
               - configMapRef:
                   name: paymentorder-scheduler-config                
           restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: nosqlinboxcatchup-scheduler-config
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: nosqlinboxcatchup-scheduler-config      
+        spec:
+          containers:
+          - name: nosqlinboxcatchup-scheduler-config
+            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+            env:
+              - name: DATABASE_KEY
+                value: {{ .Values.env.database.DATABASE_KEY }} 
+              - name: MONGODB_DBNAME
+                value: {{ .Values.env.database.MONGODB_DBNAME }} 
+              - name: MONGODB_CONNECTIONSTR
+                value: {{ .Values.env.database.MONGODB_CONNECTIONSTR }} 
+          # Use secret in real usage
+              - name: POSTGRESQL_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: ponosqldbsecret
+                    key: USER_NAME 
+              - name: POSTGRESQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: ponosqldbsecret
+                    key: PASSWORD  
+            envFrom:
+              - configMapRef:
+                  name: nosqlinboxcatchup-scheduler-config
+          restartPolicy: OnFailure

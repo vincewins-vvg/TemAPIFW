@@ -80,6 +80,20 @@ sleep 10
 aws events put-targets --rule ms-payments-scheduler-rule --targets "[{\"Id\":\"1\",\"Arn\":\"arn:aws:lambda:eu-west-2:177642146375:function:paymentscheduler\"}]"
 sleep 10
 
+
+#create cloudwatch for inboxcleanup scheduler
+aws lambda create-function --function-name paymentinboxcleanupScheduler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.CloudWatchSchedulerProcessor::handleRequest --description "Scheduler for executing inboxcleanup" --timeout 120 --memory-size 1024 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order-sql",S3Key=${serviceFileName} --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,temn_msf_name=PaymentOrderService,temn_msf_function_class_sqlInboxCatchup=com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor,temn_msf_scheduler_inboxcleanup_schedule=60,temn_msf_security_authz_enabled=false,DATABASE_KEY=sql,TEST_ENVIRONMENT=MOCK,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,MAX_POOL_SIZE=5,MIN_POOL_SIZE=1,temn_msf_stream_vendor=kinesis,operationId=sqlInboxCatchup,parameters=\''{"source":"JSON"}'\'\}
+
+
+sleep 10
+aws events put-rule --name ms-paymentinboxcleanupScheduler-scheduler-rule --schedule-expression 'cron(0/5 * * * ? *)'
+sleep 10
+aws lambda add-permission --function-name  paymentinboxcleanupScheduler --statement-id ms-payment-cloudwatchinvoke --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn arn:aws:events:eu-west-2:177642146375:rule/ms-paymentinboxcleanupScheduler-scheduler-rule
+sleep 10
+aws events put-targets --rule ms-paymentinboxcleanupScheduler-scheduler-rule --targets "[{\"Id\":\"1\",\"Arn\":\"arn:aws:lambda:eu-west-2:177642146375:function:paymentinboxcleanupScheduler\"}]"
+
+sleep 10
+
 # Create lambdas
 aws lambda create-function --function-name payment-sql-create --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.payments.function.CreateNewPaymentOrderFunctionAWS::invoke --description "Handler for SQL Create new payment order Impl" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.mysql.jdbc.Driver,DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect,HOST=${host},PORT=${port},DATABASE_NAME=${dbname},DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:mysql://${host}:${port}/${dbname},temn_msf_security_authz_enabled=false,className_CreateNewPaymentOrder=com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=sql,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/pdpTestAzureFun.properties,MAX_POOL_SIZE=5,MIN_POOL_SIZE=1,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_name=PaymentOrder\}
 sleep 10

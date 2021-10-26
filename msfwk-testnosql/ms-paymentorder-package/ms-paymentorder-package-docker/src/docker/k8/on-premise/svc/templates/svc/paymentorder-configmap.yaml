@@ -443,3 +443,36 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nosqlinboxcatchup-scheduler-config
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: nosqlinboxcatchup-scheduler-config
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.name: ms-paymentorder  
+  temn.msf.security.authz.enabled: "false" 
+  temn.msf.scheduler.inboxcleanup.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.temn_msf_scheduler_inboxcleanup_schedule | quote }}
+  className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
+  className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
+  operationId: nosqlInboxCatchup
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}
