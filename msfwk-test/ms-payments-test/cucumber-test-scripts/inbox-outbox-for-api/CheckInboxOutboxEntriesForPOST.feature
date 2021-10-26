@@ -45,27 +45,27 @@
     And set timeout session for 30 seconds
     
      #Check the entries in outbox for Correlation Id
-    Then Set the following data criteria
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |  
-      
-    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
-    And Validate the below details from the db table ms_outbox_events
-      | TestCaseID                    | ColumnName    | ColumnValue |
-      | MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
+#    Then Set the following data criteria
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |  
+#      
+#    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
+#    And Validate the below details from the db table ms_outbox_events
+#      | TestCaseID                    | ColumnName    | ColumnValue |
+#      | MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
   
     #Check the entries in outbox for eventtype and status value
-    Then Set the following data criteria
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
-      | MS-Test-Payments-MS-001       | eventType        | eq       | string   | CommandProcessed |
-      | MS-Test-Payments-MS-001       | status           | eq       | string   | DELIVERED |
-    
-      
-    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
-    And Validate the below details from the db table ms_outbox_events
-      | TestCaseID                    | ColumnName | ColumnValue |
-      | MS-Test-Payments-MS-001       | eventType  | CommandProcessed |
+#    Then Set the following data criteria
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
+#      | MS-Test-Payments-MS-001       | eventType        | eq       | string   | CommandProcessed |
+#      | MS-Test-Payments-MS-001       | status           | eq       | string   | DELIVERED |
+#    
+#      
+#    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
+#    And Validate the below details from the db table ms_outbox_events
+#      | TestCaseID                    | ColumnName | ColumnValue |
+#      | MS-Test-Payments-MS-001       | eventType  | CommandProcessed |
       
     #Check the entries in outbox
     #Then Set the following data criteria
@@ -78,10 +78,7 @@
       #| MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
       #| MS-Test-Payments-MS-001       | eventtype    | POAccepted |
       #| MS-Test-Payments-MS-001       | status    | DELIVERED |   
- 
- 
-
-      
+       
      #Check the entries in outbox
     #Then Set the following data criteria
       #| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
