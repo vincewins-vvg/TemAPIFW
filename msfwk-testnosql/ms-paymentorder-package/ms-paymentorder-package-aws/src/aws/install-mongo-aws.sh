@@ -43,6 +43,24 @@ aws events put-targets --rule ${DEPLOYMENT_ENVIRONMENT}-ms-paymentorder-schedule
 
 sleep 10
 
+# Create lambdas for scheduler inboxcleanup function
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-poinboxcleanupScheduler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.ingester.instance.CloudWatchSchedulerProcessor::handleRequest --description "Scheduler for inbox cleanup" --timeout 150 --memory-size 5000 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},temn_queue_impl=kinesis,temn_msf_kinesis_flow=true,DATABASE_KEY=mongodb,temn_entitlement_service_enabled=false,temn_msf_stream_vendor=kinesis,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_runtime_env=AWS,temn_msf_security_authz_enabled=false,temn_msf_name=PaymentOrder,temn_msf_scheduler_config=true,temn_msf_scheduler_config_key=scheduler,operationId=nosqlInboxCatchup,temn_msf_function_class_nosqlInboxCatchup=com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor,temn_msf_scheduler_inboxcleanup_schedule=60,temn_msf_stream_kinesis_region=eu-west-2,EXECUTION_ENV=CLOUD,TEST_ENVIRONMENT=MOCK,temn_config_service_api_key=\"ss0uIiJkxU4TZjkaSjSEU4LXU4svu1qrafCMpktz\"\}
+
+sleep 10
+aws events put-rule --name ${DEPLOYMENT_ENVIRONMENT}-ms-poinboxcleanupScheduler-scheduler-rule --schedule-expression 'cron(0/5 * * * ? *)'
+
+sleep 10
+
+aws lambda add-permission --function-name  ${DEPLOYMENT_ENVIRONMENT}-poinboxcleanupScheduler --statement-id ms-paymentorder-cloudwatchinvoke --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn arn:aws:events:eu-west-2:177642146375:rule/${DEPLOYMENT_ENVIRONMENT}-ms-poinboxcleanupScheduler-scheduler-rule
+
+sleep 10
+
+aws events put-targets --rule ${DEPLOYMENT_ENVIRONMENT}-ms-poinboxcleanupScheduler-scheduler-rule --targets "[{\"Id\":\"1\",\"Arn\":\"arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-poinboxcleanupScheduler\"}]"
+
+sleep 10
+
+
+
 # Create lambdas
 aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-ingester --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.framework.ingester.instance.KinesisEventProcessor::handleRequest --description "Inbox Ingester for Holding Service" --timeout 120 --memory-size 1024 --publish --tags FunctionType=Ingester,Service=Payment --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},EXECUTION_ENV=TEST,temn_msf_name=PaymentOrder,temn_exec_env=serverless,temn_msf_ingest_sink_error_stream=${DEPLOYMENT_ENVIRONMENT}-payment-inbox-error-topic,temn_msf_ingest_generic_ingester=com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester,temn_msf_function_class_CreateNewPaymentOrder=com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},class_package_name=com.temenos.microservice.paymentorder.function,temn_msf_ingest_is_avro_event_ingester=false,MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_msf_function_class_UpdatePaymentOrder=com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,ms_security_tokencheck_enabled=Y,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
 sleep 10

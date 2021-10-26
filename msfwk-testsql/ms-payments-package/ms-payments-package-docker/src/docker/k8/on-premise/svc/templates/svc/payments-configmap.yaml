@@ -427,6 +427,43 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: sqlinboxcatchup-scheduler-config
+  namespace: {{.Values.paymentsnamespace}}
+  labels:
+    app.kubernetes.io/name: sqlinboxcatchup-scheduler-config
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.database_key | quote }}
+  HOST: {{ .Values.env.database.host | quote }}
+  DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
+  DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
+  DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
+  MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  temn_msf_name: paymentorder  
+  temn_msf_security_authz_enabled: "false" 
+  operationId : sqlInboxCatchup
+  className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
+  temn.msf.scheduler.inboxcleanup.schedule: {{ .Values.env.sqlinboxcatchupscheduler.temn_msf_scheduler_inboxcleanup_schedule | quote }}
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+{{- end }}    
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: payments-ingester-file-config
   namespace: {{.Values.paymentsnamespace}}
   labels:

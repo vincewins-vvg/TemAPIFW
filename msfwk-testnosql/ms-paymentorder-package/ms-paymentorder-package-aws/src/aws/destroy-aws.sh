@@ -24,6 +24,12 @@ aws events remove-targets --rule ms-paymentorder-scheduler-rule --ids $scheduler
 aws events delete-rule --name ms-paymentorder-scheduler-rule
 aws lambda delete-function --function-name paymentorder-scheduler
 
+
+export inboxcleanupSchedulerRuleTargetId=$(aws events list-targets-by-rule --rule "ms-poinboxcleanupScheduler-scheduler-rule" | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["Targets"] if "arn:aws:lambda:eu-west-2:177642146375:function:poinboxcleanupScheduler" == api["Arn"]]; print filter[0]["Id"]')
+aws events remove-targets --rule ms-poinboxcleanupScheduler-scheduler-rule --ids $inboxcleanupSchedulerRuleTargetId
+aws events delete-rule --name ms-poinboxcleanupScheduler-scheduler-rule
+aws lambda delete-function --function-name poinboxcleanupScheduler
+
 # Delete tables
 aws dynamodb delete-table --table-name PaymentOrder.ms_inbox_events
 aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events

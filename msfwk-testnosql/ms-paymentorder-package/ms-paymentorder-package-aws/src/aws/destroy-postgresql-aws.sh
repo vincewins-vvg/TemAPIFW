@@ -31,6 +31,10 @@ aws events remove-targets --rule ${DEPLOYMENT_ENVIRONMENT}-ms-paymentorder-sched
 aws events delete-rule --name ${DEPLOYMENT_ENVIRONMENT}-ms-paymentorder-scheduler-rule
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-scheduler
 
+#Delete inbox cleanup scheduler
+aws events remove-targets --rule ${DEPLOYMENT_ENVIRONMENT}-ms-poinboxcleanupScheduler-scheduler-rule --ids "${DEPLOYMENT_ENVIRONMENT}-poinboxcleanupScheduler"
+aws events delete-rule --name ${DEPLOYMENT_ENVIRONMENT}-ms-poinboxcleanupScheduler-scheduler-rule
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-poinboxcleanupScheduler
 
 # Delete usage plan
 usageDeletePlanIdCommand="aws apigateway get-usage-plans | python -c 'import json,sys; usagePlans=json.load(sys.stdin); filter=[plan for plan in usagePlans[\"items\"] if \"${DEPLOYMENT_ENVIRONMENT}-ms-payment-order-usageplan\" == plan[\"name\"]]; print filter[0][\"id\"]'"
