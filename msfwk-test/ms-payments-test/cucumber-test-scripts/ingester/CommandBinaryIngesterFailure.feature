@@ -38,21 +38,21 @@ Feature: CommandBinaryIngesterFailure
       
       
       #To check outbox entries
-      Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
-      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
-      
-    #And Validate the below details from the db table ms_outbox_events
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-    | TestCaseID                           | ColumnName     | ColumnValue |
-    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cifs-87200 |
-    
-    And Validate if the below columns contains values from the db table ms_outbox_events
-      | TestCaseID                           | ColumnName     | ColumnValue |      
-      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
-      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
-      | MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Invalid reference type data: bgvggk"|
+#      Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cifs-87200 |
+#      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
+#      
+#    #And Validate the below details from the db table ms_outbox_events
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#    | TestCaseID                           | ColumnName     | ColumnValue |
+#    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cifs-87200 |
+#    
+#    And Validate if the below columns contains values from the db table ms_outbox_events
+#      | TestCaseID                           | ColumnName     | ColumnValue |      
+#      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
+#      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
+#      | MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Invalid reference type data: bgvggk"|
   
   
    
@@ -100,21 +100,21 @@ Feature: CommandBinaryIngesterFailure
       
       
       #To check outbox entries
-      Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
-      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
-      
-    #And Validate the below details from the db table ms_outbox_events
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-    | TestCaseID                           | ColumnName     | ColumnValue |
-    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cicur-87200 |
-    
-    And Validate if the below columns contains values from the db table ms_outbox_events
-      | TestCaseID                           | ColumnName     | ColumnValue |      
-      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
-      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
-      | MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Cannot deserialize value of type|
+#      Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-cicur-87200 |
+#      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
+#      
+#    #And Validate the below details from the db table ms_outbox_events
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#    | TestCaseID                           | ColumnName     | ColumnValue |
+#    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-cicur-87200 |
+#    
+#    And Validate if the below columns contains values from the db table ms_outbox_events
+#      | TestCaseID                           | ColumnName     | ColumnValue |      
+#      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
+#      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
+#      | MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Cannot deserialize value of type|
      
    
    
@@ -138,9 +138,9 @@ Feature: CommandBinaryIngesterFailure
   | description | string |Payment ref|
   
 	#Delete existing record in Inbox & Outbox table
-   And Delete Record in the table ms_outbox_events for the following criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
-      | WithoutJWTToken    | correlationId    | eq       | string   | 1a316d88-3c7-4-ad7e-1001 |
+#   And Delete Record in the table ms_outbox_events for the following criteria
+#      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
+#      | WithoutJWTToken    | correlationId    | eq       | string   | 1a316d88-3c7-4-ad7e-1001 |
       
 	And Delete Record in the table ms_inbox_events for the following criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
@@ -180,21 +180,21 @@ Feature: CommandBinaryIngesterFailure
     And set timeout session for 30 seconds
  
     #Check the entries in outbox for correlationId
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | WithoutJWTToken| correlationId    | eq       | string   | 1a316d88-3c7-4-ad7e-1001 |
-      
-    #And Validate the below details from the db table ms_outbox_events
-    And Validate the below details from the db table ms_outbox_events
-      | TestCaseID                           | ColumnName     | ColumnValue |
-      | WithoutJWTToken       | correlationId    | 1a316d88-3c7-4-ad7e-1001 |
-      | WithoutJWTToken       | eventType    | CommandFailed |
-      
-    And Validate if the below columns contains values from the db table ms_outbox_events
-      | TestCaseID                           | ColumnName     | ColumnValue |      
-      | WithoutJWTToken       | status         | DELIVERED   |
-      | WithoutJWTToken       | payload        | "status":401 |
-      | WithoutJWTToken      | payload        | "failureMessages":[{"message":"Authorization failed","code":"MSF-003"}]|
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | WithoutJWTToken| correlationId    | eq       | string   | 1a316d88-3c7-4-ad7e-1001 |
+#      
+#    #And Validate the below details from the db table ms_outbox_events
+#    And Validate the below details from the db table ms_outbox_events
+#      | TestCaseID                           | ColumnName     | ColumnValue |
+#      | WithoutJWTToken       | correlationId    | 1a316d88-3c7-4-ad7e-1001 |
+#      | WithoutJWTToken       | eventType    | CommandFailed |
+#      
+#    And Validate if the below columns contains values from the db table ms_outbox_events
+#      | TestCaseID                           | ColumnName     | ColumnValue |      
+#      | WithoutJWTToken       | status         | DELIVERED   |
+#      | WithoutJWTToken       | payload        | "status":401 |
+#      | WithoutJWTToken      | payload        | "failureMessages":[{"message":"Authorization failed","code":"MSF-003"}]|
            
   # Author: Sabapathy
   # MSF-2472
@@ -217,9 +217,9 @@ Feature: CommandBinaryIngesterFailure
   | description | string |Payment ref|
   
 	#Delete existing record in Inbox & Outbox table
-   And Delete Record in the table ms_outbox_events for the following criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
-      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
+#   And Delete Record in the table ms_outbox_events for the following criteria
+#      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
+#      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
       
 	And Delete Record in the table ms_inbox_events for the following criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
@@ -261,21 +261,21 @@ Feature: CommandBinaryIngesterFailure
     And set timeout session for 30 seconds
  
     #Check the entries in outbox for correlationId
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
-      
-    #And Validate the below details from the db table ms_outbox_events
-    And Validate the below details from the db table ms_outbox_events
-      | TestCaseID                           | ColumnName     | ColumnValue |
-      | BusinessFailure       | correlationId    | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
-      | BusinessFailure       | eventType    | CommandFailed |
-      
-    And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED   |
-      | BusinessFailure       | payload        | "status":500 |
-      | BusinessFailure      | payload        | "failureMessages":[{"message":"Uncaught Exception occurs while processing pre hook","code":"MSF-999"}]|
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
+#      
+#    #And Validate the below details from the db table ms_outbox_events
+#    And Validate the below details from the db table ms_outbox_events
+#      | TestCaseID                           | ColumnName     | ColumnValue |
+#      | BusinessFailure       | correlationId    | 9dc99a2c-c3ee-4393-8e58-c4ef920e1001 |
+#      | BusinessFailure       | eventType    | CommandFailed |
+#      
+#    And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED   |
+#      | BusinessFailure       | payload        | "status":500 |
+#      | BusinessFailure      | payload        | "failureMessages":[{"message":"Uncaught Exception occurs while processing pre hook","code":"MSF-999"}]|
       
   Scenario: Business failure in Process
   
@@ -295,9 +295,9 @@ Feature: CommandBinaryIngesterFailure
   | description | string |Payment ref|
   
 	#Delete existing record in Inbox & Outbox table
-   And Delete Record in the table ms_outbox_events for the following criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
-      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002 |
+#   And Delete Record in the table ms_outbox_events for the following criteria
+#      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
+#      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002 |
       
 	And Delete Record in the table ms_inbox_events for the following criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
@@ -341,47 +341,47 @@ Feature: CommandBinaryIngesterFailure
     #Following event types validated in outbox table - CommandFailed,Prehook,Posthook
  
     #1.Check the entries in outbox for correlationId & eventType "CommandFailed"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
-      | BusinessFailure| eventType    | eq       | string   | CommandFailed|
-
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | CommandFailed |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | payload         | "failureMessages":[{"message":"Business Failure error generated","code":"MSF-999"}]   |
-      | BusinessFailure       | status         | DELIVERED  |
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
+#      | BusinessFailure| eventType    | eq       | string   | CommandFailed|
+#
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | CommandFailed |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | payload         | "failureMessages":[{"message":"Business Failure error generated","code":"MSF-999"}]   |
+#      | BusinessFailure       | status         | DELIVERED  |
       
     #2.Check the entries in outbox for correlationId & eventType "PreHookEvent"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
-      | BusinessFailure| eventType    | eq       | string   | PreHookEvent |
-    
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | PreHookEvent |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED  | 
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
+#      | BusinessFailure| eventType    | eq       | string   | PreHookEvent |
+#    
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | PreHookEvent |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED  | 
       
     #3.Check the entries in outbox for correlationId & eventType "PostHookEvent"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
-      | BusinessFailure| eventType    | eq       | string   | PostHookEvent |
-    
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | PostHookEvent |
-    
-   And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED  | 
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1002  |
+#      | BusinessFailure| eventType    | eq       | string   | PostHookEvent |
+#    
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | PostHookEvent |
+#    
+#   And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED  | 
          
   Scenario: Business failure in Posthook
   
@@ -401,9 +401,9 @@ Feature: CommandBinaryIngesterFailure
   | description | string |Payment ref|
   
 	#Delete existing record in Inbox & Outbox table
-   And Delete Record in the table ms_outbox_events for the following criteria
-      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
-      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003 |
+#   And Delete Record in the table ms_outbox_events for the following criteria
+#      | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
+#      | BusinessFailure    | correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003 |
       
 	And Delete Record in the table ms_inbox_events for the following criteria
       | TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
@@ -447,82 +447,70 @@ Feature: CommandBinaryIngesterFailure
  		#Following event types validated in outbox table - CommandProcessed,UpdatePaymentOrder,POAccepted,Prehook,Posthook
  		
     #1.Check for no entries in outbox for correlationId & eventType as Posthook
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | PostHookEvent |
-      
-		And Validate if below details not present in db table ms_outbox_events
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | PostHookEvent |
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
+#      | BusinessFailure| eventType    | eq       | string   | PostHookEvent |
+#      
+#		And Validate if below details not present in db table ms_outbox_events
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | PostHookEvent |
       
    #2.Check the entries in outbox for correlationId & eventType "CommandProcessed"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | CommandProcessed|
-
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | CommandProcessed |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | payload         | "status":200   |
-      | BusinessFailure       | status         | DELIVERED  |
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
+#      | BusinessFailure| eventType    | eq       | string   | CommandProcessed|
+#
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | CommandProcessed |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | payload         | "status":200   |
+#      | BusinessFailure       | status         | DELIVERED  |
       
    #3.Check the entries in outbox for correlationId & eventType "ms-paymentorder.UpdatePaymentOrder"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
-    
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | ms-paymentorder.UpdatePaymentOrder |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED  | 
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
+#      | BusinessFailure| eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
+#    
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | ms-paymentorder.UpdatePaymentOrder |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED  | 
       
    #4.Check the entries in outbox for correlationId & eventType "POAccepted"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | POAccepted |
-    
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | POAccepted |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED  |
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
+#      | BusinessFailure| eventType    | eq       | string   | POAccepted |
+#    
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | POAccepted |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED  |
    
    #5.Check the entries in outbox for correlationId & eventType "PreHookEvent"
-    Then Set the following data criteria 
-      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
-      | BusinessFailure| eventType    | eq       | string   | PreHookEvent |
-    
-    And Validate the below details from the db table ms_outbox_events and check no of record is 1
-      | TestCaseID            | ColumnName     | ColumnValue |
-      | BusinessFailure| eventType    | PreHookEvent |
-    
-   	And Validate if the below columns contains values from the db table ms_outbox_events
-     	| TestCaseID                           | ColumnName     | ColumnValue |      
-      | BusinessFailure       | status         | DELIVERED  | 
+#    Then Set the following data criteria 
+#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+#      | BusinessFailure| correlationId    | eq       | string   | 9dc99a2c-c3ee-4393-8e58-c4ef920e1003  |
+#      | BusinessFailure| eventType    | eq       | string   | PreHookEvent |
+#    
+#    And Validate the below details from the db table ms_outbox_events and check no of record is 1
+#      | TestCaseID            | ColumnName     | ColumnValue |
+#      | BusinessFailure| eventType    | PreHookEvent |
+#    
+#   	And Validate if the below columns contains values from the db table ms_outbox_events
+#     	| TestCaseID                           | ColumnName     | ColumnValue |      
+#      | BusinessFailure       | status         | DELIVERED  | 
      
-      
-      
-   
-      
-    
-
      
-      
-
-
-      
-      
-      
