@@ -94,28 +94,11 @@ public class PaymentOrderInboxOutboxITTest extends ITTest {
 	@Test
 	public void testOutboxCheck() {
 		String tableName = "ms_outbox_events";
-		String eventId = "";
 		if (requestedEventId != null) {
 			try {
 				List<Criterion> criterions = new ArrayList<Criterion>();
 				Map<Integer, List<Attribute>> insertedValues = daoFacade.readItems(tableName, criterions);
-				if (insertedValues != null) {
-					for (int i = 1; i < insertedValues.size(); i++) {
-						List<Attribute> values = insertedValues.get(i);
-						eventId = values.get(0).getValue().toString();
-						Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord(tableName, "eventid",
-								"eq", "string", eventId, "eventname", "eq", "string",
-								"PaymentOrder.PaymentOrderCreated");
-						if (insertedRecord.size() > 0) {
-							List<Attribute> entry = insertedRecord.get(1);
-							String correlationId = entry.get(2).getValue().toString().trim();
-							if (correlationId.equalsIgnoreCase(requestedEventId.trim())) {
-								assertEquals(entry.get(0).getName().toLowerCase(), "eventid");
-							}
-						}
-
-					}
-				}
+				assertEquals(insertedValues.size(), 0);
 			} catch (Exception ex) {
 			}
 		}

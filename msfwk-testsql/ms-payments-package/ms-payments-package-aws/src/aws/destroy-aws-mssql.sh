@@ -18,6 +18,11 @@ aws events remove-targets --rule ms-payments-scheduler-rule --ids $schedulerRule
 aws events delete-rule --name ms-payments-scheduler-rule
 aws lambda delete-function --function-name paymentscheduler
 
+export paymentinboxcleanupSchedulerRuleTargetId=$(aws events list-targets-by-rule --rule "ms-paymentinboxcleanupScheduler-scheduler-rule" | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["Targets"] if "arn:aws:lambda:eu-west-2:177642146375:function:paymentinboxcleanupScheduler" == api["Arn"]]; print filter[0]["Id"]')
+aws events remove-targets --rule ms-paymentinboxcleanupScheduler-scheduler-rule --ids $paymentinboxcleanupSchedulerRuleTargetId
+aws events delete-rule --name ms-paymentinboxcleanupScheduler-scheduler-rule
+aws lambda delete-function --function-name paymentinboxcleanupScheduler
+
 # Delete Stream table-update-marketingcatalog
 aws kinesis delete-stream --stream-name PaymentOrder-inbox-topic
 aws kinesis delete-stream --stream-name PaymentOrder-event-topic
