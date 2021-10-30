@@ -45,7 +45,7 @@ metadata:
   name: nosqlinboxcatchup-scheduler-config
   namespace: {{ .Values.namespace }}
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/60 * * * *"
   jobTemplate:
     spec:
       template:
