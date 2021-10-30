@@ -38,7 +38,7 @@ metadata:
   name: sqlinboxcatchup-scheduler-config
   namespace: {{.Values.paymentsnamespace}}
 spec:
-  schedule: "*/60 * * * *"
+  schedule: "*/59 * * * *"
   jobTemplate:
     spec:
       template:
