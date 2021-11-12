@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class IngestorStepDefinition {
 	private String dbName;
 	private String vendorName;
 	Map<Integer, List<Attribute>> dataMap = null;
-	
+
 	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
 		this.apiName = apiName;
@@ -84,8 +85,8 @@ public class IngestorStepDefinition {
 
 	@Given("^Delete Record in the table ([^\\s]+) for the following criteria$")
 	public void deleteRecordsInTable(String tableName, DataTable dataTable) throws Exception {
-		 dbName = Environment.getEnvironmentVariable("DB_VENDOR", "");
-		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		dbName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataCriterions = new ArrayList<>();
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
@@ -96,7 +97,7 @@ public class IngestorStepDefinition {
 						tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 			}
 		});
-		if (isAwsInboxOutboxTable(tableName,vendorName,dbName)) {
+		if (isAwsInboxOutboxTable(tableName, vendorName, dbName)) {
 			tableName = dbName.replace('_', '-') + "." + tableName;
 		}
 		log.info("Deleting records in table {} for testcase {}", getTableName(tableName), testCase.getTestCaseID());
@@ -104,11 +105,12 @@ public class IngestorStepDefinition {
 		daoFacade.openConnection();
 		daoFacade.deleteItems(getTableName(tableName), dataCriterions);
 	}
-	
+
 	// To delete records in multiple databases
 	@Given("^Delete Record in the table ([^\\s]+) for the following criteria vendorname ([^\\s]+) dbname ([^\\s]+)$")
-	public void deleteRecordsInTableMultiDb(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
-		dataCriterions = new ArrayList<>();		
+	public void deleteRecordsInTableMultiDb(String tableName, String vendorName, String dbName, DataTable dataTable)
+			throws Exception {
+		dataCriterions = new ArrayList<>();
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
 			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
@@ -116,24 +118,23 @@ public class IngestorStepDefinition {
 						tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
 						tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
 						tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
-			}
-			else {
+			} else {
 				dataCriterions.clear();
 			}
 		});
-		
-		if (isAwsInboxOutboxTable(tableName,vendorName,dbName)) {
+
+		if (isAwsInboxOutboxTable(tableName, vendorName, dbName)) {
 			tableName = dbName.replace('_', '-') + "." + tableName;
 		}
-		
+
 		log.info("Deleting records in table {} for testcase {}", tableName, testCase.getTestCaseID());
 		daoFacade = DaoFactory.getInstance(vendorName);
 		daoFacade.openConnection(vendorName, dbName);
 		daoFacade.deleteItems(tableName, dataCriterions);
 		daoFacade.closeConnection();
-	}	
-		
-	private boolean isAwsInboxOutboxTable(String tableName, String vendorName,String dbName) {
+	}
+
+	private boolean isAwsInboxOutboxTable(String tableName, String vendorName, String dbName) {
 		return "DYNAMODB".equalsIgnoreCase(vendorName) && dbName.contains("_")
 				&& ((tableName.contains("ms_inbox_events")) || (tableName.contains("ms_outbox_events")));
 	}
@@ -179,59 +180,68 @@ public class IngestorStepDefinition {
 		}
 
 	}
-	   
-	   //To check json data content in topic
-	   @Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
-	    public void checkJSONInTopic(String eventId, String eventType, String topicName) throws Exception {
-	       
-	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandType(topicName,eventId, eventType);
-	       assertTrue("There is no entry for the Event Id:"+eventId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
-	   }
-	
-	 //To check json data content in topic(added by Sai Kushaal)
-	   @Then("^check if json data with correlation id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
-	    public void checkJSONInTopicByCorrelationId(String correlationId, String eventType, String topicName) throws Exception {
-	       
-	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCorrelationId(topicName,correlationId, eventType);
-	       assertTrue("There is no entry for the Correlation Id:"+correlationId+" , Event Type: "+eventType+" combination in the topic: "+topicName,!streamTopicResult.isEmpty());
-	   }
-	   
-	   //To check avro data content in topic(added by Sai Kushaal)
-	   @Then("^check if avro data with event id ([^\\s]+) is present in topic ([^\\s]+)$")
-	    public void checkAvroInTopicByEventId(String eventId,String topicName) throws Exception {
-	       
-	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getAvroTopicValueByEventId(topicName,eventId);
-	       assertTrue("There is no entry for the event Id:"+eventId+" in the topic: "+topicName,!streamTopicResult.isEmpty());
-	   }
-	   
-		//To check json data content in topic(added by Sai Kushaal)
-	   @Then("^check if json data with correlation id ([^\\s]+) and cloudeventtype ([^\\s]+) is present in topic ([^\\s]+)$")
-	    public void checkJSONInTopicCloudEvent(String correlationId,String type,String topicName) throws Exception {
-	       
-	       Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCorrelationIdInCloudEvent(topicName,correlationId,type);
-	       assertTrue("There is no entry for the Correlation Id:"+correlationId+" in the topic: "+topicName,!streamTopicResult.isEmpty());
-	   }
-	   
-	
-	
-	
-    //To send data to the topic name mentioned in step ex: When send data to topic <topic name>
-  @When("^send JSON data to topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
-  public void sendJSONDataToMentionedTopic(String topicName,String resourcePath, String applicationName) throws Exception {
-      
 
-         StreamProducer producer = ProducerFactory.createStreamProducer("itest", Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
-          String content = new String(Files.readAllBytes(Paths.get("src/test/resources/"+resourcePath)));
-          System.out.println("content:" + content);
-          
-              producer.batch().add(topicName, UUID.randomUUID().toString(), new String(content).getBytes());
-          
-          try {
-              producer.batch().send();
-          } catch (StreamProducerException e) {
-              e.printStackTrace();
-          }
-}
+	// To check json data content in topic
+	@Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
+	public void checkJSONInTopic(String eventId, String eventType, String topicName) throws Exception {
+
+		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandType(topicName,
+				eventId, eventType);
+		assertTrue("There is no entry for the Event Id:" + eventId + " , Event Type: " + eventType
+				+ " combination in the topic: " + topicName, !streamTopicResult.isEmpty());
+	}
+
+	// To check json data content in topic(added by Sai Kushaal)
+	@Then("^check if json data with correlation id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
+	public void checkJSONInTopicByCorrelationId(String correlationId, String eventType, String topicName)
+			throws Exception {
+
+		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCorrelationId(topicName,
+				correlationId, eventType);
+		assertTrue("There is no entry for the Correlation Id:" + correlationId + " , Event Type: " + eventType
+				+ " combination in the topic: " + topicName, !streamTopicResult.isEmpty());
+	}
+
+	// To check avro data content in topic(added by Sai Kushaal)
+	@Then("^check if avro data with event id ([^\\s]+) is present in topic ([^\\s]+)$")
+	public void checkAvroInTopicByEventId(String eventId, String topicName) throws Exception {
+
+		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getAvroTopicValueByEventId(topicName,
+				eventId);
+		assertTrue("There is no entry for the event Id:" + eventId + " in the topic: " + topicName,
+				!streamTopicResult.isEmpty());
+	}
+
+	// To check json data content in topic(added by Sai Kushaal)
+	@Then("^check if json data with correlation id ([^\\s]+) and cloudeventtype ([^\\s]+) is present in topic ([^\\s]+)$")
+	public void checkJSONInTopicCloudEvent(String correlationId, String type, String topicName) throws Exception {
+
+		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader
+				.getTopicValueByCorrelationIdInCloudEvent(topicName, correlationId, type);
+		assertTrue("There is no entry for the Correlation Id:" + correlationId + " in the topic: " + topicName,
+				!streamTopicResult.isEmpty());
+	}
+
+	// To send data to the topic name mentioned in step ex: When send data to topic
+	// <topic name>
+	@When("^send JSON data to topic ([^\\s]+) from file ([^\\s]+) for Application ([^\\s]+)$")
+	public void sendJSONDataToMentionedTopic(String topicName, String resourcePath, String applicationName)
+			throws Exception {
+
+		StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+				Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+		String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
+		System.out.println("content:" + content);
+
+		producer.batch().add(topicName, UUID.randomUUID().toString(), new String(content).getBytes());
+
+		try {
+			producer.batch().send();
+		} catch (StreamProducerException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// To send data to the topic name mentioned in step ex: When send data to topic
 	// <topic name>
 	@When("^Send Data to Topic ([^\\s]+) for following records$")
@@ -286,21 +296,46 @@ public class IngestorStepDefinition {
 	@Then("^Set the following data criteria$")
 	public void setDataCriteria(DataTable dataTable) throws Exception {
 		dataCriterions = new ArrayList<>();
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", ""); 
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
 			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
 				if (tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()) != null) {
-					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-							tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					if ("ORACLE".equalsIgnoreCase(vendorName)) {
+						String columnNameValue = tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName());
+						if ("level".equalsIgnoreCase(columnNameValue)) {
+							columnNameValue = "\"" + columnNameValue + "\"";
+						}
+						dataCriterions.add(populateCriterian(columnNameValue,
+								tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					} else {
+						dataCriterions
+								.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					}
 				} else {
-					dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-							tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-							tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-							MSGenericActionStepDefs.DbcolumnValues
-									.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
-					// System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
+					
+					if ("ORACLE".equalsIgnoreCase(vendorName)) {
+						String columnNameValue = tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName());
+						if ("level".equalsIgnoreCase(columnNameValue))  {
+							columnNameValue = "\"" + columnNameValue + "\"";
+						}
+						dataCriterions.add(populateCriterian(columnNameValue,
+								tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+					} else {
+						dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+								tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+								MSGenericActionStepDefs.DbcolumnValues
+										.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
+						// System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
+					}
 				}
 			}
 		});
@@ -340,17 +375,19 @@ public class IngestorStepDefinition {
 
 	@Then("^Validate the below details from the db table ([^\\s]+)$")
 	public void validateDetailsFromDB(String tableName, DataTable dataTable) throws Exception {
-		 dbName = Environment.getEnvironmentVariable("DB_NAME", "");
-		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		dbName = Environment.getEnvironmentVariable("DB_NAME", "");
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance();
 			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : getTableName(tableName),
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: getTableName(tableName),
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : getTableName(tableName)));
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: getTableName(tableName)));
 		List<Attribute> data = dataMap.get(Integer.valueOf(1));
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
@@ -359,7 +396,8 @@ public class IngestorStepDefinition {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
 						assertEquals(
 								getDataMismatchErrorLog(
-										(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName
+										(isAwsInboxOutboxTable(tableName, vendorName, dbName))
+												? dbName.replace('_', '-') + "." + tableName
 												: getTableName(tableName),
 										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
@@ -371,37 +409,38 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
-	
+
 	private String getTableName(String tableName) {
 		String[] tableNameSplit = tableName.split("\\.");
-		if("SQLSERVER".equalsIgnoreCase(vendorName) && tableNameSplit.length == 2)
+		if (("SQLSERVER".equalsIgnoreCase(vendorName) || "ORACLE".equalsIgnoreCase(vendorName))
+				&& tableNameSplit.length == 2)
 			tableName = tableNameSplit[1];
 		return tableName;
 	}
-	
+
 	@Then("^Validate the below details from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
-	public void validateDetailsFromDB(String tableName,String vendorName, String dbName, DataTable dataTable) throws Exception {
+	public void validateDetailsFromDB(String tableName, String vendorName, String dbName, DataTable dataTable)
+			throws Exception {
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance(vendorName);
 			daoFacade.openConnection(vendorName, dbName);
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
 		List<Attribute> data = dataMap.get(Integer.valueOf(1));
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
 			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
 				data.forEach(attribute -> {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-						assertEquals(
-								getDataMismatchErrorLog(
-										tableName,
+						assertEquals(getDataMismatchErrorLog(tableName,
 								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
-										attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 								attribute.getValue().toString());
 					}
@@ -454,10 +493,11 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
-	
-	//Transact-E2E-new
+
+	// Transact-E2E-new
 	@Then("^Validate the below details and bundle value from the db table ([^\\s]+) and check no of record is (.*)$")
-	public void validateDetailsAndBundleValueFromDBAndNoOfRecords(String tableName, int recordCount, DataTable dataTable) throws Exception {
+	public void validateDetailsAndBundleValueFromDBAndNoOfRecords(String tableName, int recordCount,
+			DataTable dataTable) throws Exception {
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance();
 			daoFacade.openConnection();
@@ -468,12 +508,14 @@ public class IngestorStepDefinition {
 //         {
 //              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
 //         }
-		Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
 		if (dataMap.size() != recordCount) {
 			throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
 					+ " specified in step," + "Actual No of Record Count in the database is= " + dataMap.size());
@@ -510,12 +552,13 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
-	
+
 	@Then("^Validate the below details and bundle value from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
-	public void validateDetailsAndBundleValueFromMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
+	public void validateDetailsAndBundleValueFromMultiDB(String tableName, String vendorName, String dbName,
+			DataTable dataTable) throws Exception {
 		dataMap = RetryUtil.getWithRetry(300, () -> {
-	    	daoFacade = DaoFactory.getInstance(vendorName);
-	  		daoFacade.openConnection(vendorName, dbName);
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: " + tableName);
@@ -537,9 +580,9 @@ public class IngestorStepDefinition {
 								cucumberInteractionSession.scenarioBundle()
 										.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
 								attribute.getValue());
-						
+
 						System.out.println("Bundle value :" + cucumberInteractionSession.scenarioBundle()
-						.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+								.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 					}
 
 					else if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
@@ -548,35 +591,37 @@ public class IngestorStepDefinition {
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()), attribute.getValue()),
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 								attribute.getValue().toString());
-						
+
 						System.out.println("Bundle value :" + cucumberInteractionSession.scenarioBundle()
-						.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
+								.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 					}
 				});
 			}
 		});
-        daoFacade.closeConnection();
+		daoFacade.closeConnection();
 	}
-	
-	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+)$")
-	    public void validateColumnContainValuesInDB(String tableName, DataTable dataTable) throws Exception {
-		   dbName =Environment.getEnvironmentVariable("DB_NAME", "");
-		   vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
-	      dataMap = RetryUtil.getWithRetry(300, () -> {
-	    	daoFacade = DaoFactory.getInstance();
-	  		daoFacade.openConnection();
+
+	@Then("^Validate if the below columns contains values from the db table ([^\\s]+)$")
+	public void validateColumnContainValuesInDB(String tableName, DataTable dataTable) throws Exception {
+		dbName = Environment.getEnvironmentVariable("DB_NAME", "");
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance();
+			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
 					dataCriterions);
-	            return (dataMap.size() != 0 ? dataMap : null);
+			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
-	        List<Attribute> data = dataMap.get(Integer.valueOf(1));
-	        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-	        tableValues.forEach(tableValue -> {
-	            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-	                data.forEach(attribute -> {
-	                    if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
 						assertTrue(
 								"Actual value against column " + attribute.getName() + " in DB ie :"
 										+ attribute.getValue() + " doesnt contain value mentioned in script ie: "
@@ -584,43 +629,45 @@ public class IngestorStepDefinition {
 								attribute.getValue().toString().contains(
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString()));
 
-	                    }
-	                });
-	            }
-	        });
-	    }
-	
-	  @Then("^Validate if the below columns contains values from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
-	    public void validateColumnContainValuesInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
-	      dataMap = RetryUtil.getWithRetry(300, () -> {
-	    	daoFacade = DaoFactory.getInstance(vendorName);
-	  		daoFacade.openConnection(vendorName, dbName);
+					}
+				});
+			}
+		});
+	}
+
+	@Then("^Validate if the below columns contains values from the db table ([^\\s]+) vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void validateColumnContainValuesInMultiDB(String tableName, String vendorName, String dbName,
+			DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
 					dataCriterions);
-	            return (dataMap.size() != 0 ? dataMap : null);
+			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
-	        List<Attribute> data = dataMap.get(Integer.valueOf(1));
-	        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-	        tableValues.forEach(tableValue -> {
-	            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-	                data.forEach(attribute -> {
-	                    if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals((tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())))) {
 						assertTrue(
 								"Actual value against column " + attribute.getName() + " in DB ie :"
 										+ attribute.getValue() + " doesnt contain value mentioned in script ie: "
 										+ tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 								attribute.getValue().toString().contains(
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()).toString()));
-	                    }
-	                });
-	            }
-	        });
-	        daoFacade.closeConnection();
-	    }
-	  	  
-	  
+					}
+				});
+			}
+		});
+		daoFacade.closeConnection();
+	}
+
 	// To check if an entry is not present in DB
 	@Then("^Validate if below details not present in db table ([^\\s]+)$")
 	public void validateDetailsNotInDB(String tableName, DataTable dataTable) throws Exception {
@@ -634,23 +681,26 @@ public class IngestorStepDefinition {
 			throw new Exception("a record in table " + tableName + " is present for this transaction");
 		}
 	}
-	//Transact-E2E-old
+
+	// Transact-E2E-old
 	// To check entries in DB table and also the no of rows for the mentioned
 	// criteria/condition
 	@Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
 	public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable)
 			throws Exception {
-		 dbName =Environment.getEnvironmentVariable("DB_NAME", "");
-		 vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		dbName = Environment.getEnvironmentVariable("DB_NAME", "");
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance();
 			daoFacade.openConnection();
 			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
-					(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName,
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
 					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
 		}, " Getting DB records from table: "
-				+ ((isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName : tableName));
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
 		if (dataMap.size() != recordCount) {
 			throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
 					+ " specified in step");
@@ -663,9 +713,10 @@ public class IngestorStepDefinition {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
 						assertEquals(
 								getDataMismatchErrorLog(
-										(isAwsInboxOutboxTable(tableName,vendorName,dbName)) ? dbName.replace('_', '-') + "." + tableName
+										(isAwsInboxOutboxTable(tableName, vendorName, dbName))
+												? dbName.replace('_', '-') + "." + tableName
 												: tableName,
-								tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 										attribute.getValue()),
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
@@ -675,112 +726,83 @@ public class IngestorStepDefinition {
 			}
 		});
 	}
-	
+
 	// To check entries in DB table and also the no of rows for the mentioned
-		// criteria/condition
-		@Then("^Validate the below details from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+) and check no of record is (.*)$")
-		public void validateDetailsFromDBAndRecordCount(String tableName,String vendorName, String dbName,int recordCount,DataTable dataTable)
-				throws Exception {
-			dataMap = RetryUtil.getWithRetry(300, () -> {
-				daoFacade = DaoFactory.getInstance(vendorName);
-				daoFacade.openConnection(vendorName, dbName);
-				Map<Integer, List<Attribute>> dataMap = daoFacade
-						.readItems((isAwsInboxOutboxTable(tableName, vendorName, dbName))
-								? dbName.replace('_', '-') + "." + tableName
-								: tableName, dataCriterions);
-				return (dataMap.size() != 0 ? dataMap : null);
-			}, " Getting DB records from table: " + ((isAwsInboxOutboxTable(tableName, vendorName, dbName))
-					? dbName.replace('_', '-') + "." + tableName
-					: tableName));
-			if (dataMap.size() != recordCount) {
-				throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
-						+ " specified in step");
-			}
-			List<Attribute> data = dataMap.get(Integer.valueOf(1));
-			List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-			tableValues.forEach(tableValue -> {
-				if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-					data.forEach(attribute -> {
-						if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-							assertEquals(
-									getDataMismatchErrorLog(
-											(isAwsInboxOutboxTable(tableName, vendorName, dbName))
-													? dbName.replace('_', '-') + "." + tableName
-													: tableName,
-											tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-											tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
-											attribute.getValue()),
-									tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
-									attribute.getValue().toString());
-						}
-					});
-				}
-			});
-			daoFacade.closeConnection();
-		}
-	
-	@Then("^Associate the below column values with bundle from the db table ([^\\s]+)$")
-    public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(300, () -> {
-        	daoFacade = DaoFactory.getInstance();
-    		daoFacade.openConnection();
-            Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
-            return (dataMap.size() != 0 ? dataMap : null);
-        }, " Getting DB records from table: " + tableName);
-//          if (dataMap.size() >= 2) {
-//              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
-//          }
-        List<Attribute> data = dataMap.get(Integer.valueOf(1));
-        List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
-        tableValues.forEach(tableValue -> {
-            if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
-                data.forEach(attribute -> {
-                    if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-                    	
-						 System.out.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
-						 System.out.println(" Attribute Value " + attribute.getValue());
-						 
-                    	cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(), attribute.getValue());
-                    }                    
-                });
-            }
-        });
-    }
-	
-	@Then("^Associate the below column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
-    public void assocDBValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable) throws Exception {
-        dataMap = RetryUtil.getWithRetry(300, () -> {
+	// criteria/condition
+	@Then("^Validate the below details from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+) and check no of record is (.*)$")
+	public void validateDetailsFromDBAndRecordCount(String tableName, String vendorName, String dbName, int recordCount,
+			DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance(vendorName);
 			daoFacade.openConnection(vendorName, dbName);
-			Map<Integer, List<Attribute>> dataMap = daoFacade
-					.readItems((isAwsInboxOutboxTable(tableName, vendorName, dbName))
-							? dbName.replace('_', '-') + "." + tableName
-							: tableName, dataCriterions);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
+					dataCriterions);
 			return (dataMap.size() != 0 ? dataMap : null);
-		}, " Getting DB records from table: " + ((isAwsInboxOutboxTable(tableName, vendorName, dbName))
-				? dbName.replace('_', '-') + "." + tableName
-				: tableName));        
-        
+		}, " Getting DB records from table: "
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
+		if (dataMap.size() != recordCount) {
+			throw new Exception("record(s) in table " + tableName + " is not equal to no of records " + recordCount
+					+ " specified in step");
+		}
 		List<Attribute> data = dataMap.get(Integer.valueOf(1));
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
 			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
 				data.forEach(attribute -> {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
-						
-						 System.out.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
-						 System.out.println(" Attribute Value " + attribute.getValue());
-						
-						 cucumberInteractionSession.scenarioBundle().put(tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(), attribute.getValue());
+						assertEquals(
+								getDataMismatchErrorLog(
+										(isAwsInboxOutboxTable(tableName, vendorName, dbName))
+												? dbName.replace('_', '-') + "." + tableName
+												: tableName,
+										tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+										attribute.getValue()),
+								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
+								attribute.getValue().toString());
 					}
 				});
 			}
-		});               
-        daoFacade.closeConnection();
-    }
-	
-	@Then("^Associate the value of below element present in column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
-	public void assocElementValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable)
+		});
+		daoFacade.closeConnection();
+	}
+
+	@Then("^Associate the below column values with bundle from the db table ([^\\s]+)$")
+	public void assocDBValuesToBundle(String tableName, DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance();
+			daoFacade.openConnection();
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(tableName, dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: " + tableName);
+//          if (dataMap.size() >= 2) {
+//              throw new Exception("more than 1 record in table " + tableName + " for testcase " + testCase.getTestCaseID());
+//          }
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+
+						System.out
+								.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						System.out.println(" Attribute Value " + attribute.getValue());
+
+						cucumberInteractionSession.scenarioBundle().put(
+								tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(),
+								attribute.getValue());
+					}
+				});
+			}
+		});
+	}
+
+	@Then("^Associate the below column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void assocDBValuesToBundleInMultiDB(String tableName, String vendorName, String dbName, DataTable dataTable)
 			throws Exception {
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance(vendorName);
@@ -801,12 +823,49 @@ public class IngestorStepDefinition {
 				data.forEach(attribute -> {
 					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
 
-						System.out.println("Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						System.out
+								.println(" Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
+						System.out.println(" Attribute Value " + attribute.getValue());
+
+						cucumberInteractionSession.scenarioBundle().put(
+								tableValue.get(DataTablesColumnNames.BUNDLE_NAME.getName()).toString(),
+								attribute.getValue());
+					}
+				});
+			}
+		});
+		daoFacade.closeConnection();
+	}
+
+	@Then("^Associate the value of below element present in column values with bundle from the db table ([^\\s]+) of vendorname ([^\\s]+) dbname ([^\\s]+)$")
+	public void assocElementValuesToBundleInMultiDB(String tableName, String vendorName, String dbName,
+			DataTable dataTable) throws Exception {
+		dataMap = RetryUtil.getWithRetry(300, () -> {
+			daoFacade = DaoFactory.getInstance(vendorName);
+			daoFacade.openConnection(vendorName, dbName);
+			Map<Integer, List<Attribute>> dataMap = daoFacade.readItems(
+					(isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+							: tableName,
+					dataCriterions);
+			return (dataMap.size() != 0 ? dataMap : null);
+		}, " Getting DB records from table: "
+				+ ((isAwsInboxOutboxTable(tableName, vendorName, dbName)) ? dbName.replace('_', '-') + "." + tableName
+						: tableName));
+
+		List<Attribute> data = dataMap.get(Integer.valueOf(1));
+		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
+		tableValues.forEach(tableValue -> {
+			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
+				data.forEach(attribute -> {
+					if (attribute.getName().equals(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))) {
+
+						System.out
+								.println("Column Name " + tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()));
 						System.out.println("Attribute Value " + attribute.getValue());
 
 						String elementName = tableValue.get(DataTablesColumnNames.ELEMENT_NAME.getName());
 						String elementValue = attribute.getValue().toString().split(elementName)[1].split("\"")[2];
-						
+
 						System.out.println("Element Name: " + elementName);
 						System.out.println("Element Value: " + elementValue);
 
@@ -818,7 +877,7 @@ public class IngestorStepDefinition {
 		});
 		daoFacade.closeConnection();
 	}
-	
+
 	private String getDataMismatchErrorLog(String tableName, Object columnName, Object expected, Object actual) {
 		return "For testcase: " + testCase.getTestCaseID() + " Data mismatch in table: " + tableName + " for column"
 				+ columnName.toString() + " expected value: " + expected.toString() + " actual value: "
@@ -845,7 +904,5 @@ public class IngestorStepDefinition {
 			daoFacade.closeConnection();
 		}
 	}
-	
-
 
 }
