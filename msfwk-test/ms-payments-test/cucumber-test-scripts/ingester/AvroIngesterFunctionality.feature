@@ -1,4 +1,3 @@
-
 Feature: AvroIngesterFunctionality    
 
  Scenario: Send Data to topic and validate Payment Order functionality
