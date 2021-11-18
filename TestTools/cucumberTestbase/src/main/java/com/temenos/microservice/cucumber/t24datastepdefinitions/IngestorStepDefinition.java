@@ -477,7 +477,7 @@ public class IngestorStepDefinition {
 										attribute.getValue()),
 								cucumberInteractionSession.scenarioBundle()
 										.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
-								attribute.getValue());
+								attribute.getValue().toString());
 						// tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 						// attribute.getValue().toString());
 					}
