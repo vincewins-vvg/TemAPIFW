@@ -9,12 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
-
-import com.temenos.microservice.framework.core.data.JPAEntity;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = { @Index(columnList = "cardname") })
 public class Card implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
