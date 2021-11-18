@@ -1,16 +1,21 @@
 package com.temenos.microservice.cucumber.t24datastepdefinitions;
 
 import static com.temenos.microservice.framework.test.dao.TestDbUtil.populateCriterian;
+import com.temenos.microservice.cucumber.utility.stepdefs.ReusableTestDataFunctionRestAssured;
+
 import static com.temenos.microservice.test.util.ResourceHandler.readResource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
 import org.hibernate.internal.build.AllowSysOut;
@@ -69,6 +74,12 @@ public class IngestorStepDefinition {
 	private String dbName;
 	private String vendorName;
 	Map<Integer, List<Attribute>> dataMap = null;
+	
+	Properties endpointProperties = new Properties();
+	ReusableTestDataFunctionRestAssured resuableObject = new ReusableTestDataFunctionRestAssured();
+	
+	
+	
 
 	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
@@ -180,6 +191,73 @@ public class IngestorStepDefinition {
 		}
 
 	}
+	
+	//Added by Sai for Keycloak Authorization for ingester
+	@When("^Send Data to Topic ([^\\s]+) from file ([^\\s]+) and authorizationFieldName ([^\\s]+) for Application ([^\\s]+)$")
+    public void sendDataToMentionedTopic(String topicName, String resourcePath, String authFieldName, String applicationName)
+                 throws Exception {
+        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+          if (topicName.equals("ms-paymentorder-inbox-topic") == true
+                       || topicName.equals("paymentorder-event-topic") == true
+                       || topicName.equals("ms-adapterservice-event-topic") == true
+                       || topicName.equals("ms-adapterservice-second-event-topic") == true)
+
+          {
+              
+            //To update KC token inside json payload Authorisation element for posting it to the topic if KC is enabled
+            if(Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
+            {
+         //To update KC token inside json payload Authorisation element for posting it to the topic if KC is enabled
+       System.out.println("Keycloak Auth code which will be updated in payload for topic: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
+       String keyCloakToken = endpointProperties.getProperty("keyCloak_Authorization").toString();
+       String jsonFilePath = "src/test/resources/"+resourcePath;
+       
+       String content = resuableObject.updateRequestFileDynamicValues(authFieldName, keyCloakToken, jsonFilePath);
+                System.out.println("topic payload content with Authorization code updated :" + content);
+                StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+                Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+                //String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));   
+
+                if (IngesterUtil.isCloudEvent()) {
+                    producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+                } else {
+                    producer.batch().add(topicName, new String(content).getBytes());
+                }
+
+                try {
+                    producer.batch().send();
+                } catch (StreamProducerException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            else{
+                
+                StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+                     Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+             String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
+             System.out.println("content:" + content);
+
+             if (IngesterUtil.isCloudEvent()) {
+                 producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+             } else {
+                 producer.batch().add(topicName, new String(content).getBytes());
+             }
+
+             try {
+                 producer.batch().send();
+             } catch (StreamProducerException e) {
+                 e.printStackTrace();
+             }
+            }
+            
+            }
+          
+          else {
+         throw new Exception("Topic name: " + topicName + " is incorrect");
+     }
+    
+    }
 
 	// To check json data content in topic
 	@Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
@@ -477,7 +555,7 @@ public class IngestorStepDefinition {
 										attribute.getValue()),
 								cucumberInteractionSession.scenarioBundle()
 										.getString(tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())),
-								attribute.getValue().toString());
+								attribute.getValue());
 						// tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName()),
 						// attribute.getValue().toString());
 					}
