@@ -19,8 +19,8 @@ aws events delete-rule --name ms-payments-scheduler-rule
 aws lambda delete-function --function-name paymentscheduler
 
 # Delete Stream table-update-marketingcatalog
-aws kinesis delete-stream --stream-name PaymentOrder-inbox-topic
-aws kinesis delete-stream --stream-name PaymentOrder-event-topic
+aws kinesis delete-stream --stream-name ms-paymentorder-inbox-topic
+aws kinesis delete-stream --stream-name paymentorder-event-topic
 aws kinesis delete-stream --stream-name payment-inbox-error-topic
 aws kinesis delete-stream --stream-name payment-outbox-topic
 aws kinesis delete-stream --stream-name table-update-paymentorder
