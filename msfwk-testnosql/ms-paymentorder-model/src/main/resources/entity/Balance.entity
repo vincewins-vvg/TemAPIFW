@@ -46,6 +46,10 @@
     {
       "name": "processingTime",
       "type": "date"
+    },
+	{
+      "name": "txnReference",
+      "type": "string"
     }
   ]
 }
