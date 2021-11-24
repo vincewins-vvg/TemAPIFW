@@ -1,5 +1,4 @@
-
- Feature: EventIngester    
+Feature: EventIngester    
 
  Scenario Outline: Send Data to topic for an existing Payment Order
   

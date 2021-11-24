@@ -27,7 +27,7 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue  |
 		| MS-Test-PO-CloudEvent-001    | eventId    | eq       | string   | 9225e8-3ca-9-b-8801 |
 		
-	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test1.json for Application PAYMENT_ORDER 
+	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test1.json and authorizationFieldName extension-mscontext.authorization for Application PAYMENT_ORDER 
 	
 	And set timeout session for 80 seconds 
 	
@@ -59,7 +59,7 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED 
 #sequenceNo = 2 in payload
 
-	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test2.json for Application PAYMENT_ORDER 
+	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test2.json and authorizationFieldName extension-mscontext.authorization for Application PAYMENT_ORDER 
 	
 	And set timeout session for 30 seconds 
 	
@@ -95,7 +95,7 @@ Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED
 Scenario: To validate Out of Sequence when sequence is not followed 
 #sequenceNo = 5 in payload
 
-	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test3.json for Application PAYMENT_ORDER 
+	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test3.json and authorizationFieldName extension-mscontext.authorization for Application PAYMENT_ORDER 
 	
 	And set timeout session for 30 seconds 
 	
