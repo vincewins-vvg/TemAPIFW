@@ -190,6 +190,16 @@ data:
   temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic | quote }}
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstream_producerid | quote }}
   temn.msf.security.authz.enabled: "false"
+  JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
+  JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
+  ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
+  JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   
@@ -249,9 +259,6 @@ data:
   IRIS_VERSION: "v1.0.0"
   ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
-  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
-  JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
-  ID_TOKEN_SIGNED: "true"
   temn.msf.mdal.keys.MDLPAT.Paymentorder.paymentorder: getCustomerProfile
   temn.msf.mdal.operationId.getCustomerProfile: GetPaymentOrder
   temn.cache.host: "192.168.1.34"
@@ -261,7 +268,16 @@ data:
   temn.msf.exec.env: server
   temn.msf.function.class.ProcessBulkMdalEvent: com.temenos.microservice.framework.core.mdal.ProcessBulkMdalEventImpl
   className_GetPaymentOrder: com.temenos.microservice.payments.function.GetPaymentOrderImpl
-  JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+  JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
+  JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
+  ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
+  JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   
@@ -313,6 +329,16 @@ data:
 # temn.msf.raise.received.event: "true"
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
+  JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
+  JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
+  ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
+  JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   
