@@ -34,17 +34,17 @@ services:
     container_name: 'mongo3'
     ports:
       - "30003:27017"
-  mongosetup:
-    container_name: 'mongoinit'
-    build:
-      context: ${MONGO_INIT_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
-    depends_on:
-      - db-service1
-      - db-service2
-      - db-service3
+  # mongosetup:
+    # container_name: 'mongoinit'
+    # build:
+      # context: ${MONGO_INIT_CONTEXT}
+      # dockerfile: Dockerfile
+      # args:
+        # DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    # depends_on:
+      # - db-service1
+      # - db-service2
+      # - db-service3
   api:
     build:
       context: ${API_CONTEXT}
@@ -53,6 +53,8 @@ services:
         API_BASE_IMAGE: ${API_BASE_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG} ${api_jacoco_jvm_opts}
+        keystore_pass: ${KEYSTORE_PASS}
+        ssl_enabled: ${SSL_ENABLED}
     image: ${API_IMAGE}
     depends_on:
       - db-service1
@@ -66,6 +68,8 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
+      MONGODB_USER: root
+      MONGODB_PASS: root      
       className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
       className_GetPaymentOrder: com.temenos.microservice.paymentorder.function.GetPaymentOrderImpl
       className_invokePaymentState: com.temenos.microservice.paymentorder.function.InvokePaymentOrderImpl
@@ -95,7 +99,8 @@ services:
       className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
       className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
       API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.paymentorder.function.BusinessConditionImpl
-      temn.msf.name: PaymentOrder
+      className_GetConfig: com.temenos.microservice.paymentorder.function.GetGenericConfigDetails
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.queue.impl: kafka
@@ -112,13 +117,16 @@ services:
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       className_initiateDbMigration: com.temenos.microservice.framework.dbmigration.core.InitiateDbMigrationImpl
-      className_getDbMigration: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationImpl
-      temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
-      temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
+      className_getDbMigrationStatus: com.temenos.microservice.framework.dbmigration.core.GetDbMigrationStatusImpl
+      className_ReprocessEvents: com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl
+      className_GetErrorEvents: com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl
+      temn.msf.ingest.reprocess.source.stream: reprocess-event
+      # temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
+      # temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
+
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
-      temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
-      temn.msf.scripts.location: "scripts"         
-      ms.security.tokencheck.enabled: Y
+      temn.msf.storage.home: "path:/usr/local/tomcat/temp/"       
+      ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
@@ -129,6 +137,17 @@ services:
       #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
     #extra_hosts:
       #- "entitlement-api:10.93.23.73"
+      temn.msf.tracer.name: ms_paymentorder_api
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)     
+      temn.msf.security.tokengen.oauth.url: "http://10.92.200.219:8180/auth/realms/msf/protocol/openid-connect/token"
+      temn.msf.security.tokengen.client.secret: "e38b38fe-4e3f-4de7-865a-f3749d068ab3" 
+      temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+      temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+      temn.msf.security.tokengen.oauth.scope: "openid"
+      serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"       
   paymentorderScheduler:
     build:
       context: ${SCHEDULER_CONTEXT}
@@ -149,7 +168,9 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
-      temn.msf.name: PaymentOrder
+      MONGODB_USER: root
+      MONGODB_PASS: root      
+      temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
       temn.msf.scheduler.paymentscheduler.cron.trigger.time: 59 * * ? * *
@@ -158,6 +179,11 @@ services:
       className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
+      temn.msf.tracer.name: ms_paymentorder_scheduler 
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -178,7 +204,9 @@ services:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      MONGODB_USER: root
+      MONGODB_PASS: root      
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.exec.env: server
@@ -190,6 +218,12 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
+      temn.msf.ingest.is.cloud.event: "true"
+      temn.msf.tracer.name: ms_paymentorder_inboxoutboxprocessor 
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)         
   ingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -210,8 +244,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.queue.impl: kafka
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -233,6 +269,15 @@ services:
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.tracer.name: ms_paymentorder_ingester 
+      temn.msf.tracer.enabled: "false"
+      temn.msf.ingest.multipart.source.stream: multipart-topic
+      temn.msf.ingest.reprocess.source.stream: reprocess-event
+      temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+      temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1 
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)               
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -253,8 +298,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
-      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017 
-      temn.msf.name: PaymentOrder
+      MONGODB_USER: root
+      MONGODB_PASS: root
+      MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017      
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.queue.impl: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
@@ -271,6 +318,11 @@ services:
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
+      temn.msf.tracer.name: ms_paymentorder_configavroingester 
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)         
   ingesterbinary:
     build:
       context: ${INGESTER_CONTEXT}
@@ -291,8 +343,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: ms-paymentorder-inbox-topic
@@ -315,12 +369,17 @@ services:
       #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       #temn.msf.pdp.resource.type: API
       #temn.msf.pdp.resource.manager: PAYMENT
-      ms.security.tokencheck.enabled: Y
+      ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
       JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+      temn.msf.tracer.name: ms_paymentorder_ingesterbinary 
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)      
   stateingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -341,8 +400,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -360,6 +421,11 @@ services:
       temn.msf.security.authz.enabled: "false"
       EXECUTION_ENVIRONMENT: TEST
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_stateingester  
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)         
   businessingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -380,8 +446,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -397,6 +465,11 @@ services:
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_businessingester 
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)       
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -417,8 +490,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.schema.registry.url: http://schema-registry:8081
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
@@ -434,6 +509,11 @@ services:
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
+      temn.msf.tracer.name: ms_paymentorder_configBinaryIngester   
+      temn.msf.tracer.enabled: "false"
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)         
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -454,8 +534,10 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.source.stream: paymentorder-event-topic
@@ -471,6 +553,11 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka  
+      temn.msf.tracer.name: ms_paymentorder_eventingester  
+      temn.msf.tracer.enabled: "false" 
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)          
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
@@ -494,10 +581,17 @@ services:
     environment:
       DATABASE_KEY: mongodb
       MONGODB_DBNAME: ms_paymentorder
+      MONGODB_USER: root
+      MONGODB_PASS: root
       MONGODB_CONNECTIONSTR: mongodb://mongo1:27017,mongo2:27017,mongo3:27017
-      temn.msf.name: PaymentOrder
+      temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
-      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
+      temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester  
+      temn.msf.tracer.name: ms_paymentorder_fileingester    
+      temn.msf.tracer.enabled: "false"  
+      temn.msf.logger.socketHost: #ipaddress
+      temn.msf.logger.socketPort: #port
+      temn.msf.logger.exportType: #socket (console,socket)        

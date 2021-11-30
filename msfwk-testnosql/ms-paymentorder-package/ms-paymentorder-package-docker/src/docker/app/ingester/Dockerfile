@@ -11,7 +11,7 @@ ENV JAVA_OPTS ${java_options}
 COPY ${artifactid} /app/${artifactid}
 #COPY jacocoagent.jar /app/jacocoagent.jar
 RUN mkdir -p /target
-
+RUN mkdir -p /app/dump
 RUN mkdir -p /target/logs
 
 
@@ -20,6 +20,12 @@ RUN chown -R appuser:appgroup /usr
 RUN chmod -R +x /usr
 RUN chown -R appuser:appgroup /target
 RUN chmod -R +x /target
+
+RUN chown -R appuser:appgroup /app
+RUN chmod -R +x /app
+
+RUN chown -R appuser:appgroup /app/dump
+RUN chmod -R +x /app/dump
 
 USER appuser
 
