@@ -31,6 +31,8 @@ cd payments
 
 mkdir helm-chart
 
+mkdir samples
+
 cd ../
 
 cp -r k8/on-premise/svc payments/helm-chart/svc
@@ -38,6 +40,8 @@ cp -r k8/on-premise/svc payments/helm-chart/svc
 cp -r k8/on-premise/dbinit payments/helm-chart/dbinit
 
 cp -r k8/on-premise/appinit payments/helm-chart/appinit
+
+cp -r k8/on-premise/samples payments/samples
 
 cd payments
 
