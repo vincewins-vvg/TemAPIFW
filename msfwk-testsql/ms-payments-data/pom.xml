@@ -53,22 +53,17 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>truezip-maven-plugin</artifactId>
+				<groupId>com.temenos.microservice.plugin</groupId>
+				<artifactId>ms-framework-gen</artifactId>
 				<executions>
 					<execution>
 						<id>update-project</id>
-						<goals>
-							<goal>copy</goal>
-						</goals>
 						<phase>package</phase>
+						<goals>
+							<goal>generate-entity-ddl</goal>
+						</goals>						
 						<configuration>
-							<files>
-								<file>
-									<source>src-gen/database</source>
-									<outputDirectory>target/${project.artifactId}-${project.version}.jar</outputDirectory>
-								</file>								 
-							</files>
+							<enableDdl>true</enableDdl>								 
 						</configuration>
 					</execution>
 				</executions>
