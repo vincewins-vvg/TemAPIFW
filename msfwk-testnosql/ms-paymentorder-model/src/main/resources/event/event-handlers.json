@@ -5,8 +5,7 @@
 			"type": "avro",
 			"description": "Transact Ingester for Paymentorder MicroService",
 			"eventSource": [
-				"table-update",
-				"multi-part"
+				"table-update"
 			],
 			"envParams": [
 				{
@@ -64,7 +63,6 @@
 	],
 	"streams": [
 		"table-update",
-		"multipart-topic",
 		"ms-paymentorder-inbox-topic",
 		"paymentorder-event-topic"
 	]

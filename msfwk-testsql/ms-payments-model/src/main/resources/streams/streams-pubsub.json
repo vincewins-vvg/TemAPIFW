@@ -29,10 +29,6 @@
 		{
 			"name": "table-update",
 			"description": "This Microservice subscribes to this topic to process data events from record keeping system"
-		},
-		{
-			"name": "multipart-topic",
-			"description": "This Microservice subscribes to this topic to process data events from record keeping system when the data is of larger size"
 		}
 	]
 }
