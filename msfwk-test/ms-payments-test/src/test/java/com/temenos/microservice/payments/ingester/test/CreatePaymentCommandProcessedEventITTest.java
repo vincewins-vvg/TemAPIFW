@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
@@ -27,6 +28,7 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.util.IngesterUtil;
+
 
 public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 
@@ -72,7 +74,7 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from (ms_inbox_events)database...");
-			Thread.sleep(45000);
+			Thread.sleep(60000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442b", "CommandProcessed");
 			System.out.println("inboxResultMap  " + inboxResultMap);

@@ -6,7 +6,7 @@ Feature: CommandBinaryIngester
   And enter data for table
   | Fields   | type | data|
   | type | string |paymentref|
-  | value | string |paycmd |
+  | value | string |paycmx |
   | description | string |Payment ref|
 
     Given Set the test backgound for PAYMENT_ORDER API
@@ -16,9 +16,9 @@ Feature: CommandBinaryIngester
       #| MS-Test-PO-CommandIngester-001    | paymentOrderId    | eq       | string   | PO~10995~898789~USD~100 |
 
     
-    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngester.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
+    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngester.json for Application PAYMENT_ORDER
     
-    And set timeout session for 30 seconds
+    And set timeout session for 90 seconds
  
     Then Set the following data criteria
       | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
@@ -29,7 +29,7 @@ Feature: CommandBinaryIngester
       | MS-Test-PO-CommandIngester-001    | paymentOrderId  | PO~1733~3621~USD~901 |
 
 
-    #And set timeout session for 30 seconds
+    #And set timeout session for 60 seconds
       
     #Check the entries in Inbox
     Then Set the following data criteria
@@ -45,27 +45,27 @@ Feature: CommandBinaryIngester
    #And set timeout session for 30 seconds
    
     #Check the entries in outbox for correlationId
-#    Then Set the following data criteria 
-#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-#      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
-#      
-#    #And Validate the below details from the db table ms_outbox_events
-#    And Validate the below details from the db table ms_outbox_events
-#      | TestCaseID                           | ColumnName     | ColumnValue |
-#      | MS-Test-PO-CommandIngester-001       | correlationId    | 4316e8-3ca-9-b-8728 |
-#      
-#    #Check the entries in outbox for status and event type values
-#    Then Set the following data criteria
-#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-#      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
-#      | MS-Test-PO-CommandIngester-001| status           | eq       | string   | DELIVERED |
-#      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandProcessed |
-#      
-#    #And Validate the below details from the db table ms_outbox_events and check no of record is 2
-#    And Validate if the below columns contains values from the db table ms_outbox_events
-#      | TestCaseID                           | ColumnName     | ColumnValue |
-#      | MS-Test-PO-CommandIngester-001       | eventType      | CommandProcessed | 
-#      | MS-Test-PO-CommandIngester-001       | payload        | "status":200 |   
+    Then Set the following data criteria 
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
+      
+    #And Validate the below details from the db table ms_outbox_events
+    And Validate the below details from the db table ms_outbox_events
+      | TestCaseID                           | ColumnName     | ColumnValue |
+      | MS-Test-PO-CommandIngester-001       | correlationId    | 4316e8-3ca-9-b-8728 |
+      
+    #Check the entries in outbox for status and event type values
+    Then Set the following data criteria
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-b-8728 |
+      | MS-Test-PO-CommandIngester-001| status           | eq       | string   | DELIVERED |
+      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandProcessed |
+      
+    #And Validate the below details from the db table ms_outbox_events and check no of record is 2
+    And Validate if the below columns contains values from the db table ms_outbox_events
+      | TestCaseID                           | ColumnName     | ColumnValue |
+      | MS-Test-PO-CommandIngester-001       | eventType      | CommandProcessed | 
+      | MS-Test-PO-CommandIngester-001       | payload        | "status":200 |   
 
       
    #To check API response for the record created above
@@ -90,9 +90,9 @@ Feature: CommandBinaryIngester
     Given Set the test backgound for PAYMENT_ORDER API
     Given Set the Testcase id MS-Test-PO-CommandIngester-001 for company GB0010001
   
-    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterDuplicate.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
+    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterDuplicate.json for Application PAYMENT_ORDER
     
-    And set timeout session for 30 seconds
+    And set timeout session for 90 seconds
       
        Then Set the following data criteria
       | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
@@ -115,19 +115,19 @@ Feature: CommandBinaryIngester
     
     
       #To check outbox entries
-#     Then Set the following data criteria 
-#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-#      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-ab-8728 |
-#      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
-#      
-#      
-#    #And Validate the below details from the db table ms_outbox_events
-#   And Validate the below details from the db table ms_outbox_events and check no of record is 1
-#    | TestCaseID                           | ColumnName     | ColumnValue |
-#    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-ab-8728 |
-#    
-#    And Validate if the below columns contains values from the db table ms_outbox_events
-#      | TestCaseID                           | ColumnName     | ColumnValue |      
-#      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
-#      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
-#      #| MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Record already exists","code":"MSF-002"}]|
+     Then Set the following data criteria 
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-PO-CommandIngester-001| correlationId    | eq       | string   | 4316e8-3ca-9-ab-8728 |
+      | MS-Test-PO-CommandIngester-001| eventType        | eq       | string   | CommandFailed |
+      
+      
+    #And Validate the below details from the db table ms_outbox_events
+   And Validate the below details from the db table ms_outbox_events and check no of record is 1
+    | TestCaseID                           | ColumnName     | ColumnValue |
+    | MS-Test-PO-CommandIngester-001       | correlationId  | 4316e8-3ca-9-ab-8728 |
+    
+    And Validate if the below columns contains values from the db table ms_outbox_events
+      | TestCaseID                           | ColumnName     | ColumnValue |      
+      | MS-Test-PO-CommandIngester-001       | status         | DELIVERED   |
+      | MS-Test-PO-CommandIngester-001       | payload        | "status":400 |
+      #| MS-Test-PO-CommandIngester-001       | payload        | "failureMessages":[{"message":"Record already exists","code":"MSF-002"}]|

@@ -4,7 +4,7 @@
   #Background: To setup the preconfigs
   #
     #Given Set the test backgound for PAYMENT_ORDER API
-    #Given create a new MS request with code using Restassured arguments ""
+    #Given create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
     #And MS request URI is "v1.0.0/payments/orders"
     #And MS query parameter for Azure env is set to value ""
     #

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -16,6 +17,7 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import com.temenos.microservice.framework.core.conf.Environment;
 
 import reactor.core.publisher.Mono;
+
 
 public class GetPaymentOrdersITTest extends ITTest {
 

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
@@ -27,6 +28,7 @@ import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.util.IngesterUtil;
+
 
 public class CreatePaymentCommandFailedEventITTest extends ITTest {
 
@@ -45,7 +47,7 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		String inboxTableName = "";
 		inboxTableName = "ms_inbox_events";
 
-		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "f75affa2-b53f-4dbc-80d7-e9c0df80442c",
+		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "f75affa2-b53f-4dbc-80d7-e9c0df80442e",
 				"eventType", "eq", "string", "CommandFailed");
 		daoFacade.closeConnection();
 		producer.close();
@@ -72,9 +74,9 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from database...");
-			Thread.sleep(45000);
+			Thread.sleep(60000);
 			System.out.println("Reading record back from db, try=" + (retryCount + 1));
-			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442c", "CommandFailed");
+			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442e", "CommandFailed");
 			retryCount = retryCount + 1;
 		} while (inboxResultMap.get(1) == null && retryCount < maxDBReadRetryCount);
 
@@ -88,8 +90,8 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		/*
 		 * Assertion for the Inbox record eventId & inbox record correlationId
 		 */
-		assertEquals(inboxAttributesMap.get("eventid"), "f75affa2-b53f-4dbc-80d7-e9c0df80442c");
+		assertEquals(inboxAttributesMap.get("eventid"), "f75affa2-b53f-4dbc-80d7-e9c0df80442e");
 		assertEquals(inboxAttributesMap.get("eventtype"), "CommandFailed");
-		assertTrue(inboxAttributesMap.get("payload").contains("{\"eventId\":\"f75affa2-b53f-4dbc-80d7-e9c0df80442c\""));
+		assertTrue(inboxAttributesMap.get("payload").contains("{\"eventId\":\"f75affa2-b53f-4dbc-80d7-e9c0df80442e\""));
 	}
 }

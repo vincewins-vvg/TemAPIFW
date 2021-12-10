@@ -14,7 +14,7 @@ Scenario: Send Microservice B data to paymentorder-event-topic and validate Even
  #Sending data to PaymentOrder inbox topic
     When Send Data to Topic paymentorder-event-topic from file avro/ingester/CommandProcessedEvent_MicroserviceB.json for Application PAYMENT_ORDER
    
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
    
     #Check the entries in Inbox
     Then Set the following data criteria

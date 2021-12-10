@@ -83,6 +83,11 @@ public class ITTest {
 		String codeValue = "?code=" + Environment.getEnvironmentVariable(var, "");
 		return codeValue;
 	}
+	public static String getCodetest(String var) {
+		String codeValue = "&code=" + Environment.getEnvironmentVariable(var, "");
+		return codeValue;
+	}
+	
 
 	protected static void deletePaymentOrderRecord(String table, String... query) {
 		List<Criterion> criterions = new ArrayList<Criterion>();
