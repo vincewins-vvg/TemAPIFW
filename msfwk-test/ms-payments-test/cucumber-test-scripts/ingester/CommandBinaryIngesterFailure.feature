@@ -14,7 +14,7 @@ Feature: CommandBinaryIngesterFailure
     
     When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidJSON.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
     
-    And set timeout session for 30 seconds
+    And set timeout session for 90 seconds
  
     Then Set the following data criteria
       | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
@@ -77,7 +77,7 @@ Feature: CommandBinaryIngesterFailure
     #When send JSON data to topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidCurrencyJSON.json and authorizationFieldName ([^\\s]+) for Application PAYMENT_ORDER
     When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidCurrencyJSON.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
     
-    And set timeout session for 30 seconds
+    And set timeout session for 90 seconds
  
     Then Set the following data criteria
       | TestCaseID                    | ColumnName        | Operator | DataType | ColumnValue          |
@@ -152,7 +152,7 @@ Feature: CommandBinaryIngesterFailure
    #Send Command Event data without JWT Token as header to topic 
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterWithoutJWT.json for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 90 seconds
  
     #Check the entries in inbox for eventId
     Then Set the following data criteria 
@@ -231,7 +231,7 @@ Feature: CommandBinaryIngesterFailure
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterPrehookFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 90 seconds
  
     #Check the entries in inbox for eventId
     Then Set the following data criteria 
@@ -309,7 +309,7 @@ Feature: CommandBinaryIngesterFailure
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterProcessFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 90 seconds
  
     #Check the entries in inbox for eventId
     Then Set the following data criteria 
@@ -415,7 +415,7 @@ Feature: CommandBinaryIngesterFailure
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterPosthookFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 90 seconds
  
     #Check the entries in inbox for eventId
     Then Set the following data criteria 

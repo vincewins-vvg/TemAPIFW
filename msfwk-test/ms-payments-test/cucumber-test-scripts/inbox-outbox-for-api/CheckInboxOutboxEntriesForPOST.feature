@@ -45,27 +45,27 @@
     And set timeout session for 30 seconds
     
      #Check the entries in outbox for Correlation Id
-#    Then Set the following data criteria
-#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-#      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |  
-#      
-#    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
-#    And Validate the below details from the db table ms_outbox_events
-#      | TestCaseID                    | ColumnName    | ColumnValue |
-#      | MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
+    Then Set the following data criteria
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |  
+      
+    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
+    And Validate the below details from the db table ms_outbox_events
+      | TestCaseID                    | ColumnName    | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
   
     #Check the entries in outbox for eventtype and status value
-#    Then Set the following data criteria
-#      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
-#      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
-#      | MS-Test-Payments-MS-001       | eventType        | eq       | string   | CommandProcessed |
-#      | MS-Test-Payments-MS-001       | status           | eq       | string   | DELIVERED |
-#    
-#      
-#    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
-#    And Validate the below details from the db table ms_outbox_events
-#      | TestCaseID                    | ColumnName | ColumnValue |
-#      | MS-Test-Payments-MS-001       | eventType  | CommandProcessed |
+    Then Set the following data criteria
+      | TestCaseID                    | ColumnName       | Operator | DataType | ColumnValue |
+      | MS-Test-Payments-MS-001       | correlationId    | eq       | string   | fda5244e-a140-470e-83ad-768cb225510 |
+      | MS-Test-Payments-MS-001       | eventType        | eq       | string   | CommandProcessed |
+      | MS-Test-Payments-MS-001       | status           | eq       | string   | DELIVERED |
+    
+      
+    #And Validate the below details from the db table ms_outbox_events and check no of record is 3
+    And Validate the below details from the db table ms_outbox_events
+      | TestCaseID                    | ColumnName | ColumnValue |
+      | MS-Test-Payments-MS-001       | eventType  | CommandProcessed |
       
     #Check the entries in outbox
     #Then Set the following data criteria
@@ -78,7 +78,10 @@
       #| MS-Test-Payments-MS-001       | correlationid | fda5244e-a140-470e-83ad-768cb225510 |
       #| MS-Test-Payments-MS-001       | eventtype    | POAccepted |
       #| MS-Test-Payments-MS-001       | status    | DELIVERED |   
-       
+ 
+ 
+
+      
      #Check the entries in outbox
     #Then Set the following data criteria
       #| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
@@ -92,9 +95,9 @@
       #| MS-Test-Payments-MS-001       | status    | DELIVERED |
       
     
-    Examples:
+    #Examples:
     
-    |payload|
-    |{"fromAccount":"100-CBE","toAccount":"232-IOBC","paymentReference":"payiop","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"test","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+    #|payload|
+    #|{"fromAccount":"100-CBE","toAccount":"232-IOBC","paymentReference":"payiop","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
     
     

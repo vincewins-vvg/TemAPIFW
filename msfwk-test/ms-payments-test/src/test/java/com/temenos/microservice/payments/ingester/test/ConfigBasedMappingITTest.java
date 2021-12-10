@@ -34,7 +34,6 @@ import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.streams.AvroProducer;
 import com.temenos.microservice.kafka.util.KafkaStreamProducer;
 import com.temenos.microservice.payments.api.test.ITTest;
-
 @Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConfigBasedMappingITTest extends ITTest {
