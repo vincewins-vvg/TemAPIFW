@@ -10,7 +10,7 @@ Feature: CommandBinaryIngesterFailure
       #| MS-Test-PO-CommandIngester-001    | paymentOrderId    | eq       | string   | PO~10995~898789~USD~100 |
 
     
-    #When send JSON data to topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidJSON.json  for Application PAYMENT_ORDER
+        #When send JSON data to topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidJSON.json  for Application PAYMENT_ORDER
     
     When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CommandIngesterInvalidJSON.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
     
@@ -230,6 +230,7 @@ Feature: CommandBinaryIngesterFailure
 
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterPrehookFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
+
    
    And set timeout session for 90 seconds
  
@@ -308,6 +309,7 @@ Feature: CommandBinaryIngesterFailure
 
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterProcessFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
+
    
    And set timeout session for 90 seconds
  
@@ -414,6 +416,7 @@ Feature: CommandBinaryIngesterFailure
 
    
    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterPosthookFailure.json and authorizationFieldName headers.authorization for Application PAYMENT_ORDER
+
    
    And set timeout session for 90 seconds
  
