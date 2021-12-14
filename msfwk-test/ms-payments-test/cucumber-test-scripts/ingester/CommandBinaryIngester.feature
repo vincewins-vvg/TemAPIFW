@@ -16,7 +16,7 @@ Feature: CommandBinaryIngester
       #| MS-Test-PO-CommandIngester-001    | paymentOrderId    | eq       | string   | PO~10995~898789~USD~100 |
 
     
-    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngester.json for Application PAYMENT_ORDER
+    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngester.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
     
     And set timeout session for 90 seconds
  
@@ -90,7 +90,7 @@ Feature: CommandBinaryIngester
     Given Set the test backgound for PAYMENT_ORDER API
     Given Set the Testcase id MS-Test-PO-CommandIngester-001 for company GB0010001
   
-    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterDuplicate.json for Application PAYMENT_ORDER
+    When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/CreatePOBinaryIngesterDuplicate.json and authorizationFieldName headers.Authorization for Application PAYMENT_ORDER
     
     And set timeout session for 90 seconds
       
