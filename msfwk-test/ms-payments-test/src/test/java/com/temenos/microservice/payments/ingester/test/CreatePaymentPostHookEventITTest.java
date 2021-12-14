@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.temenos.des.streamprocessor.exception.StreamProducerException;
@@ -28,9 +29,10 @@ import com.temenos.microservice.framework.core.conf.MSLogCode;
 import com.temenos.microservice.framework.test.dao.Attribute;
 import com.temenos.microservice.framework.test.util.IngesterUtil;
 
+
 public class CreatePaymentPostHookEventITTest extends ITTest {
 
-	private static final int maxDBReadRetryCount = 8; // 2 minutes
+	private static final int maxDBReadRetryCount = 4; // 2 minutes
 	private static StreamProducer producer;
 
 	@BeforeClass
@@ -72,7 +74,7 @@ public class CreatePaymentPostHookEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from (ms_inbox_events)database...");
-			Thread.sleep(45000);
+			Thread.sleep(60000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("34ae9209-856e-4ed4-8980-1c658eb0a204", "PostHookEvent");
 			System.out.println("inboxResultMap  " + inboxResultMap);

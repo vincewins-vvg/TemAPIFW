@@ -1,12 +1,12 @@
   {
-  "fromAccount": "112",
-  "toAccount": "222",
+  "fromAccount": "114",
+  "toAccount": "225",
   "paymentReference": "paytestcheck3",
   "paymentDetails": "Success",
   "currency": "USD",
   "amount": 121,
   "expires": 10,
-  "fileContent": "77+977+9LQ==",
+  "fileContent": "dGVzdA==",
   "paymentDate":"2024-05-05",   
   "paymentMethod": {
     "id": 100100,

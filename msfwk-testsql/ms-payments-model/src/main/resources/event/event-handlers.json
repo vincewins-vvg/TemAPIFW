@@ -1,0 +1,69 @@
+{
+	"data-ingesters": [
+		{
+			"serviceName": "paymentorder-data-ingester",
+			"type": "avro",
+			"description": "Transact Ingester for Paymentorder MicroService",
+			"eventSource": [
+				"table-update"
+			],
+			"envParams": [
+				{
+					"temn.msf.ingest.event.ingester": "com.temenos.microservice.framework.core.ingester.MicroserviceIngester",
+					"PAYMENT_ORDEREvent": "com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater"
+				}
+			]
+		}
+	],
+	"event-handlers": [
+		{
+			"serviceName": "paymentorder-binary-eventhandler",
+			"type": "binary",
+			"description": "Binary/Command Event Handler for Paymentorder MicroService",
+			"eventSource": [
+				"ms-paymentorder-inbox-topic"
+			],
+			"envParams": [
+				{
+					"temn.msf.ingest.generic.ingester": "com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester",
+					"temn.msf.function.class.CreateNewPaymentOrder": "com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl",
+					"className_UpdatePaymentOrder": "com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl"
+				}
+			]
+		},
+		{
+			"serviceName": "paymentorder-eventhandler",
+			"type": "binary",
+			"description": "Event Handler for Paymentorder MicroService",
+			"eventSource": [
+				"paymentorder-event-topic"
+			],
+			"envParams": [
+				{
+					"temn.msf.ingest.generic.ingester": "com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester",
+					"temn.msf.function.class.CreateNewPaymentOrder": "com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl",
+					"temn.msf.ingest.event.processor": "com.temenos.microservice.paymentorder.ingester.EventHandlerImpl",
+					"temn.msf.ingest.event.processor.POAccepted": "com.temenos.microservice.paymentorder.ingester.PoHandlerImpl"
+				}
+			]
+		},
+		{
+			"serviceName": "paymentorder-outbox-eventhandler",
+			"type": "binary",
+			"description": "Outbox Event Handler for Paymentorder MicroService",
+			"eventSource": [
+				"ms-paymentorder-outbox"
+			],
+			"envParams": [
+				{
+					"temn.msf.function.class.CreateNewPaymentOrder": "com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl"
+				}
+			]
+		}
+	],
+	"streams": [
+		"table-update",
+		"ms-paymentorder-inbox-topic",
+		"paymentorder-event-topic"
+	]
+}

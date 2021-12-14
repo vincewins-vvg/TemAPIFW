@@ -45,9 +45,8 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 		| MS-Test-PO-CloudEvent-001       | sequenceNo    | 1 |
 		
 		#To get the created PO
-	Given create a new MS request with code using Restassured arguments "" 
+	Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE" 
 	Given MS request URI is "v1.0.0/payments/orders/PO~419967~7546~USD~124" 
-	And create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE" 
 	And MS request header "serviceid" is set to "client" 
 	And MS request header "channelid" is set to "web" 
 	And MS request header "customfilterid" is set to "test" 

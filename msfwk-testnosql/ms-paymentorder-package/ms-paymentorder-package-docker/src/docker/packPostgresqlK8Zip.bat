@@ -39,6 +39,8 @@ mkdir helm-chart
 
 cd helm-chart
 
+mkdir samples
+
 mkdir svc
 
 mkdir dbinit
@@ -51,6 +53,7 @@ xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e
 
 xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e
 
+xcopy k8\on-premise\samples paymentorder\samples /s /e
 
 cd paymentorder
 

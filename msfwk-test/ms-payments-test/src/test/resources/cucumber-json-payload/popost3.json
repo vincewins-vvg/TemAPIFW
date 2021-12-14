@@ -6,7 +6,7 @@
   "currency": "USD",
   "amount": 40,
   "expires": 0,
-  "fileContent": "TEST",
+  "fileContent": "dGVzdA==",
   "paymentMethod": {
     "id": 11,
     "name": "TEST",

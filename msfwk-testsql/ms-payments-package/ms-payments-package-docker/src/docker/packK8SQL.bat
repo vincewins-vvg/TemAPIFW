@@ -27,6 +27,8 @@ cd payments
 
 mkdir helm-chart
 
+mkdir samples
+
 cd helm-chart
 
 mkdir svc
@@ -38,6 +40,8 @@ xcopy k8\on-premise\svc payments\helm-chart\svc /s /e
 xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e
 
 xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e
+
+xcopy k8\on-premise\samples payments\samples /s /e
 
 cd payments
 

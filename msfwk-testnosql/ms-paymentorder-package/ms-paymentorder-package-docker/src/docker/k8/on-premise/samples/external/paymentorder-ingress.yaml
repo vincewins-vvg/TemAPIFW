@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paymentorder-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: paymentorderapi.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: paymentorder-poapisvcnp
+            port:
+              number: 8080  

@@ -1,12 +1,12 @@
 {
-  "fromAccount": "111",
+  "fromAccount": "112",
   "toAccount": "123",
   "paymentReference": "paymentpag",
   "paymentDetails": "TEST",
   "currency": "USD",
   "amount": 100,
   "expires": 0,
-  "fileContent": "TEST",
+  "fileContent": "dGVzdA==",
   "paymentMethod": {
     "id": 11,
     "name": "TEST",

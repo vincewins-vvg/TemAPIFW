@@ -29,7 +29,7 @@ Scenario Outline: Create a new Payment Order for checking IO box entries
 	Examples: 
 	
 		|payload|
-		|{"fromAccount":"101-SBI","toAccount":"232-IOBC","paymentReference":"payiopget","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"test","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+		|{"fromAccount":"101-SBI","toAccount":"232-IOBC","paymentReference":"payiopget","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
 		
 Scenario: GETALL Payment Order for checking IO box entries 
 	Given Set the test backgound for PAYMENT_ORDER API 

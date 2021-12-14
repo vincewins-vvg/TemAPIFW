@@ -9,7 +9,7 @@
   And enter data for table
   | Fields   | type | data|
   | type | string |paymentref|
-  | value | string |payeven|
+  | value | string |payeveb|
   | description | string |Payment ref|
   
         
@@ -28,7 +28,7 @@
 
     When Send Data to Topic paymentorder-event-topic from file avro/ingester/CreatePOEventIngester.json for Application PAYMENT_ORDER
    
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
 
     Then Set the following data criteria
       | TestCaseID                      | ColumnName        | Operator | DataType | ColumnValue |
@@ -40,7 +40,7 @@
       | TestCaseID                      | ColumnName      | ColumnValue |
       | MS-Test-PO-EventIngester-001    | paymentOrderId  | PO~100-CBE~232-EVEN~INR~125 |  
     
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
     
     #Check the entries in Inbox
     Then Set the following data criteria
@@ -67,7 +67,7 @@
     
    #To check API response for the PO record created above
    
-    Given create a new MS request with code using Restassured arguments ""
+    Given create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
     And MS request URI is "v1.0.0/payments/orders/PO~100-CBE~232-EVEN~INR~125"
     And MS query parameter for Azure env is set to value ""
     And MS request header "Content-Type" is set to "application/json"
@@ -82,7 +82,7 @@
       
     Examples:    
     |payload|
-    |{"fromAccount":"100-CBE","toAccount":"232-EVEN","paymentReference":"payeven","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+    |{"fromAccount":"100-CBE","toAccount":"232-EVEN","paymentReference":"payeveb","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
     
   #Author: Sabapathy
   #MSF-2472
@@ -120,7 +120,7 @@
   #SequenceCompleted with prehook failure event inserted to topic  
    When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedPrehookFailure.json for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 60 seconds
    
    #Check PO's status as "Initiated" for paymentorderId with count as 1
     Then Set the following data criteria 
@@ -170,7 +170,7 @@
   #SequenceCompleted with posthook failure event inserted to topic  
    When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedPosthookFailure.json for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 60 seconds
    
     #Check the entries in inbox for eventId
     Then Set the following data criteria 
@@ -207,7 +207,7 @@
   #SequenceCompleted with process failure event inserted to topic  
    When Send Data to Topic paymentorder-event-topic from file avro/ingester/SequenceCompletedProcesshookFailure.json for Application PAYMENT_ORDER
    
-   And set timeout session for 30 seconds
+   And set timeout session for 60 seconds
    
     #Check the entries in inbox for eventId
     Then Set the following data criteria 

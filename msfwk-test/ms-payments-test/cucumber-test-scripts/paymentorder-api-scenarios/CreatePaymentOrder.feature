@@ -23,6 +23,7 @@ Feature: CreatePaymentOrder
   
     And MS request URI is "v1.0.0/payments/orders"
     And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
+    And MS query parameter for Azure env is set to value ""
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/CreatePaymentOrder.json"
     When a "POST" request is sent to MS
     And log all MS response in console
@@ -38,6 +39,7 @@ Feature: CreatePaymentOrder
     
     And MS request URI is "v1.0.0/payments/orders"
     And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
+    And MS query parameter for Azure env is set to value ""
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/CreatePOWithExtensionData.json"
     When a "POST" request is sent to MS
     And log all MS response in console
@@ -54,6 +56,7 @@ Feature: CreatePaymentOrder
     Scenario Outline: Create a Payment Order with same Account and Currency Details
     Given MS request URI is "v1.0.0/payments/orders"
     And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
+    And MS query parameter for Azure env is set to value ""
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
     #Then MS response code should be 400
@@ -65,16 +68,18 @@ Feature: CreatePaymentOrder
     
     
     Scenario: To get created PO
-    Given create a new MS request with code using Restassured arguments ""
+    Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE"
     #Fetch the stored paymentid from the mentioned file path
     And fetch the MS response data for rest assured json response "PaymentId_1" from file path "src/test/resources/reusable-test-data/KeyAndValues.txt"
     #Use the store Payment Id in CreatePaymentOrder in the request URI
     And concat the MS request URI "v1.0.0/payments/orders" with Bundle Value "{PaymentId_1}"
 
     And create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE"
+    And MS query parameter for Azure env is set to value ""
     And MS request header "serviceid" is set to "client"
     And MS request header "channelid" is set to "web"
     And MS request header "customfilterid" is set to "test"
+    And MS request header "Content-Type" is set to "application/json"
     
     When a "GET" request is sent to MS
     And log all MS response in console
@@ -83,16 +88,18 @@ Feature: CreatePaymentOrder
     
     
     Scenario: To get created PO with Extension Data
-    Given create a new MS request with code using Restassured arguments ""
+    Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE"
     #Fetch the stored paymentid from the mentioned file path
     And fetch the MS response data for rest assured json response "PaymentId_Extension" from file path "src/test/resources/reusable-test-data/KeyAndValues.txt"
     #Use the store Payment Id in CreatePaymentOrder in the request URI
     And concat the MS request URI "v1.0.0/payments/orders" with Bundle Value "{PaymentId_Extension}"
 
     And create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE"
+    And MS query parameter for Azure env is set to value ""
     And MS request header "serviceid" is set to "client"
     And MS request header "channelid" is set to "web"
     And MS request header "customfilterid" is set to "test"
+    And MS request header "Content-Type" is set to "application/json"
 
     
     When a "GET" request is sent to MS

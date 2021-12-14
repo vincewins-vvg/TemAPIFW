@@ -2,13 +2,13 @@ Feature: 01_jwt-postapi
   
   Background: To set the preconfig for the scenarios
   
-    Given Set the test backgound for PAYMENT_ORDER API
-    And MS query parameter for Azure env is set to value ""
+    Given Set the test backgound for PAYMENT_ORDER API   
     Given create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
-   
+    And MS query parameter for Azure env is set to value ""
+    
   Scenario: To verify the responses when a valid jwt token is passed in PO POST Api
   
-  #To insert the Payment reference details into the DB for testing purpose
+  To insert the Payment reference details into the DB for testing purpose
   Given enter the tablename ms_reference_data
   And enter data for table
   | Fields   | type | data|

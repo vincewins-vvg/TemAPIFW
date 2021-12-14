@@ -2,7 +2,7 @@ Feature: PaymentCustomer
 Background: to set the preconfig for the scenarios
 
 	Given Set the test backgound for PAYMENT_ORDER API 
-	And create a new MS request with code using Restassured arguments "" 
+	And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE" 
 	And MS request URI is "v1.0.0/payments/customers"
 	And MS query parameter for Azure env is set to value "" 
 	#And MS request header "Authorization" is set to "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw" 
@@ -225,25 +225,25 @@ Scenario Outline: create customer using post method-invalid date format
 	And MS JSON response string property key "message" should contain value "Check the date format entered" 
 	And MS JSON response string property key "code" should contain value "400"
 	
-	Scenario: to retrieve a customer using query param-null from date
-	And MS query parameter "fromDate" is set to value "" 
-	And MS query parameter "toDate" is set to value "2026-12-10" 
+	#Scenario: to retrieve a customer using query param-null from date
+	#And MS query parameter "fromDate" is set to value "" 
+	#And MS query parameter "toDate" is set to value "2026-12-10" 
 	
-	When a "GET" request is sent to MS 
-	And log all MS response in console 
-	Then MS response code should be 400
-	And MS JSON response string property key "message" should contain value "No Record found" 
-	And MS JSON response string property key "code" should contain value "400"
+	#When a "GET" request is sent to MS 
+	#And log all MS response in console 
+	#Then MS response code should be 400
+	#And MS JSON response string property key "message" should contain value "No Record found" 
+	#And MS JSON response string property key "code" should contain value "400"
 	
-	Scenario: to retrieve a customer using query param-null to date
-	And MS query parameter "fromDate" is set to value "2021-12-10" 
-	And MS query parameter "toDate" is set to value "" 
+	#Scenario: to retrieve a customer using query param-null to date
+	#And MS query parameter "fromDate" is set to value "2021-12-10" 
+	#And MS query parameter "toDate" is set to value "" 
 	
-	When a "GET" request is sent to MS 
-	And log all MS response in console 
-	Then MS response code should be 400 
-	And MS JSON response string property key "message" should contain value "No Record found" 
-	And MS JSON response string property key "code" should contain value "400"
+	#When a "GET" request is sent to MS 
+	#And log all MS response in console 
+	#Then MS response code should be 400 
+	#And MS JSON response string property key "message" should contain value "No Record found" 
+	#And MS JSON response string property key "code" should contain value "400"
 	
 	Scenario: to retrieve a customer using query param-no data within that range
 	And MS query parameter "fromDate" is set to value "2029-12-10" 

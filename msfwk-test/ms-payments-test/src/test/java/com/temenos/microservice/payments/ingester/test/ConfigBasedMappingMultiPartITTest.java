@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.temenos.microservice.framework.test.dao.Attribute;
+
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ConfigBasedMappingMultiPartITTest extends ITTest{

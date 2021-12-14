@@ -1,0 +1,34 @@
+{
+	"streams.publish": [
+		{
+			"name": "error-paymentorder",
+			"description": "This Microservice publishes the error event to this topic which is obtained from data ingester"
+		},
+		{
+			"name": "ms-eventstore-inbox-topic",
+			"description": "Topic to publish business events and command events through eventstore."
+		},
+		{
+			"name": "ms-paymentorder-inbox-error-topic",
+			"description": "Eventstore captures system errors raised during events processed in this microservice."
+		},
+		{
+			"name": "ms-paymentorder-outbox",
+			"description": "Topic to publish the outbox events"
+		},
+		{
+			"name": "paymentorder-event-topic",
+			"description": "Eventstore uses this topic to publish business events of this microservice."
+		}
+	],
+	"streams.subscribe": [
+		{
+			"name": "ms-paymentorder-inbox-topic",
+			"description": "This Microservice subscribes to this topic to process command events."
+		},
+		{
+			"name": "table-update",
+			"description": "This Microservice subscribes to this topic to process data events from record keeping system"
+		}
+	]
+}
