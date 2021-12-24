@@ -25,8 +25,8 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<commons-logging.version>1.1</commons-logging.version>
 		<spring.version>4.3.2.RELEASE</spring.version>
-		<log4j.version>1.2.14</log4j.version>
-		<log4j-core.version>2.16.0</log4j-core.version>
+		<log4j.version>2.17.0</log4j.version>
+		<log4j-core.version>2.17.0</log4j-core.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<apache-poi-version>4.1.1</apache-poi-version>
@@ -178,11 +178,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- <dependency> -->
+		<!-- <groupId>log4j</groupId> -->
+		<!-- <artifactId>log4j</artifactId> -->
+		<!-- <version>${log4j.version}</version> -->
+		<!-- </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j -->
 		<dependency>
-			<groupId>log4j</groupId>
+			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
+			<type>pom</type>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -309,25 +318,25 @@
 			<version>2.17.0</version> <scope>test</scope> </dependency> -->
 
 		<!-- JSON Assert Dependency -->
-		
-		      <!-- Multipart Dependency -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20140107</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>1.19</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.19</version>
-        </dependency>
-        
-          <!-- Multipart Dependency -->
+
+		<!-- Multipart Dependency -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.19</version>
+		</dependency>
+
+		<!-- Multipart Dependency -->
 
 		<dependency>
 			<groupId>io.cloudevents</groupId>
