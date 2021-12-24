@@ -67,6 +67,13 @@
       "name": "fileContent",
       "type": "binary"
       
+    },
+	 {
+      "name": "paymentTxnRef",
+      "type": "string",
+      "attributes" : [
+        "INDEX"
+      ]
     }
   ]
 }

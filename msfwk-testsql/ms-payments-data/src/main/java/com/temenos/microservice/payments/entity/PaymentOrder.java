@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.MapKeyColumn;
@@ -28,12 +29,12 @@ import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
-@Table(name = "ms_payment_order")
+@Table(name = "ms_payment_order", indexes = { @Index(columnList = "paymentTxnRef") })
 public class PaymentOrder implements ExtendableEntity {
 
 	@Id
 	private String paymentOrderId;
-	
+
 	@Version
 	private int version;
 
@@ -53,7 +54,9 @@ public class PaymentOrder implements ExtendableEntity {
 	private String currency;
 
 	private String status;
-		
+
+	private String paymentTxnRef;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private PaymentMethod paymentMethod;
 
@@ -85,9 +88,9 @@ public class PaymentOrder implements ExtendableEntity {
 	@Column(name = "value")
 	@CollectionTable(name = "PaymentOrder_extension", joinColumns = @JoinColumn(name = "PaymentOrder_paymentOrderId"))
 	Map<String, String> extensionData = new HashMap<String, String>();
-	
+
 	@Lob
-	@Column	
+	@Column
 	private String fileContent;
 
 	public String getPaymentOrderId() {
@@ -187,7 +190,7 @@ public class PaymentOrder implements ExtendableEntity {
 	public void setExtensionData(Map<String, String> extensionData) {
 		this.extensionData = extensionData;
 	}
-	
+
 	public String getFileContent() {
 		return fileContent;
 	}
@@ -196,4 +199,11 @@ public class PaymentOrder implements ExtendableEntity {
 		this.fileContent = fileContent;
 	}
 
+	public String getPaymentTxnRef() {
+		return paymentTxnRef;
+	}
+
+	public void setPaymentTxnRef(String paymentTxnRef) {
+		this.paymentTxnRef = paymentTxnRef;
+	}
 }

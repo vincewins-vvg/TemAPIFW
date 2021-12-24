@@ -1,0 +1,103 @@
+{
+	"entities": [
+	{
+	"name": "PaymentTransaction",
+	"javaPackage": "com.temenos.microservice.paymentorder.entity",
+	"tableName": "ms_payments_transaction",
+	"properties": [
+		{
+			"name": "recId",
+			"type": "string"
+			,"attributes": [ "KEY_PARTITION"]
+		},	
+		{
+			"name": "companyCode",
+			"type": "string"
+		},	
+		{
+			"name": "amountLcy",
+			"type": "string"
+		},	
+		{
+			"name": "processingDate",
+			"type": "date"
+		},	
+		{
+			"name": "transactionCode",
+			"type": "string"
+		},	
+		{
+			"name": "valueDate",
+			"type": "date"
+		},	
+		{
+			"name": "accountNumber",
+			"type": "number"
+		},	
+		{
+			"name": "ourReference",
+			"type": "string"
+		},	
+		{
+			"name": "theirReference",
+			"type": "string"
+		},	
+		{
+			"name": "accountOfficer",
+			"type": "string"
+		},	
+		{
+			"name": "transReference",
+			"type": "string"
+		},	
+		{
+			"name": "bookingDate",
+			"type": "date"
+		},	
+		{
+			"name": "customerId",
+			"type": "string"
+		},	
+		{
+			"name": "currency",
+			"type": "string"
+		}	
+	]	
+	},	
+	{
+	"name": "Balance",
+	"javaPackage": "com.temenos.microservice.paymentorder.entity",
+	"tableName": "ms_payment_order_balance",
+	"properties": [
+		{
+			"name": "txnReference",
+			"type": "string"
+		}	
+	]	
+	},	
+	{
+	"name": "Card",
+	"javaPackage": "com.temenos.microservice.paymentorder.entity",
+	"tableName": "",
+	"properties": [
+		{
+			"name": "cardname",
+			"type": "string"
+			,"attributes": [ "INDEX"]
+		}	
+	]	
+	},	
+	{
+	"name": "PaymentOrder",
+	"javaPackage": "com.temenos.microservice.paymentorder.entity",
+	"tableName": "ms_payment_order",
+	"properties": [
+		{
+			"name": "paymentTxnRef",
+			"type": "string"
+			,"attributes": [ "INDEX"]
+		}	
+	]	
+	}	
+	]
+}

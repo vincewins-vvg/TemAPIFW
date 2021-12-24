@@ -27,6 +27,9 @@ public class Balance implements ExtendableEntity {
 	private java.lang.String customer;
 	private java.lang.String product;
 	private java.util.Date processingTime;
+	
+	private java.lang.String txnReference;
+		
 	@ElementCollection
 	@MapKeyColumn(name = "name")
 	@Column(name = "value")
@@ -98,6 +101,13 @@ public class Balance implements ExtendableEntity {
 	}
 	public void setProcessingTime(java.util.Date processingTime) {
 		this.processingTime = processingTime;
+	}
+	
+	public java.lang.String getTxnReference() {
+		return txnReference;
+	}
+	public void setTxnReference(java.lang.String txnReference) {
+		this.txnReference = txnReference;
 	}
 	
 }
