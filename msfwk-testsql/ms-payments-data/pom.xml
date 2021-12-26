@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -18,7 +25,7 @@
 		<sonar.skip>true</sonar.skip>
 		<sqlMetaData.codegen.enabled>true</sqlMetaData.codegen.enabled>
 		<entityPackagename>com.temenos.microservice.payments.entity</entityPackagename>
-		<msf.appinit.enabled>true</msf.appinit.enabled>
+		<!-- <msf.appinit.enabled>true</msf.appinit.enabled> -->
 	</properties>
 
 	<dependencies>
@@ -50,7 +57,7 @@
 			<artifactId>ms-framework-core</artifactId>
 		</dependency>
 	</dependencies>
-	<build>
+	<!-- <build>
 		<plugins>
 			<plugin>
 				<groupId>com.temenos.microservice.plugin</groupId>
@@ -69,5 +76,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 </project>

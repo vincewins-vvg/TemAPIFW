@@ -26,7 +26,7 @@
 		<!-- Disable function impl code gen -->
 		<msf.function.impl.codegen.enabled>false</msf.function.impl.codegen.enabled>
 		<sonar.skip>true</sonar.skip>
- 		<msf.appinit.enabled>true</msf.appinit.enabled>
+ 		<!-- <msf.appinit.enabled>true</msf.appinit.enabled> -->
 	</properties>
 
 	<dependencies>
@@ -63,7 +63,7 @@
 								<functionViewModelVersion>1.3</functionViewModelVersion>
 							</configuration>
 						</execution>
-						<execution>
+						<!-- <execution>
 							<id>update-project</id>
 							<phase>package</phase>
 							<goals>
@@ -72,7 +72,7 @@
 							<configuration>
 								<enableDdl>true</enableDdl>								 
 							</configuration>
-						</execution>
+						</execution> -->
 					</executions>
 				</plugin>
 			</plugins>
