@@ -416,8 +416,9 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.executor.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.schedule | quote }}
   temn.msf.name: ms-paymentorder
-  temn.msf.service: Scheduler  
+  temn.msf.service: Scheduler
   temn.msf.security.authz.enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
@@ -503,6 +504,7 @@ data:
   temn.msf.name: ms-paymentorder  
   temn.msf.security.authz.enabled: "false" 
   temn.msf.scheduler.inboxcleanup.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.temn_msf_scheduler_inboxcleanup_schedule | quote }}
+  temn.msf.executor.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.schedule | quote }}
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
   className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
   operationId: nosqlInboxCatchup

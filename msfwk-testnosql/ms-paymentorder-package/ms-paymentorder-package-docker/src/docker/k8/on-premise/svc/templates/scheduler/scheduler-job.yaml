@@ -1,81 +1,89 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
   namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
+  selector:
+    matchLabels:
+      {{- include "paymentorderscheduler.selectorLabels" . | nindent 6 }}
+      app: paymentorder-scheduler
+  template:
+    metadata:
+      labels:
+        {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
+        app: paymentorder-scheduler      
     spec:
-      template:
-        metadata:
-          labels:
-            app: {{ include "paymentorder.name" . }}{{ "-scheduler" }}      
-        spec:
-          containers:
-          - name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
-            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
-            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
-            env:
-              - name: DATABASE_KEY
-                value: {{ .Values.env.database.DATABASE_KEY }} 
-              - name: MONGODB_DBNAME
-                value: {{ .Values.env.database.MONGODB_DBNAME }} 
-              - name: MONGODB_CONNECTIONSTR
-                value: {{ .Values.env.database.MONGODB_CONNECTIONSTR }} 
-          # Use secret in real usage
-              - name: POSTGRESQL_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: ponosqldbsecret
-                    key: USER_NAME 
-              - name: POSTGRESQL_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: ponosqldbsecret
-                    key: PASSWORD  
-            envFrom:
-              - configMapRef:
-                  name: paymentorder-scheduler-config                
-          restartPolicy: OnFailure
----
-apiVersion: batch/v1beta1
-kind: CronJob
+       containers:
+       - name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
+         image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+         imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         env:
+         # Use secret in real usage
+           - name: POSTGRESQL_USERNAME
+             valueFrom:
+               secretKeyRef:
+                 name: ponosqldbsecret
+                 key: USER_NAME 
+           - name: POSTGRESQL_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: ponosqldbsecret
+                 key: PASSWORD  
+         envFrom:
+           - configMapRef:
+               name: paymentorder-scheduler-config
+
+--- 
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: nosqlinboxcatchup-scheduler-config
   namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-api" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  schedule: "*/59 * * * *"
-  jobTemplate:
+  selector:
+    matchLabels:
+      {{- include "paymentorderscheduler.selectorLabels" . | nindent 6 }}
+      app: paymentorder-scheduler
+  template:
+    metadata:
+      labels:
+        {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
+        app: paymentorder-scheduler       
     spec:
-      template:
-        metadata:
-          labels:
-            app: nosqlinboxcatchup-scheduler-config      
-        spec:
-          containers:
-          - name: nosqlinboxcatchup-scheduler-config
-            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
-            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
-            env:
-              - name: DATABASE_KEY
-                value: {{ .Values.env.database.DATABASE_KEY }} 
-              - name: MONGODB_DBNAME
-                value: {{ .Values.env.database.MONGODB_DBNAME }} 
-              - name: MONGODB_CONNECTIONSTR
-                value: {{ .Values.env.database.MONGODB_CONNECTIONSTR }} 
-          # Use secret in real usage
-              - name: POSTGRESQL_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: ponosqldbsecret
-                    key: USER_NAME 
-              - name: POSTGRESQL_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: ponosqldbsecret
-                    key: PASSWORD  
-            envFrom:
-              - configMapRef:
-                  name: nosqlinboxcatchup-scheduler-config
-          restartPolicy: OnFailure
+       containers:
+       - name: nosqlinboxcatchup-scheduler-config
+         image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+         imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         env:
+         # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+         envFrom:
+          - configMapRef:
+              name: nosqlinboxcatchup-scheduler-config

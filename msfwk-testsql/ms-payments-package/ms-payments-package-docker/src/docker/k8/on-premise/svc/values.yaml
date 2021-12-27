@@ -92,6 +92,7 @@ env:
     className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
     className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
     operationId: paymentscheduler
+    schedule: 5
   sqlinboxcatchupscheduler:
      temn_msf_scheduler_inboxcleanup_schedule: "60" 
 
