@@ -4,11 +4,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.paymentorder</groupId>
+		<artifactId>ms-paymentorder</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
 	<groupId>com.temenos.microservice.payments</groupId>
 	<artifactId>ms-paymentorder-test</artifactId>
 	<version>DEV.0.0-SNAPSHOT</version>
 	<name>ms-paymentorder-test</name>
-	<description>Payment Order integration test project</description>
+	<description>Payment Order integration test project</description>	
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -43,67 +48,56 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webflux</artifactId>
-			<version>5.1.6.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor.netty</groupId>
 			<artifactId>reactor-netty</artifactId>
-			<version>0.8.6.RELEASE</version>
 		</dependency>
 		<!-- <dependency> <groupId>io.projectreactor.ipc</groupId> <artifactId>reactor-netty</artifactId> 
 			<version>0.7.15.RELEASE</version> </dependency> -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.microservice.framework</groupId>
 			<artifactId>ms-testharness</artifactId>
-			<version>DEV.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.2.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>5.2.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>5.2.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>5.2.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-dynamodb</artifactId>
-			<version>1.11.362</version>
 		</dependency>
 
 		<!-- Moved from Testing tool repo -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.2.3.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Moved from Testing tool repo -->
@@ -112,7 +106,6 @@
 		<dependency>
 			<groupId>com.temenos.ms.test</groupId>
 			<artifactId>cucumberTestbase</artifactId>
-			<version>DEV.0.0-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.ws.rs</groupId>
@@ -126,7 +119,6 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20140107</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
