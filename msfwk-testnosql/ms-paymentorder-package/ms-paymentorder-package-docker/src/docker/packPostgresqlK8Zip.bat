@@ -47,13 +47,13 @@ mkdir dbinit
 
 cd ../../
 
-xcopy k8\on-premise\svc paymentorder\helm-chart\svc /s /e
+xcopy k8\on-premise\svc paymentorder\helm-chart\svc /s /e /h /y /i
 
-xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e
+xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e /h /y /i
 
-xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e
+xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e /h /y /i
 
-xcopy k8\on-premise\samples paymentorder\samples /s /e
+xcopy k8\on-premise\samples paymentorder\samples /s /e /h /y /i
 
 cd paymentorder
 
