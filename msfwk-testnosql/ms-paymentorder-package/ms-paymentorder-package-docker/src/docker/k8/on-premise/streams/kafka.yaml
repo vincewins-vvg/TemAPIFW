@@ -1,28 +1,43 @@
-apiVersion: kafka.strimzi.io/v1beta1
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
   name: my-cluster
 spec:
   kafka:
-    version: 2.4.0
+    version: 3.0.0
     replicas: 1
     listeners:
-      external:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+      - name: external
         type: nodeport
         tls: false
-        overrides:
-            brokers:
-            - broker: 0
-              advertisedHost: localhost
-            bootstrap:
-              nodePort: 32100    
-      plain: {}
-      tls: {}
+        port: 9094
+        configuration:
+          brokers:
+          - broker: 0
+            advertisedHost: localhost
+          bootstrap:
+            nodePort: 32100
     config:
       offsets.topic.replication.factor: 1
       transaction.state.log.replication.factor: 1
       transaction.state.log.min.isr: 1
-      log.message.format.version: "2.4"
+      log.message.format.version: "3.0.0"
     storage:
       type: ephemeral
   zookeeper:
