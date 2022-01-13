@@ -3,6 +3,9 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
+# --------------------------------------------------------------
+# - Script to start paymentorder Service
+# --------------------------------------------------------------
 
 
 export JWT_TOKEN_ISSUER=https://localhost:9443/oauth2/token
