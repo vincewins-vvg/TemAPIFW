@@ -31,7 +31,7 @@ kafkatopic:
 image:
   paymentorderapi:
     repository: dev.local/temenos/ms-paymentorder-service
-    tag: 
+    tag: DEV 
     pullPolicy: Never
   paymentorderingester:
     repository: dev.local/temenos/ms-paymentorder-ingester

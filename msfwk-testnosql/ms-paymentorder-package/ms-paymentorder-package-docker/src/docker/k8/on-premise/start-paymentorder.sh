@@ -3,10 +3,6 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
-#@echo off
-#REM --------------------------------------------------------------
-#REM - Script to start Paymentorder Service
-#REM --------------------------------------------------------------
 
 #REM - Build paymentorder images
 

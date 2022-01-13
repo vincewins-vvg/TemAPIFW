@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #Config based Avro Ingester
 apiVersion: apps/v1
 kind: Deployment
@@ -14,6 +20,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"     
     {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
       hostAliases:
       - ip: "{{ .Values.env.kafka.kafka0ip }}"
@@ -32,11 +43,6 @@ spec:
         hostnames:
         - "{{ .Values.env.kafka.devdomainHostName }}" 
     {{- end }}             
-      hostAliases:
-      - ip: "{{ .Values.env.kafka.generic_ip }}"
-        hostnames:
-        - "kafka"
-        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
@@ -74,6 +80,11 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
     spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"       
     {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
       hostAliases:
       - ip: "{{ .Values.env.kafka.kafka0ip }}"
@@ -92,11 +103,6 @@ spec:
         hostnames:
         - "{{ .Values.env.kafka.devdomainHostName }}" 
     {{- end }}    
-      hostAliases:
-      - ip: "{{ .Values.env.kafka.generic_ip }}"
-        hostnames:
-        - "kafka"
-        - "schema-registry"        
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"

@@ -3,7 +3,6 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
-##############################################################################################################
 
 # -- PLEASE RUN THESE STEPS INSIDE THE KUBERNETES KAFKA CONTAINER TO CREATE KAFKA TOPICS
 
