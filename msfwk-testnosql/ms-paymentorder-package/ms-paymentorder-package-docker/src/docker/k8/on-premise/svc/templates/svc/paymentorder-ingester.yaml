@@ -14,6 +14,24 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
     spec:
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}             
       hostAliases:
       - ip: "{{ .Values.env.kafka.generic_ip }}"
         hostnames:
@@ -56,6 +74,24 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
     spec:
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
       hostAliases:
       - ip: "{{ .Values.env.kafka.generic_ip }}"
         hostnames:
@@ -98,6 +134,24 @@ spec:
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
     spec:
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
       hostAliases:
       - ip: "{{ .Values.env.kafka.generic_ip }}"
         hostnames:

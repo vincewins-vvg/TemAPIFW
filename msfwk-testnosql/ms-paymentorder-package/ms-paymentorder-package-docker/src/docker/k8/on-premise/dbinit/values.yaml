@@ -12,7 +12,7 @@ image:
   tag: DEV
 
 # Set the pull secret name here
-#imagePullSecrets: all-icr-io
+imagePullSecrets: 
 
 restartPolicy: OnFailure
 
