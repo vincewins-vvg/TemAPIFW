@@ -79,7 +79,8 @@ env:
     SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
     SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
   nosqlinboxcatchupscheduler:
-    temn_msf_scheduler_inboxcleanup_schedule: "60"    
+    temn_msf_scheduler_inboxcleanup_schedule: "60"
+    schedule: 5    
 
 service:
   paymentorderapi:
