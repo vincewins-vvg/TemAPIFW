@@ -51,7 +51,7 @@ SET SSL_ENABLED="true"
 SET MAX_POLL_RECORDS=20
 SET SASL_JASS_CONFIG="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://paymentorder-kafka.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yUoa/1dlVqghGSUhf3YWUH5v7sbz9stw5ozyk8MaCx8=\";"
 SET MONGODB_DBNAME="ms_paymentorder"
-SET MONGODB_CONNECTIONSTR="mongodb://51.104.228.97:27017,51.104.228.97:27018,51.104.228.97:27019"
+SET MONGODB_CONNECTIONSTR="mongodb://testuser:testuser@mongodb01-shard-00-00.jx2tl.mongodb.net:27017,mongodb01-shard-00-01.jx2tl.mongodb.net:27017,mongodb01-shard-00-02.jx2tl.mongodb.net:27017/test?replicaSet=atlas-sg2nr7-shard-0&ssl=true&authSource=admin"
 SET ms_security_tokencheck_enabled=Y
 SET EXECUTION_ENVIRONMENT="TEST"
 SET RESOURCE_STORAGE_NAME="paymentordernosql"
