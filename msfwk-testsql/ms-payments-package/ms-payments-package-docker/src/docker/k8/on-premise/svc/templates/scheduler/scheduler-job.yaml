@@ -7,16 +7,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payments-scheduler
+  name: {{ include "payments.name" . }}{{ "-scheduler" }}
   namespace: {{.Values.paymentsnamespace}}
 spec:
   selector:
     matchLabels:
-      app: payments-scheduler
+      app: {{ include "payments.name" . }}{{ "-scheduler" }}
   template:
     metadata:
       labels:
-        app: payments-scheduler   
+        app: {{ include "payments.name" . }}{{ "-scheduler" }}   
     spec:
       containers:
       - name: payments-scheduler-config
@@ -25,18 +25,46 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-scheduler-config
+
+      {{- if eq .Values.env.database.MSSQL_CRED "Y" }}                
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: eventstoredbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: eventstoredbsecret
                 key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}
+
+      {{- if eq .Values.env.database.MYSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD 
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}      
 --- 
 apiVersion: apps/v1
 kind: Deployment
@@ -59,16 +87,43 @@ spec:
         envFrom:
           - configMapRef:
               name: sqlinboxcatchup-scheduler-config
+      {{- if eq .Values.env.database.MSSQL_CRED "Y" }}                
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: eventstoredbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD                 
+                name: eventstoredbsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}     
+      
+      {{- if eq .Values.env.database.MYSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD 
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}                
         

@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -32,5 +38,17 @@ spec:
           - name: db.username
             value: {{ .Values.env.sqlinit.dbusername }}
           - name: db.password
-            value: {{ .Values.env.sqlinit.dbpassword }}              
+            value: {{ .Values.env.sqlinit.dbpassword }}
+        {{- if eq .Values.env.sqlinit.DB_CRED "Y" }}   
+          - name: db.username
+            valueFrom:
+              secretKeyRef:
+                name: esdbinitsecrets
+                key: USER_NAME 
+          - name: db.password
+            valueFrom:
+              secretKeyRef:
+                name: esdbinitsecrets
+                key: PASSWORD 
+        {{- end }}                          
       restartPolicy: {{ .Values.restartPolicy }} 

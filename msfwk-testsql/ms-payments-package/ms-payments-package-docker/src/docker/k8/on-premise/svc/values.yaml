@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 # Default values for holdingsmsvc.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -72,12 +78,43 @@ env:
     db_connection_url: jdbc:oracle:thin:@host.docker.internal:1521:orcl
     max_pool_size: "150"
     min_pool_size: "10" 
+    MYSQL_CRED: "N"
+    MSSQL_CRED: "N"
+    
+    # database_key: sql
+    # host: eventstore-db-service
+    # database_name: ms_eventstore
+    # db_username: sa
+    # db_password: Rootroot@12345
+    #use the below variable to enable encryption
+    #db_password : ENC(0jDFL9aa9VbB/KfSH6zfEQ==) 
+    # driver_name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # dialect: org.hibernate.dialect.SQLServer2012Dialect
+    # db_connection_url: jdbc:sqlserver://eventstore-db-service:1433;databaseName=ms_eventstore
+    # max_pool_size: "150"
+    # min_pool_size: "10"
+    
+    #Use the below 2 variables to decrypt the encrypted password
+    temn_msf_db_pass_encryption_key: temenos
+    temn_msf_db_pass_encryption_algorithm: PBEWithMD5AndTripleDES    
   kafka:
     temnmsfstreamvendor: kafka
     temnqueueimpl: kafka
     generic_ip: 127.0.0.1
     kafkabootstrapservers: my-cluster-kafka-bootstrap.kafka:9092
     schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+    kafkaip:
+    kafka0ip:
+    kafka1ip:
+    kafka2ip:
+    devdomain:
+    
+    kafkaHostName:
+    kafka0HostName:
+    kafka1HostName:
+    kafka2HostName:
+    devdomainHostName:
+        
   schemaregistry:
     SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
@@ -92,7 +129,6 @@ env:
     className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
     className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
     operationId: paymentscheduler
-    schedule: 5
   sqlinboxcatchupscheduler:
      temn_msf_scheduler_inboxcleanup_schedule: "60" 
 
@@ -134,4 +170,5 @@ pit:
   JWT_TOKEN_PUBLIC_KEY:
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:  
   # targetMemoryUtilizationPercentage: 80
-  
+
+imagePullSecrets:  
