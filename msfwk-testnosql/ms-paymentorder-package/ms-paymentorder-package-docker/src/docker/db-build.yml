@@ -10,5 +10,5 @@ services:
       dockerfile: db/k8/Dockerfile
       args:
         INGESTER_APP_BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
-        dbMigration-artifactid: ${dbMigration-artifactid}
+        dbMigration_artifactid: ${dbMigration_artifactid}
     image: ${DB_SCRIPT_IMAGE} 

@@ -35,13 +35,13 @@ mkdir svc
 
 cd ../../
 
-xcopy k8\on-premise\svc payments\helm-chart\svc /s /e
+xcopy k8\on-premise\svc payments\helm-chart\svc /s /e /h /y /i
 
-xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e
+xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e /h /y /i
 
-xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e
+xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e /h /y /i
 
-xcopy k8\on-premise\samples payments\samples /s /e
+xcopy k8\on-premise\samples payments\samples /s /e /h /y /i
 
 cd payments
 
