@@ -8,7 +8,7 @@ export JWT_TOKEN_PRINCIPAL_CLAIM="sub"
 export JWT_TOKEN_ISSUER="https://localhost:9443/oauth2/token"
 export ID_TOKEN_SIGNED="true"
 export JWT_TOKEN_PUBLIC_KEY="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
-export MONGODB_CONNSTR="mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net"
+export MONGODB_CONNSTR="mongodb://testuser:testuser@mongodb01-shard-00-00.jx2tl.mongodb.net:27017,mongodb01-shard-00-01.jx2tl.mongodb.net:27017,mongodb01-shard-00-02.jx2tl.mongodb.net:27017/test?replicaSet=atlas-sg2nr7-shard-0&ssl=true&authSource=admin"
 
 
 # Create Streams
