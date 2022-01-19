@@ -127,6 +127,11 @@ metrics:
   #publisherHost: 192.168.228.193
   metricsDisabled: "true"
   
+tracing:
+  enabled: false
+  # port: 14268
+  # host: 192.168.0.199
+  
 pit:
   JWT_TOKEN_ISSUER:
   JWT_TOKEN_PRINCIPAL_CLAIM:
