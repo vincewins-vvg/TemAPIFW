@@ -94,6 +94,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -147,7 +153,13 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
-{{- end }}  
+{{- end }} 
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }} 
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -213,6 +225,12 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 ---
 apiVersion: v1
@@ -292,6 +310,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -353,6 +377,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }} 
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -402,6 +432,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}  
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -450,6 +486,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }} 
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -487,6 +529,12 @@ data:
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 ---
 apiVersion: v1
@@ -533,6 +581,12 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 ---
 apiVersion: v1
@@ -588,5 +642,11 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 ---
