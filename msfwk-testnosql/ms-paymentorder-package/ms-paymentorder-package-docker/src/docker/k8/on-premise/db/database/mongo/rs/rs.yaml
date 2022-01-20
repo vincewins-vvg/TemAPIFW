@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 apiVersion: mongodb.com/v1
 kind: MongoDB
 metadata:
@@ -7,4 +13,19 @@ spec:
   members: 3
   type: ReplicaSet
   version: "4.2.6"
----
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: my-user
+      db: admin
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: my-user-password
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+        - name: testRole # apply the custom role to the user
+          db: admin
+      scramCredentialsSecretName: my-scram

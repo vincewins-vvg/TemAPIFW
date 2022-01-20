@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 set -e
 # Turn colors in this script off by setting the NO_COLOR variable in your
 # environment to any value:
@@ -17,7 +23,7 @@ function header_text {
 }
 header_text "Strimzi install"
 kubectl create namespace kafka
-curl -L "https://github.com/strimzi/strimzi-kafka-operator/releases/download/0.16.2/strimzi-cluster-operator-0.16.2.yaml" \
+curl -L "https://github.com/strimzi/strimzi-kafka-operator/releases/download/0.27.0/strimzi-cluster-operator-0.27.0.yaml" \
   | sed 's/namespace: .*/namespace: kafka/' \
   | kubectl -n kafka apply -f -
 header_text "Applying Strimzi Cluster file"
