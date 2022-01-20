@@ -1,0 +1,26 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-order-api-svc-np
+  namespace: payments
+  labels:
+    app.kubernetes.io/name: payments-order-api-svc-np
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      nodePort: 30020
+    - name: debug
+      protocol: TCP
+      port: 40500
+      nodePort: 30031       
+  selector:
+    app: payments-order-api 

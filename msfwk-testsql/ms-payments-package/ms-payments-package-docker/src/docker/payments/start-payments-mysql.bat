@@ -1,3 +1,13 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
+@echo off
+REM --------------------------------------------------------------
+REM - Script to start Service
+REM --------------------------------------------------------------
 SET JWT_TOKEN_ISSUER=https://localhost:9443/oauth2/token
 SET JWT_TOKEN_PRINCIPAL_CLAIM=sub
 SET ID_TOKEN_SIGNED=true
@@ -12,6 +22,48 @@ REM SET ID_TOKEN_SIGNED=false
 REM SET JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED="MIIClTCCAX0CBgF6etFgtDANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDDANNc2YwHhcNMjEwNzA2MDc1NDQwWhcNMzEwNzA2MDc1NjIwWjAOMQwwCgYDVQQDDANNc2YwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCZKa8cuSEo8cf6pYC549K2Pcpu20b173iNhgdkhV/1XLW0YktMgnxySKrcCmDbqQJDhK5FWuXN1El8UkxABibqFt8riwesglCYUspNmAszkicZAEQ/X+pu89tAXQOdg8U5kU4ZK4hzOS5D0n8ZzW2TaWCsQDoH3ng0UWGPWA7LTv+zb8f2U+SK6rkP3tkfEZVEhqUrddOeiKGFa6we4mwLPT5ZczBoVRrfpwKBL6i1JDDrWpeCZRrUjm7SFem3lLQMyF6sRQVIPLONWl7AG4ZRv7Akicag7tUeMzbIO7jRAJasrK/40e54YJ4lnVRMUXq7powEFZFigcSLSMUKrZWxAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAAe9jK84bas1c+W0Ee4JfHaRPxa1x/Y+lmuWXc1kzFBRptzmQsOJXon6v1VHGTbnvpPnO8wNaxfU0iqPm4RO+LoZyxbGQpyFXYFD+fPZdK2a78oVpfi71g1aS4qjjBIPK1ERZSWalCGdaNxkjG5+wXquAo18tFbacDX41shN6CxHux8bvT9NbWlsjKj6gFhpCbN7oKsafLgTQ2+mqcQO1bQxObHj3o/LiuvIWhIyakz9SmFvh0wgAXhkVoiPvoP5LXMNdbaSv49LIt7wOMZHkbtkFWMTqKRBq32NSSKi0670Tv4IDm2I1cKVWLVy0RXSOc6CXR99G2z2PC6aPQjsXvc="
 REM SET JWT_TOKEN_PUBLIC_KEY=""
 
+REM Database properties
+SET DATABASE_KEY=sql
+SET DB_HOST=paymentorder-db-service-np
+SET DATABASE_NAME=payments
+SET DB_USERNAME=root
+SET DB_PASSWORD=password
+SET DRIVER_NAME=com.mysql.jdbc.Driver
+SET DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+SET DB_CONNECTION_URL=jdbc:mysql://paymentorder-db-service:3306/payments
+SET MIN_POOL_SIZE="10"
+SET MAX_POOL_SIZE="150"
+
+REM -------- KAFKA
+SET kafkabootstrapservers="my-cluster-kafka-bootstrap.kafka:9092"
+SET schema_registry_url="http://schema-registry-svc.kafka.svc.cluster.local" 
+SET schedulertime="59 * * ? * *"
+
+REM --- To enable hostAliases, set the below variable to "Y"
+SET kafkaAliases="N"
+
+REM --- Set the following variables for hostAliases
+SET kafkaip=""
+SET kafka0ip=""
+SET kafka1ip=""
+SET kafka2ip=""
+
+SET kafkaHostName=""
+SET kafka0HostName=""
+SET kafka1HostName=""
+SET kafka2HostName=""
+
+REM ------- IMAGE PROPERTIES
+SET tag=DEV
+SET apiImage=temenos/ms-paymentorder-service
+SET ingesterImage=temenos/ms-paymentorder-ingester
+SET inboxoutboxImage=temenos/ms-paymentorder-inboxoutbox
+SET schemaregistryImage=confluentinc/cp-schema-registry
+SET schedulerImage=temenos/ms-paymentorder-scheduler
+SET fileingesterImage=temenos/ms-paymentorder-fileingester
+SET mysqlImage=ms-paymentorder-mysql
+
+SET esImagePullSecret=""
 
 kubectl create namespace dbinitpayments
 
@@ -21,10 +73,10 @@ kubectl create namespace appinitpayments
 
 cd helm-chart
 
-helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306
+helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=%DATABASE_KEY% --set env.sqlinit.databaseName=%DATABASE_NAME% --set env.sqlinit.dbdialect=%DIALECT% --set env.sqlinit.dbusername=%DB_USERNAME% --set env.sqlinit.dbpassword=%DB_PASSWORD% --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306
 
-helm install appinit ./appinit -n appinitpayments --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set env.sqlinit.dbconnectionurl=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments --set env.sqlinit.dbdriver=com.mysql.jdbc.Driver --set env.sqlinit.dbautoupgrade="N"
+helm install appinit ./appinit -n appinitpayments --set env.sqlinit.databaseKey=%DATABASE_KEY% --set env.sqlinit.databaseName=%DATABASE_NAME% --set env.sqlinit.dbdialect=%DIALECT% --set env.sqlinit.dbusername=%DB_USERNAME% --set env.sqlinit.dbpassword=%DB_PASSWORD% --set env.sqlinit.dbconnectionurl=%DB_CONNECTION_URL% --set env.sqlinit.dbdriver=%DRIVER_NAME% --set env.sqlinit.dbautoupgrade="N"
 
-helm install svc ./svc -n payments --set env.database.host=paymentorder-db-service-np --set env.database.db_username=root --set env.database.db_password=password --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=com.mysql.jdbc.Driver --set env.database.dialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.database.db_connection_url=jdbc:mysql://paymentorder-db-service:3306/payments --set pit.JWT_TOKEN_ISSUER=%JWT_TOKEN_ISSUER% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%JWT_TOKEN_PRINCIPAL_CLAIM% --set pit.ID_TOKEN_SIGNED=%ID_TOKEN_SIGNED% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED% --set pit.JWT_TOKEN_PUBLIC_KEY=%JWT_TOKEN_PUBLIC_KEY%
+helm install svc ./svc -n payments --set env.database.host=%DB_HOST% --set env.database.db_username=%DB_USERNAME% --set env.database.db_password=%DB_PASSWORD% --set env.database.database_key=%DATABASE_KEY%  --set env.database.database_name=%DATABASE_NAME% --set env.database.driver_name=%DRIVER_NAME% --set env.database.dialect=%DIALECT% --set env.database.db_connection_url=%DB_CONNECTION_URL% --set pit.JWT_TOKEN_ISSUER=%JWT_TOKEN_ISSUER% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%JWT_TOKEN_PRINCIPAL_CLAIM% --set pit.ID_TOKEN_SIGNED=%ID_TOKEN_SIGNED% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED% --set pit.JWT_TOKEN_PUBLIC_KEY=%JWT_TOKEN_PUBLIC_KEY% --set env.database.max_pool_size=%MAX_POOL_SIZE% --set env.database.min_pool_size=%MIN_POOL_SIZE% --set env.kafka.kafkabootstrapservers=%kafkabootstrapservers% --set env.kafka.schema_registry_url=%schema_registry_url% --set env.kafka.kafkaAliases=%kafkaAliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafkaHostName% --set env.kafka.kafka0HostName=%kafka0HostName% --set env.kafka.kafka1HostName=%kafka1HostName% --set env.kafka.kafka2HostName=%kafka2HostName% --set env.scheduler.time=%schedulertime% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.paymentseventdelivery.repository=%inboxoutboxImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%esImagePullSecret%
 
 cd ../

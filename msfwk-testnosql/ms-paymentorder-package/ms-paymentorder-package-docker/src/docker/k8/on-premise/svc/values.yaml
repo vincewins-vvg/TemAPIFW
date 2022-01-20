@@ -31,7 +31,7 @@ kafkatopic:
 image:
   paymentorderapi:
     repository: dev.local/temenos/ms-paymentorder-service
-    tag: DEV
+    tag: DEV 
     pullPolicy: Never
   paymentorderingester:
     repository: dev.local/temenos/ms-paymentorder-ingester
@@ -64,13 +64,53 @@ env:
     DATABASE_KEY: 
     MONGODB_DBNAME: 
     MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
-    POSTGRESQL_CONNECTIONURL: 
+    #If the below variable is set to "Y", secrets will be enabled 
+    MONGO_CRED: "N"
+    
+    #MONGODB_USER : root
+    #MONGODB_PASS : ENC(0jDFL9aa9VbB/KfSH6zfEQ==)
+    
+     #POSTGRESQL:
+    
+    #If the below variable is set to "Y", secrets will be enabled 
+    POSTGRESQL_CRED: "N"
+    
+    POSTGRESQL_CONNECTIONURL:
+    POSTGRESQL_POOLSIZE: "10"
+    POSTGRESQL_USERNAME: paymentorderusr
+    POSTGRESQL_PASSWORD: paymentorderpass
+    
+    #For encrypted password,
+    #POSTGRESQL_PASSWORD: ENC(0QEqdsmi+qUTOAINlDjzKmLl9TIdoN4g7szv2l2u25Q=)
+
+    #Use the below 2 variables to decrypt the encrypted password
+    temn_msf_db_pass_encryption_key: temenos
+    temn_msf_db_pass_encryption_algorithm: PBEWithMD5AndTripleDES    
+    
   kafka:
     temnmsfstreamvendor: kafka
     temnqueueimpl: kafka
     generic_ip: 127.0.0.1
     kafkabootstrapservers: my-cluster-kafka-bootstrap.kafka:9092
     schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+    kafkaAliases: "N"
+    
+    kafkaip:
+    kafka0ip:
+    kafka1ip:
+    kafka2ip:
+    devdomain:
+    
+    kafkaHostName:
+    kafka0HostName:
+    kafka1HostName:
+    kafka2HostName:
+    devdomainHostName:
+  scheduler:
+    temn_msf_scheduler_nosqlInboxCatchup_cron_trigger_time: 0 */30 * ? * * 
+    temn_msf_scheduler_nosqlOutboxCatchup_cron_trigger_time: 0 */30 * ? * *
+    temn_msf_scheduler_adapterscheduler_cron_trigger_time: 59 * * ? * *
+    schedule: "*/5 * * * *"    
   schemaregistry:
     SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
@@ -95,6 +135,12 @@ service:
     port: 8081
     nodeport: 32101    
 
+ports:
+  name: http
+  port: 8080
+  protocol: TCP
+  targetport: 30020
+  
 external:
   enabled: true
 autoscaling:
@@ -103,6 +149,38 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   
+msf:
+  jms:
+    provider: tcp://10.92.4.94:61616
+    factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
+    vendor: activemq
+  
+  debulking:
+    retryTime: 100
+    jobrecordlistsize: 10
+
+  ingest:
+    cloudevent: true
+
+  scheduler:
+    threadexecutor: 8
+    kubernetes: true
+    config: false
+
+  others:
+    name: ms-paymentorder
+    execenv: server
+    authzenabled: false
+
+inboxoutbox:
+  inbox:
+    threadpoolcount: 2
+    namespace: paymentorder-inbox
+
+  outbox:
+   threadpoolcount: 2
+   namespace: paymentorder-outbox   
+     
 logging:
 #  socketHost: #ipaddress
 #  socketPort: #port
@@ -126,4 +204,4 @@ pit:
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:   
 
 # Set the pull secret name here
-#imagePullSecrets: all-icr-io
+imagePullSecrets: 

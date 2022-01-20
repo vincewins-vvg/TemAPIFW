@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -68,6 +74,44 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.paymentorderapi.type }}
+      {{- if eq .Values.env.database.POSTGRESQL_CRED "Y" }}              
+          env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: DB_PASS_ENCRYPTION_KEY                  
+        {{- end }}
+        {{- if eq .Values.env.database.MONGO_CRED "Y" }}              
+          env:
+          # Use secret in real usage
+          - name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: MONGODB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD      
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: DB_PASS_ENCRYPTION_KEY 
+        {{- end }}  
   ports:
     - name: http
       port: {{ .Values.service.paymentorderapi.port }}
@@ -89,10 +133,10 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: http
-      port: 8080
-      protocol: TCP
-      nodePort: 30020
+    - name: {{ .Values.ports.name }}
+      port: {{ .Values.ports.port }}
+      protocol: {{ .Values.ports.protocol }}
+      nodePort: {{ .Values.ports.targetport }} 
   selector:
     app: {{ .Values.apideployment }}  
 ---
