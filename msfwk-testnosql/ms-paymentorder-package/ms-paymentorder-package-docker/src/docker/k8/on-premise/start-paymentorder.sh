@@ -18,6 +18,41 @@ export ID_TOKEN_SIGNED=true
 export JWT_TOKEN_PUBLIC_KEY="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
 export JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=""
 
+export tag="DEV"
+export apiImage=dev.local/temenos/ms-paymentorder-service
+export ingesterImage=dev.local/temenos/ms-paymentorder-ingester
+export inboxoutboxImage=dev.local/temenos/ms-paymentorder-inboxoutbox
+export schedulerImage=dev.local/temenos/ms-paymentorder-scheduler
+export fileingesterImage=dev.local/temenos/ms-paymentorder-fileingester
+export schemaregistryImage=confluentinc/cp-schema-registry
+
+export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
+
+export poImagePullSecret=""
+export dbinitImagePullSecret=""
+
+export temn_msf_db_pass_encryption_key=temenos
+export temn_msf_db_pass_encryption_algorithm=PBEWithMD5AndTripleDES
+export gcbasepath="http://localhost:7006/ms-genericconfig-api/api/v2.0.0/"
+
+# -------- KAFKA
+export kafkabootstrapservers="my-cluster-kafka-bootstrap.kafka:9092"
+
+# --- To enable hostAliases, export the below variable to "Y"
+export kafkaAliases="N"
+
+# --- export the following variables for hostAliases
+export kafkaip=""
+export kafka0ip=""
+export kafka1ip=""
+export kafka2ip=""
+export devdomain=""
+
+export kafkaHostName=""
+export kafka0HostName=""
+export kafka1HostName=""
+export kafka2HostName=""
+export devdomainHostName=""
 
 cd ../..
 
