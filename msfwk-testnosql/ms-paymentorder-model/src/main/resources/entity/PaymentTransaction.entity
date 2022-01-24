@@ -1,0 +1,69 @@
+{
+  "name": "PaymentTransaction",
+  "javaPackage": "com.temenos.microservice.paymentorder.entity",
+  "isExtendable": true,
+  "tableName" : "ms_payments_transaction",
+  "properties": [
+    {
+      "name": "recId",
+      "type": "string",
+      "attributes": [
+        "KEY_PARTITION"
+      ]
+    },    
+    {
+      "name": "companyCode",
+      "type": "string",
+      "attributes": [
+      ]
+    },
+    {
+      "name": "amountLcy",
+      "type": "string"
+    },    
+    {
+      "name": "processingDate",
+      "type": "date"
+    },  
+    {
+      "name": "transactionCode",
+      "type": "string"
+    },
+    {
+      "name": "valueDate",
+      "type": "date"
+    },
+    {
+      "name": "accountNumber",
+      "type": "number"
+    },    
+    {
+      "name": "ourReference",
+      "type": "string"
+    },
+    {
+      "name": "theirReference",
+      "type": "string"
+    },    
+    {
+      "name": "accountOfficer",
+      "type": "string"
+    },
+    {
+      "name": "transReference",
+      "type": "string"
+    },    
+    {
+      "name": "bookingDate",
+      "type": "date"
+    },    
+    {
+      "name": "customerId",
+      "type": "string"
+    },    
+    {
+      "name": "currency",
+      "type": "string"
+    }
+  ]
+}

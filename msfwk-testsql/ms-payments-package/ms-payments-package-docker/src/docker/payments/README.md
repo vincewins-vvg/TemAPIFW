@@ -60,7 +60,33 @@ env:
 	max_pool_size: "5"
     min_pool_size: "1"
 ```
+#Set the below 2 variables to enable DB password encryption
+#DB Password can be given as an encrypted value in values.yaml/ can be given as k8 secrets.
+```
+env:
+  database:
+    MS_ENC_KEY: temenos
+    MS_ENC_ALGORITHM: PBEWithMD5AndTripleDES
+```	
 	
+#To use k8s secrets inorder to encode the password which is encrypted, please create a secret file and set the password.
+#Enable the following variable to enable k8 secret.
+
+#NOTE: Create the secret in the same namespace as that of the services.
+
+#For MSSQL:
+```
+env:
+  database:
+    MSSQL_CRED: "Y"
+```
+
+#For MySQL:
+```
+env:
+  database:
+    MYSQL_CRED: "Y"
+```		
 	
 2.	Any kafka service
 
@@ -96,7 +122,7 @@ env:
 ```
 ms-serviceorchestrator-inbox-topic
 ```
-
+#Use kafka-topics.sh file to create the topics. Download a cli to run the file. Else exec into the kafka broker container and execute the commands.
 
 4.	If Images are  pushed to external repositories, the name of repositories, image and tag should be mentioned in values.yaml. 
 
@@ -126,6 +152,33 @@ Eg: Consider your secret name is "imageRepo", then imagePullSecrets would be as 
 ```
 imagePullSecrets: imageRepo
 ```
+6. To set SSL keystore and truststore, please set the following variables.
+
+```
+env:
+  ssl:
+    temn_msf_stream_security_kafka_ssl_keystore_location:
+    temn_msf_stream_security_kafka_ssl_keystore_password:
+    temn_msf_stream_security_kafka_ssl_key_password:
+    temn_msf_stream_security_kafka_ssl_truststore_location:
+    temn_msf_stream_security_kafka_ssl_truststore_password:
+```
+
+7. Port number of the services can also be configured.
+
+```
+service:
+  serviceorchestratorapinp:
+    nodeport: 30021
+```
+
+8. Replica configuration:
+
+```
+ReplicaCount:
+  serviceorchestratorapi: 1
+  serviceorchestratoringester: 1
+``` 
 
 ## Sample helm command to deploy:
 

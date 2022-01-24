@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,6 +19,8 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }}   
   className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   className_GetPaymentOrders: com.temenos.microservice.paymentorder.function.GetPaymentOrdersImpl
   className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
@@ -102,7 +110,13 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
-{{- end }} 
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 
 ---
 apiVersion: v1
@@ -120,7 +134,9 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
-  temn.msf.name: ms-paymentorder
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
   temn.msf.service: AvroIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -157,6 +173,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 
 ---
 apiVersion: v1
@@ -174,7 +196,9 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
-  temn.msf.name: ms-paymentorder
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
   temn.msf.service: CommandIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -184,7 +208,7 @@ data:
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
-  temn.msf.exec.env: server
+  temn.msf.exec.env: {{ .Values.msf.others.execenv }}
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
   temn.msf.ingest.is.avro.event.ingester: "false"
@@ -227,6 +251,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -243,7 +273,9 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
-  temn.msf.name: ms-paymentorder
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
   temn.msf.service: EventIngester 
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -253,7 +285,7 @@ data:
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
   temn.msf.ingest.sink.error.enabled: "false"
   temn.msf.ingest.generic.ingester: com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester
-  temn.msf.exec.env: server
+  temn.msf.exec.env: {{ .Values.msf.others.execenv }}
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
   temn.msf.ingest.event.processor: com.temenos.microservice.paymentorder.ingester.EventHandlerImpl
   temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
@@ -289,6 +321,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -305,7 +343,9 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
-  temn.msf.name: ms-paymentorder
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
   temn.msf.service: EventDelivery
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
@@ -313,9 +353,12 @@ data:
   temn.msf.exec.env: server
   temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
-  temn.msf.security.authz.enabled: "false"
-  tmn.inbox.source.namespace: paymentorder-inbox
-  tmn.outbox.source.namespace: paymentorder-outbox  
+  temn.msf.security.authz.enabled: "{{ .Values.msf.others.authzenabled }}"
+  tmn.inbox.source.namespace: {{ .Values.inboxoutbox.inbox.namespace }}
+  tmn.outbox.source.namespace: {{ .Values.inboxoutbox.outbox.namespace }} 
+  tmn.inbox.thread.pool.count: "{{ .Values.inboxoutbox.inbox.threadpoolcount }}"
+  tmn.outbox.thread.pool.count: "{{ .Values.inboxoutbox.outbox.threadpoolcount }}"
+  temn.msf.ingest.is.cloud.event: "{{ .Values.msf.ingest.cloudevent }}"   
   temn.msf.ingest.is.cloud.event: "true"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
@@ -330,6 +373,12 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 ---
 apiVersion: v1
@@ -397,6 +446,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -416,8 +471,9 @@ data:
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.executor.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.schedule | quote }}
   temn.msf.name: ms-paymentorder
-  temn.msf.service: Scheduler  
+  temn.msf.service: Scheduler
   temn.msf.security.authz.enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
@@ -436,6 +492,12 @@ data:
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 
 ---
@@ -480,6 +542,12 @@ data:
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
 {{- end }}    
 {{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 
 ---
 apiVersion: v1
@@ -503,6 +571,7 @@ data:
   temn.msf.name: ms-paymentorder  
   temn.msf.security.authz.enabled: "false" 
   temn.msf.scheduler.inboxcleanup.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.temn_msf_scheduler_inboxcleanup_schedule | quote }}
+  temn.msf.executor.schedule: {{ .Values.env.nosqlinboxcatchupscheduler.schedule | quote }}
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
   className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
   operationId: nosqlInboxCatchup
@@ -512,4 +581,10 @@ data:
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
 {{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}

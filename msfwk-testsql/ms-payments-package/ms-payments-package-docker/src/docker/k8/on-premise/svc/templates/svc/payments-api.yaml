@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -55,28 +61,7 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 8080
-  type: LoadBalancer    
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/name: payments-order-svc-np
-  name: payments-order-api-svc-np
-  namespace: {{.Values.paymentsnamespace}}
-spec:
-  selector:
-    app: payments-order-api
-  ports:
-    - name: http
-      protocol: TCP
-      port: 8080
-      nodePort: 30020
-    - name: debug
-      protocol: TCP
-      port: 40500
-      nodePort: 30031
-  type: NodePort    
+  type: LoadBalancer        
 ---
 apiVersion: v1
 kind: Service

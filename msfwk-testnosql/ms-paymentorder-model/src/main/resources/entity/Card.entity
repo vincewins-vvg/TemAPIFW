@@ -10,7 +10,10 @@
     },
     {
       "name": "cardname",
-      "type": "string"
+      "type": "string",
+      "attributes" : [
+        "INDEX"
+      ]
     },
     {
       "name": "cardlimit",

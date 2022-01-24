@@ -1,67 +1,129 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: payments-scheduler
+  name: {{ include "payments.name" . }}{{ "-scheduler" }}
   namespace: {{.Values.paymentsnamespace}}
 spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
+  selector:
+    matchLabels:
+      app: {{ include "payments.name" . }}{{ "-scheduler" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "payments.name" . }}{{ "-scheduler" }}   
     spec:
-      template:
-        metadata:
-          labels:
-            app: payments-scheduler     
-        spec:
-          containers:
-          - name: payments-scheduler
-            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
-            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
-            envFrom:
-              - configMapRef:
-                  name: payments-scheduler-config
-            env:
-              - name: DB_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: posqldbsecret
-                    key: USER_NAME 
-              - name: DB_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: posqldbsecret
-                    key: PASSWORD                     
-          restartPolicy: OnFailure
----
-apiVersion: batch/v1beta1
-kind: CronJob
+      containers:
+      - name: payments-scheduler-config
+        image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+        envFrom:
+          - configMapRef:
+              name: payments-scheduler-config
+
+      {{- if eq .Values.env.database.MSSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}
+
+      {{- if eq .Values.env.database.MYSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD 
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}      
+--- 
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: sqlinboxcatchup-scheduler-config
   namespace: {{.Values.paymentsnamespace}}
 spec:
-  schedule: "*/59 * * * *"
-  jobTemplate:
+  selector:
+    matchLabels:
+      app: sqlinboxcatchup-scheduler-config
+  template:
+    metadata:
+      labels:
+        app: sqlinboxcatchup-scheduler-config     
     spec:
-      template:
-        metadata:
-          labels:
-            app: sqlinboxcatchup-scheduler-config     
-        spec:
-          containers:
-          - name: sqlinboxcatchup-scheduler-config
-            image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
-            imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
-            envFrom:
-              - configMapRef:
-                  name: sqlinboxcatchup-scheduler-config
-            env:
-              - name: DB_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: posqldbsecret
-                    key: USER_NAME 
-              - name: DB_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: posqldbsecret
-                    key: PASSWORD                     
-          restartPolicy: OnFailure
+      containers:
+      - name: sqlinboxcatchup-scheduler-config
+        image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+        envFrom:
+          - configMapRef:
+              name: sqlinboxcatchup-scheduler-config
+      {{- if eq .Values.env.database.MSSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}     
+      
+      {{- if eq .Values.env.database.MYSQL_CRED "Y" }}                
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: PASSWORD 
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: eventstoredbsecret
+                key: DB_PASS_ENCRYPTION_KEY                
+      {{- end }}                
+        
