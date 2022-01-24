@@ -33,6 +33,6 @@ helm install ponosql ./svc --set env.database.MONGODB_DBNAME=%DB_NAME% --set env
 
 cd samples/external
 
-kubectl apply -f payments-nodeport.yaml -n payments 
+kubectl apply -f paymentorder-api-nodeport.yaml -n paymentorder 
 
 cd ../..
