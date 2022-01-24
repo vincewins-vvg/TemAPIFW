@@ -31,3 +31,9 @@ kubectl apply -f kafka-topics.yaml
 kubectl apply -f schema-registry.yaml
 
 cd ../..
+
+cd samples/external
+
+kubectl apply -f payments-nodeport.yaml -n payments 
+
+cd ../..
