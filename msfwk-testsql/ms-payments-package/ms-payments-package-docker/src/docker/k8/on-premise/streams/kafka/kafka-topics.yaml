@@ -1,4 +1,4 @@
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: table-update-paymentorder
@@ -12,7 +12,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---    
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: paymentorder-outbox
@@ -26,7 +26,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---    
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: ms-eventstore-inbox-topic
@@ -40,7 +40,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---   
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: ms-paymentorder-inbox-topic
@@ -54,7 +54,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---   
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: paymentorder-event-topic
@@ -68,7 +68,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---   
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: error-paymentorder
@@ -82,7 +82,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---   
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: ms-paymentorder-inbox-error-topic
@@ -96,7 +96,7 @@ spec:
     retention.ms: 7200000
     segment.bytes: 1073741824
 ---   
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: multipart-topic
