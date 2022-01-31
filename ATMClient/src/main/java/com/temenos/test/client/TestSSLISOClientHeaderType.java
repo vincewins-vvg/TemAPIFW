@@ -100,6 +100,15 @@ public class TestSSLISOClientHeaderType {
 
 				} else if ("DECIMAL".equalsIgnoreCase(headerType))
 					bytesToRead = bb.getInt();
+				else if ("HEXABYTE".equalsIgnoreCase(headerType)) {
+					for (int i = 0; i < 4; i++) {
+						byte b = bb.get(i);
+						bbarr[i] = b;
+					}
+
+					bytesToRead = ((bbarr[3] & 0xFF) << 0) + ((bbarr[2] & 0xFF) << 8) + ((bbarr[1] & 0xFF) << 16)
+							+ ((bbarr[0] & 0XFF) << 24);
+				}
 
 				System.out.println(bytesToRead);
 
@@ -140,6 +149,8 @@ public class TestSSLISOClientHeaderType {
 			output.write(lengthWriteDecimal(sampleISOMsg.length()));
 		else if ("HEXA".equalsIgnoreCase(headerType)) {
 			output.write(lengthWriteHexa(sampleISOMsg.length()));
+		} else if ("HEXABYTE".equalsIgnoreCase(headerType)) {
+			output.write(lengthWriteHexaByte(sampleISOMsg.length()));
 		}
 		output.write(sampleISOMsg.getBytes());
 	}
