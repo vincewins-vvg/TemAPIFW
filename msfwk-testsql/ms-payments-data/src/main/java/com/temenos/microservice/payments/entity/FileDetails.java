@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,6 +26,7 @@ public class FileDetails implements com.temenos.microservice.framework.core.data
 	private String mimeType;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "documentDetails_id",columnDefinition="String")
 	private DocumentDetails documentDetails;
 	
 	public DocumentDetails getDocumentDetails() {

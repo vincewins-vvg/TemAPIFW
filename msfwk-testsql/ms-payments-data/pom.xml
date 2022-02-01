@@ -25,7 +25,7 @@
 		<sonar.skip>true</sonar.skip>
 		<sqlMetaData.codegen.enabled>true</sqlMetaData.codegen.enabled>
 		<entityPackagename>com.temenos.microservice.payments.entity</entityPackagename>
-		<!-- <msf.appinit.enabled>true</msf.appinit.enabled> -->
+		<msf.appinit.enabled>true</msf.appinit.enabled>
 	</properties>
 
 	<dependencies>
@@ -57,7 +57,7 @@
 			<artifactId>ms-framework-core</artifactId>
 		</dependency>
 	</dependencies>
-	<!-- <build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>com.temenos.microservice.plugin</groupId>
@@ -76,5 +76,5 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build> -->
+	</build>
 </project>
