@@ -25,6 +25,8 @@ public class TestISOClientHeaderType {
 
 	public static String headerType = "HEXA";
 	private static String reqMsghexLen = "";
+	private static String reqMsghexByteLen = "";
+	private static int headerLength = 4;
 
 	public static void main(String[] args) {
 
@@ -85,6 +87,7 @@ public class TestISOClientHeaderType {
 
 				int bytesToRead = 0;
 				String hexLength = "";
+				String hexByteLength = "";
 				if ("HEXA".equalsIgnoreCase(headerType)) {
 					for (int i = 0; i < 4; i++) {
 						byte b = bb.get(i);
@@ -103,6 +106,8 @@ public class TestISOClientHeaderType {
 						bbarr[i] = b;
 					}
 
+					hexByteLength = new String(bbarr);
+					
 					bytesToRead = ((bbarr[3] & 0xFF) << 0) + ((bbarr[2] & 0xFF) << 8) + ((bbarr[1] & 0xFF) << 16)
 							+ ((bbarr[0] & 0XFF) << 24);
 				}
@@ -116,14 +121,23 @@ public class TestISOClientHeaderType {
 				Instant end = Instant.now();
 				Duration timeElapsed = Duration.between(start, end);
 				System.out.println("Time taken: " + timeElapsed.toMillis() + " milliseconds");
-				if ("DECIMAL".equalsIgnoreCase(headerType))
+				if ("DECIMAL".equalsIgnoreCase(headerType)) {
 					System.out.println("Request data length: [" + sampleISOMsg.length() + "]Response data length :["
 							+ responseMsg.length() + "]");
-				else if ("HEXA".equalsIgnoreCase(headerType))
+					System.out.println("Request msg :: " + sampleISOMsg.length() + sampleISOMsg);
+					System.out.println("Response msg :: " + responseMsg.length() + responseMsg);
+				} else if ("HEXA".equalsIgnoreCase(headerType)) {
 					System.out.println(
 							"Request data length: [" + reqMsghexLen + "]Response data length :[" + hexLength + "]");
-				System.out.println("TCP CLIENT: Response Data Received w/o header [" + responseMsg + "]");
+					System.out.println("Request msg :: " + reqMsghexLen + sampleISOMsg);
+					System.out.println("Response msg :: " + hexLength + responseMsg);
+				} else if ("HEXABYTE".equalsIgnoreCase(headerType)) {
+					System.out.println("Request data length: [" + reqMsghexByteLen + "]Response data length :["
+							+ hexByteLength + "]");
+					System.out.println("Request msg :: " + reqMsghexByteLen + sampleISOMsg);
+					System.out.println("Response msg :: " + hexByteLength + responseMsg);
 
+				}
 				System.out.println("Response Message received count :" + msgcounter);
 			}
 			input.close();
@@ -176,11 +190,20 @@ public class TestISOClientHeaderType {
 
 	public static byte[] lengthWriteHexaByte(int length) {
 		System.out.println("HEXABYTE FLOW");
-		byte[] tmplength = new byte[4];
-		tmplength[0] = (byte) ((length >>> 24) & 0xFF);
-		tmplength[1] = (byte) ((length >>> 16) & 0xFF);
-		tmplength[2] = (byte) ((length >>> 8) & 0xFF);
-		tmplength[3] = (byte) ((length >>> 0) & 0xFF);
+		byte[] tmplength = null;
+		if (headerLength == 2) {
+			tmplength = new byte[2];
+			tmplength[0] = (byte) ((length >>> 8) & 0xFF);
+			tmplength[1] = (byte) ((length >>> 0) & 0xFF);
+
+		} else if (headerLength == 4) {
+			tmplength = new byte[4];
+			tmplength[0] = (byte) ((length >>> 24) & 0xFF);
+			tmplength[1] = (byte) ((length >>> 16) & 0xFF);
+			tmplength[2] = (byte) ((length >>> 8) & 0xFF);
+			tmplength[3] = (byte) ((length >>> 0) & 0xFF);
+		}
+		reqMsghexByteLen = new String(tmplength);
 		return tmplength;
 	}
 
