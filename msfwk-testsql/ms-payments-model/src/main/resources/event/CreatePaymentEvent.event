@@ -1,5 +1,5 @@
 {
-	"name": "CreatePaymentEvent",
+	"name": "Payments.PaymentOrder.CreatePaymentEvent",	
 	"javaPackage": "com.temenos.microservice.payments.event",
 	"description": "Create New Payment Order Event",
 	"type": "event",
