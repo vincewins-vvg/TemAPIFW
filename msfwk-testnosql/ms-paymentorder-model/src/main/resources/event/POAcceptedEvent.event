@@ -1,5 +1,5 @@
 {
-	"name": "Payments.PaymentOrder.POAcceptedEvent",
+	"name": "Payments.PaymentOrderAccepted.POAcceptedEvent",
 	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"description": "Create New Payment Order Event",
 	"type": "event",
