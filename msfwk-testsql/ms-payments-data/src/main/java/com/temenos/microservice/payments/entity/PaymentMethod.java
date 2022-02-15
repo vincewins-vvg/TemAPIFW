@@ -21,7 +21,7 @@ public class PaymentMethod implements com.temenos.microservice.framework.core.da
 
 	private String name;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "card_cardid",columnDefinition="long")
 	private Card card;
 

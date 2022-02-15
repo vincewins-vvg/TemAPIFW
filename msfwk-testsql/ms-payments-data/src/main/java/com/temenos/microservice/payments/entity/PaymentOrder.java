@@ -1,3 +1,8 @@
+/**
+ * *******************************************************************************
+ * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+ * *******************************************************************************
+ */
 package com.temenos.microservice.payments.entity;
 
 import java.math.BigDecimal;
@@ -57,7 +62,7 @@ public class PaymentOrder implements ExtendableEntity {
 
 	private String paymentTxnRef;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "paymentMethod_id",columnDefinition="int")
 	private PaymentMethod paymentMethod;
 
@@ -77,11 +82,11 @@ public class PaymentOrder implements ExtendableEntity {
 		this.exchangeRates = exchangeRates;
 	}
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "exchangeRates_id",columnDefinition="long")
 	private List<ExchangeRate> exchangeRates;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payeeDetails_payeeId",columnDefinition="int")
 	private PayeeDetails payeeDetails;
 
