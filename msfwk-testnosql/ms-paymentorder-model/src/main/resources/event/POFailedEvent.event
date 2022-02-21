@@ -1,5 +1,5 @@
 {
-	"name": "POFailedEvent",
+	"name": "Payments.PaymentOrderFailed.POFailedEvent",
 	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"description": "Payment Order Failed Event",
 	"type": "event",
