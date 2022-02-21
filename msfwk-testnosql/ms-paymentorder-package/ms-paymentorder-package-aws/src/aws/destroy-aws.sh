@@ -1,4 +1,10 @@
 #!/bin/bash -x
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 
 # Delete streams
 aws kinesis delete-stream --stream-name PaymentOrder-inbox-topic
@@ -53,6 +59,7 @@ aws dynamodb delete-table --table-name ms_payment_order_customer
 aws dynamodb delete-table --table-name ms_payment_order_balance
 aws dynamodb delete-table --table-name ms_payment_order_transaction
 aws dynamodb delete-table --table-name ms_event_sequence
+aws dynamodb delete-table --table-name ms_reference_data
 
 export outboxSourceArn=$(aws dynamodb delete-table --table-name PaymentOrder.ms_outbox_events | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["TableDescription"]["LatestStreamArn"]')
 
@@ -85,11 +92,11 @@ aws lambda delete-function --function-name payment-get-api-handler
 aws lambda delete-function --function-name payment-put-api-handler
 aws lambda delete-function --function-name outbox-handler
 aws lambda delete-function --function-name paymentorder-ingester
-aws lambda delete-function --function-name create-reference-api-handler
-aws lambda delete-function --function-name get-reference-api-handler
-aws lambda delete-function --function-name create-reference-value-api-handler
-aws lambda delete-function --function-name update-reference-api-handler
-aws lambda delete-function --function-name delete-reference-api-handler
+aws lambda delete-function --function-name create-reference-record-api-handler 
+aws lambda delete-function --function-name update-reference-record-api-handler
+aws lambda delete-function --function-name delete-reference-record-api-handler
+aws lambda delete-function --function-name get-reference-record-api-handler
+aws lambda delete-function --function-name gettype-reference-record-api-handler
 aws lambda delete-function --function-name fileDownload
 aws lambda delete-function --function-name fileUpload
 aws lambda delete-function --function-name fileDelete
