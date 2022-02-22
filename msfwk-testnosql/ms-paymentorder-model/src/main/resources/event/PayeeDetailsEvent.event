@@ -1,5 +1,5 @@
 {
-	"name": "Payments.PayeeDetails.PayeeDetailsEvent",
+	"name": "Payments.PayeeDetails.PayeeDetailsEvent.BianPayeeDetails",
 	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"description": "Paymee Details Event",
 	"properties": [
