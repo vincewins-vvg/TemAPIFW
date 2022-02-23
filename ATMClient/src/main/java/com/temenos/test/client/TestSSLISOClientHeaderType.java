@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 /*
  * This is a client program which connects to netty TCP
  * and helps to test the ISO message with different
@@ -21,7 +24,7 @@ import java.util.List;
  * 
  */
 
-public class TestISOClientHeaderType {
+public class TestSSLISOClientHeaderType {
 
 	public static String headerType = "HEXA";
 	private static String reqMsghexLen = "";
@@ -32,7 +35,7 @@ public class TestISOClientHeaderType {
 
 		String hostname = "localhost";
 		// Change the port according to the configuration
-		int port = 3221;
+		int port = 7000;
 
 		System.out.println("Started");
 
@@ -58,8 +61,8 @@ public class TestISOClientHeaderType {
 
 	public static void sendAndReceiveISOMsg(String hostname, int port, String sampleISOMsg, List<String> messages,
 			int msgcounter) {
-		try (Socket socket = new Socket(hostname, port)) {
-
+		// try (Socket socket = new Socket(hostname, port)) {
+		try (SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(hostname, port)) {
 			System.out.println("Connection Established");
 			OutputStream output = socket.getOutputStream();
 			InputStream input = socket.getInputStream();
@@ -105,7 +108,7 @@ public class TestISOClientHeaderType {
 						byte b = bb.get(i);
 						bbarr[i] = b;
 					}
-
+					
 					hexByteLength = new String(bbarr);
 					
 					bytesToRead = ((bbarr[3] & 0xFF) << 0) + ((bbarr[2] & 0xFF) << 8) + ((bbarr[1] & 0xFF) << 16)
@@ -138,6 +141,7 @@ public class TestISOClientHeaderType {
 					System.out.println("Response msg :: " + hexByteLength + responseMsg);
 
 				}
+
 				System.out.println("Response Message received count :" + msgcounter);
 			}
 			input.close();
