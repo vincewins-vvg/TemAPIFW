@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -465,13 +471,14 @@ data:
   temn_msf_function_class_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: paymentorder
+  temn_msf_name: ms-paymentorder
   temn.msf.service: Scheduler   
   temn_msf_security_authz_enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
-  operationId: paymentscheduler
+  operationId: sqlOutboxCatchup
+  temn.msf.scheduler.time.delay: "0"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   

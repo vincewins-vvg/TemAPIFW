@@ -478,7 +478,8 @@ data:
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_nosqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor
   className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
-  operationId: paymentscheduler
+  operationId: nosqlOutboxCatchup
+  temn.msf.scheduler.time.delay: "0"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   
