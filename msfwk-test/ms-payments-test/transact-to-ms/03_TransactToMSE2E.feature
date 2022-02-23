@@ -98,4 +98,3 @@
 #		| TestCaseID              | ColumnName    | Operator | DataType | ColumnValue |
 #		| MS-Test-PO-TransactE2E | type | eq       | string   | paymentref |    
 #		| MS-Test-PO-TransactE2E | value | eq       | string   | paytesttransact |  
-#
