@@ -1,4 +1,10 @@
 #!/bin/bash -x
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 
 # ./repackbuild.sh ms-paymentorder dynamo
 
@@ -28,6 +34,8 @@ aws dynamodb update-table \
 \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5 },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
 
 aws dynamodb create-table --table-name ms_payment_order --attribute-definitions AttributeName=paymentOrderId,AttributeType=S AttributeName=debitAccount,AttributeType=S --key-schema AttributeName=paymentOrderId,KeyType=HASH  AttributeName=debitAccount,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
+aws dynamodb create-table --table-name ms_reference_data --attribute-definitions AttributeName=type,AttributeType=S AttributeName=value,AttributeType=S --key-schema AttributeName=type,KeyType=HASH  AttributeName=value,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
 aws dynamodb create-table --table-name ms_payment_order_customer --attribute-definitions AttributeName=customerId,AttributeType=S AttributeName=customerName,AttributeType=S --key-schema AttributeName=customerId,KeyType=HASH  AttributeName=customerName,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
@@ -153,6 +161,30 @@ sleep 10
 aws lambda create-function --function-name account-post-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.CreateAccountFunctionAWS::invoke --description "Account handler" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_CreateAccount=com.temenos.microservice.paymentorder.function.CreateAccountImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
 sleep 10
 
+#start reference data lambda
+
+aws lambda create-function --function-name create-reference-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.CreateReferenceDataRecordFunctionAWS::invoke --description "create reference data record" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_createReferenceDataRecord=com.temenos.microservice.framework.core.data.referencedata.CreateReferenceDataRecordImpl,class_package_name=com.temenos.microservice.framework.core.data.referencedata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+
+aws lambda create-function --function-name update-reference-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.UpdateReferenceDataRecordFunctionAWS::invoke --description "update reference data record" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_updateReferenceDataRecord=com.temenos.microservice.framework.core.data.referencedata.UpdateReferenceDataRecordImpl,class_package_name=com.temenos.microservice.framework.core.data.referencedata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+
+aws lambda create-function --function-name delete-reference-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.DeleteReferenceDataRecordFunctionAWS::invoke --description "delete reference data record" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_deleteReferenceDataRecord=com.temenos.microservice.framework.core.data.referencedata.DeleteReferenceDataRecordImpl,class_package_name=com.temenos.microservice.framework.core.data.referencedata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+
+aws lambda create-function --function-name get-reference-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetReferenceDataRecordFunctionAWS::invoke --description "get reference data record by type and code" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_getReferenceDataRecord=com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataRecordImpl,class_package_name=com.temenos.microservice.framework.core.data.referencedata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+aws lambda create-function --function-name gettype-reference-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetReferenceDataByTypeFunctionAWS::invoke --description "get reference data record by type" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_getReferenceDataByType=com.temenos.microservice.framework.core.data.referencedata.GetReferenceDataByTypeImpl,class_package_name=com.temenos.microservice.framework.core.data.referencedata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+
+#end reference data lambda
+
+
 export account=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "account" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $account --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
@@ -202,6 +234,45 @@ export deleteId=$(aws apigateway create-resource --rest-api-id $restAPIId --pare
 export updateId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $ordersId --path-part "update" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 export validationsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "validations" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+
+# GET: /v1.0.0/reference/{type}
+
+export reftypeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $referenceResourceId --path-part "{type}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:gettype-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+
+# POST: /v1.0.0/reference/{type}/{refcode}
+
+export refcodeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypeIdResourceId --path-part "{refcode}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method POST --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:create-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:update-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method DELETE --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method DELETE --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:delete-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+#end reference data
 
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $ordersId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2

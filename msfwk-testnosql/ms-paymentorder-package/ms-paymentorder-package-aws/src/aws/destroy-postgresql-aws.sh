@@ -1,4 +1,10 @@
 #!/bin/bash -x
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 
 export DEPLOYMENT_ENVIRONMENT="postgres"
 
@@ -96,5 +102,9 @@ aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-ord
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-get-validation
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-search-users
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-get-account-validate
-
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-create-reference-record-api-handler 
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-update-reference-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-delete-reference-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-reference-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-gettype-reference-record-api-handler
 sleep 60
