@@ -55,6 +55,7 @@ import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
+import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
 
 /**
  * CreateNewPaymentOrderImpl.
@@ -166,16 +167,24 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		}
 		com.temenos.microservice.paymentorder.entity.PaymentOrder entity = createEntity(paymentOrderId, paymentOrder);
 		// Business event raised from payment order microservice
-		POAcceptedEvent poAcceptedEvent = new POAcceptedEvent();
-		poAcceptedEvent.setPaymentOrderId(entity.getPaymentOrderId());
-		poAcceptedEvent.setAmount(entity.getAmount());
-		poAcceptedEvent.setCreditAccount(entity.getCreditAccount());
-		poAcceptedEvent.setCurrency(entity.getCurrency());
-		poAcceptedEvent.setDebitAccount(entity.getDebitAccount());
+//		POAcceptedEvent poAcceptedEvent = new POAcceptedEvent();
+//		poAcceptedEvent.setPaymentOrderId(entity.getPaymentOrderId());
+//		poAcceptedEvent.setAmount(entity.getAmount());
+//		poAcceptedEvent.setCreditAccount(entity.getCreditAccount());
+//		poAcceptedEvent.setCurrency(entity.getCurrency());
+//		poAcceptedEvent.setDebitAccount(entity.getDebitAccount());
+		
+		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
+		paymentOrderEvent.setAmount(entity.getAmount());
+		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
+		paymentOrderEvent.setCurrency(entity.getCurrency());
+		paymentOrderEvent.setDebitAccount(entity.getDebitAccount());
+		
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
-		poAcceptedEvent.setPayeeDetails(payeeDetails);
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", poAcceptedEvent), entity);
+		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
 	}
