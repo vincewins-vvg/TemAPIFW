@@ -152,6 +152,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -224,6 +225,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -308,6 +310,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -375,6 +378,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -430,6 +434,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -485,6 +490,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -536,6 +542,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
@@ -581,6 +588,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
@@ -588,6 +596,7 @@ data:
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
   temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
   temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
@@ -642,6 +651,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}  
 {{- if .Values.metrics.metricsDisabled | quote }}        
