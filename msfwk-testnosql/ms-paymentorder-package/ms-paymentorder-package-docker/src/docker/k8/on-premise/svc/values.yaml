@@ -185,6 +185,7 @@ logging:
 #  socketHost: #ipaddress
 #  socketPort: #port
   exportType: #socket (console,socket)
+  protocol: #TCP
   
 metrics:
   #publisherPort: 9091 

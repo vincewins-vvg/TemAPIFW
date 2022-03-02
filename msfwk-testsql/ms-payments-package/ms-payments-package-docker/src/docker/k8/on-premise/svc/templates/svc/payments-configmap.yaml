@@ -91,6 +91,7 @@ data:
 {{- if eq .Values.logging.exportType "socket" }}   
   temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
   temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.metrics.metricsDisabled | quote }}        
