@@ -1,8 +1,3 @@
-/**
- * *******************************************************************************
- * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
- * *******************************************************************************
- */
 package com.temenos.microservice.payments.entity;
 
 import java.lang.annotation.Annotation;
@@ -11,7 +6,6 @@ import java.util.Map;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
