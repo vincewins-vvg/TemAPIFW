@@ -49,7 +49,7 @@
     #Then MS JSON property "items" should contain 0 elements
     And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
     And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum.inr"
-    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; byte offset: #UNKNOWN] (through reference chain: com.temenos.microservice."
     And MS JSON response string property key "message" should contain value "currency"
     And MS JSON response string property key "code" should contain value "MSF-001"
     
@@ -69,7 +69,7 @@
     #Then MS JSON property "items" should contain 0 elements
     #And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
     #And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum."
-    #And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    #And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; byte offset: #UNKNOWN] (through reference chain: com.temenos.microservice."
     #And MS JSON response string property key "message" should contain value "currency"
     #And MS JSON response string property key "code" should contain value "MSF-001"  
     
@@ -88,7 +88,7 @@
    #Then MS JSON property "items" should contain 0 elements
     And MS JSON response string property key "message" should contain value "No enum constant com.temenos.microservice."
     And MS JSON response string property key "message" should contain value "view.GetPaymentOrderCurrencyParams.CurrencyEnum.sss"
-    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; line: -1, column: -1] (through reference chain: com.temenos.microservice."
+    And MS JSON response string property key "message" should contain value "at [Source: UNKNOWN; byte offset: #UNKNOWN] (through reference chain: com.temenos.microservice."
     And MS JSON response string property key "message" should contain value "currency"
     And MS JSON response string property key "code" should contain value "MSF-001"
       
