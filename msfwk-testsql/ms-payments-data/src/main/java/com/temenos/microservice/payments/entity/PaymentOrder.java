@@ -63,7 +63,6 @@ public class PaymentOrder implements ExtendableEntity {
 	private String paymentTxnRef;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "paymentMethod_id",columnDefinition="int")
 	private PaymentMethod paymentMethod;
 
 	public PaymentMethod getPaymentMethod() {
@@ -83,11 +82,9 @@ public class PaymentOrder implements ExtendableEntity {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "exchangeRates_id",columnDefinition="long")
 	private List<ExchangeRate> exchangeRates;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payeeDetails_payeeId",columnDefinition="int")
 	private PayeeDetails payeeDetails;
 
 	// maps from attribute name to value
