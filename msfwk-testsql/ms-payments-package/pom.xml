@@ -19,6 +19,7 @@
 		<module>ms-payments-package-knative</module>
 		<module>ms-payments-package-docker</module>
         <module>ms-payments-package-aws</module>
+		<module>ms-payments-package-azure</module>
 		<!-- <module>ms-payments-iris</module> -->
 	</modules>
 </project>
