@@ -167,7 +167,8 @@ public class IngestorStepDefinition {
 		if (topicName.equals("ms-paymentorder-inbox-topic") == true
 				|| topicName.equals("paymentorder-event-topic") == true
 				|| topicName.equals("ms-adapterservice-event-topic") == true
-				|| topicName.equals("ms-adapterservice-second-event-topic") == true)
+				|| topicName.equals("ms-adapterservice-second-event-topic") == true
+				|| topicName.equals("virtualtable-inbox-topic") == true)
 
 		{
 			StreamProducer producer = ProducerFactory.createStreamProducer("itest",
@@ -200,7 +201,8 @@ public class IngestorStepDefinition {
           if (topicName.equals("ms-paymentorder-inbox-topic") == true
                        || topicName.equals("paymentorder-event-topic") == true
                        || topicName.equals("ms-adapterservice-event-topic") == true
-                       || topicName.equals("ms-adapterservice-second-event-topic") == true)
+                       || topicName.equals("ms-adapterservice-second-event-topic") == true
+					   || topicName.equals("virtualtable-inbox-topic") == true)
 
           {
               
