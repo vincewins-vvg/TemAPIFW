@@ -205,6 +205,8 @@ export apiRootResourceId=$(aws apigateway get-resources --rest-api-id $restAPIId
 
 export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v1.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
+export versionResourcerefId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v2.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
 export paymentsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "payments" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 export ordersId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "orders" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
@@ -263,14 +265,14 @@ aws apigateway put-method --rest-api-id $restAPIId --resource-id $updateAllOrder
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $updateAllOrdersId --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:payment-put-bulk-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 
-# Create Reference resource and get id - /v1.0.0/reference
-export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+# Create Reference resource and get id - /v2.0.0/reference
+export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourcerefId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 echo "----------------------------------"
 echo $referenceResourceId
 echo "----------------------------------"
 
 
-# GET: /v1.0.0/reference/{type}
+# GET: /v2.0.0/reference/{type}
 export reftypeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $referenceResourceId --path-part "{type}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
