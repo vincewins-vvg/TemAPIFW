@@ -184,6 +184,8 @@ export apiRootResourceId=$(aws apigateway get-resources --rest-api-id $restAPIId
 
 export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v1.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
+export versionResourcerefId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v2.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
 export paymentsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "payments" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 export ordersId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "orders" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
@@ -243,7 +245,7 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $updateAll
 
 
 # Create Reference resource and get id - /v1.0.0/reference
-export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourcerefId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 echo "----------------------------------"
 echo $referenceResourceId
 echo "----------------------------------"
