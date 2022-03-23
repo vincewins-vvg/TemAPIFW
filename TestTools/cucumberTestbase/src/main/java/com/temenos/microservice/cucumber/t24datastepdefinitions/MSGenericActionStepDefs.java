@@ -271,6 +271,9 @@ public class MSGenericActionStepDefs implements En {
         Then(format("^property {0} should be equal to bundle value {0} {0} {0}$", stepConfig.stringRegEx()),
                 (String key, String prefix, String bundleKey, String suffix) -> comparePropetyValueWithBundleValue(key, prefix, bundleKey, suffix));
         
+        Then(format("^property {0} should contain bundle value {0} {0} {0}$", stepConfig.stringRegEx()),
+                (String key, String prefix, String bundleKey, String suffix) -> comparePropetyValueContainsBundleValue(key, prefix, bundleKey, suffix));
+        
         And(format("^set request header key {0} with multiple values {0}$", stepConfig.stringRegEx()),
                 (String key, String values) -> setHeaderMultiValues(key, values));
 
@@ -509,6 +512,11 @@ public class MSGenericActionStepDefs implements En {
         assertTrue("Values of expected property and bundle are not equal", keyValue.equals(bundleValue));
     }
     
+    public void comparePropetyValueContainsBundleValue(String propertyKey, String prefixValue, String bundleKey, String suffixValue) {
+        String keyValue = getPropertyValue(propertyKey);
+        String bundleValue = prefixValue.concat(cucumberInteractionSession.scenarioBundle().getString(bundleKey)).concat(suffixValue);
+        assertTrue("Values of expected property does not contain bundle value", keyValue.contains(bundleValue));
+    }
     
     public void setBundleWithSessionLinkAttribute(String bundleId, String propertyKey) {
         cucumberInteractionSession.scenarioBundle().put(bundleId,
