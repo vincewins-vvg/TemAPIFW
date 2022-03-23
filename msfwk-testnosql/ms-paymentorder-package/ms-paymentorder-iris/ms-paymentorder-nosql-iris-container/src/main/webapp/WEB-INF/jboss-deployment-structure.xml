@@ -20,6 +20,7 @@
 			<!-- <module name="org.jboss.logmanager"/>			 -->
 			<!-- <module name="org.jboss.as.logging"/> -->
 			<module name="com.temenos.tafj"/>
+			<module name="com.temenos.monitor"/>
 		</exclusions>
 		
 	</deployment> 
