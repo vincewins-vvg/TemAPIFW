@@ -3,8 +3,7 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
-#echo on
-# configuration details
+
 export RESOURCE_GROUP_NAME="Payments"
 export LOCATION="UK South"
 export DB_NAME_SPACE="paymentsserver"
@@ -139,7 +138,7 @@ export SQL_INBOX_CLEANUP_SCHEDULER_TIME="0 0/5 * * * *"
 export INBOX_CLEANUP_MINUTES="60"
 export SQL_INBOX_SCHEDULER="com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor"
 
-ingester_creator %APP_NAME% %JAR_NAME% %JAR_VERSION% 
+./ingester_creator.sh "${APP_NAME}" "${JAR_NAME}" "${JAR_VERSION}" 
 
 #Create a resource resourceGroupName
 az group create --name %RESOURCE_GROUP_NAME%   --location %LOCATION%
