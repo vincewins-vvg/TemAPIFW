@@ -66,7 +66,7 @@ Scenario Outline: To Create a record with only type and not passing code in URI
     And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 405
+	#Then MS response code should be 405
 	
 	Examples: 
 		|payload|
@@ -116,7 +116,7 @@ To update the description of the existing value that is already available in the
 	And post the static MS JSON as payload <payload> 
 	When a "PUT" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 405 
+    #Then MS response code should be 405 
 	
 	Examples: 
 		|payload|
