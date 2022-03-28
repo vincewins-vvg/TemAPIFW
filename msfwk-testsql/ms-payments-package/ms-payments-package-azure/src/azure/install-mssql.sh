@@ -44,6 +44,7 @@ export DB_ADMIN_USERNAME="paymentsadmin"
 export DRIVER_NAME="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 export DIALECT="org.hibernate.dialect.SQLServerDialect"
 export DB_CONNECTION_URL="jdbc:sqlserver://$DB_NAME_SPACE.database.windows.net:1433;databaseName=$DB_NAME"
+export SUBSCRIPTION_ID=""
 
 export JAVA_OPTS="-Djava.net.preferIPv4Stack=true"
 export AUTHZ_ENABLED="false"
