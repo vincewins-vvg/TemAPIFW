@@ -47,7 +47,7 @@ SET INVEPAYMENT="com.temenos.microservice.paymentorder.function.InvokePaymentOrd
 SET HEATHCHECK="com.temenos.microservice.framework.core.function.camel.GetHealthCheckImpl"
 SET FILE_UPLOAD="com.temenos.microservice.paymentorder.function.FileUploadImpl"
 SET FILE_DOWNLOAD="com.temenos.microservice.paymentorder.function.FileDownloadImpl"
-SET DOINPUTVALIDATION="com.temenos.microservice.paymentorder.function.DoInputValidationImpl
+SET DOINPUTVALIDATION="com.temenos.microservice.paymentorder.function.DoInputValidationImpl"
 SET PAYMENT_SCHEDULER="com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler"
 SET DELETE_PAYMENTORDER="com.temenos.microservice.paymentorder.function.DeletePaymentOrderImpl"
 SET FILE_DELETE="com.temenos.microservice.payments.function.FileDeleteImpl"
@@ -58,6 +58,7 @@ SET DATABASE_KEY="postgresql"
 SET DATABASE_USERNAME="myadmin"
 SET DATABASE_PASSWORD="Passw0rd!"
 SET DATABASE_CONNECTIONURL="jdbc:postgresql://paymentordernosql.postgres.database.azure.com:5432/paymentorder"
+SET SUBSCRIPTION_ID=""
 
 REM Hub Properties
 SET MSF_NAME="ms-paymentorder"
@@ -80,7 +81,7 @@ SET EVENT_HUB_INBOX_TOPIC="ms-paymentorder-inbox-topic"
 SET EVENT_HUB_EVENT_TOPIC="paymentorder-event-topic"
 
 REM Ingester and Inbox/outbox related config 
-SET SET INGEST_SOURCE_STREAM="ms-paymentorder-inbox-topic"
+SET INGEST_SOURCE_STREAM="ms-paymentorder-inbox-topic"
 SET INGEST_EVENT_INGESTER="com.temenos.microservice.framework.core.ingester.MicroserviceIngester"
 SET GENERIC_INGESTER="com.temenos.microservice.framework.core.ingester.GenericCommandSTBinaryIngester"
 SET INBOXOUTBOX_INGESTER="com.temenos.microservice.framework.core.ingester.MSKafkaOutboxEventListener"

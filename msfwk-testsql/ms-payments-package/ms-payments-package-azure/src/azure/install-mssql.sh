@@ -9,8 +9,8 @@ export RESOURCE_GROUP_NAME="paymentsMSSQL"
 export LOCATION="UK South"
 export DB_NAME_SPACE="paymentssqlserver"
 export DB_NAME="payments"
-export APP_NAME="paymentsapplp"
-export OUTBOX_LISTENER_APP_NAME="paymentsapplistenerlp"
+export APP_NAME="paymentsapp"
+export OUTBOX_LISTENER_APP_NAME="paymentsapplistener"
 
 #Class Implementation
 export CREATEPAYMENT="com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl"
