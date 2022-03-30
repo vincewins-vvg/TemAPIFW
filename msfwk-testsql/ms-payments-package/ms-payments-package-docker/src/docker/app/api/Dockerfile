@@ -19,7 +19,7 @@ RUN chmod +x /wait-for-it.sh
 RUN sed -i 's/\r//' /wait-for-it.sh
 COPY .keystore/.keystore /usr/local/tomcat/etc/ssl/certs/.keystore
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup appgroup && adduser appuser && adduser appuser appgroup
 RUN chown -R appuser:appgroup /usr
 RUN chmod -R +x /usr
 USER appuser
