@@ -13,7 +13,7 @@ ENV JAVA_OPTS ${java_options}
 COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
 COPY .keystore/.keystore /usr/local/tomcat/etc/ssl/certs/.keystore
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup appgroup && adduser appuser && adduser appuser appgroup
 RUN chown -R appuser:appgroup /usr
 RUN chmod -R +x /usr
 USER appuser
