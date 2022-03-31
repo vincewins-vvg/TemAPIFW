@@ -82,6 +82,9 @@ aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-referen
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-create-reference-value-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-update-reference-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-delete-reference-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-metadata-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-tables-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-table-record-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-fileDownload
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-fileUpload
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-fileDelete

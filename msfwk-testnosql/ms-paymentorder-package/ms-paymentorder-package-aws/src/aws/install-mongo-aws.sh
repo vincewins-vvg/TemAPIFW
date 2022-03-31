@@ -102,6 +102,20 @@ sleep 10
 
 #end reference data record lambdas
 
+
+#Metadata API's lambda
+
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-metadata-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetMetadataFunctionAWS::invoke --description "Get Metadata" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_getMetadata=com.temenos.microservice.framework.core.data.metadata.GetMetadataImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
+sleep 10
+
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-tables-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTablesFunctionAWS::invoke --description "Get Metadata" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_getTables=com.temenos.microservice.framework.core.data.metadata.GetTablesImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
+sleep 10
+
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-table-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTableFunctionAWS::invoke --description "Get Metadata" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_getTable=com.temenos.microservice.framework.core.data.metadata.GetTableImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
+sleep 10
+
+#Metadata API's lambdas
+
 # Create customer lambdas
 aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-create-customer-payments --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.paymentorder.function.CreateCustomerFunctionAWS::invoke --description "Create Customer" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_createCustomer=com.temenos.microservice.paymentorder.function.CreateCustomerImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,tem_msf_disableInbox=true\}
 sleep 10
@@ -274,6 +288,32 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeId
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method DELETE --authorization-type NONE --api-key-required --region eu-west-2
 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method DELETE --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-delete-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+# Create metadata resource and get id - /v1.0.0/meta
+export metadataResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "meta" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-get-metadata-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Create metadata resource and get id - /v1.0.0/meta/tables
+export metadataTablesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataResourceId --path-part "tables" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTablesResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTablesResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-get-tables-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Create metadata resource and get id - /v1.0.0/meta/tables/{table}
+export metadataTableidResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataTablesResourceId --path-part "{table}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTableidResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTableidResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-get-table-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
 
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2

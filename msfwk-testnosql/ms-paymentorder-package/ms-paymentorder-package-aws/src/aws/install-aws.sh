@@ -52,6 +52,7 @@ sleep 10
 aws s3 mb s3://ms-payment-order
 sleep 30
 # Get the app file name for deployment
+#export serviceFileName=$(ls app | grep -e dynamo)
 export serviceFileName=$(ls app | grep -e dynamo)
 aws s3 cp app/${serviceFileName} s3://ms-payment-order --storage-class REDUCED_REDUNDANCY
 
@@ -185,6 +186,22 @@ sleep 10
 #end reference data lambda
 
 
+
+#start metadata lambda
+
+aws lambda create-function --function-name get-metadata-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetMetadataFunctionAWS::invoke --description "get metadata records" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_getMetadata=com.temenos.microservice.framework.core.data.metadata.GetMetadataImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+aws lambda create-function --function-name get-tables-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTablesFunctionAWS::invoke --description "get table records" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_getTables=com.temenos.microservice.framework.core.data.metadata.GetTablesImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+aws lambda create-function --function-name get-table-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTableFunctionAWS::invoke --description "get table functions" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order",S3Key=${serviceFileName} --environment Variables=\{className_getTable=com.temenos.microservice.framework.core.data.metadata.GetTableImpl,class_package_name=com.temenos.microservice.framework.core.data.metadata,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,ms_security_tokencheck_enabled=N\}
+sleep 10
+
+#end metadata lambda
+
+
+
 export account=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "account" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $account --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
@@ -237,7 +254,6 @@ export validationsId=$(aws apigateway create-resource --rest-api-id $restAPIId -
 
 export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
-
 # GET: /v1.0.0/reference/referenceTypes
 
 export reftypesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $referenceResourceId --path-part "referenceTypes" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
@@ -279,6 +295,35 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeId
 
 
 #end reference data
+
+# GET: /v1.0.0/meta
+
+export metadataResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "meta" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-metadata-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+# GET: /v1.0.0/meta/tables
+
+export metadataTableResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataResourceId --path-part "tables" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTableResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTableResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-tables-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# GET: /v1.0.0/meta/tables/{table}
+
+export metadataTableIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataTableResourceId --path-part "{table}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTableIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTableIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-table-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
 
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $ordersId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2

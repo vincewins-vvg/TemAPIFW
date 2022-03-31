@@ -97,6 +97,9 @@ aws lambda delete-function --function-name update-reference-record-api-handler
 aws lambda delete-function --function-name delete-reference-record-api-handler
 aws lambda delete-function --function-name get-reference-record-api-handler
 aws lambda delete-function --function-name gettype-reference-record-api-handler
+aws lambda delete-function --function-name get-metadata-record-api-handler
+aws lambda delete-function --function-name get-tables-record-api-handler
+aws lambda delete-function --function-name get-table-record-api-handler
 aws lambda delete-function --function-name fileDownload
 aws lambda delete-function --function-name fileUpload
 aws lambda delete-function --function-name fileDelete
