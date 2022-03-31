@@ -1,0 +1,92 @@
+{
+	"appList": [
+		{
+			"appName": "paymentorderapp",
+			"type": "command",
+			"description": "Command and Event Handler for Paymentorder MicroService",
+			"functionRef": "api-functions.json",
+			"functions": [],
+			"appSettings": {
+				"$ref": [	
+					
+					{
+						"name": "api.env"
+					}
+				],
+				"param": [
+					{
+						"envParamName": "param1",
+						"value": "param1value"
+					},
+					{
+						"envParamName": "param2",
+						"value": "param2value"
+					}
+				]
+			}
+		},
+		{
+			"appName": "paymentdataapp",
+			"type": "avro",
+			"description": "Data Ingester for the Paymentorder microservices",
+			"functionRef": "",
+			"functions": [
+				{
+					"functionName": "IngesterFunction",
+					"serviceName": "paymentorder-data-ingester"
+				}
+			],
+			"appSettings": {
+				"$ref": [
+					
+					{
+						"name": "ingester.env"
+					}
+				],
+				"param": []
+			}
+		},
+		{
+			"appName": "InboxOutboxListener",
+			"type": "inboxoutbox",
+			"description": "Outbox Event Delivery app for Paymentorder MicroService",
+			"functionRef": "",
+			"functions": [
+				{
+					"functionName": "InboxOutboxListener",
+					"serviceName": "paymentorder-outbox-eventhandler"
+				}
+			],
+			"appSettings": {
+				"$ref": [
+					
+					{
+						"name": "ingester.env"
+					}
+				],
+				"param": []
+			}
+		},
+		{
+			"appName": "paymentevent",
+			"type": "business",
+			"description": "Business Ingester for Paymentorder MicroService",
+			"functionRef": "",
+			"functions": [
+				{
+					"functionName": "IngesterFunction",
+					"serviceName": "paymentorder-binary-eventhandler"
+				}
+			],
+			"appSettings": {
+				"$ref": [
+					,
+					{
+						"name": "ingester.env"
+					}
+				],
+				"param": []
+			}
+		}
+	]
+}
