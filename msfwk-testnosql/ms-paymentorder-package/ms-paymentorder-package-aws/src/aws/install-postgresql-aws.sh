@@ -132,8 +132,6 @@ sleep 10
 
 #end lamba for metadata api 
 
-
-
 # Create customer lambdas
 aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-create-customer-payments --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda-kinesis-execution-role --handler com.temenos.microservice.paymentorder.function.CreateCustomerFunctionAWS::invoke --description "Create Customer" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-postgresql-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_createCustomer=com.temenos.microservice.paymentorder.function.CreateCustomerImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=postgresql,POSTGRESQL_CONNECTIONURL=jdbc:postgresql://${host}:${port}/${dbname},POSTGRESQL_USERNAME=${username},POSTGRESQL_PASSWORD=password,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,tem_msf_disableInbox=true,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
 sleep 10
@@ -245,6 +243,8 @@ export apiRootResourceId=$(aws apigateway get-resources --rest-api-id $restAPIId
 
 export versionResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v1.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
+export versionResourceRefId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $apiRootResourceId --path-part "v2.0.0" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
 export paymentsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "payments" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 export ordersId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "orders" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
@@ -260,27 +260,21 @@ export updateId=$(aws apigateway create-resource --rest-api-id $restAPIId --pare
 export validationsId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $paymentsId --path-part "validations" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
 # Create Reference resource and get id - /v1.0.0/reference
-export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+export referenceResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceRefId --path-part "reference" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+echo "----------------------------------"
+echo $referenceResourceId
+echo "----------------------------------"
 
-
-# Create Reference resource and get id - /v1.0.0/reference/referenceTypes
-export reftypesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $referenceResourceId --path-part "referenceTypes" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
-
-
-# GET: /v1.0.0/reference/referenceTypes/{referenceTypeId}
-export reftypeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypesResourceId --path-part "{referenceTypeId}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+# GET: /v1.0.0/reference/{type}
+export reftypeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $referenceResourceId --path-part "{type}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-gettype-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 
-# POST: /v1.0.0/reference/referenceTypes/{referenceTypeId}/referenceCodes
-export refcodeResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypeIdResourceId --path-part "referenceCodes" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
-
-# POST: /v1.0.0/reference/referenceTypes/{referenceTypeId}/referenceCodes/{referenceCode}
-
-export refcodeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $refcodeResourceId --path-part "{referenceCode}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+# POST: /v1.0.0/reference/{type}/{refcode}
+export refcodeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypeIdResourceId --path-part "{refcode}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
 
@@ -299,7 +293,6 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeId
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-get-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
-
 
 # Create Metadata resource and get id - /v1.0.0/meta
 export metaResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "meta" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
