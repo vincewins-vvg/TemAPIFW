@@ -4,11 +4,13 @@
 			"appName": "paymentorderapp",
 			"type": "command",
 			"description": "Command and Event Handler for Paymentorder MicroService",
-			"functionRef": "api-functions.json",
-			"functions": [],
+			"functions": [
+				{
+					"reference": "api-functions.json"
+				}
+			],
 			"appSettings": {
-				"$ref": [	
-					
+				"$ref": [
 					{
 						"name": "api.env"
 					}
@@ -27,9 +29,8 @@
 		},
 		{
 			"appName": "paymentdataapp",
-			"type": "avro",
+			"type": "data",
 			"description": "Data Ingester for the Paymentorder microservices",
-			"functionRef": "",
 			"functions": [
 				{
 					"functionName": "IngesterFunction",
@@ -38,7 +39,6 @@
 			],
 			"appSettings": {
 				"$ref": [
-					
 					{
 						"name": "ingester.env"
 					}
@@ -50,7 +50,6 @@
 			"appName": "InboxOutboxListener",
 			"type": "inboxoutbox",
 			"description": "Outbox Event Delivery app for Paymentorder MicroService",
-			"functionRef": "",
 			"functions": [
 				{
 					"functionName": "InboxOutboxListener",
@@ -59,7 +58,6 @@
 			],
 			"appSettings": {
 				"$ref": [
-					
 					{
 						"name": "ingester.env"
 					}
@@ -71,7 +69,6 @@
 			"appName": "paymentevent",
 			"type": "business",
 			"description": "Business Ingester for Paymentorder MicroService",
-			"functionRef": "",
 			"functions": [
 				{
 					"functionName": "IngesterFunction",
@@ -80,7 +77,6 @@
 			],
 			"appSettings": {
 				"$ref": [
-					,
 					{
 						"name": "ingester.env"
 					}
