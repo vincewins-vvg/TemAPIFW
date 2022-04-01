@@ -12,7 +12,7 @@ export DEPLOYMENT_ENVIRONMENT="mongo"
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-inbox-topic
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-event-topic
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-error-topic
-aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-payment-outbox
+aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-outbox
 aws kinesis delete-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-table-update-paymentorder
 
 
