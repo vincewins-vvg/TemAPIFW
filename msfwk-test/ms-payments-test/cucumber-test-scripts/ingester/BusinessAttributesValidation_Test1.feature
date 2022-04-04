@@ -69,7 +69,12 @@ Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED
 		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
 		| MS-Test-PO-CloudEvent-002       | eventId    | eq       | string   | f5798d48-4d89-4e0c-b341-0370d18e47b7 |
 		| MS-Test-PO-CloudEvent-002       | eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
-		
+
+	And set timeout session for 30 seconds
+	And set timeout session for 30 seconds
+	And set timeout session for 30 seconds
+	And set timeout session for 30 seconds
+
 	And Validate the below details from the db table ms_inbox_events and check no of record is 1 
 	
 		| TestCaseID                    | ColumnName | ColumnValue |
