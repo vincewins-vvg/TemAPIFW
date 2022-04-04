@@ -171,7 +171,7 @@ fi
 if [ $SUBSCRIPTION_ID != "" ]; then
 	mvn -Pdeploy azure-functions:deploy -Dazure.region="${LOCATION}"  -Dsubscription.id="${SUBSCRIPTION_ID}" -Dazure.resourceGroup="${RESOURCE_GROUP_NAME}" -DappName="${OUTBOX_LISTENER_APP_NAME}" -f pom-azure-deploy.xml -X
 else
-	mvn -Pdeploy azure-functions:deploy -Dazure.region="${LOCATION}" -Dazure.resourceGroup="${RESOURCE_GROUP_NAME}" -DappName="${OUTBOX_LISTENER_APP_NAME}"-f pom-azure-deploy.xml -X
+	mvn -Pdeploy azure-functions:deploy -Dazure.region="${LOCATION}" -Dazure.resourceGroup="${RESOURCE_GROUP_NAME}" -DappName="${OUTBOX_LISTENER_APP_NAME}" -f pom-azure-deploy.xml -X
 fi 
 
 
