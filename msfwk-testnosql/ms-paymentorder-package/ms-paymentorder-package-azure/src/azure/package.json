@@ -7,6 +7,10 @@
 			"functions": [
 				{
 					"reference": "api-functions.json"
+				},
+				{
+					"functionName": "IngesterFunction",
+					"serviceName": "paymentorder-command-ingester"
 				}
 			],
 			"appSettings": {
