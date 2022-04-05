@@ -57,24 +57,4 @@
 			<artifactId>ms-framework-core</artifactId>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.temenos.microservice.plugin</groupId>
-				<artifactId>ms-framework-gen</artifactId>
-				<executions>
-					<execution>
-						<id>update-project</id>
-						<phase>package</phase>
-						<goals>
-							<goal>generate-entity-ddl</goal>
-						</goals>						
-						<configuration>
-							<enableDdl>true</enableDdl>								 
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
