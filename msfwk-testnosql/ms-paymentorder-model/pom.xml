@@ -63,7 +63,7 @@
 								<functionViewModelVersion>1.3</functionViewModelVersion>
 							</configuration>
 						</execution>
-					</executions>	
+					</executions>  	
 				</plugin>
 			</plugins>
 		</pluginManagement>
