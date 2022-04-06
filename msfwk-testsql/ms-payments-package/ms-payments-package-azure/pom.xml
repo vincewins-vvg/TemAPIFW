@@ -29,6 +29,7 @@
 		<sonar.skip>true</sonar.skip>
 		<applicationName>paymentsapp</applicationName>
 		<applicationListenerName>paymentsapplistener</applicationListenerName>
+		<saasEnabled>true</saasEnabled>
 	</properties>
 	<dependencies>
 		<dependency>

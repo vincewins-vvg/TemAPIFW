@@ -63,17 +63,7 @@
 								<functionViewModelVersion>1.3</functionViewModelVersion>
 							</configuration>
 						</execution>
-						<execution>
-							<id>update-project</id>
-							<phase>package</phase>
-							<goals>
-								<goal>generate-entity-ddl</goal>
-							</goals>						
-							<configuration>
-								<enableDdl>true</enableDdl>								 
-							</configuration>
-						</execution>
-					</executions>
+					</executions>  	
 				</plugin>
 			</plugins>
 		</pluginManagement>
