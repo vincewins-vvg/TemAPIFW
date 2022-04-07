@@ -272,17 +272,13 @@ aws apigateway put-method --rest-api-id $restAPIId --resource-id $reftypeIdResou
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $reftypeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:gettype-sql-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 
-<<<<<<< HEAD
 # GET: /v1.0.0/reference/referenceTypes/{referenceTypeId}/referenceCodes
 export refcodeResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypeIdResourceId --path-part "referenceCodes" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
 
 
 # GET: /v1.0.0/reference/referenceTypes/{referenceTypeId}/referenceCodes/{referenceCode}
 export refcodeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $refcodeResourceId --path-part "{referenceCode}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
-=======
-# GET: /v1.0.0/reference/{type}/{refcode}
-export refcodeIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reftypeIdResourceId --path-part "{refcode}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
->>>>>>> 7e585970 (MFw-1729 Metadata API's For AWS)
+
 
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method POST --authorization-type NONE --api-key-required --region eu-west-2
 
