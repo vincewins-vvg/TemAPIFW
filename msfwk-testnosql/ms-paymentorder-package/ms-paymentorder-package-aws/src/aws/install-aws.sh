@@ -293,8 +293,6 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeId
 
 #end reference data
 
-
-aws
 # GET: /v1.0.0/meta
 
 export metadataResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "meta" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
