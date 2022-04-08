@@ -73,6 +73,9 @@ aws lambda delete-function --function-name update-reference-record-api-handler
 aws lambda delete-function --function-name delete-reference-record-api-handler
 aws lambda delete-function --function-name get-reference-record-api-handler
 aws lambda delete-function --function-name gettype-reference-record-api-handler
+aws lambda delete-function --function-name get-sql-metadata-record-api-handler
+aws lambda delete-function --function-name get-sql-tables-record-api-handler
+aws lambda delete-function --function-name get-sql-table-record-api-handler
 
 
 #Delete event source mappings

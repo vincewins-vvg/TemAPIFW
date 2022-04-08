@@ -136,6 +136,19 @@ sleep 10
 
 #End Reference Data records
 
+# Create metadata API's lambdas
+aws lambda create-function --function-name get-sql-metadata-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetMetadataFunctionAWS::invoke --description "Get metadata records" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DIALECT=org.hibernate.dialect.SQLServer2012Dialect,DB_CONNECTION_URL=jdbc:sqlserver://${host}:${port}\;${DATABASE_NAME}=payments,PORT=${port},DRIVER_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver,DB_USERNAME=sa,DB_PASSWORD=rootroot,DATABASE_NAME=payments,HOST=${host},temn_msf_security_authz_enabled=false,className_getMetadata=com.temenos.microservice.framework.core.data.metadata.GetMetadataImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=sql,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/pdpTestAzureFun.properties,MAX_POOL_SIZE=150,MIN_POOL_SIZE=10,ms_security_tokencheck_enabled=Y,temn_msf_tracer_enabled=false,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_name=PaymentOrder\}
+sleep 10
+
+
+aws lambda create-function --function-name get-sql-tables-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTablesFunctionAWS::invoke --description "Get entity records" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DIALECT=org.hibernate.dialect.SQLServer2012Dialect,DB_CONNECTION_URL=jdbc:sqlserver://${host}:${port}\;${DATABASE_NAME}=payments,PORT=${port},DRIVER_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver,DB_USERNAME=sa,DB_PASSWORD=rootroot,DATABASE_NAME=payments,HOST=${host},temn_msf_security_authz_enabled=false,className_getTables=com.temenos.microservice.framework.core.data.metadata.GetTablesImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=sql,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/pdpTestAzureFun.properties,MAX_POOL_SIZE=150,MIN_POOL_SIZE=10,ms_security_tokencheck_enabled=Y,temn_msf_tracer_enabled=false,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_name=PaymentOrder\}
+sleep 10
+
+aws lambda create-function --function-name get-sql-table-record-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.core.function.aws.GetTableFunctionAWS::invoke --description "Get entity records" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DIALECT=org.hibernate.dialect.SQLServer2012Dialect,DB_CONNECTION_URL=jdbc:sqlserver://${host}:${port}\;${DATABASE_NAME}=payments,PORT=${port},DRIVER_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver,DB_USERNAME=sa,DB_PASSWORD=rootroot,DATABASE_NAME=payments,HOST=${host},temn_msf_security_authz_enabled=false,className_getTable=com.temenos.microservice.framework.core.data.metadata.GetTableImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=sql,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/pdpTestAzureFun.properties,MAX_POOL_SIZE=150,MIN_POOL_SIZE=10,ms_security_tokencheck_enabled=Y,temn_msf_tracer_enabled=false,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_msf_name=PaymentOrder\}
+sleep 10
+
+#end metadata API's
+
 aws lambda create-function --function-name fileUploadsql --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.payments.function.FileUploadFunctionAWS::invoke --description "Handler for SQL FileUploadFunctionAWS Impl" --timeout 120 --memory-size 1024 --publish --code S3Bucket="ms-payment-order-sql",S3Key=ms-payments-package-aws-DEV.0.0-SNAPSHOT.jar --environment Variables=\{DRIVER_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver,DIALECT=org.hibernate.dialect.SQLServer2012Dialect,HOST=${host},PORT=${port},DATABASE_NAME=payments,DB_USERNAME=${username},DB_PASSWORD=rootroot,DB_CONNECTION_URL=jdbc:sqlserver://${host}:${port}\;${DATABASE_NAME}=payments,temn_msf_security_authz_enabled=false,className_FileUpload=com.temenos.microservice.payments.function.FileUploadImpl,VALIDATE_PAYMENT_ORDER="false",class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,temn_msf_stream_vendor=kinesis,DATABASE_KEY=sql,temn_msf_storage_home=s3://paymentorder-file-bucket,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},temn_msf_tracer_enabled=false,JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},FILE_STORAGE_URL=/pdpTestAzureFun.properties,MAX_POOL_SIZE=5,MIN_POOL_SIZE=1,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST\}
 sleep 10
 
@@ -284,6 +297,28 @@ aws apigateway put-method --rest-api-id $restAPIId --resource-id $refcodeIdResou
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $refcodeIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-sql-reference-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
 
 
+# Create metadata resource and get id - /v1.0.0/meta
+export metadataResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "meta" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-sql-metadata-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Create metadata resource and get id - /v1.0.0/meta/tables
+export metadataTablesResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataResourceId --path-part "tables" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTablesResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTablesResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-sql-tables-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Create metadata resource and get id - /v1.0.0/meta/{table}
+export metadataTableIdResourceId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $metadataTablesResourceId --path-part "{table}" | python -c 'import json,sys;obj=json.load(sys.stdin); print (obj["id"])')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $metadataTableIdResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
+
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $metadataTableIdResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-sql-table-record-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
 ## ADDED GET
 export paymentorderId=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $ordersId --path-part "{paymentId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
 
@@ -353,4 +388,3 @@ echo $API_BASE_URL
 export rdsscriptpath="db/mssql/DDL.sql"
 java -cp db/lib/microservice-package-aws-resources-DEV.0.0-SNAPSHOT.jar -Drds_instance_host=${host} -Drds_instance_port=${port} -Drds_instance_dbname=paymentorderMSsql -Drds_instance_username=${username} -Drds_instance_password=rootroot -Drds_script_path=${rdsscriptpath} -Drds_database=MSSQL  com.temenos.microservice.aws.rds.query.execution.AwsRdsScriptExecution
 sleep 20
-
