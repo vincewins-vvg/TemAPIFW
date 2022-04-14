@@ -23,7 +23,7 @@ public class DuplicateRouteFinderTest {
     @Test
     public void checkDuplicateRoutes(){
         
-        context = new ClassPathXmlApplicationContext("classpath*:**/applicationContext.xml");
+        context = new ClassPathXmlApplicationContext("classpath*:**/applicationcontext.xml");
         // if there is a duplicate route this tet will throw an exception.
         assertNotNull(context);
     }
