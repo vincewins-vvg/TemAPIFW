@@ -97,8 +97,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
@@ -158,8 +158,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }} 
 {{- if .Values.tracing.enabled }}        
@@ -231,8 +231,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
@@ -316,8 +316,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
@@ -384,8 +384,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }} 
 {{- if .Values.tracing.enabled }}        
@@ -440,8 +440,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }}  
 {{- if .Values.tracing.enabled }}        
@@ -496,8 +496,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }} 
 {{- if .Values.tracing.enabled }}        
@@ -594,8 +594,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
   
 {{- end }}    
 {{- end }}
@@ -657,8 +657,8 @@ data:
 {{- if .Values.metrics.metricsDisabled | quote }}        
   temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
 {{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.publisher.host: {{ .Values.metrics.publisherHost | quote }}
-  temn.meter.publisher.port: {{ .Values.metrics.publisherPort | quote}}
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
 {{- end }}    
 {{- end }}
 {{- if .Values.tracing.enabled }}        
