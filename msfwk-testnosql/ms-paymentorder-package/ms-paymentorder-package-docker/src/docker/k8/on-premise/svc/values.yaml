@@ -188,8 +188,8 @@ logging:
   protocol: #TCP
   
 metrics:
-  #publisherPort: 9091 
-  #publisherHost: 192.168.228.193
+  #exporterPort: 9091 
+  #exporterHost: 192.168.228.193
   metricsDisabled: "true"
   
 tracing:
