@@ -55,7 +55,7 @@ public class FileHandlingITTest extends ITTest {
 
 	@AfterClass
 	public static void clearData() {
-		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ||  "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ||  "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ||  "POSTGRES".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			deleteAllRecords("ms_file_upload");
 		} else {
 			deletePaymentOrderRecord("ms_file_upload", "name", "eq", "string", "textresult.txt", "mimetype", "eq",
