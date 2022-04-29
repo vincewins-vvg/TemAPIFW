@@ -43,6 +43,7 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+        {{- if eq .Values.env.database.POSTGRESQL_CRED "Y" }}  
           env:
           # Use secret in real usage
           - name: POSTGRESQL_USERNAME
@@ -59,7 +60,8 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: clientsecret
-                key: CLIENT_SECRET 
+                key: CLIENT_SECRET
+        {{- end }}                
 
 ---
 apiVersion: v1
