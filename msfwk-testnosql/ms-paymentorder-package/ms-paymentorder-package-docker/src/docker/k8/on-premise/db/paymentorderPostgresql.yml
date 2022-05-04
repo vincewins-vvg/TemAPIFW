@@ -1,0 +1,30 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
+services:
+  postgresdb:
+    build:
+      context: ${POSTGRESQL_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${POSTGRESQL_DB_BASE_IMAGE}
+    image: ${POSTGRESQL_DB_IMAGE}
+    container_name: 'paymentorderppgdb'
+    command: postgres -c 'max_connections=200'
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: paymentorderusr
+      POSTGRES_PASSWORD: paymentorderpass
+      POSTGRES_DB: paymentorderdb           

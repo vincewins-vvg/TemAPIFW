@@ -82,3 +82,9 @@ helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=
 
 
 cd ../
+
+cd samples/streams/kafka
+
+kubectl apply -f kafka-topics.yaml
+
+kubectl apply -f schema-registry.yaml

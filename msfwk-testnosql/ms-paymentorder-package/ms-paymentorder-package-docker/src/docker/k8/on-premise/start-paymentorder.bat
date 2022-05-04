@@ -60,7 +60,16 @@ call build.bat build
 
 cd k8/on-premise/db
 
-call start-podb-scripts.bat
+IF EXIST "start-paymentorder-k8.bat" DEL start-paymentorder-k8.bat
+setLocal EnableDelayedExpansion
+For /f "tokens=* delims= " %%a in (start-podb-scripts.bat) do (
+Set str=%%a
+set str=!str:docker-compose=REM!
+echo !str!>>start-paymentorder-k8.bat
+)
+ENDLOCAL
+
+call start-paymentorder-k8.bat
 
 REM call start-opm.bat
 

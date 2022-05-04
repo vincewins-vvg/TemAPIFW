@@ -1,0 +1,53 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
+services:
+  db-service1:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo1'
+    ports:
+      - "30001:27017"
+  db-service2:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo2'
+    ports:
+      - "30002:27017" 
+  db-service3:
+    build:
+      context: ${MONGO_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    container_name: 'mongo3'
+    ports:
+      - "30003:27017"
+  mongosetup:
+    container_name: 'mongoinit'
+    build:
+      context: ${MONGO_INIT_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MONGO_DB_BASE_IMAGE}
+    depends_on:
+      - db-service1
+      - db-service2
+      - db-service3

@@ -35,13 +35,7 @@ cd paymentorder
 
 mkdir helm-chart
 
-mkdir samples
-
 cd helm-chart
-
-mkdir svc
-
-mkdir dbinit
 
 cd ../../
 
@@ -52,6 +46,14 @@ xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e /h /y /i
 xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e /h /y /i
 
 xcopy k8\on-premise\samples paymentorder\samples /s /e /h /y /i
+
+xcopy /s /e k8\on-premise\db paymentorder\samples\db
+  
+xcopy /s /e k8\on-premise\streams paymentorder\samples\streams  
+
+xcopy /s /e db\*.* paymentorder\samples\db\db\.
+
+copy .env paymentorder\samples\db\
 
 cd paymentorder
 
