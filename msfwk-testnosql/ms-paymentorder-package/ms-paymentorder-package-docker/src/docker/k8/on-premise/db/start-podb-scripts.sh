@@ -5,6 +5,7 @@
 
 #REM - Start knative services
 
+docker-compose -f paymentordermongo.yml build
 
 cd database/mongo
 kubectl apply -f create-mongo-ns.yaml

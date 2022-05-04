@@ -62,7 +62,18 @@ cd ../..
 call build-Postgresql.bat build
 
 cd k8/on-premise/db
-call start-postgresqldb-scripts.bat
+
+IF EXIST "start-postgresqldb-scripts-k8.bat" DEL start-postgresqldb-scripts-k8.bat
+setLocal EnableDelayedExpansion
+For /f "tokens=* delims= " %%a in (start-postgresqldb-scripts.bat) do (
+Set str=%%a
+set str=!str:docker-compose=REM!
+echo !str!>>start-postgresqldb-scripts-k8.bat
+)
+ENDLOCAL
+
+call start-postgresqldb-scripts-k8.bat
+
 
 cd ../
 

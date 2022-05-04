@@ -3,10 +3,6 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
-#@echo off
-#REM --------------------------------------------------------------
-#REM - Script to start Paymentorder Service
-#REM --------------------------------------------------------------
 
 #REM - Build paymentorder images
 
@@ -60,6 +56,10 @@ cd ../..
 ./build-Postgresql.sh create --build
 
 cd k8/on-premise/db
+
+export currentString="docker-compose"
+export replaceString="#docker-compose"
+sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-postgresqldb-scripts.sh
 
 ./start-postgresqldb-scripts.sh
 

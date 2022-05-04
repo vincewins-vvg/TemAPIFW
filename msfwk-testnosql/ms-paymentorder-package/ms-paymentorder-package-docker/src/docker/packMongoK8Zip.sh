@@ -51,7 +51,6 @@ cd paymentorder
 
 mkdir helm-chart
 
-mkdir samples
 
 cd ../
 
@@ -62,6 +61,15 @@ cp -r K8/on-premise/dbinit paymentorder/helm-chart/dbinit
 cp -r K8/on-premise/appinit paymentorder/helm-chart/appinit
 
 cp -r k8/on-premise/samples paymentorder/samples
+
+cp -r k8/on-premise/db/ paymentorder/samples/db
+
+cp -r k8/on-premise/streams paymentorder/samples/streams
+
+cp -r db/. paymentorder/samples/db/db/
+
+cp .env paymentorder/samples/db/
+
 
 cd paymentorder
 

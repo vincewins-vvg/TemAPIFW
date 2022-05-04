@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 @echo off
 REM --------------------------------------------------------------
 REM - Script to create paymentorder Helm Pack
@@ -39,12 +45,6 @@ mkdir helm-chart
 
 cd helm-chart
 
-mkdir samples
-
-mkdir svc
-
-mkdir dbinit
-
 cd ../../
 
 xcopy k8\on-premise\svc paymentorder\helm-chart\svc /s /e /h /y /i
@@ -54,6 +54,14 @@ xcopy k8\on-premise\dbinit paymentorder\helm-chart\dbinit /s /e /h /y /i
 xcopy k8\on-premise\appinit paymentorder\helm-chart\appinit /s /e /h /y /i
 
 xcopy k8\on-premise\samples paymentorder\samples /s /e /h /y /i
+
+xcopy /s /e k8\on-premise\db paymentorder\samples\db
+  
+xcopy /s /e k8\on-premise\streams paymentorder\samples\streams  
+
+xcopy /s /e db\*.* paymentorder\samples\db\db\.
+
+copy .env paymentorder\samples\db\
 
 cd paymentorder
 
