@@ -25,7 +25,7 @@ export JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=""
 # DB PROPERTIES
 export DATABASE_KEY=mongodb
 export DATABASE_NAME=ms_paymentorder 
-export MONGODB_CONNECTIONSTR="mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net"
+export MONGODB_CONNECTIONSTR=mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
 export DB_USERNAME=root
 export DB_PASSWORD=root
 
@@ -71,13 +71,13 @@ kubectl create namespace mongopaymentorder
 
 helm install appinit ./appinit -n mongopaymentorder --set env.appinit.databaseKey=$DATABASE_KEY --set env.appinit.databaseName=$DATABASE_NAME --set env.appinit.dbUserName=$DB_USERNAME --set env.appinit.dbPassword=$DB_PASSWORD --set env.appinit.dbautoupgrade="N"
 
-helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinitImagePullSecret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=$MONGODB_CONNECTIONSTR
+helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinitImagePullSecret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${MONGODB_CONNECTIONSTR}\"
 
 sleep 90
 
 kubectl create namespace paymentorder
 
-helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$DATABASE_KEY --set env.database.MONGODB_DBNAME=$DATABASE_NAME --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$JWT_TOKEN_ISSUER --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$JWT_TOKEN_PRINCIPAL_CLAIM --set pit.ID_TOKEN_SIGNED=$ID_TOKEN_SIGNED --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED --set pit.JWT_TOKEN_PUBLIC_KEY=$JWT_TOKEN_PUBLIC_KEY --set env.database.temn_msf_db_pass_encryption_key=$temn_msf_db_pass_encryption_key --set env.database.temn_msf_db_pass_encryption_algorithm=$temn_msf_db_pass_encryption_algorithm --set env.genericconfig.basepath=$gcbasepath --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository = $schemaregistry --set imagePullSecrets=$poImagePullSecret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafkabootstrapservers --set env.kafka.kafkaAliases=$kafkaAliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafkaHostName --set env.kafka.kafka0HostName=$kafka0HostName --set env.kafka.kafka1HostName=$kafka1HostName --set env.kafka.kafka2HostName=$kafka2HostName --set env.kafka.devdomainHostName=$devdomainHostName
+helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$DATABASE_KEY --set env.database.MONGODB_DBNAME=$DATABASE_NAME --set env.database.MONGODB_CONNECTIONSTR=\"${MONGODB_CONNECTIONSTR}\"  --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$JWT_TOKEN_ISSUER --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$JWT_TOKEN_PRINCIPAL_CLAIM --set pit.ID_TOKEN_SIGNED=$ID_TOKEN_SIGNED --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED --set pit.JWT_TOKEN_PUBLIC_KEY=$JWT_TOKEN_PUBLIC_KEY --set env.database.temn_msf_db_pass_encryption_key=$temn_msf_db_pass_encryption_key --set env.database.temn_msf_db_pass_encryption_algorithm=$temn_msf_db_pass_encryption_algorithm --set env.genericconfig.basepath=$gcbasepath --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistry --set imagePullSecrets=$poImagePullSecret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafkabootstrapservers --set env.kafka.kafkaAliases=$kafkaAliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafkaHostName --set env.kafka.kafka0HostName=$kafka0HostName --set env.kafka.kafka1HostName=$kafka1HostName --set env.kafka.kafka2HostName=$kafka2HostName --set env.kafka.devdomainHostName=$devdomainHostName
 
 
 cd ../
