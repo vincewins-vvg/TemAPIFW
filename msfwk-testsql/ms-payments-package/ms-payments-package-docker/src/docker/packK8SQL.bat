@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 @echo off
 REM --------------------------------------------------------------
 REM - Script to start Service
@@ -17,6 +23,7 @@ REM Copy the environment file for docker to resolve
 copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 
 REM Now run Docker Compose
+
 docker-compose -f paymentorder.yml %*
 
 docker-compose -f db-build.yml %*
@@ -31,8 +38,6 @@ mkdir samples
 
 cd helm-chart
 
-mkdir svc
-
 cd ../../
 
 xcopy k8\on-premise\svc payments\helm-chart\svc /s /e /h /y /i
@@ -42,6 +47,14 @@ xcopy k8\on-premise\dbinit payments\helm-chart\dbinit /s /e /h /y /i
 xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e /h /y /i
 
 xcopy k8\on-premise\samples payments\samples /s /e /h /y /i
+
+xcopy /s /e k8\on-premise\db payments\samples\db
+  
+xcopy /s /e k8\on-premise\streams payments\samples\streams  
+
+xcopy /s /e db\*.* payments\samples\db\db\.
+
+copy .env payments\samples\db\
 
 cd payments
 

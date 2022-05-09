@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 # --------------------------------------------------------------
 # - Script to start Service
 #--------------------------------------------------------------
@@ -31,8 +37,6 @@ cd payments
 
 mkdir helm-chart
 
-mkdir samples
-
 cd ../
 
 cp -r k8/on-premise/svc payments/helm-chart/svc
@@ -42,6 +46,14 @@ cp -r k8/on-premise/dbinit payments/helm-chart/dbinit
 cp -r k8/on-premise/appinit payments/helm-chart/appinit
 
 cp -r k8/on-premise/samples payments/samples
+
+xcopy /s /e k8\on-premise\db payments\samples\db
+  
+xcopy /s /e k8\on-premise\streams payments\samples\streams  
+
+xcopy /s /e db\*.* payments\samples\db\db\.
+
+copy .env payments\samples\db\
 
 cd payments
 

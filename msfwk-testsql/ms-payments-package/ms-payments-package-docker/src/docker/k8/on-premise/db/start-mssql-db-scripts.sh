@@ -1,4 +1,7 @@
 
+
+docker-compose -f paymentorder-mssql.yml build
+
 cd database/mssql
 
 kubectl apply -f namespace.yaml

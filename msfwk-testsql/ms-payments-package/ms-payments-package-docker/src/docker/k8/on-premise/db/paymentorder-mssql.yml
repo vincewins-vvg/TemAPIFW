@@ -1,0 +1,22 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+---
+version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
+services:
+  db-service:
+    build:
+      context: ${MSSQL_DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${MSSQL_DB_BASE_IMAGE}
+    image: ${MSSQL_DB_IMAGE}
+    shm_size: '1gb'
+    ports:
+      - "1433:1433" 
+    environment:
+      SA_PASSWORD: Rootroot@12345
+      ACCEPT_EULA: "Y"

@@ -64,7 +64,16 @@ call build.bat build
 
 cd k8/on-premise/db
 
-call start-sqldb-scripts.bat
+IF EXIST "start-sqldb-scripts-k8.bat" DEL start-sqldb-scripts-k8.bat
+setLocal EnableDelayedExpansion
+For /f "tokens=* delims= " %%a in (start-sqldb-scripts.bat) do (
+Set str=%%a
+set str=!str:docker-compose=REM!
+echo !str!>>start-sqldb-scripts-k8.bat
+)
+ENDLOCAL
+
+call start-sqldb-scripts-k8.bat
 
 cd ../
 
