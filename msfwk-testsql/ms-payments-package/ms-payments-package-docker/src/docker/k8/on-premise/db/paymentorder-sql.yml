@@ -1,0 +1,22 @@
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+---
+version: '3.6'
+networks:
+  default:
+    name: ${DEFAULT_NETWORK_NAME}
+services:
+  db-service:
+    build:
+      context: ${DB_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        DB_BASE_IMAGE: ${DB_BASE_IMAGE}
+    image: ${DB_IMAGE}
+    shm_size: '1gb'
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: payments

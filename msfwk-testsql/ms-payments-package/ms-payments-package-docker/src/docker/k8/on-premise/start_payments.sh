@@ -62,6 +62,9 @@ cd ../..
 ./build.sh build
 
 cd k8/on-premise/db
+export currentString="docker-compose"
+export replaceString="#docker-compose"
+sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-sqldb-scripts.sh
 
 ./start-sqldb-scripts.sh
 

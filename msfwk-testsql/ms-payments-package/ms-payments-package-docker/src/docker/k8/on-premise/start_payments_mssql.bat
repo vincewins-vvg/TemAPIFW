@@ -64,7 +64,16 @@ call build-mssql.bat build
 
 cd k8/on-premise/db
 
-call start-mssql-db-scripts.bat
+IF EXIST "start-mssql-db-scripts-k8.bat" DEL start-mssql-db-scripts-k8.bat
+setLocal EnableDelayedExpansion
+For /f "tokens=* delims= " %%a in (start-mssql-db-scripts.bat) do (
+Set str=%%a
+set str=!str:docker-compose=REM!
+echo !str!>>start-mssql-db-scripts-k8.bat
+)
+ENDLOCAL
+
+call start-mssql-db-scripts-k8.bat
 
 timeout 60 /nobreak > nul
 

@@ -1,4 +1,6 @@
 
+docker-compose -f paymentorder-sql.yml build
+
 cd database/mysql
 
 kubectl apply -f namespace.yaml
