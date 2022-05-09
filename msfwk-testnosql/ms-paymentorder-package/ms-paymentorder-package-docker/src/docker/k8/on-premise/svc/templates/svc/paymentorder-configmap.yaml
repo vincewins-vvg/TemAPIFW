@@ -19,6 +19,8 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  POSTGRESQL_USERNAME: {{ .Values.env.database.POSTGRESQL_USERNAME }}
+  POSTGRESQL_PASSWORD: {{ .Values.env.database.POSTGRESQL_PASSWORD }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }}   
   className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
