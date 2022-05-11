@@ -74,12 +74,9 @@ public class IngestorStepDefinition {
 	private String dbName;
 	private String vendorName;
 	Map<Integer, List<Attribute>> dataMap = null;
-	
+
 	Properties endpointProperties = new Properties();
 	ReusableTestDataFunctionRestAssured resuableObject = new ReusableTestDataFunctionRestAssured();
-	
-	
-	
 
 	@Given("^Set the test backgound for (HOLDINGS|CALL_BACK_REGISTRY|ENTITLEMENT|MARKETING_CATALOG|PARTY|PAYMENT_ORDER|SO|EVENT_STORE|FAMS|AMS|ADAPTER|MICROSERVICE) API$")
 	public void setTestBackground(String apiName) throws Exception {
@@ -192,74 +189,78 @@ public class IngestorStepDefinition {
 		}
 
 	}
-	
-	//Added by Sai for Keycloak Authorization for ingester
+
+	// Added by Sai for Keycloak Authorization for ingester
 	@When("^Send Data to Topic ([^\\s]+) from file ([^\\s]+) and authorizationFieldName ([^\\s]+) for Application ([^\\s]+)$")
-    public void sendDataToMentionedTopic(String topicName, String resourcePath, String authFieldName, String applicationName)
-                 throws Exception {
-        endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
-          if (topicName.equals("ms-paymentorder-inbox-topic") == true
-                       || topicName.equals("paymentorder-event-topic") == true
-                       || topicName.equals("ms-adapterservice-event-topic") == true
-                       || topicName.equals("ms-adapterservice-second-event-topic") == true
-					   || topicName.equals("virtualtable-inbox-topic") == true)
+	public void sendDataToMentionedTopic(String topicName, String resourcePath, String authFieldName,
+			String applicationName) throws Exception {
+		endpointProperties.load(new FileInputStream(new File("src/test/resources/end-point.properties")));
+		if (topicName.equals("ms-paymentorder-inbox-topic") == true
+				|| topicName.equals("paymentorder-event-topic") == true
+				|| topicName.equals("ms-adapterservice-event-topic") == true
+				|| topicName.equals("ms-adapterservice-second-event-topic") == true
+				|| topicName.equals("virtualtable-inbox-topic") == true)
 
-          {
-              
-            //To update KC token inside json payload Authorisation element for posting it to the topic if KC is enabled
-            if(Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty()==false)
-            {
-         //To update KC token inside json payload Authorisation element for posting it to the topic if KC is enabled
-       System.out.println("Keycloak Auth code which will be updated in payload for topic: "+endpointProperties.getProperty("keyCloak_Authorization").toString());
-       String keyCloakToken = endpointProperties.getProperty("keyCloak_Authorization").toString();
-       String jsonFilePath = "src/test/resources/"+resourcePath;
-       
-       String content = resuableObject.updateRequestFileDynamicValues(authFieldName, keyCloakToken, jsonFilePath);
-                System.out.println("topic payload content with Authorization code updated :" + content);
-                StreamProducer producer = ProducerFactory.createStreamProducer("itest",
-                Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
-                //String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));   
+		{
 
-                if (IngesterUtil.isCloudEvent()) {
-                    producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
-                } else {
-                    producer.batch().add(topicName, new String(content).getBytes());
-                }
+			// To update KC token inside json payload Authorisation element for posting it
+			// to the topic if KC is enabled
+			if (Environment.getEnvironmentVariable("KeycloakEnabled", "").isEmpty() == false) {
+				// To update KC token inside json payload Authorisation element for posting it
+				// to the topic if KC is enabled
+				System.out.println("Keycloak Auth code which will be updated in payload for topic: "
+						+ endpointProperties.getProperty("keyCloak_Authorization").toString());
+				String keyCloakToken = endpointProperties.getProperty("keyCloak_Authorization").toString();
+				String jsonFilePath = "src/test/resources/" + resourcePath;
 
-                try {
-                    producer.batch().send();
-                } catch (StreamProducerException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            else{
-                
-                StreamProducer producer = ProducerFactory.createStreamProducer("itest",
-                     Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
-             String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
-             System.out.println("content:" + content);
+				String content = resuableObject.updateRequestFileDynamicValues(authFieldName, keyCloakToken,
+						jsonFilePath);
+				System.out.println("topic payload content with Authorization code updated :" + content);
+				StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+						Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+				// String content = new
+				// String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
 
-             if (IngesterUtil.isCloudEvent()) {
-                 producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
-             } else {
-                 producer.batch().add(topicName, new String(content).getBytes());
-             }
+				if (IngesterUtil.isCloudEvent()) {
+					producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+				} else {
+					producer.batch().add(topicName, new String(content).getBytes());
+				}
 
-             try {
-                 producer.batch().send();
-             } catch (StreamProducerException e) {
-                 e.printStackTrace();
-             }
-            }
-            
-            }
-          
-          else {
-         throw new Exception("Topic name: " + topicName + " is incorrect");
-     }
-    
-    }
+				try {
+					producer.batch().send();
+				} catch (StreamProducerException e) {
+					e.printStackTrace();
+				}
+			}
+
+			else {
+
+				StreamProducer producer = ProducerFactory.createStreamProducer("itest",
+						Environment.getEnvironmentVariable("temn.msf.stream.vendor", "kafka"));
+				String content = new String(Files.readAllBytes(Paths.get("src/test/resources/" + resourcePath)));
+				System.out.println("content:" + content);
+
+				if (IngesterUtil.isCloudEvent()) {
+					producer.batch().add(topicName, IngesterUtil.packageCloudEvent(new String(content).getBytes()));
+				} else {
+					producer.batch().add(topicName, new String(content).getBytes());
+				}
+
+				try {
+					producer.batch().send();
+				} catch (StreamProducerException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		else {
+			throw new Exception("Topic name: " + topicName + " is incorrect");
+		}
+
+	}
 
 	// To check json data content in topic
 	@Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+)$")
@@ -376,7 +377,7 @@ public class IngestorStepDefinition {
 	@Then("^Set the following data criteria$")
 	public void setDataCriteria(DataTable dataTable) throws Exception {
 		dataCriterions = new ArrayList<>();
-		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", ""); 
+		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
 		List<Map<String, String>> tableValues = dataTable.asMaps(String.class, String.class);
 		tableValues.forEach(tableValue -> {
 			if (tableValue.get(DataTablesColumnNames.TEST_CASE_ID.getName()).equals(testCase.getTestCaseID())) {
@@ -398,10 +399,10 @@ public class IngestorStepDefinition {
 										tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 					}
 				} else {
-					
+
 					if ("ORACLE".equalsIgnoreCase(vendorName)) {
 						String columnNameValue = tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName());
-						if ("level".equalsIgnoreCase(columnNameValue))  {
+						if ("level".equalsIgnoreCase(columnNameValue)) {
 							columnNameValue = "\"" + columnNameValue + "\"";
 						}
 						dataCriterions.add(populateCriterian(columnNameValue,
@@ -409,11 +410,12 @@ public class IngestorStepDefinition {
 								tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
 								tableValue.get(DataTablesColumnNames.COLUMN_VALUE.getName())));
 					} else {
-						dataCriterions.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
-								tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
-								tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
-								MSGenericActionStepDefs.DbcolumnValues
-										.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
+						dataCriterions
+								.add(populateCriterian(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_OPERATOR.getName()),
+										tableValue.get(DataTablesColumnNames.COLUMN_DATATYPE.getName()),
+										MSGenericActionStepDefs.DbcolumnValues
+												.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName()))));
 						// System.out.println(MSGenericActionStepDefs.DbcolumnValues.get(tableValue.get(DataTablesColumnNames.COLUMN_NAME.getName())));
 					}
 				}
@@ -766,10 +768,11 @@ public class IngestorStepDefinition {
 	// To check entries in DB table and also the no of rows for the mentioned
 	// criteria/condition
 	@Then("^Validate the below details from the db table ([^\\s]+) and check no of record is (.*)$")
-	public void validateDetailsFromDBAndRecordCount(String tableName, int recordCount, DataTable dataTable)
+	public void validateDetailsFromDBAndRecordCount(String name, int recordCount, DataTable dataTable)
 			throws Exception {
 		dbName = Environment.getEnvironmentVariable("DB_NAME", "");
 		vendorName = Environment.getEnvironmentVariable("DB_VENDOR", "");
+		String tableName = isContainsQuotes(name);
 		dataMap = RetryUtil.getWithRetry(300, () -> {
 			daoFacade = DaoFactory.getInstance();
 			daoFacade.openConnection();
@@ -805,6 +808,17 @@ public class IngestorStepDefinition {
 				});
 			}
 		});
+	}
+
+	/**
+	 * Method to check whether table name has special character("")
+	 * 
+	 * @param tableName
+	 * @return tableName
+	 */
+	private String isContainsQuotes(String tableName) {
+		return "MONGODB".equals(vendorName) && tableName.charAt(0) == '\"'
+				&& tableName.charAt(tableName.length() - 1) == '\"' ? tableName.replace("\"", "") : tableName;
 	}
 
 	// To check entries in DB table and also the no of rows for the mentioned
