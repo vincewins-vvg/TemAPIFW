@@ -1,4 +1,4 @@
-package com.temenos.microservice.payments.ingester.test;
+package com.temenos.microservice.payments.ingester.multipart.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
