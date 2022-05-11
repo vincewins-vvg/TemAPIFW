@@ -55,45 +55,45 @@ Scenario: Send CloudEvent_data to topic and validate the businessAttributes
 	Then MS response code should be 200 
 	And check full response with expected json content from file path "src/test/resources/static-response/BusinessAttributes_CloudEvent.json" 
 	
-Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED 
-#sequenceNo = 2 in payload
+#Scenario: To validate if sequenceNo is accepted and status is changed to UPDATED 
+##sequenceNo = 2 in payload
 
-	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test2.json and authorizationFieldName extension-mscontext.authorization for Application PAYMENT_ORDER  
+#	When Send Data to Topic ms-paymentorder-inbox-topic from file avro/ingester/BusinessAttributesValidation_Test2.json and authorizationFieldName extension-mscontext.authorization for Application PAYMENT_ORDER  
 	
-	And set timeout session for 30 seconds 
+#	And set timeout session for 30 seconds 
 	
-	Given Set the Testcase id MS-Test-PO-CloudEvent-002 for company GB0010001 
+#	Given Set the Testcase id MS-Test-PO-CloudEvent-002 for company GB0010001 
 	
-	#Check the entries in Inbox to validate if sequenceNo entry has been accepted
-	Then Set the following data criteria 
-		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
-		| MS-Test-PO-CloudEvent-002       | eventId    | eq       | string   | f5798d48-4d89-4e0c-b341-0370d18e47b7 |
-		| MS-Test-PO-CloudEvent-002       | eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
+#	#Check the entries in Inbox to validate if sequenceNo entry has been accepted
+#	Then Set the following data criteria 
+#		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
+#		| MS-Test-PO-CloudEvent-002       | eventId    | eq       | string   | f5798d48-4d89-4e0c-b341-0370d18e47b7 |
+#		| MS-Test-PO-CloudEvent-002       | eventType    | eq       | string   | ms-paymentorder.UpdatePaymentOrder |
 
-	And set timeout session for 30 seconds
-	And set timeout session for 30 seconds
-	And set timeout session for 30 seconds
-	And set timeout session for 30 seconds
+#	And set timeout session for 30 seconds
+#	And set timeout session for 30 seconds
+#	And set timeout session for 30 seconds
+#	And set timeout session for 30 seconds
 
-	And Validate the below details from the db table ms_inbox_events and check no of record is 1 
+#	And Validate the below details from the db table ms_inbox_events and check no of record is 1 
 	
-		| TestCaseID                    | ColumnName | ColumnValue |
-		| MS-Test-PO-CloudEvent-002       | status     | PROCESSED |
-		| MS-Test-PO-CloudEvent-002       | businessKey     | PO123 |
-		| MS-Test-PO-CloudEvent-002       | sequenceNo    | 2 |
+#		| TestCaseID                    | ColumnName | ColumnValue |
+#		| MS-Test-PO-CloudEvent-002       | status     | PROCESSED |
+#		| MS-Test-PO-CloudEvent-002       | businessKey     | PO123 |
+#		| MS-Test-PO-CloudEvent-002       | sequenceNo    | 2 |
 		
-	And set timeout session for 30 seconds 
+#	And set timeout session for 30 seconds 
 	
-	#Check the entries in ms_payment_order table to validate if status has been updated
-	Then Set the following data criteria 
-		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
-		| MS-Test-PO-CloudEvent-002       | paymentOrderId    | eq       | string   | PO~419967~7546~USD~124 |
+#	#Check the entries in ms_payment_order table to validate if status has been updated
+#	Then Set the following data criteria 
+#		| TestCaseID                    | ColumnName | Operator | DataType | ColumnValue |
+#		| MS-Test-PO-CloudEvent-002       | paymentOrderId    | eq       | string   | PO~419967~7546~USD~124 |
 		
-	And Validate the below details from the db table ms_payment_order and check no of record is 1 
+#	And Validate the below details from the db table ms_payment_order and check no of record is 1 
 	
-		| TestCaseID                    | ColumnName | ColumnValue |
-		| MS-Test-PO-CloudEvent-002       | status     | UPDATED |
-		| MS-Test-PO-CloudEvent-002       | businessKey     | PO123 |
+#		| TestCaseID                    | ColumnName | ColumnValue |
+#		| MS-Test-PO-CloudEvent-002       | status     | UPDATED |
+#		| MS-Test-PO-CloudEvent-002       | businessKey     | PO123 |
 		
 		
 Scenario: To validate Out of Sequence when sequence is not followed 
