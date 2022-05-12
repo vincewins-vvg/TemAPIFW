@@ -1,0 +1,60 @@
+{
+  "type" : "record",
+  "name" : "ErrorEvent",
+  "fields" : [ {
+    "name" : "eventId",
+    "type" : "string",
+    "doc" : "Event identifier"
+  }, {
+    "name" : "eventSize",
+    "type" : [ "null", "int" ],
+    "doc" : "Number of entity events within an accumulated event",
+    "default" : null
+  }, {
+    "name" : "eventIndex",
+    "type" : [ "null", "int" ],
+    "doc" : "Index of entity event within an accumulated event",
+    "default" : null
+  }, {
+    "name" : "failureTime",
+    "type" : "long",
+    "doc" : "Time when failure took place"
+  }, {
+    "name" : "errorSource",
+    "type" : "string",
+    "doc" : "Source topic of the error message"
+  }, {
+    "name" : "errorType",
+    "type" : {
+      "type" : "enum",
+      "name" : "ErrorType",
+      "symbols" : [ "SCHEMA_MISSING", "SCHEMA_INVALID", "EVENT_MISSING", "EVENT_CORRUPT", "ENTITY_EVENT_MISSING", "ENTITY_EVENT_CORRUPT", "INCOMING_EVENT_TRANSFORMATION"]
+    },
+    "doc" : "Error type"
+  }, {
+    "name" : "entityName",
+    "type" : [ "null", "string" ],
+    "doc" : "Entity name",
+    "default" : null
+  }, {
+    "name" : "entityId",
+    "type" : [ "null", "string" ],
+    "doc" : "Entity identifier",
+    "default" : null
+  }, {
+    "name" : "description",
+    "type" : [ "null", "string" ],
+    "doc" : "Error description",
+    "default" : null
+  }, {
+    "name" : "payload",
+    "type" : "bytes",
+    "doc" : "Event payload in byte array"
+  }, {
+    "name": "metadata",
+    "type": [ "null", { "type": "map", "values": "string", "avro.java.string": "String" } ],
+    "doc" : "Metadata",
+    "default": null
+  } ],
+  "namespace" : "com.temenos.des.event"
+}
