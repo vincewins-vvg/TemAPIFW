@@ -58,7 +58,9 @@ cd paymentorder
 
 mkdir helm-chart
 
-cd ../
+cd helm-chart
+
+cd ../../
 
 cp -r K8/on-premise/svc paymentorder/helm-chart/svc
 
