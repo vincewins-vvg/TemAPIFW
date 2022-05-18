@@ -293,6 +293,25 @@ public class IngestorStepDefinition {
 				!streamTopicResult.isEmpty());
 	}
 
+    // To check json data content in topic with counter
+	// Added by Mukila
+	@Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is present in topic ([^\\s]+) with count should be equal to (.*)$")
+	public void checkJSONInTopicWithCount(String eventId, String eventType, String topicName, int count) throws Exception {
+
+		Map<String, JSONObject> streamTopicResult =ITtestStreamTopicReader.getTopicValueByEventIdWithCounter(topicName, eventId, eventType, count);
+		assertTrue("There are more than " +count + " duplicate entries for the Event Id:" + eventId + " , Event Type: " + eventType + " combination in the topic: " + topicName, !streamTopicResult.isEmpty());
+	}
+	
+	// To check json data content not in topic
+	// Added by Mukila
+	@Then("^check if json data with event id ([^\\s]+) and type ([^\\s]+) is not present in topic ([^\\s]+)$")
+	public void checkJSONNotInTopic(String eventId, String eventType, String topicName) throws Exception {
+
+		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandType(topicName, eventId, eventType);
+		assertTrue("There is no entry for the Event Id:" + eventId + " , Event Type: " + eventType
+					+ " combination in the topic: " + topicName, streamTopicResult.isEmpty());
+		}
+		
 	// To check json data content in topic(added by Sai Kushaal)
 	@Then("^check if json data with correlation id ([^\\s]+) and cloudeventtype ([^\\s]+) is present in topic ([^\\s]+)$")
 	public void checkJSONInTopicCloudEvent(String correlationId, String type, String topicName) throws Exception {
