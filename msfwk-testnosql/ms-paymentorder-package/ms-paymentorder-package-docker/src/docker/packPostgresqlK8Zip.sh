@@ -62,11 +62,11 @@ cd helm-chart
 
 cd ../../
 
-cp -r K8/on-premise/svc paymentorder/helm-chart/svc
+cp -r k8/on-premise/svc paymentorder/helm-chart/svc
 
-cp -r K8/on-premise/dbinit paymentorder/helm-chart/dbinit
+cp -r k8/on-premise/dbinit paymentorder/helm-chart/dbinit
 
-cp -r K8/on-premise/appinit paymentorder/helm-chart/appinit
+cp -r k8/on-premise/appinit paymentorder/helm-chart/appinit
 
 cp -r k8/on-premise/samples paymentorder/samples
 
