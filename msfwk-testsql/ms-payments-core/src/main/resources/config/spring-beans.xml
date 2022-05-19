@@ -79,13 +79,14 @@
 		<property name="jpaVendorAdapter"
 			ref="hibernateJpaVendorAdapter">
 		</property>
-		<property name="packagesToScan">
-			<array>
-				<value>com.temenos.microservice.framework.core.*</value>
-				<value>com.temenos.microservice.payments.dao</value>
-				<value>com.temenos.microservice.payments.entity</value>
-			</array>
+		
+		<property name="mappingResources">
+			<list>
+				<value>/orm/ms-framework-orm.xml</value>
+				<value>/config/ms-payments-orm.xml</value>
+			</list>
 		</property>
+		
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">#{dbProperties['dialect']}</prop>
