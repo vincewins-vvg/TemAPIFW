@@ -118,7 +118,7 @@ Then check if json data with event id 148313a7-ff3a-45d3-b34b-169adbd61161-error
 Then check if json data with event id 148313a7-ff3a-45d3-b34b-169adbd61161-error5 and type ms-paymentorder.CreateNewPaymentOrder.SequenceCompleted is present in topic ms-paymentorder-inbox-error-topic with count should be equal to 1
 
 #checking valid data record not to present in inbox error topic
-Then check if json data with event id 9dc99a2c-c3ee-4393-8e58-c4ef920ef0005-valid1 and type ms-paymentorder.CreateNewPaymentOrder is not present in topic ms-paymentorder-inbox-error-topic
+#Then check if json data with event id 9dc99a2c-c3ee-4393-8e58-c4ef920ef0005-valid1 and type ms-paymentorder.CreateNewPaymentOrder is not present in topic ms-paymentorder-inbox-error-topic
 
 
 
