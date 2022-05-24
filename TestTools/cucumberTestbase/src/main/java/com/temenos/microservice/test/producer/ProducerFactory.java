@@ -33,6 +33,24 @@ public class ProducerFactory {
 						"org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://holdingkafka.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=hE42vEvTI4Uqc602lYp+QD26rwNrScUTihA8mOUb/mo=\";"));
 			}
 
+			
+			if ("true".equals(Environment
+					.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SSL_ENABLED.getName(), "false"))) {
+				
+				props.put("ssl.keystore.location", Environment.getEnvironmentVariable(
+						IngesterConfigProperty.STREAM_KAFKA_SSL_KEYSTORE_LOCATION.getName(), ""));
+				props.put("ssl.keystore.password", Environment
+						.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SSL_KEYSTORE_PASSWORD.getName(), ""));
+				props.put("ssl.key.password", Environment
+						.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SSL_KEY_PASSWORD.getName(), ""));
+				props.put("ssl.truststore.location", Environment
+						.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SSL_TRUSTSTORE_LOCATION.getName(), ""));
+				props.put("ssl.truststore.password", Environment
+						.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SSL_TRUSTSTORE_PASSWORD.getName(), ""));
+				props.put("security.protocol", Environment
+						.getEnvironmentVariable(IngesterConfigProperty.STREAM_KAFKA_SECURITY_PROTOCOL.getName(), "SSL"));
+			}
+			
 			props.put("acks", "all");
 			props.put("enable.idempotence", true);
 			props.put("key.serializer", StringSerializer.class);
