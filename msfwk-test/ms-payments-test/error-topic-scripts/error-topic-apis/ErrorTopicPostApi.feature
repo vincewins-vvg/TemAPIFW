@@ -77,7 +77,7 @@ Feature: ErrorTopicPostApi
   
   Scenario: To validate the error top post api with invalid eventid
   
-    Given create a new MS request with code using Restassured arguments "GET_PAYMENTODER_AUTH_CODE"
+    Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDER_AUTH_CODE"
     Given MS request URI is "v1.0.0/system/ingester/errorDetail/services" 
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/errorpostapi.json"
     And MS query parameter for Azure env is set to value ""
