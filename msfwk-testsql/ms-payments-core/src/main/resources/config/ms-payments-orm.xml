@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm    
+http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+		
+<package>com.temenos.microservice.payments.entity</package>   
+<entity class="com.temenos.microservice.payments.entity.Balance"/>  
+<entity class="com.temenos.microservice.payments.entity.Card"/>
+<entity class="com.temenos.microservice.payments.entity.DocumentDetails"/>
+<entity class="com.temenos.microservice.payments.entity.Employee"/>
+<entity class="com.temenos.microservice.payments.entity.ExchangeRate"/>
+<entity class="com.temenos.microservice.payments.entity.FileDetails"/>
+<entity class="com.temenos.microservice.payments.entity.PayeeDetails"/>
+<entity class="com.temenos.microservice.payments.entity.PaymentMethod"/>
+<entity class="com.temenos.microservice.payments.entity.PaymentOrder"/> 
+<entity class="com.temenos.microservice.payments.entity.PaymentTransaction"/> 
+<entity class="com.temenos.microservice.payments.entity.Transaction"/>
+
+</entity-mappings>
