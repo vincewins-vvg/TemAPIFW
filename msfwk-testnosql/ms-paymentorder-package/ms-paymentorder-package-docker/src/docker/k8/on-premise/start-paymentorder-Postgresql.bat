@@ -83,6 +83,10 @@ call start-postgresqldb-scripts-k8.bat
 
 cd ../
 
+kubectl create namespace postgresqlpaymentorder
+
+helm install dbinit ./dbinit -n postgresqlpaymentorder --set image.mongoinit.repository=%dbinitImage% --set env.mongoinit.migration=../migration --set imagePullSecrets=%dbinitImagePullSecret% --set image.tag=%tag%
+
 kubectl create namespace paymentorder
 
 helm install ponosql ./svc --set env.database.POSTGRESQL_CONNECTIONURL=%POSTGRESQL_CONNECTIONURL% --set env.database.MONGODB_DBNAME=%DB_NAME% --set env.database.DATABASE_KEY=%DATABASE_KEY% --set pit.JWT_TOKEN_ISSUER=%JWT_TOKEN_ISSUER% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%JWT_TOKEN_PRINCIPAL_CLAIM% --set pit.ID_TOKEN_SIGNED=%ID_TOKEN_SIGNED% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED% --set pit.JWT_TOKEN_PUBLIC_KEY=%JWT_TOKEN_PUBLIC_KEY% --set env.database.temn_msf_db_pass_encryption_key=%temn_msf_db_pass_encryption_key% --set env.database.temn_msf_db_pass_encryption_algorithm=%temn_msf_db_pass_encryption_algorithm% --set env.genericconfig.basepath=%gcbasepath% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.paymentorderinboxoutbox.repository=%inboxoutboxImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistry% --set imagePullSecrets=%poImagePullSecret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafkabootstrapservers% --set env.kafka.kafkaAliases=%kafkaAliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafkaHostName% --set env.kafka.kafka0HostName=%kafka0HostName% --set env.kafka.kafka1HostName=%kafka1HostName% --set env.kafka.kafka2HostName=%kafka2HostName% --set env.kafka.devdomainHostName=%devdomainHostName% --set env.database.POSTGRESQL_USERNAME=%POSTGRESQL_USERNAME% --set env.database.POSTGRESQL_PASSWORD=%POSTGRESQL_PASSWORD% --set env.database.POSTGRESQL_CRED=%POSTGRESQL_CRED%  

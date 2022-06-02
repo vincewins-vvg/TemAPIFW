@@ -54,6 +54,8 @@ SET kafka1HostName=""
 SET kafka2HostName=""
 SET devdomainHostName=""
 
+SET MONGODB_CONNECTIONSTR="mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017"
+
 cd ../..
 
 call build.bat build
@@ -76,6 +78,10 @@ REM call start-opm.bat
 REM call start-mongo-operator.bat
 
 cd ../
+
+kubectl create ns mongopaymentorder
+
+helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=%dbinitImage% --set env.mongoinit.migration=../migration --set imagePullSecrets=%dbinitImagePullSecret% --set image.tag=%tag% --set env.mongoinit.dbConnectionUrl=%MONGODB_CONNECTIONSTR%
 
 kubectl create namespace paymentorder
 

@@ -54,6 +54,13 @@ export kafka1HostName=""
 export kafka2HostName=""
 export devdomainHostName=""
 
+export MONGODB_CONNECTIONSTR="mongodb+srv://user01:user01@mongodb01.jx2tl.mongodb.net/test"
+
+# IMAGE PROPERTIES
+export tag="DEV"
+export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
+export dbinitImagePullSecret=""
+
 cd ../..
 
 ./build.sh build
@@ -69,6 +76,10 @@ cd k8/on-premise/
 export currentString="docker-compose"
 export replaceString="#docker-compose"
 sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-podb-scripts.sh
+
+kubectl create namespace mongopaymentorder
+
+helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinitImagePullSecret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${MONGODB_CONNECTIONSTR}\"
 
 kubectl create namespace paymentorder
 
