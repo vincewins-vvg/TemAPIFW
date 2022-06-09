@@ -68,9 +68,11 @@ export database_Name=ms_paymentorder
 export db_Connection_Url=mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
 # Name			   : db_Username
 # Description      : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
+# Default Value    : root
 export db_Username=root
 # Name			   : db_password
 # Description      : To interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
+# Default Value    : root
 export db_Password=root
 
 # -------------------------------------------------------------
@@ -95,8 +97,8 @@ export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
 
 # Name			: po_Image_Pull_Secret,dbinit_Image_Pull_Secret
 # Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. adapter_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
-export poImagePullSecret=""
-export dbinitImagePullSecret=""
+export po_Image_Pull_Secret=""
+export dbinit_Image_Pull_Secret=""
 
 # Name			: encryption_Key,encryption_Algorithm
 # Description 	: For encrypting the plain text's, need some inputs i.e., Password and an Algorithm which is used to encrypt/decrypt an given input. These two values are mandatory to encrypt the plain text.
@@ -152,7 +154,7 @@ sleep 90
 
 kubectl create namespace paymentorder
 
-helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$database_Key --set env.database.MONGODB_DBNAME=$database_Name --set env.database.MONGODB_CONNECTIONSTR=\"${db_Connection_Url}\"  --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name
+helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$database_Key --set env.database.MONGODB_DBNAME=$database_Name --set env.database.MONGODB_CONNECTIONSTR=\"${db_Connection_Url}\"  --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name
 
 
 cd ../

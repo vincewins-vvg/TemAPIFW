@@ -39,7 +39,7 @@ REM Default Value   : sql
 SET database_Key=sql
 REM Name			: db_Host
 REM Description		: Specifies the host name of the sql server.
-REM Default value   : paymentorder-db-service-np
+REM Default value   : paymentorder-db-service
 SET db_Host=paymentorder-db-service
 REM Name			: database_Name
 REM Description		: Specify the name of the database used in sql server.
@@ -49,17 +49,17 @@ REM Name			 : db_Username
 REM Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
 REM Default value    : sa
 SET db_Username=sa
-REM Name			 : db_password
+REM Name			 : db_Password
 REM Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
-REM Default value    : password
-SET db_password=Rootroot@12345
+REM Default value    : Rootroot@12345
+SET db_Password=Rootroot@12345
 REM Name 			: driver_Name
 REM Description		: Driver provides Java database connectivity from any Java application, application server, or Java-enabled applet.The MySQL JDBC Driver enables users to connect with live MySQL data, directly from any applications that support JDBC connectivity
-REM Default Value 	: com.mysql.jdbc.Driver
+REM Default Value 	: com.microsoft.sqlserver.jdbc.SQLServerDriver
 SET driver_Name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 REM Name 			: dialect
 REM Description		: For connecting any hibernate application with the database, it is required to provide the configuration of MYSQL dialect.
-REM Default Value	: org.hibernate.dialect.MySQL5InnoDBDialect
+REM Default Value	: org.hibernate.dialect.SQLServer2012Dialect
 SET dialect=org.hibernate.dialect.SQLServer2012Dialect
 REM Name			: db_Connection_Url
 REM Description		: The general form of the connection URL is
@@ -173,7 +173,7 @@ timeout 60 /nobreak > nul
 cd ../
 
 
-helm install svc ./svc -n payments --set env.database.host=%db_Host% --set env.database.db_username=%db_Username% --set env.database.db_password=%db_Password% --set env.database.database_key=%database_Key% --set env.database.database_name=%database_Name% --set env.database.driver_name=%driver_Name% --set env.database.dialect=%dialect% --set env.database.db_connection_url=%db_Connection_Url% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.max_pool_size=%max_Pool_Size% --set env.database.min_pool_size=%min_Pool_Size% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.schema_registry_url=%schema_Registry_Url% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.scheduler.time=%scheduler_Time% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.paymentseventdelivery.repository=%inboxoutboxImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%es_Image_Pull_Secret%
+helm install payments ./svc -n payments --set env.database.host=%db_Host% --set env.database.db_username=%db_Username% --set env.database.db_password=%db_Password% --set env.database.DATABASE_KEY=%database_Key% --set env.database.database_name=%database_Name% --set env.database.driver_name=%driver_Name% --set env.database.dialect=%dialect% --set env.database.db_connection_url=%db_Connection_Url% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.max_pool_size=%max_Pool_Size% --set env.database.min_pool_size=%min_Pool_Size% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.schema_registry_url=%schema_Registry_Url% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.scheduler.time=%scheduler_Time% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.paymentseventdelivery.repository=%inboxoutboxImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%es_Image_Pull_Secret%
 
 cd streams/kafka
 

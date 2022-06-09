@@ -38,7 +38,7 @@ export Jwt_Token_Public_Key_Cert_Encoded=""
 export database_Key=sql
 # Name			  : db_Host
 # Description	  : Specifies the host name of the sql server.
-# Default value   : paymentorder-db-service-np
+# Default value   : paymentorder-db-service
 export db_Host=paymentorder-db-service
 # Name			  : database_Name
 # Description	  : Specify the name of the database used in sql server.
@@ -46,19 +46,19 @@ export db_Host=paymentorder-db-service
 export database_Name=payments
 #Name			  : db_Username
 #Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
-#Default value    : root
+#Default value    : sa
 export db_Username=sa
 #Name			  : db_Password
 #Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
-#Default value    : password
+#Default value    : Rootroot@12345
 export db_Password=Rootroot@12345
 # Name 			  : driver_Name
 # Description	  : Driver provides Java database connectivity from any Java application, application server, or Java-enabled applet.The MySQL JDBC Driver enables users to connect with live MySQL data, directly from any applications that support JDBC connectivity
-# Default Value   : com.mysql.jdbc.Driver
+# Default Value   : com.microsoft.sqlserver.jdbc.SQLServerDriver
 export driver_Name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 # Name 			  : dialect
 # Description	  : For connecting any hibernate application with the database, it is required to provide the configuration of MYSQL dialect.
-# Default Value	  : org.hibernate.dialect.MySQL5InnoDBDialect
+# Default Value	  : org.hibernate.dialect.SQLServer2012Dialect
 export dialect=org.hibernate.dialect.SQLServer2012Dialect
 # Name			  : db_Connection_Url
 # Description	  : The general form of the connection URL is
@@ -160,7 +160,7 @@ sleep 60
 
 kubectl create namespace payments
 
-helm install svc ./svc -n payments --set env.database.host=$db_Host --set env.database.db_username=$db_Username --set env.database.db_password=$db_Password --set env.database.database_key=$database_Key --set env.database.database_name=$database_Name --set env.database.driver_name=$driver_Name --set env.database.dialect=$dialect --set env.database.db_connection_url=$db_Connection_Url --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.max_pool_size=$max_Pool_Size --set env.database.min_pool_size=$min_Pool_Size --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.schema_registry_url=$schema_Registry_Url --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.scheduler.time=$scheduler_Time --set image.tag=$tag --set image.paymentsapi.repository=$apiImage --set image.paymentsingester.repository=$ingesterImage --set image.paymentseventdelivery.repository=$inboxoutboxImage --set image.schemaregistry.repository=$schemaregistryImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.mysql.repository=$mysqlImage --set imagePullSecrets=$es_Image_Pull_Secret
+helm install payments ./svc -n payments --set env.database.host=$db_Host --set env.database.db_username=$db_Username --set env.database.db_password=$db_Password --set env.database.DATABASE_KEY=$database_Key --set env.database.database_name=$database_Name --set env.database.driver_name=$driver_Name --set env.database.dialect=$dialect --set env.database.db_connection_url=$db_Connection_Url --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.max_pool_size=$max_Pool_Size --set env.database.min_pool_size=$min_Pool_Size --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.schema_registry_url=$schema_Registry_Url --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.scheduler.time=$scheduler_Time --set image.tag=$tag --set image.paymentsapi.repository=$apiImage --set image.paymentsingester.repository=$ingesterImage --set image.paymentseventdelivery.repository=$inboxoutboxImage --set image.schemaregistry.repository=$schemaregistryImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.mysql.repository=$mysqlImage --set imagePullSecrets=$es_Image_Pull_Secret
 
 
 cd streams/kafka

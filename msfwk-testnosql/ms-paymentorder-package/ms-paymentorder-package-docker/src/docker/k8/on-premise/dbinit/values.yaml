@@ -7,25 +7,64 @@
 # Default values for dbInitialisation.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+#Name        : ReplicaCount
+#Description : ReplicaCount is used to specify the number of Pod instances running in a cluster at any given time to prevent users from losing access to their application when a Pod fails or is inaccessible.
+#Default Value: 1
 replicaCount: 1
-
+#Name        : image
+#Description : If Images are  pushed to external repositories, the name of repositories, image and tag should be mentioned here. 
+#Example     : Consider our external repository is "acr.azurecr.io" and tag is "21.0.0", then image references would be as follows:
 image:
   mongoinit:
     repository: dev.local/temenos/ms-paymentorder-dbscripts
+#Name       : pullPolicy
+  #When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+   # 1. If imagePullPolicy is set to Always, Kubernetes will always pull the image from the Repository. 
+   # 2. With IfNotPresent, Kubernetes will only pull the image when it does not already exist on the node.
+   # 3. While with imagePullPolicy set to Never, Kubernetes will never pull the image. 
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+#Name       : tag
+#Description : Overrides the image tag whose default is the chart appVersion.
   tag: DEV
 
-# Set the pull secret name here
-imagePullSecrets: 
+# Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image.You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file
 
+# kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'
+
+# refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A
+
+# imagePullSecrets Specifies the <secret-name>, that will be used in the manifest file to refer to the already created secret. 
+imagePullSecrets:
+#Name       : restartPolicy
+#Description : The spec of a Pod has a restartPolicy field with possible values Always, OnFailure, and Never.If you'd like your container to be killed and restarted if a probe fails, then specify a liveness/readiness probe, and specify a restartPolicy of Always or OnFailure.
+#Default Values : OnFailure
+#Possible Values : Always | OnFailure
 restartPolicy: OnFailure
-
+#Name             : env
+#Description      : Environmental variables are specified here
 env:
+#Name             : mongoinit
+#Description      : database related parameters values are specified here.
   mongoinit:
+ # specify the name of the database
     databaseKey: mongodb
+  # specify the name of the database used in sql database server.
     databaseName: ms_paymentorder
+   # Name			  : dbConnectionUrl
+# Description	  : The general form of the connection URL is
+    # The general form of the connection URL is
+    #  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
+    #  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
+    #  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
+    #  ex.  mongodb:         mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
+    # The general form of the connection URL for shared cluster is
+    # mongodb://<hostname>:<port>,<hostname>:<port>
+    # mongodb://mongos0.example.com:27017,mongos1.example.com:27017,mongos2.example.com:27017
+
+
+    #mongodb:// -- A required prefix to identify that this is a string in the standard connection format.
+    
+    #host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
     dbConnectionUrl: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
     migration: ../migration
 

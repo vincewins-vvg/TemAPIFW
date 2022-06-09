@@ -68,10 +68,10 @@ REM Name			 : db_Username
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
 REM Default Value 	 : paymentorderusr
 SET db_Username=paymentorderusr
-REM Name			 : db_password
+REM Name			 : db_Password
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
 REM Default Value 	 : paymentorderpass
-SET db_password=paymentorderpass
+SET db_Password=paymentorderpass
 
 REM -------------------------------------------------------------
 REM 

@@ -289,18 +289,33 @@ env:
     kafka1HostName:
     kafka2HostName:
     devdomainHostName:
-# Name           : schemaregistry  
-# Description    : Schema Registry is a distributed storage layer for schemas by making use of the underlying storage mechanism of Kafka. It assigns a unique ID to each registered schema. Instead of appending the whole schema info, only schema ID needs to be set with each set of records by the producer while sending messages to Kafka’s topic.      
   schemaregistry:
 # Name           : SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
 # Description    : The Kafka cluster containing the bootstrap servers specified in kafkastore.bootstrap.servers is used to coordinate Schema Registry instances (leader election), and store schema data. When Kafka security is enabled, kafkastore.bootstrap.servers is also used to specify security protocols that Schema Registry uses to connect to Kafka.
     SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
-# Name           : SCHEMA_REGISTRY_HOST_NAME
-# Description    : 
+#Name             : SCHEMA_REGISTRY_HOST_NAME
+#Description      : Hostname to publish to ZooKeeper for clients to use
+#Default Value    : schema-registry 
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
+#Name             : SCHEMA_REGISTRY_LISTENERS  
+#Description      :listeners that listen for API requests over either HTTP or HTTPS.If multiple listeners are configured, the first listener’s port is used for its identity.
+    #Type: list
+    #Default: “http://0.0.0.0:8081”
+    #Importance: high
     SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+#Name             : SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT  
+#Description      :The timeout for initialization of the Kafka store, including creation of the Kafka topic that stores schema data..
+#Default Value    : 500
     SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_CUB_ZK_TIMEOUT  
+#Description      :ZooKeeper session timeout
+#Default Value    : 500
+    #ZooKeeper session timeout
     SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL  
+#Description      : The security protocol to use when connecting with Kafka, the underlying persistent storage.
+#Default Value    : PLAINTEXT
+#Possible values  : PLAINTEXT | SASL_PLAINTEXT | SSL | SASL_SSL 
     SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
   paymentorderscheduler:
     temn_msf_name: PaymentOrder  
@@ -344,6 +359,9 @@ service:
   schemaregistrynp:
 #Node port is the port on which the service can be accessed from external users using Kube-Proxy.
     type: NodePort
+#Name           : targetport
+#Description    : A Service can map any incoming port to a targetPort. By default and for convenience, the targetPort is set to the same value as the port field.
+#Default value  : 8081
     port: 8081
     nodeport: 32101 
 

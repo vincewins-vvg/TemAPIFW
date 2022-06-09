@@ -47,7 +47,7 @@ REM Default value   : payments
 SET database_Name=payments
 REM Name			 : db_Username
 REM Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
-REM Default value    : sa
+REM Default value    : root
 SET db_Username=root
 REM Name			 : db_password
 REM Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.

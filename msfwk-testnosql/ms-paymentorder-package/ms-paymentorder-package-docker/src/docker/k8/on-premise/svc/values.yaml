@@ -98,7 +98,7 @@ image:
     pullPolicy: Never
 #Name             : paymentsingester repository
 #Description      : Specifies the name of the ingester image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
-#Default Value    : temenos/ms-paymentorder-ingester
+#Default Value    : dev.local/temenos/ms-paymentorder-ingester
   paymentorderingester:
     repository: dev.local/temenos/ms-paymentorder-ingester
 #Name             : tag
@@ -190,7 +190,7 @@ env:
     
     #host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
     MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
-#Name			  : POSTGRESQL_CRED
+#Name			  : MONGO_CRED
 #Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If MONGO_CRED is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
 #Possible values  : Y | N	  
 #Default value    : N
@@ -200,8 +200,10 @@ env:
     #MONGODB_PASS : ENC(0jDFL9aa9VbB/KfSH6zfEQ==)
     
      #POSTGRESQL:
-    
-    #If the below variable is set to "Y", secrets will be enabled 
+#Name			  : POSTGRESQL_CRED
+#Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If MONGO_CRED is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
+#Possible values  : Y | N	  
+#Default value    : N 
     POSTGRESQL_CRED: "N"
  # Name			  : POSTGRESQL_CONNECTIONURL
 # Description	  : The general form of the connection URL is
@@ -299,11 +301,34 @@ env:
 #DefaultValue     : "*/5 * * * *" 
     schedule: "*/5 * * * *"    
   schemaregistry:
+#Name             : SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+#Description      : bootstrap. servers is used to coordinate Schema Registry instances (leader election), and store schema data
+#Default Value    : PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
     SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+#Name             : SCHEMA_REGISTRY_HOST_NAME
+#Description      : Hostname to publish to ZooKeeper for clients to use
+#Default Value    : schema-registry
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
+
+#Name             : SCHEMA_REGISTRY_LISTENERS  
+#Description      :listeners that listen for API requests over either HTTP or HTTPS.If multiple listeners are configured, the first listener’s port is used for its identity.
+    #Type: list
+    #Default: “http://0.0.0.0:8081”
+    #Importance: high
     SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+#Name             : SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT  
+#Description      :The timeout for initialization of the Kafka store, including creation of the Kafka topic that stores schema data..
+#Default Value    : 500
     SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_CUB_ZK_TIMEOUT  
+#Description      :ZooKeeper session timeout
+#Default Value    : 500
+    #ZooKeeper session timeout
     SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL  
+#Description      : The security protocol to use when connecting with Kafka, the underlying persistent storage.
+#Default Value    : PLAINTEXT
+#Possible values  : PLAINTEXT | SASL_PLAINTEXT | SSL | SASL_SSL  
     SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
   nosqlinboxcatchupscheduler:
 #Name             : temn_msf_scheduler_inboxcleanup_schedule
