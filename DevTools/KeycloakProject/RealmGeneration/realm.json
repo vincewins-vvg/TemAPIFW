@@ -432,7 +432,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "defaultRoles": [
         "manage-account",
         "view-profile"
@@ -479,7 +479,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [
         "/realms/Msf/account/*"
       ],
@@ -532,7 +532,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -571,7 +571,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -614,7 +614,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [
         "http://localhost:8180/*"
       ],
@@ -709,7 +709,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -750,7 +750,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "ewGosPh5CB1QJ1LuWhrNKYRJiGXWpAs0",
       "redirectUris": [
         "/admin/msf/console/*"
       ],

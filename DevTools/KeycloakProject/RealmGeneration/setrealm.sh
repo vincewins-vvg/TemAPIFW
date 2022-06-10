@@ -1,6 +1,6 @@
 #!/bin/sh
 
-KEYCLOAK_URL=http://lauwinds1.temenosgroup.com:8180
+KEYCLOAK_URL=http://localhost:8080
 KEYCLOAK_REALM=master
 KEYCLOAK_USER=admin
 KEYCLOAK_SECRET=admin
