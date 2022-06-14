@@ -59,7 +59,7 @@ SET db_Username=root
 REM Name			 : db_password
 REM Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
 REM Default value    : password
-SET db_password=password
+SET db_Password=password
 REM Name 			: driver_Name
 REM Description		: Driver provides Java database connectivity from any Java application, application server, or Java-enabled applet.The MySQL JDBC Driver enables users to connect with live MySQL data, directly from any applications that support JDBC connectivity
 REM Default Value 	: com.mysql.jdbc.Driver
@@ -143,7 +143,7 @@ REM --------------------------------------------------------------
 REM Name			: tag
 REM Description		: Specifies the release version of the image
 SET tag=DEV
-REM Name         :api_Image,ingester_Image,inboxoutbox_Image,schemaregistry_Image,scheduler_Image,fileingester_Image,mysql_Image
+REM Name         :apiImage,ingesterImage,inboxoutboxImage,schemaregistryImage,schedulerImage,fileingesterImage,mysqlImage
 REM Description 	: Specifies the name of Images for api ,ingester,inboxoutbox, schemaregistry,scheduler,fileingester,mysql that are  pushed to external repositories,
 REM Example			: Consider our external repository is "acr.azurecr.io" and tag is "DEV". It should be like acr.azurecr.io/temenos/ms-paymentorder-service:DEV
 SET apiImage=temenos/ms-paymentorder-service

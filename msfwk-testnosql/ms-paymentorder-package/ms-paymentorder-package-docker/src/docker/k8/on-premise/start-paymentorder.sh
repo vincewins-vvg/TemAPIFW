@@ -125,7 +125,7 @@ export devdomain_Host_Name=""
 #  ex.  mongodb:         mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 
 
-# Name 			: db_Connection_Url
+# Name 			    : db_Connection_Url
 # Description		: We are using mongodb by default 
 
 # The general form of the connection URL for shared cluster is

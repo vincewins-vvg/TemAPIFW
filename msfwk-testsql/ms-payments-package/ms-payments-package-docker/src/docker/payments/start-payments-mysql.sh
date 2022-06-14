@@ -134,7 +134,7 @@ export kafka2_Host_Name=""
 # Name			 : tag
 # Description	 : Specifies the release version of the image
 export tag=DEV
-# Name			 : api_Image,ingester_Image,inboxoutbox_Image,scheduler_Image,schemaregistry_Image,fileingester_Image,mysql_Image
+# Name			 : apiImage,ingesterImage,inboxoutboxImage,schedulerImage,schemaregistryImage,fileingesterImage,mysqlImage
 # Description 	 : Specifies the name of Images for api ,ingester,schemaregistry, scheduler,fileingester, mysql that are  pushed to external repositories,
 # Example		 : Consider our external repository is "acr.azurecr.io" and tag is "DEV". It should be like acr.azurecr.io/temenos/paymentorder-service:DEV
 export apiImage=temenos/ms-paymentorder-service

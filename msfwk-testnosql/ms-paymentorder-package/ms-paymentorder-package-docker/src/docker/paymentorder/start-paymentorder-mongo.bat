@@ -66,9 +66,11 @@ REM host[:port] -- The host (and optional port number) where mongos instance for
 SET db_Connection_Url="mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net"
 REM Name			 : db_Username
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
+REM Default Value    : root
 SET db_Username=root
 REM Name			 : db_Password
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
+REM Default Value    : root
 SET db_Password=root
 
 REM -------------------------------------------------------------

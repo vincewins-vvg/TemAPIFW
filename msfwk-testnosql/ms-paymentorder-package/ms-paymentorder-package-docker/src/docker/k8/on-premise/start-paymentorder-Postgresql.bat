@@ -12,7 +12,7 @@ REM --------------------------------------------------------------
 REM Name			: database_Name
 REM Description		: Specify the name of the database used in mongodb.
 REM Default value   : ms_paymentorder
-SET DB_NAME=ms_paymentorder
+SET database_Name=ms_paymentorder
 REM Name 			: database_Key
 REM Description 	: specify the name of the database server.
 REM Possible values :  mongodb | postgresql
@@ -38,7 +38,7 @@ SET db_Username=paymentorderusr
 REM Name			 : db_password
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
 REM Default Value 	 : paymentorderpass
-SET db_password=paymentorderpass
+SET db_Password=paymentorderpass
 
 
 REM Name			: db_Enable_Secret
@@ -159,7 +159,7 @@ helm install dbinit ./dbinit -n postgresqlpaymentorder --set image.mongoinit.rep
 
 kubectl create namespace paymentorder
 
-helm install ponosql ./svc --set env.database.POSTGRESQL_CONNECTIONURL=%db_Connection_Url% --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.DATABASE_KEY=%database_Key% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.paymentorderinboxoutbox.repository=%inboxoutboxImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%poImagePullSecret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafkaAliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.database.POSTGRESQL_USERNAME=%db_Username% --set env.database.POSTGRESQL_PASSWORD=%db_Password% --set env.database.POSTGRESQL_CRED=%db_Enable_Secret%  
+helm install ponosql ./svc --set env.database.POSTGRESQL_CONNECTIONURL=%db_Connection_Url% --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.DATABASE_KEY=%database_Key% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.paymentorderinboxoutbox.repository=%inboxoutboxImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.database.POSTGRESQL_USERNAME=%db_Username% --set env.database.POSTGRESQL_PASSWORD=%db_Password% --set env.database.POSTGRESQL_CRED=%db_Enable_Secret%  
 
 
 cd streams/kafka

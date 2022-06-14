@@ -134,16 +134,16 @@ export kafka2_Host_Name=""
 # Name			 : tag
 # Description	 : Specifies the release version of the image
 export tag=DEV
-# Name			 : api_Image,ingester_Image,inboxoutbox_Image,scheduler_Image,schemaregistry_Image,fileingester_Image,mysql_Image
+# Name			 : apiImage,ingesterImage,inboxoutboxImage,schedulerImage,schemaregistryImage,fileingesterImage,mysqlImage
 # Description 	 : Specifies the name of Images for api ,ingester,schemaregistry, scheduler,fileingester, mysql that are  pushed to external repositories,
 # Example		 : Consider our external repository is "acr.azurecr.io" and tag is "DEV". It should be like acr.azurecr.io/temenos/paymentorder-service:DEV
-export api_Image=temenos/ms-paymentorder-service
-export ingester_Image=temenos/ms-paymentorder-ingester
-export inboxoutbox_Image=temenos/ms-paymentorder-inboxoutbox
-export schemaregistry_Image=confluentinc/cp-schema-registry
-export scheduler_Image=temenos/ms-paymentorder-scheduler
-export fileingester_Image=temenos/ms-paymentorder-fileingester
-export mysql_Image=ms-paymentorder-mysql
+export apiImage=temenos/ms-paymentorder-service
+export ingesterImage=temenos/ms-paymentorder-ingester
+export inboxoutboxImage=temenos/ms-paymentorder-inboxoutbox
+export schemaregistryImage=confluentinc/cp-schema-registry
+export schedulerImage=temenos/ms-paymentorder-scheduler
+export fileingesterImage=temenos/ms-paymentorder-fileingester
+export mysqlImage=ms-paymentorder-mysql
 
 # Name			: es_Image_Pull_Secret
 # Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. es_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
