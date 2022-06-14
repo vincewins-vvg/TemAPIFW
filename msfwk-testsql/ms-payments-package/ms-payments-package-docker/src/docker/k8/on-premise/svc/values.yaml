@@ -384,6 +384,8 @@ logging:
 #Name                 : metrics
 #Description          : Metrics give us insights into the historical and current state of a system.Data instrumented from microservices are pushed to PushGateway service. Prometheus collects data from PushGateway on a regular interval. Grafana is used to visualize data in UI.  
 metrics:
+  #exporterPort: 9091 
+  #exporterHost: 192.168.228.193
 #Name                 :publisherPort
 #Description          :Specifies the PushGateway service exposed port .publisherPort should be uncommented and required port should be mentioned.
   #publisherPort: 9091
