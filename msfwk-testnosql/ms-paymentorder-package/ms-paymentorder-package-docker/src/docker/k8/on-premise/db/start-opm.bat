@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 REM -------- Scripts to Start the Ops Manager and MongoDB kubernetes operator -------- 
 
 SET NAMESPACE="mongodb"

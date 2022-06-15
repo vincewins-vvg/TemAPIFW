@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 echo "sleeping for 10 before initiating replica set"
 sleep 10
 

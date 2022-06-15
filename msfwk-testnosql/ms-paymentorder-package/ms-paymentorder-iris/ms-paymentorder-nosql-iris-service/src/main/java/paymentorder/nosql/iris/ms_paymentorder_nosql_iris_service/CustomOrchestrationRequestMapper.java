@@ -1,3 +1,8 @@
+/**
+ * *******************************************************************************
+ * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+ * *******************************************************************************
+ */
 package paymentorder.nosql.iris.ms_paymentorder_nosql_iris_service;
 
 import java.math.BigDecimal;

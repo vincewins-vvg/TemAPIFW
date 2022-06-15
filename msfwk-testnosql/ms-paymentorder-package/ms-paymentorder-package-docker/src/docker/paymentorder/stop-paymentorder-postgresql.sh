@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 helm uninstall appinit -n postgresqlpaymentorder
 
 helm uninstall dbinit -n postgresqlpaymentorder

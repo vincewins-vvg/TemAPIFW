@@ -1,4 +1,10 @@
 #!/bin/bash -x
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 
 # repacking db entity jar with api jar
 ./db/repackbuild.sh ms-paymentorder cassandra

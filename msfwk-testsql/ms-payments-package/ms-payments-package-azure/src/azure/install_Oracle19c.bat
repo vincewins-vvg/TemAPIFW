@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 @echo on
 REM configuration details
 SET RESOURCE_GROUP_NAME="oracle_test"
