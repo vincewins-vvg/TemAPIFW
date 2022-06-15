@@ -27,9 +27,6 @@ import com.temenos.microservice.paymentsorder.view.PaymentOrders;
 @Component
 public class GetPaymentOrdersProcessor {
 
-	public static Charset charset = Charset.forName("UTF-8");
-	public static CharsetEncoder encoder = charset.newEncoder();
-
 	public PaymentOrders invoke(Context ctx, GetPaymentOrdersInput input) throws FunctionException {
 
 		CriteriaBuilder criteriaBuilder = PaymentOrderDao
@@ -73,6 +70,8 @@ public class GetPaymentOrdersProcessor {
 			if (entity.getFileContent() != null) {
 				ByteBuffer byteBuffer;
 				try {
+					Charset charset = Charset.forName("UTF-8");
+					CharsetEncoder encoder = charset.newEncoder();
 					byteBuffer = encoder.encode(CharBuffer.wrap((entity.getFileContent())));
 					view.setFileContent(byteBuffer);
 				} catch (Exception e) {
