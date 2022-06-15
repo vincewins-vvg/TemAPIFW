@@ -8,17 +8,60 @@
 #REM - Script to start Paymentorder Service
 #REM --------------------------------------------------------------
 
-#REM - Build paymentorder images
+# Name : Jwt_Token_Issuer
+# Description : Identifies the issuer of the authentication token.
+# Default Value : https://localhost:9443/oauth2/token
+export Jwt_Token_Issuer=https://localhost:9443/oauth2/token
+# Name : Jwt_Token_Principal_Claim
+# Description : Indicates the claim in which the user principal is provided.
+# Default Value : sub
+export Jwt_Token_Principal_Claim=sub
+# Name : Id_Token_Signed
+# Description : Enables the JWT signature validation along with the header and payload
+# Default Value : true
+export Id_Token_Signed=true
+# Name : Jwt_Token_Public_Key
+# Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
+export Jwt_Token_Public_Key="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+# Name : Jwt_Token_Public_Key_Cert_Encoded
+# Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
+export Jwt_Token_Public_Key_Cert_Encoded=""
+# Name			  : database_Name
+# Description	  : Specify the name of the database used in sql server.
+# Default value   : ms_paymentorder
+export database_Name=ms_paymentorder
+# Name			    : db_Connection_Url
+# Description		: The general form of the connection URL is
+#  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
+#  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
+#  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
+#  ex.  mongodb:         mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 
-export DB_NAME=ms_paymentorder
-export MONGODB_CONNECTIONSTR=mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
-export JWT_TOKEN_ISSUER=https://localhost:9443/oauth2/token
-export JWT_TOKEN_PRINCIPAL_CLAIM=sub
-export ID_TOKEN_SIGNED=true
-export JWT_TOKEN_PUBLIC_KEY="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
-export JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=""
 
+# Name 			: db_Connection_Url
+# Description		: We are using mongodb by default 
+
+# The general form of the connection URL for shared cluster is
+    # mongodb://<hostname>:<port>,<hostname>:<port>
+    # mongodb://mongos0.example.com:27017,mongos1.example.com:27017,mongos2.example.com:27017
+
+
+# mongodb:// -- A required prefix to identify that this is a string in the standard connection format.
+    
+# host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
+
+export db_Connection_Url=mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017'\',mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+# -------------------------------------------------------------
+# 
+# IMAGE PROPERTIES
+#
+# --------------------------------------------------------------
+#Name				: tag
+#Description		: Specifies the release version of the image
 export tag="DEV"
+# Name			: apiImage,ingesterImage,inboxoutboxImage,schedulerImage,fileingesterImage,schemaregistryImage,dbinitImage
+# Description 	: Specifies the name of Images for api ,ingester,scheduler,fileingesterImage,schemaregistryImage,dbinitImage that are  pushed to external repositories,
+# Example			: Consider our external repository is "acr.azurecr.io" and tag is "DEV". It should be like acr.azurecr.io/temenos/ms-paymentorder-service:DEV
 export apiImage=dev.local/temenos/ms-paymentorder-service
 export ingesterImage=dev.local/temenos/ms-paymentorder-ingester
 export inboxoutboxImage=dev.local/temenos/ms-paymentorder-inboxoutbox
@@ -27,39 +70,74 @@ export fileingesterImage=dev.local/temenos/ms-paymentorder-fileingester
 export schemaregistryImage=confluentinc/cp-schema-registry
 
 export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
+# Name			: po_Image_Pull_Secret,dbinit_Image_Pull_Secret
+# Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. adapter_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
+export po_Image_Pull_Secret=""
+export dbinit_Image_Pull_Secret=""
 
-export poImagePullSecret=""
-export dbinitImagePullSecret=""
+# Name			: encryption_Key,encryption_Algorithm
+# Description 	: For encrypting the plain text's, need some inputs i.e., Password and an Algorithm which is used to encrypt/decrypt an given input. These two values are mandatory to encrypt the plain text.
+# Default value 	: temenos for key and PBEWithMD5AndTripleDES for algorithm.
+export encryption_Key=temenos
+export encryption_Algorithm=PBEWithMD5AndTripleDES
 
-export temn_msf_db_pass_encryption_key=temenos
-export temn_msf_db_pass_encryption_algorithm=PBEWithMD5AndTripleDES
-export gcbasepath="http://localhost:7006/ms-genericconfig-api/api/v2.0.0/"
+# Name 			   : gc_Base_Path
+# Description	   : Specify the url to connect generic configuration microservice.
+# Default Value	   : http://localhost:7006/ms-genericconfig-api/api/v2.0.0/
+export gc_Base_Path="http://localhost:7006/ms-genericconfig-api/api/v2.0.0/"
 
-# -------- KAFKA
-export kafkabootstrapservers="my-cluster-kafka-bootstrap.kafka:9092"
+# -------------------------------------------------------------
+# 
+# Kafka properties
+#
+# --------------------------------------------------------------
+# Name 			: kafka_Bootstrap_Servers
+# Description	: It contains a list of host/port pairs for establishing the initial connection to the Kafka cluster.A host and port pair uses : as the separator.
+# Example		: localhost:9092,localhost:9092,another.host:9092
+# Default Value	: my-cluster-kafka-bootstrap.kafka:9092
+export kafka_Bootstrap_Servers="my-cluster-kafka-bootstrap.kafka:9092"
 
-# --- To enable hostAliases, export the below variable to "Y"
-export kafkaAliases="N"
+# Name 			: kafka_Aliases
+# Description	: hostAliases is used to overwrite the resolution of the host name and ip at the pod level when adding entries to the /etc/hosts file of the pod.(https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/). To enable hostAliases, set the below variable to "Y"
+# Possible values : Y | N	 
+# Default Value	: N
+export kafka_Aliases="N"
 
-# --- export the following variables for hostAliases
+# Name			: kafkaip,kafka0ip,kafka1ip,kafka2ip,devdomain
+# Description	: Set the following variables of kafka ip for hostAliases
 export kafkaip=""
 export kafka0ip=""
 export kafka1ip=""
 export kafka2ip=""
 export devdomain=""
+# Name			: kafka_Host_Name,kafka0_Host_Name,kafka1_Host_Name,kafka2_Host_Name,devdomain_Host_Name
+# Description	: Set the following variables of kafka hostname for hostAliases
+export kafka_Host_Name=""
+export kafka0_Host_Name=""
+export kafka1_Host_Name=""
+export kafka2_Host_Name=""
+export devdomain_Host_Name=""
+# Name			    : db_Connection_Url
+# Description		: The general form of the connection URL is
+#  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
+#  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
+#  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
+#  ex.  mongodb:         mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
 
-export kafkaHostName=""
-export kafka0HostName=""
-export kafka1HostName=""
-export kafka2HostName=""
-export devdomainHostName=""
 
-export MONGODB_CONNECTIONSTR="mongodb+srv://user01:user01@mongodb01.jx2tl.mongodb.net/test"
+# Name 			    : db_Connection_Url
+# Description		: We are using mongodb by default 
 
-# IMAGE PROPERTIES
-export tag="DEV"
-export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
-export dbinitImagePullSecret=""
+# The general form of the connection URL for shared cluster is
+    # mongodb://<hostname>:<port>,<hostname>:<port>
+    # mongodb://mongos0.example.com:27017,mongos1.example.com:27017,mongos2.example.com:27017
+
+
+# mongodb:// -- A required prefix to identify that this is a string in the standard connection format.
+    
+# host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
+
+export db_Connection_Url="mongodb+srv://user01:user01@mongodb01.jx2tl.mongodb.net/test"
 
 cd ../..
 
@@ -79,11 +157,11 @@ sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-podb-scripts.sh
 
 kubectl create namespace mongopaymentorder
 
-helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinitImagePullSecret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${MONGODB_CONNECTIONSTR}\"
+helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinit_Image_Pull_Secret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${db_Connection_Url}\"
 
 kubectl create namespace paymentorder
 
-helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=\"${MONGODB_CONNECTIONSTR}\" --set env.database.MONGODB_DBNAME=$DB_NAME --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=mongodb --set pit.JWT_TOKEN_ISSUER=$JWT_TOKEN_ISSUER --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$JWT_TOKEN_PRINCIPAL_CLAIM --set pit.ID_TOKEN_SIGNED=$ID_TOKEN_SIGNED --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED --set pit.JWT_TOKEN_PUBLIC_KEY=$JWT_TOKEN_PUBLIC_KEY --set env.database.temn_msf_db_pass_encryption_key=$temn_msf_db_pass_encryption_key --set env.database.temn_msf_db_pass_encryption_algorithm=$temn_msf_db_pass_encryption_algorithm --set env.genericconfig.basepath=$gcbasepath --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistry --set imagePullSecrets=$poImagePullSecret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafkabootstrapservers --set env.kafka.kafkaAliases=$kafkaAliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafkaHostName --set env.kafka.kafka0HostName=$kafka0HostName --set env.kafka.kafka1HostName=$kafka1HostName --set env.kafka.kafka2HostName=$kafka2HostName --set env.kafka.devdomainHostName=$devdomainHostName
+helm install ponosql ./svc --set env.database.MONGODB_CONNECTIONSTR=\"${db_Connection_Url}\" --set env.database.MONGODB_DBNAME=$database_Name --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=mongodb --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name
 
 cd streams/kafka
 
