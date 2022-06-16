@@ -7,6 +7,7 @@ import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VA
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MIN;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_MINLENGTH;
 import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_NULLABLE;
+import static com.temenos.microservice.payments.util.ITConstants.JSON_BODY_TO_VALIDATE_WITHCOLUMNLENGTH_TOO_LONG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -45,7 +46,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 	@AfterClass
 	public static void clearData() {
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
-				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ||  "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) || ("ORACLE".equals(Environment.getEnvironmentVariable("DB_VENDOR", "") )) || ("POSTGRES".equals(Environment.getEnvironmentVariable("DB_VENDOR", "") ))) {
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| ("ORACLE".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")))
+				|| ("POSTGRES".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")))) {
 			clearRecords("PO~123~124~USD~100", "123");
 		} else {
 			deletePaymentOrderRecord("ms_payment_order", "paymentOrderId", "eq", "string", "PO~123~124~USD~100",
@@ -83,7 +87,10 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertEquals(paymentOrderId, "paymentorderid");
 		assertEquals(paymentOrderValue, "PO~123~124~USD~100");
 		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
-				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) || "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) || "ORACLE".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) || "POSTGRES".equals(Environment.getEnvironmentVariable("DB_VENDOR", "")) ) {
+				|| "NUODB".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "SQLSERVER".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "ORACLE".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))
+				|| "POSTGRES".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
 			validateSQLExtensionData();
 		} else {
 			validateNoSQLExtensionData(entry);
@@ -235,5 +242,22 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 		assertTrue(createResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
 		assertTrue(createResponse.bodyToMono(String.class).block()
 				.contains("[{\"message\":\"[PaymentOrder.paymentMethod must not be null]\",\"code\":\"MSF-999\"}"));
+	}
+
+	@Test
+	public void testCreateNewPaymentOrderWithColumnLengthTooLong() {
+		if ("MYSQL".equals(Environment.getEnvironmentVariable("DB_VENDOR", ""))) {
+			ClientResponse clientResponse;
+			do {
+				clientResponse = this.client.post()
+						.uri("/v1.0.0/payments/orders" + ITTest.getCode("CREATE_PAYMENTORDER_AUTH_CODE"))
+						.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_WITHCOLUMNLENGTH_TOO_LONG),
+								String.class))
+						.exchange().block();
+			} while (clientResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
+			assertTrue(clientResponse.statusCode().equals(HttpStatus.BAD_REQUEST));
+			assertTrue(clientResponse.bodyToMono(String.class).block().contains(
+					"[{\"message\":\"Data truncation: Data too long for column 'creditAccount' at row 1\",\"code\":\"MSF-002\"}]"));
+		}
 	}
 }
