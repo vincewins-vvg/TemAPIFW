@@ -107,6 +107,7 @@ services:
       temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
       temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
       temn.msf.security.tokengen.oauth.scope: "openid"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken" 
       #temn.entitlement.service.base.path: http://10.93.23.73:8095/ms-entitlement-api/api/v1.0.0
       #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
@@ -140,6 +141,7 @@ services:
       className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
+      temn.msf.outbox.direct.delivery.enabled: "true"
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -211,6 +213,7 @@ services:
       IRIS_R18_PATH: irisR18/api
       IRIS_VERSION: v1.0.0
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
       temn.msf.ingest.multipart.source.stream: multipart-topic
@@ -252,6 +255,7 @@ services:
       temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
   ingesterbinary:
     build:
@@ -300,6 +304,7 @@ services:
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
   stateingester:
     build:
@@ -336,6 +341,7 @@ services:
       temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
       temn.iris.fdata.enquiry.resource.path: system/metrics/dataEvents/pendings/itemCount
       temn.msf.security.authz.enabled: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       EXECUTION_ENVIRONMENT: TEST
       temn.queue.impl: kafka
   businessingester:
@@ -371,6 +377,7 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       DATABASE_KEY: sql
       temn.queue.impl: kafka
   configBinaryIngester:
@@ -406,6 +413,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
+      temn.msf.outbox.direct.delivery.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
   eventingester:
@@ -441,6 +449,7 @@ services:
       temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.paymentorder.ingester.PoHandlerImpl
       # temn.msf.raise.received.event: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
   fileingester:
@@ -471,3 +480,4 @@ services:
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
+      temn.msf.outbox.direct.delivery.enabled: "true"

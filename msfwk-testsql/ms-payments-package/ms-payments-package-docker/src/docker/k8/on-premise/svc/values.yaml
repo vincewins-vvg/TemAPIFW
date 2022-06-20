@@ -333,6 +333,10 @@ env:
 #Description      : Specifies No of Minutes required to hold the records inside ms_inbox_events table before automatic deletion.
 #Default value    : 60   
      temn_msf_scheduler_inboxcleanup_schedule: "60" 
+#Name             : eventdelivery
+#Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
+  eventdelivery:
+    outboxdirectdeliveryenabled: "true"
 #Name             : service
 #Description      : A Service in Kubernetes is a REST object, similar to a Pod. Like all of the REST objects, you can POST a Service definition to the API server to create a new instance.#specifies the port ,type  for the eventstore api and ingester service.
 service:

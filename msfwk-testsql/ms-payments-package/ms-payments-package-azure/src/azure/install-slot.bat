@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 @echo off
 set /P input="Enter 1.Production Settings 2.Slot Settings (1/2) ? "
 

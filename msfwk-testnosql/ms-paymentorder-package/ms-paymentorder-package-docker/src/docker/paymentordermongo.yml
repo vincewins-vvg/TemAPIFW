@@ -145,6 +145,7 @@ services:
       temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
       temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
       temn.msf.security.tokengen.oauth.scope: "openid"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken" 
   paymentorderScheduler:
     build:
@@ -178,6 +179,7 @@ services:
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.tracer.name: ms_paymentorder_scheduler 
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.tracer.enabled: "false"
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.socketPort: #port
@@ -315,6 +317,7 @@ services:
       temn.ingester.mapping.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
       temn.msf.tracer.name: ms_paymentorder_configavroingester 
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.tracer.enabled: "false"  
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.socketPort: #port
@@ -366,6 +369,7 @@ services:
       #temn.msf.pdp.resource.manager: PAYMENT
       ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
@@ -410,6 +414,7 @@ services:
       temn.ingester.business.topic: table-update-business
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.paymentorder.ingester.PaymentOrderStateIngester
       temn.msf.ingest.is.avro.event.ingester: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.iris.fdata.enquiry.base.path: http://10.93.23.52:9089/irf-provider-container/api/v1.0.0/
       temn.iris.fdata.enquiry.resource.path: system/metrics/dataEvents/pendings/itemCount
       temn.msf.security.authz.enabled: "false"
@@ -452,6 +457,7 @@ services:
       temn.msf.ingest.sink.error.stream.producer.id: msf-paymentorder-ingester-error-producer
       temn.msf.ingest.generic.ingester:  com.temenos.microservice.paymentorder.ingester.PaymentOrderBusinessIngester
       temn.msf.stream.outbox.topic: paymentorder-event-topic
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
@@ -498,6 +504,7 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
@@ -545,6 +552,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka  
       temn.msf.tracer.name: ms_paymentorder_eventingester  
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.tracer.enabled: "false" 
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.socketPort: #port
@@ -579,6 +587,7 @@ services:
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester  
       temn.msf.tracer.name: ms_paymentorder_fileingester    
       temn.msf.tracer.enabled: "false"  

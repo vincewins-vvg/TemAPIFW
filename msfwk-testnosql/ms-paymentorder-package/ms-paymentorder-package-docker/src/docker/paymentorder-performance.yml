@@ -116,6 +116,7 @@ services:
       temn.msf.storage.home: ${MS_STORAGE_HOME}
       FILE_STORAGE_URL: ${FILE_STORAGE_URL}
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
+      temn.msf.outbox.direct.delivery.enabled: "true"
       ms.security.tokencheck.enabled: Y
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
@@ -157,6 +158,7 @@ services:
       className_nosqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.NoSqlOutboxCatchupProcessor
       temn.msf.scheduler.nosqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.nosqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
+      temn.msf.outbox.direct.delivery.enabled: "true"
   inboxoutboxprocessorapp:
     build:
       context: ${INBOXOUTBOX_CONTEXT}
@@ -236,6 +238,7 @@ services:
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.outbox.direct.delivery.enabled: "true"
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -274,6 +277,7 @@ services:
       temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       EXECUTION_ENVIRONMENT: "TEST"
   ingesterbinary:
     build:
@@ -316,6 +320,7 @@ services:
       IRIS_PORT: 9089
       IRIS_PATH: irf-provider-container/api
       IRIS_R18_PATH: irisR18/api
+      temn.msf.outbox.direct.delivery.enabled: "true"
       IRIS_VERSION: v1.0.0
       #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       #temn.msf.pdp.resource.type: API
@@ -365,6 +370,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       EXECUTION_ENVIRONMENT: TEST
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.queue.impl: kafka
   businessingester:
     build:
@@ -402,6 +408,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       DATABASE_KEY: sql
       temn.queue.impl: kafka
   configBinaryIngester:
@@ -441,6 +448,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.queue.impl: kafka
   eventingester:
     build:
@@ -480,6 +488,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.queue.impl: kafka  
   fileingester:
     build:
@@ -510,3 +519,4 @@ services:
       temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
       temn.msf.ingest.file.procesed.path: /usr/local/tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
+      temn.msf.outbox.direct.delivery.enabled: "true"
