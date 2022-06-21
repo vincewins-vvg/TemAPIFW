@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #-------------------------------------------------------------
 #- Docker compose base definition file to run containers.
 #-----------------------------------------------------------
@@ -114,6 +120,7 @@ services:
       temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
       temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
       temn.msf.security.tokengen.oauth.scope: "openid"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken" 
       #temn.entitlement.service.base.path: http://10.93.23.73:8095/ms-entitlement-api/api/v1.0.0
       #temn.entitlement.service.resource.path: system/entitlements/users/{userId}
@@ -172,7 +179,8 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.entityExtractFunction.param.pageSize: 2
       temn.msf.entityExtractFunction.param.entityName: paymentorder
-      temn.msf.entityExtractFunction.param.query.currency: USD    
+      temn.msf.entityExtractFunction.param.query.currency: USD
+      temn.msf.outbox.direct.delivery.enabled: "true"
       
   inboxoutboxprocessorapp:
     build:
@@ -212,6 +220,7 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
+      temn.msf.outbox.direct.delivery.enabled: "true"
       VALIDATE_PAYMENT_ORDER: "false"
       temn.msf.ingest.is.cloud.event: "true" 
       temn.msf.logger.socketPort: #port     
@@ -269,6 +278,7 @@ services:
       temn.msf.ingest.reprocess.source.stream: reprocess-event
       temn.msf.ingest.sink.stream.data.multipart: multipart-topic
       temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.logger.socketPort: #port     
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.exportType: #socket    
@@ -313,6 +323,7 @@ services:
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.config.file.path: mapping/
       temn.ingester.mapping.enabled: "true"
       temn.msf.logger.socketPort: #port     
@@ -360,6 +371,7 @@ services:
       temn.iris.fdata.enquiry.base.path: http://10.92.4.84:9089/irf-provider-container/api/v1.0.0/
       temn.iris.fdata.enquiry.resource.path: system/events/pendingEvents
       temn.queue.impl: kafka
+      temn.msf.outbox.direct.delivery.enabled: "true"
       DATABASE_KEY: sql
       EXECUTION_ENVIRONMENT: TEST
       temn.msf.logger.socketPort: #port     
@@ -405,6 +417,7 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.logger.socketPort: #port     
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.exportType: #socket          
@@ -473,6 +486,7 @@ services:
       temn.msf.mdal.operationId.getCustomerProfile: GetPaymentOrder
       temn.cache.host: 192.168.1.34
       temn.cache.port: 6060
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.config.service.base.path: http://192.168.1.34:7006/ms-genericconfig-api/
       temn.config.service.resource.path: api/v2.0.0/system/configurationGroups/{}/configuration/{}
       temn.msf.function.class.ProcessBulkMdalEvent: com.temenos.microservice.framework.core.mdal.ProcessBulkMdalEventImpl  
@@ -518,6 +532,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.logger.socketPort: #port     
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.exportType: #socket    
@@ -564,6 +579,7 @@ services:
       # temn.msf.raise.received.event: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.logger.socketPort: #port     
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.exportType: #socket    
@@ -608,6 +624,7 @@ services:
       temn.msf.ingest.client.id: split-group
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.max.load.topic: 2 
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.logger.socketPort: #port     
       temn.msf.logger.socketHost: #ipaddress
       temn.msf.logger.exportType: #socket          

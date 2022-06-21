@@ -75,6 +75,7 @@ services:
       temn.msf.stream.vendor: kafka
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.queue.impl: kafka
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
@@ -131,6 +132,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.ingest.consumer.max.poll.records: "1"
       IRIS_PROTOCOL: http
       IRIS_HOST_IP: localhost
@@ -175,6 +177,7 @@ services:
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.config.file.path: mapping/
       temn.msf.ingest.consumer.max.poll.records: "1"
       temn.ingester.mapping.enabled: "true"
@@ -211,6 +214,7 @@ services:
       class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
@@ -257,6 +261,7 @@ services:
       temn.msf.security.authz.enabled: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       EXECUTION_ENVIRONMENT: TEST
       temn.queue.impl: kafka
   businessingester:
@@ -292,6 +297,7 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.security.authz.enabled: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
@@ -330,6 +336,7 @@ services:
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
       temn.msf.security.authz.enabled: "false"
       PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
       temn.queue.impl: kafka
@@ -368,6 +375,7 @@ services:
       class.package.name: com.temenos.microservice.paymentorder.function
       class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
       class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+      temn.msf.outbox.direct.delivery.enabled: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka

@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #-------------------------------------------------------------
 #- Docker compose base definition file to run containers.
 #-----------------------------------------------------------
@@ -98,6 +104,7 @@ services:
       temn.msf.scripts.location: "scripts" 
       ms.security.tokencheck.enabled: Y
       temn.entitlement.stubbed.service.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
@@ -141,6 +148,7 @@ services:
       className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
       temn.msf.scheduler.sqlInboxCatchup.cron.trigger.time: 59 * * ? * *
       temn.msf.scheduler.sqlOutboxCatchup.cron.trigger.time: 59 * * ? * *
+      temn.msf.outbox.direct.delivery.enabled: "true"
       DATABASE_KEY: sql
   inboxoutboxprocessorapp:
     build:
@@ -180,6 +188,7 @@ services:
       temn.queue.impl: kafka
       tmn.inbox.thread.pool.count: 10
       tmn.outbox.thread.pool.count: 10
+      temn.msf.outbox.direct.delivery.enabled: "true"
       VALIDATE_PAYMENT_ORDER: "false"
   ingester:
     build:
@@ -229,6 +238,7 @@ services:
       PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
       temn.msf.pdp.resource.type: API
       temn.msf.pdp.resource.manager: PAYMENT
+      temn.msf.outbox.direct.delivery.enabled: "true"
   configavroingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -272,6 +282,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       temn.ingester.mapping.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
   
   
   stateingester:
@@ -318,6 +329,7 @@ services:
       temn.queue.impl: kafka
       DATABASE_KEY: sql
       EXECUTION_ENVIRONMENT: TEST
+      temn.msf.outbox.direct.delivery.enabled: "true"
   
   businessingester:
     build:
@@ -359,6 +371,7 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.ingest.consumer.max.poll.records: "1"
       DATABASE_KEY: sql
+      temn.msf.outbox.direct.delivery.enabled: "true"
       
   ingesterbinary:
     build:
@@ -418,6 +431,7 @@ services:
       JWT_TOKEN_ISSUER: "https://localhost:9443/oauth2/token"
       ID_TOKEN_SIGNED: "true"
       JWT_TOKEN_PUBLIC_KEY: "TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"
+      temn.msf.outbox.direct.delivery.enabled: "true"
   configBinaryIngester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -460,7 +474,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
-
+	  temn.msf.outbox.direct.delivery.enabled: "true"
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
@@ -504,6 +518,7 @@ services:
       # temn.msf.raise.received.event: "true"
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
+      temn.msf.outbox.direct.delivery.enabled: "true"
   fileingester:
     build:
       context: ${FILEINGESTER_CONTEXT}
@@ -545,3 +560,4 @@ services:
       temn.msf.ingest.client.id: split-group
       temn.msf.stream.kafka.bootstrap.servers: kafka:29092
       temn.msf.ingest.max.load.topic: 2 
+      temn.msf.outbox.direct.delivery.enabled: "true"

@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 @echo off
 REM --------------------------------------------------------------
 REM - Script to start Service
@@ -22,6 +28,10 @@ REM Name : Jwt_Token_Public_Key_Cert_Encoded
 REM Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
 SET Jwt_Token_Public_Key_Cert_Encoded=""
 
+REM Name             : eventDirectDelivery
+REM Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
+SET eventDirectDelivery=\"true\"
+
 cd ../..
 
 call build-oracle.bat build
@@ -32,7 +42,7 @@ call start-oracledb-scripts.bat
 
 cd ../
 
-helm install svc ./svc -n payments --set env.database.host=host.docker.internal --set env.database.db_username=system --set env.database.db_password=Oracle_1 --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=oracle.jdbc.OracleDriver --set env.database.dialect=org.hibernate.dialect.Oracle10gDialect --set env.database.db_connection_url=jdbc:oracle:thin:@host.docker.internal:1521:orcl --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key%
+helm install svc ./svc -n payments --set env.database.host=host.docker.internal --set env.database.db_username=system --set env.database.db_password=Oracle_1 --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=oracle.jdbc.OracleDriver --set env.database.dialect=org.hibernate.dialect.Oracle10gDialect --set env.database.db_connection_url=jdbc:oracle:thin:@host.docker.internal:1521:orcl --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery%
 
 REM docker-compose -f kafka.yml -f paymentorder-nuo.yml %*
 
