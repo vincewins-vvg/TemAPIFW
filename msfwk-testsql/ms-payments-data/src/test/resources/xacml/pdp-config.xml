@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    *******************************************************************************
-    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
-    *******************************************************************************
-
--->
 <pdp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://authzforce.github.io/core/xmlns/pdp/7"
 	version="7.1.">
 	<policyProvider id="rootPolicyProvider"
