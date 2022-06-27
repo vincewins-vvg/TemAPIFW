@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 # --------------------------------------------------------------
 # - Script for pre configuring the environment by downloading the necessary jars for running the Performance Profiling tool
 #Note: This script should be run after starting all the docker containers using paymentorder-performance sh/bat

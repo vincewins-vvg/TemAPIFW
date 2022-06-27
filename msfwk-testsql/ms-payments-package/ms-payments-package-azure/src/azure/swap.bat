@@ -1,3 +1,9 @@
+@REM
+@REM *******************************************************************************
+@REM * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+@REM *******************************************************************************
+@REM
+
 echo "PaymentOrder Party Microservice for deployment slot in Azure"
 
 @echo off

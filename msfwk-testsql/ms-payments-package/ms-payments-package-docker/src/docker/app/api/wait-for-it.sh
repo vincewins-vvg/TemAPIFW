@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #   Use this script to test if a given TCP host/port are available
 
 WAITFORIT_cmdname=${0##*/}

@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 # --------------------------------------------------------------
 # - Script for running the necessary jars associated with the Performance Profiling Tool
 #Note: This script should be run only after running the tests associated with Performance

@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #run the setup script to create the DB and the schema in the DB
 #do this in a loop because the timing for when the SQL instance is ready is indeterminate
 for i in {1..50};

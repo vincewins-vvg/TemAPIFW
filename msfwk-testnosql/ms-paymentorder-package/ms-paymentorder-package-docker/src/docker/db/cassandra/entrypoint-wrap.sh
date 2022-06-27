@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 
 if [[ ! -z "$CASSANDRA_KEYSPACE" && $1 = 'cassandra' ]]; then
   # Create default keyspace for single node cluster

@@ -1,4 +1,10 @@
 #!/bin/bash -x
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 # configuration details
 #FILE RENAME -- azure-resource-creation.sh
 

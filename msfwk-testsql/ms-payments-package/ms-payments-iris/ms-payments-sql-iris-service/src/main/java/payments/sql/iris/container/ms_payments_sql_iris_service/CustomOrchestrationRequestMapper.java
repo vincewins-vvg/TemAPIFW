@@ -1,3 +1,8 @@
+/**
+ * *******************************************************************************
+ * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+ * *******************************************************************************
+ */
 package payments.sql.iris.container.ms_payments_sql_iris_service;
 
 import java.math.BigDecimal;

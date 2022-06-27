@@ -1,3 +1,8 @@
+/**
+ * *******************************************************************************
+ * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+ * *******************************************************************************
+ */
 package com.temenos.microservice.nosql.scheduler.azure;
 
 import com.microsoft.azure.functions.ExecutionContext;

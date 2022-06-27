@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
 <PolicySet
     xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
     xmlns:ns2="http://thalesgroup.com/authzforce/pdp/model/2014/12"

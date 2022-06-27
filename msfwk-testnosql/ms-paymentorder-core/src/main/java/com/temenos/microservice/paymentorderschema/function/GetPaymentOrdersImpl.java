@@ -1,3 +1,8 @@
+/**
+ * *******************************************************************************
+ * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+ * *******************************************************************************
+ */
 package com.temenos.microservice.paymentorderschema.function;
 
 import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;

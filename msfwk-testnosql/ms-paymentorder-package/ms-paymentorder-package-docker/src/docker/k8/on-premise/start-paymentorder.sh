@@ -3,10 +3,6 @@
 # * Copyright © Temenos Headquarters SA 2021. All rights reserved.
 # *******************************************************************************
 #
-#@echo off
-#REM --------------------------------------------------------------
-#REM - Script to start Paymentorder Service
-#REM --------------------------------------------------------------
 
 # Name : Jwt_Token_Issuer
 # Description : Identifies the issuer of the authentication token.

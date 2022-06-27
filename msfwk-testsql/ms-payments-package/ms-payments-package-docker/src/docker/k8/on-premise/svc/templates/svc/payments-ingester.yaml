@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 #Config based Avro Ingester
 apiVersion: apps/v1
 kind: Deployment

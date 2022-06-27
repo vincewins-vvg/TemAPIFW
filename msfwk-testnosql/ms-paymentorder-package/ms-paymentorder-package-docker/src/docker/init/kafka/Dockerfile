@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 FROM openjdk:8-jre-alpine
 ARG kafka_version
 ARG kafka_package

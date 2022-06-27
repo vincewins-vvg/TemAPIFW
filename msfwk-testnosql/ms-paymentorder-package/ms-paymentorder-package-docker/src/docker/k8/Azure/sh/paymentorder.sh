@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 ###Deploy the following files
 
 export SUBSCRIPTION_ID="e77b124b-df70-4526-a09b-c8d2619386e3"

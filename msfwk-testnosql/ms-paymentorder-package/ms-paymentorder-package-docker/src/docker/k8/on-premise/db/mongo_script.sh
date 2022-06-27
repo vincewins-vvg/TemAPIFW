@@ -1,3 +1,9 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
 export mongo_path={{ mongo_path }}/bin
 export PATH=$PATH:$mongo_path
 export DB_NAME="ms_paymentorder"
