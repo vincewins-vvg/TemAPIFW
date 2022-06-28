@@ -6,7 +6,7 @@
 package com.temenos.microservice.payments.function.dataprotection;
 
 import com.temenos.microservice.framework.core.FunctionException;
-import com.temenos.microservice.framework.core.dataprotection.IResolve;
+import com.temenos.microservice.framework.dataprotection.IResolve;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 
