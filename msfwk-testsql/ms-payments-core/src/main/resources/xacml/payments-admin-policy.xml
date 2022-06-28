@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" Version="1.0" PolicySetId="ADMIN" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit">
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
+<PolicySet
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" Version="1.0" PolicySetId="ADMIN" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit">
 	<Description/>
 	<Target>
 		<AnyOf>
@@ -603,7 +611,6 @@
 		</Rule>
 	</Policy>
 	<!-- referencedata_record -->
-	
 	<Policy PolicyId="permit-getReferenceDataByType" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -634,8 +641,7 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
-		<Policy PolicyId="permit-getReferenceDataRecord" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+	<Policy PolicyId="permit-getReferenceDataRecord" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
 			<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -665,7 +671,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-createReferenceDataRecord" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -696,8 +701,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
-	
 	<Policy PolicyId="permit-updateReferenceDataRecord" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -728,7 +731,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-deleteReferenceDataRecord" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -759,7 +761,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-getMetadata" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -790,7 +791,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-getTables" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -821,7 +821,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-getTable" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -852,7 +851,6 @@
 			</Condition>
 		</Rule>
 	</Policy>
-	
 	<Policy PolicyId="permit-doInputValidation" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
@@ -1233,7 +1231,7 @@
 		</Target>
 		<Rule RuleId="permit-reprocessEvents" Effect="Permit"/>
 	</Policy>
-<Policy PolicyId="permit-getConfig" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+	<Policy PolicyId="permit-getConfig" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>
 		<PolicyDefaults>
 			<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -1257,6 +1255,36 @@
 			</AnyOf>
 		</Target>
 		<Rule RuleId="permit-getConfig" Effect="Permit">
+			<Description/>
+			<Condition>
+				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and"/>
+			</Condition>
+		</Rule>
+	</Policy>
+	<Policy PolicyId="permit-getDynamicOrder" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+		<Description/>
+		<PolicyDefaults>
+			<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+		</PolicyDefaults>
+		<Target>
+			<AnyOf>
+				<AllOf>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true"/>
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetDynamicOrder</AttributeValue>
+						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true"/>
+					</Match>
+					<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+						<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true"/>
+					</Match>
+				</AllOf>
+			</AnyOf>
+		</Target>
+		<Rule RuleId="permit-getDynamicOrder" Effect="Permit">
 			<Description/>
 			<Condition>
 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and"/>
