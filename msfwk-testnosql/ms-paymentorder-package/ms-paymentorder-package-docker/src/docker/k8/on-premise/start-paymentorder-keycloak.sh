@@ -10,7 +10,6 @@
 
 # - Build paymentorder images
 
-export MONGODB_CONNECTIONSTR=mongodb+srv://badri0307:badri0307@mongodb01.qjebf.azure.mongodb.net
 # Name : Jwt_Token_Issuer
 # Description : Identifies the issuer of the authentication token.
 # Default Value : http://localhost:8180/auth/realms/msf
