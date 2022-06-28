@@ -474,7 +474,7 @@ services:
       PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
       temn.config.file.path: mapping/
       EXECUTION_ENVIRONMENT: "TEST"
-	  temn.msf.outbox.direct.delivery.enabled: "true"
+      temn.msf.outbox.direct.delivery.enabled: "true"
   eventingester:
     build:
       context: ${INGESTER_CONTEXT}
