@@ -42,7 +42,7 @@ public class PaymentOrderResolveImpl implements IResolve {
 				objectList.add(accountId);
 				criteria.add(new CriterionImpl(PaymentOrder.SORT_KEY_COLUMN, Operator.equal, objectList));
 				List<PaymentOrder> entityList = paymentOrderDao.getByIndexes(criteria);
-				if (!entityList.isEmpty()) {
+				if (entityList != null && !entityList.isEmpty()) {
 					return entityList.toArray();
 				}
 			}
