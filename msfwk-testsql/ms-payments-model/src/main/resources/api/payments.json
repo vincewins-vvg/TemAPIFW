@@ -292,7 +292,34 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/ErrorSchema"                 
+                $ref: "#/components/schemas/ErrorSchema"
+                
+  /payments/orders/currencymulti:
+    get:
+      summary: Get a payment order currency
+      operationId: GetPaymentOrderCurrencyMulti
+      tags:
+        - Payments
+      parameters:
+      - name: currency
+        in: query
+        description: Currency ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get payment order
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/PaymentOrders"
+        '400':
+          description: Invalid paymentId
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ErrorSchema"              
 
   /payments/validations:
     get:
