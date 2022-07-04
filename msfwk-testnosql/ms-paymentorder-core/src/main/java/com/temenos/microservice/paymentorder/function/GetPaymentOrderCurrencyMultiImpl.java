@@ -8,6 +8,7 @@ package com.temenos.microservice.paymentorder.function;
 import static com.temenos.microservice.framework.core.util.OpenAPIUtil.formatDate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -26,7 +27,7 @@ import com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyMultiPa
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentOrders;
 
-public class GetPaymentOrderCurrencyMultiImpl implements GetPaymentOrderCurrencyMulti  {
+public class GetPaymentOrderCurrencyMultiImpl implements GetPaymentOrderCurrencyMulti {
 
 	@Override
 	public PaymentOrders invoke(Context ctx, GetPaymentOrderCurrencyMultiInput input) throws FunctionException {
@@ -35,10 +36,10 @@ public class GetPaymentOrderCurrencyMultiImpl implements GetPaymentOrderCurrency
 		List<com.temenos.microservice.paymentorder.entity.PaymentOrder> entities = null;
 		if (input.getParams().get() != null) {
 			GetPaymentOrderCurrencyMultiParams params = input.getParams().get();
-			//validateParam(params);
+			// validateParam(params);
 			Criteria criteria = new Criteria();
-			Criterion<Object> criterion = new CriterionImpl("currency",
-					input.getParams().get().getCurrency().get(0).toString(), Operator.in);
+			Criterion<Object> criterion = new CriterionImpl("currency", Operator.in,
+					Arrays.asList(input.getParams().get().getCurrency().get(0).toString().split(",")));
 			criteria.add(criterion);
 			entities = paymentOrderDao.getByIndexes(criteria);
 		} else {
@@ -89,19 +90,6 @@ public class GetPaymentOrderCurrencyMultiImpl implements GetPaymentOrderCurrency
 			orders.add(view);
 		}
 		return orders;
-	}
-
-	private void validateParam(GetPaymentOrderCurrencyMultiParams params) throws InvalidInputException {
-		List<com.temenos.microservice.paymentorder.view.GetPaymentOrderCurrencyMultiParams.CurrencyEnum> currencyId = params
-				.getCurrency();
-		if (currencyId.size() > 1) {
-			throw new InvalidInputException(
-					new FailureMessage("Invalid CurrencyId param. Only one CurrencyId expected", "PAYM-PORD-A-2002"));
-		}
-		if (currencyId.size() == 0) {
-			throw new InvalidInputException(
-					new FailureMessage("Invalid CurrencyId param. CurrencyId is empty", "PAYM-PORD-A-2003"));
-		}
 	}
 
 }

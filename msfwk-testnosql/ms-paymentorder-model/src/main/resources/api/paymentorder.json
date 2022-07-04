@@ -401,9 +401,6 @@ paths:
           required: true
           schema:
             type: string
-            enum:
-              - INR
-              - USD
       responses:
         '200':
           description: Get payment order
