@@ -56,6 +56,7 @@ data:
   className_ReprocessEvents: com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl
   className_GetErrorEvents: com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl
   className_GetDynamicOrder: com.temenos.microservice.payments.function.GetDynamicOrderImpl
+  class.package.name: com.temenos.microservice.payments.function
   temn.msf.ingest.reprocess.source.stream: reprocess-event
   IRIS_PROTOCOL: http
   IRIS_HOST_IP: "10.92.14.71"
@@ -73,7 +74,8 @@ data:
   temn.msf.storage.home: path:/usr/local/tomcat/temp
   FILE_STORAGE_URL: /demo.properties
   temn.msf.max.file.upload.size: "70"
-  ms.security.tokencheck.enabled: "Y"
+  ms.security.tokencheck.enabled: "N"
+  temn.msf.security.authz.enabled: "false"
   temn.entitlement.stubbed.service.enabled: "true"
   JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
   JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
@@ -276,6 +278,7 @@ data:
   temn.msf.stream.outbox.topic: paymentorder-outbox-topic
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
   className_UpdatePaymentOrder: com.temenos.microservice.payments.function.UpdatePaymentOrderImpl
+  class.package.name: com.temenos.microservice.payments.function
   VALIDATE_PAYMENT_ORDER: "false"
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
