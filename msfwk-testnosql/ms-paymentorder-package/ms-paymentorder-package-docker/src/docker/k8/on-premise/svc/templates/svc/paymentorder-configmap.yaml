@@ -61,6 +61,7 @@ data:
   className_UpdateAccount: com.temenos.microservice.paymentorder.function.UpdateAccountImpl
   className_FileDelete: com.temenos.microservice.paymentorder.function.FileDeleteImpl
   className_GetAccountValidate: com.temenos.microservice.payments.function.GetAccountValidateImpl
+  class.package.name: com.temenos.microservice.paymentorder.function
   temn.msf.name: ms-paymentorder
   temn.msf.service: API  
   temn.msf.pdp.resource.type: API
@@ -219,6 +220,7 @@ data:
   className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
+  class.package.name: com.temenos.microservice.paymentorder.function
   IRIS_PROTOCOL: "http"
   IRIS_HOST_IP: "localhost"
   IRIS_PORT: "9089"
