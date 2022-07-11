@@ -74,8 +74,7 @@ data:
   temn.msf.storage.home: path:/usr/local/tomcat/temp
   FILE_STORAGE_URL: /demo.properties
   temn.msf.max.file.upload.size: "70"
-  ms.security.tokencheck.enabled: "N"
-  temn.msf.security.authz.enabled: "false"
+  ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
   JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
   JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
