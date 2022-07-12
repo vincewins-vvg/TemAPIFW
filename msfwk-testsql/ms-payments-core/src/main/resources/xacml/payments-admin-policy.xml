@@ -1311,7 +1311,7 @@
             </AllOf>
          </AnyOf>
       </Target>
-      <Rule RuleId="permit-cdperasure" Effect="Permit" />
+      <Rule RuleId="permit-errorrequest" Effect="Permit" />
    </Policy>
 </PolicySet>
 
