@@ -112,6 +112,8 @@ aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-update-refe
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-delete-reference-record-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-reference-record-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-gettype-reference-record-api-handler
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_reportgeneration
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_erasure
 
 
 
