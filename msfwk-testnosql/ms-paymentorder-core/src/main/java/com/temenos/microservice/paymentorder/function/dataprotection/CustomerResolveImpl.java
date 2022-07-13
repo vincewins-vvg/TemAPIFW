@@ -5,12 +5,19 @@
  */
 package com.temenos.microservice.paymentorder.function.dataprotection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.NoSqlDbDao;
+import com.temenos.microservice.framework.core.data.Operator;
+import com.temenos.microservice.framework.core.security.Criteria;
+import com.temenos.microservice.framework.core.security.CriterionImpl;
+import com.temenos.microservice.framework.core.security.MsLogicalOperator;
 import com.temenos.microservice.framework.dataprotection.IResolve;
+import com.temenos.microservice.paymentorder.entity.Customer;
 
 public class CustomerResolveImpl implements IResolve {
 
@@ -19,10 +26,15 @@ public class CustomerResolveImpl implements IResolve {
 		
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Customer> customerDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class);
-		Optional<com.temenos.microservice.paymentorder.entity.Customer> customerOptional = customerDao.getByPartitionKey(customerId);
+		Criteria customercriteria = new Criteria();
+		customercriteria.condition(MsLogicalOperator.AND);
+		List<Object> customerIdList = new ArrayList<Object>();
+		customerIdList.add(customerId);
+		customercriteria.add(new CriterionImpl(Customer.PARTITION_KEY_COLUMN, Operator.equal, customerIdList));
+		List<com.temenos.microservice.paymentorder.entity.Customer> customerList = customerDao.getByIndexes(customercriteria);
 		Object[] object = new Object[1];
-		if (customerOptional.isPresent()) {
-			object[0] = customerOptional.get();
+		if(customerList != null && !customerList.isEmpty()) {
+			object[0] = customerList.get(0);
 		}
 		return object;
 	}
