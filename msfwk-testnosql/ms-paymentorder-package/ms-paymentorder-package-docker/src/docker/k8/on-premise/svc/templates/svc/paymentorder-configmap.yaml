@@ -268,6 +268,85 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-command-inbox-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-command-inbox-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:  
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
+  temn.msf.service: CommandIngester 
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.ingest.source.stream: paymentorder-inbox-topic
+  temn.msf.ingest.sink.error.stream: paymentorder-inbox-error-topic
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.consumergroupid }} 
+  temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
+  temn.msf.ingest.generic.ingester: com.temenos.microservice.paymentorder.ingester.POCommandIngester
+  temn.msf.exec.env: {{ .Values.msf.others.execenv }}
+  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
+  className_UpdatePaymentOrder: com.temenos.microservice.paymentorder.function.UpdatePaymentOrderImpl
+  temn.msf.ingest.is.avro.event.ingester: "false"
+  temn.msf.security.authz.enabled: "false"
+  IRIS_PROTOCOL: "http"
+  IRIS_HOST_IP: "localhost"
+  IRIS_PORT: "9089"
+  IRIS_PATH: "irf-provider-container/api"
+  IRIS_R18_PATH: "irisR18/api"
+  IRIS_VERSION: "v1.0.0"
+  #temn.msf.pdp.resource.type: API
+  #temn.msf.pdp.resource.manager: PAYMENT
+  #PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
+  ms.security.tokencheck.enabled: "N"
+  temn.entitlement.stubbed.service.enabled: "true"
+  JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
+  JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
+  ID_TOKEN_SIGNED: "true"
+  JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
+  JWT_TOKEN_PRINCIPAL_CLAIM: {{ .Values.pit.JWT_TOKEN_PRINCIPAL_CLAIM | quote }}
+  ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
+  JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.security.tokengen.oauth.url: "http://10.93.22.58:8180/auth/realms/msf/protocol/openid-connect/token"
+  temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
+  temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
+  temn.msf.security.tokengen.oauth.scope: "openid"
+  serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"  
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
+{{- end }}    
+{{- end }}
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
+{{- if eq .Values.metrics.metricsDisabled "false" }}   
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
+{{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}
   namespace: {{.Values.namespace}}
   labels:

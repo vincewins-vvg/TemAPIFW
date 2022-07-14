@@ -88,6 +88,47 @@ spec:
                 name: posqldbsecret
                 key: PASSWORD   
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-inbox-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-command-inbox-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-inbox-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"    
+      containers:
+      - name: payments-command-inbox-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-inbox-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
 #Event Ingester Ingester
 apiVersion: apps/v1
 kind: Deployment
