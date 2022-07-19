@@ -34,7 +34,7 @@ import com.temenos.microservice.framework.core.data.ExtendableEntity;
 import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
-@Table(name = "ms_payment_order", indexes = { @Index(columnList = "paymentTxnRef") })
+@Table(name = "ms_payment_order")
 public class PaymentOrder implements ExtendableEntity {
 
 	@Id
