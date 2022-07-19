@@ -1,0 +1,28 @@
+{
+	"name": "Payments.ErasureFunction.ErasureFunctionEvent",
+	"javaPackage": "com.temenos.microservice.payments.event",
+	"description": "ErasureFunction Event",
+	"type": "event",
+	"properties": [
+		{
+			"name": "partyId",
+			"type": "string",
+			"description": "Identifer indicates the Generated PartyId"
+		},
+		{
+			"name": "customerId",
+			"type": "string",
+			"description": "Indicates the customer Id"
+		},
+		{
+			"name": "serviceId",
+			"type": "string",
+			"description": "Indicates the service Id"
+		},
+		{
+			"name": "requestId",
+			"type": "string",
+			"description": "identifier uniquely identifies customer in the service"
+		}
+	]
+}
