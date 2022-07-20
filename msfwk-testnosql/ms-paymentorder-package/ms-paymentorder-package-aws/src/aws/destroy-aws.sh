@@ -112,4 +112,6 @@ aws lambda delete-function --function-name payment-put-status-api-handler
 aws lambda delete-function --function-name payment-delete-status-api-handler
 aws lambda delete-function --function-name account-post-api-handler
 aws lambda delete-function --function-name account-put-api-handler
+aws lambda delete-function --function-name cdp_erasure
+aws lambda delete-function --function-name cdp_reportgeneration
 sleep 60

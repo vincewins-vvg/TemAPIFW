@@ -210,6 +210,15 @@ sleep 10
 aws lambda create-function --function-name payment-delete-bulk-api-handler --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.paymentorder.function.DeletePaymentOrdersFunctionAWS::invoke --description "Update Payment order handler" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{className_DeletePaymentOrders=com.temenos.microservice.paymentorder.function.DeletePaymentOrdersImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},DATABASE_KEY=dynamodb,temn_msf_security_authz_enabled=false,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_msf_outbox_direct_delivery_enabled=true,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
 sleep 10
 
+#Customer personaldata protection
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_erasure --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.dataprotection.function.ExecuteCDPErasureRequestFunctionAWS::invoke --description "Erasure API" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_ExecuteCDPErasureRequest=com.temenos.microservice.framework.dataprotection.function.ExecuteCDPErasureRequestImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
+sleep 10
+
+aws lambda create-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_reportgeneration --runtime java8.al2 --role arn:aws:iam::177642146375:role/lambda_basic_execution --handler com.temenos.microservice.framework.dataprotection.function.ExecuteSubjectAccessRequestFunctionAWS::invoke --description "Erasure API" --timeout 120 --memory-size 1024 --publish --code S3Bucket="${DEPLOYMENT_ENVIRONMENT}-ms-payment-order",S3Key=ms-paymentorder-package-aws-mongo-DEV.0.0-SNAPSHOT.jar --environment Variables=\{temn_msf_deployment_env=${DEPLOYMENT_ENVIRONMENT},className_ExecuteSubjectAccessRequest=com.temenos.microservice.framework.dataprotection.function.ExecuteSubjectAccessRequestImpl,class_package_name=com.temenos.microservice.paymentorder.function,class_inbox_dao=com.temenos.microservice.framework.core.inbox.InboxDaoImpl,class_outbox_dao=com.temenos.microservice.framework.core.outbox.OutboxDaoImpl,JWT_TOKEN_PRINCIPAL_CLAIM=${JWT_TOKEN_PRINCIPAL_CLAIM},JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER},ID_TOKEN_SIGNED=${ID_TOKEN_SIGNED},JWT_TOKEN_PUBLIC_KEY=${JWT_TOKEN_PUBLIC_KEY},MONGODB_DBNAME=ms_paymentorder,MONGODB_CONNECTIONSTR=${MONGODB_CONNSTR},DATABASE_KEY=mongodb,temn_msf_security_authz_enabled=false,temn_msf_storage_home=s3://paymentorder-file-bucket,FILE_STORAGE_URL=/XACML/Xacml.properties,temn_exec_env=serverless,temn_msf_name=PaymentOrder,temn_msf_stream_vendor=kinesis,ms_security_tokencheck_enabled=Y,temn_entitlement_stubbed_service_enabled=true,EXECUTION_ENVIRONMENT=TEST,temn_queue_impl=kinesis,temn_msf_kinesis_flow=true\}
+sleep 10
+
+
+
 # Create event source mapping
 aws lambda create-event-source-mapping --event-source-arn arn:aws:kinesis:eu-west-2:177642146375:stream/${DEPLOYMENT_ENVIRONMENT}-paymentorder-inbox-topic --function-name ${DEPLOYMENT_ENVIRONMENT}-payment-inbox-ingester --enabled --batch-size 100 --starting-position LATEST
 
@@ -399,6 +408,32 @@ aws apigateway put-integration --rest-api-id $restAPIId --resource-id $migration
 aws apigateway put-method --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method GET --authorization-type NONE --api-key-required --region eu-west-2
 
 aws apigateway put-integration --rest-api-id $restAPIId --resource-id $migrationResourceId --http-method GET --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:get-db-migration-api-handler/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+# Customer data protection APIs
+export partyresource=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $versionResourceId --path-part "party" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export personaldataresource=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $partyresource --path-part "personalData" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export erasurerequest=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $personaldataresource --path-part "erasureRequests" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export erasurerequestid=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $erasurerequest --path-part "{erasureRequestId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $erasurerequestid --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2 
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $erasurerequestid --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-cdp_erasure/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
+
+
+export reports=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $personaldataresource --path-part "reports" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export reporttype=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reports --path-part "{reportType}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export requests=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $reporttype --path-part "requests" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+export requestid=$(aws apigateway create-resource --rest-api-id $restAPIId --parent-id $requests --path-part "{requestId}" | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]')
+
+aws apigateway put-method --rest-api-id $restAPIId --resource-id $requestid --http-method PUT --authorization-type NONE --api-key-required --region eu-west-2 
+aws apigateway put-integration --rest-api-id $restAPIId --resource-id $requestid --http-method PUT --type AWS_PROXY --uri arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:177642146375:function:${DEPLOYMENT_ENVIRONMENT}-cdp_reportgeneration/invocations --credentials arn:aws:iam::177642146375:role/apigatewayrole --integration-http-method POST --content-handling CONVERT_TO_TEXT
+
 
 
 aws apigateway create-deployment --rest-api-id $restAPIId --stage-name test-primary --stage-description "Payment order Stage"

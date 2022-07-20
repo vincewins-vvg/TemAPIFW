@@ -1,0 +1,33 @@
+{
+	"name": "Payments.ReportFunction.ReportFunctionEvent",
+	"javaPackage": "com.temenos.microservice.payments.event",
+	"description": "ReportGeneration Event",
+	"type": "event",
+	"properties": [
+		{
+			"name": "partyId",
+			"type": "string",
+			"description": "Identifer indicates the Generated PartyId"
+		},
+		{
+			"name": "customerId",
+			"type": "string",
+			"description": "Indicates the customer Id"
+		},
+		{
+			"name": "serviceId",
+			"type": "string",
+			"description": "Indicates the service Id"
+		},
+		{
+			"name": "requestId",
+			"type": "string",
+			"description": "identifier uniquely identifies customer in the service"
+		},
+		{
+			"name": "reportType",
+			"type": "string",
+			"description": "indicates the type of the report requested"
+		}
+	]
+}
