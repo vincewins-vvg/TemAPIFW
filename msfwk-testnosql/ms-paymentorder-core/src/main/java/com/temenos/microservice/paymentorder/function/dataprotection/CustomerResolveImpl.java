@@ -7,6 +7,7 @@ package com.temenos.microservice.paymentorder.function.dataprotection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -22,7 +23,8 @@ import com.temenos.microservice.paymentorder.entity.Customer;
 public class CustomerResolveImpl implements IResolve {
 
 	@Override
-	public Object[] resolveEntity(String entityType, String customerId, String partyId) throws FunctionException {
+	public Object[] resolveEntity(String entityType, String customerId, String partyId,
+			Map<String, String> customEntityIdentifier) throws FunctionException {
 		
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Customer> customerDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class);
