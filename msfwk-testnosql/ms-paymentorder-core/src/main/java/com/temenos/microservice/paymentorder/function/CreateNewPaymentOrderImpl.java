@@ -131,6 +131,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
+		ctx.setBusinessKey(paymentStatus.getPaymentId());
 		return paymentStatus;
 	}
 

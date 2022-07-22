@@ -14,15 +14,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Request;
+import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.PaymentMethod;
 import com.temenos.microservice.payments.entity.PaymentOrder;
+import com.temenos.microservice.payments.event.PaymentUpdated;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.payments.entity.ExchangeRate;
@@ -93,6 +98,12 @@ public class UpdatePaymentOrderProcessor {
 			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
+		ctx.setBusinessKey(paymentOrderId);
+		PaymentUpdated paymentUpdated = new PaymentUpdated();
+		paymentUpdated.setPaymentOrderId(paymentOrderId);
+		String diff = paymentOrderOpt.diff();
+		paymentUpdated.setStateChange(JsonUtil.parseJson(diff));
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}
 

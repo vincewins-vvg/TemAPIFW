@@ -27,6 +27,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import org.springframework.stereotype.Component;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 
 @Component
@@ -65,7 +66,7 @@ public class DeletePaymentOrdersProcessor {
 			paymentStatus.setStatus("Deleted this PaymentId	: " + paymentIdList.get(i));
 			allPaymentStatus.add(paymentStatus);
 		}
-
+		ctx.setBusinessKey(paymentId[0]);
 		return allPaymentStatus;
 	}
 

@@ -70,6 +70,10 @@ spec:
       containers:
       - name: payments-command-ingester
         image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
         ports:
         - containerPort: 8093
         envFrom:
@@ -112,6 +116,10 @@ spec:
       containers:
       - name: payments-event-ingester
         image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.eventingester.cpulimit }}
+            memory: {{ .Values.resources.eventingester.memorylimit }}
         ports:
         - containerPort: 8094
         envFrom:

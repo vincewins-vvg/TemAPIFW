@@ -1,0 +1,28 @@
+{
+  "eventId": "9dc99a2c-c3ee-4393-8e58-c4ef920ef000",
+  "dateTime": "2021-10-12T19:33:39.995+0000",
+  "eventSourceId": "PaymentOrder",
+  "headers": {
+    "authorization": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4MSIsImlhdCI6MTU4OTU5MzE0MCwiZXhwIjozNjIxMTI5MTQyLCJ1c2VyaWQiOiJVc2VySW50MSIsImF1dGhvcml6YXRpb24iOlt7InJvbGVJZCI6IkNyZWF0ZVBheU9yZGVyd2l0aFVTRCIsImRhdGEiOlt7InJlc291cmNlSWQiOiJVU0QiLCJyZXNvdXJjZUNhdGVnb3J5IjoiY3VycmVuY3kifV19XX0.EUBGzZZTmHeVpXyvyfignC40Pwgnht1lbG0DZxZU_lhdnArmdeZMVKczZqZJ7HCuaftc1L9T35xUkn6ToxZaXPHLtpoqG47iB-62B6qem08-cAfqd5w95_TI6qE8ObGrjZV1uEJxkGcwZ1dMFPII9NlIADtGfP6mIJpYIGzVZEJp190ZN2kICBQJdVZ0RnVqPuurqRrFvyNU-Y4L2jPZ1l6K2sjvw8F59heK4RaSsdu7vsy32Wmv3cCxlJt96yaiEY16BRPIoH76sGOpG9OAo03TawnK-m_znkYuFBRHLdG7r0IYr0dl1yWa0LEk79slNyqc8r_eSAVX5XKg-i89Nw"
+  },
+  "eventType": "ms-paymentorder.CreateNewPaymentOrder",
+  "payload": {
+    "body": {
+      "fromAccount": "1",
+      "toAccount": "4",
+      "paymentDetails": "fees",
+      "currency": "INR",
+      "amount": 100,
+      "expires": 1,
+      "paymentMethod": {
+        "id": 111,
+        "name": "debit card",
+        "card": {
+          "cardid": 1001,
+          "cardname": "visa",
+          "cardlimit": 250000
+        }
+      }
+    }
+  }
+}

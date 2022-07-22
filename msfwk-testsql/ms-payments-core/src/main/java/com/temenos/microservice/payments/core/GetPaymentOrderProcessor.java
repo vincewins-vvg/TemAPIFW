@@ -31,6 +31,7 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.FunctionInvocationException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.exception.StorageException;
@@ -50,7 +51,11 @@ public class GetPaymentOrderProcessor {
 	public PaymentOrderStatus invoke(Context ctx, GetPaymentOrderInput input) throws FunctionException {
 		validateInput(input);
 		GetPaymentOrderParams params = input.getParams().get();
+		String paymentOrderId = null;
+		if (params.getPaymentId() != null && params.getPaymentId().get(0) != null)
+			paymentOrderId = params.getPaymentId().get(0);
 		validateParam(params);
+		ctx.setBusinessKey(paymentOrderId);
 		return executeGetPaymentOrder(params);
 	}
 

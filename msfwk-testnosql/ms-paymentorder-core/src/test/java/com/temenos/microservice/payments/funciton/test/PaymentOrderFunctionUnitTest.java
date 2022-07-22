@@ -121,7 +121,13 @@ public class PaymentOrderFunctionUnitTest {
 		getPaymentOrderParams.setPaymentId(Arrays.asList("PO~11544~100245~INR~600"));
 		GetPaymentOrderInput getPaymentOrderInput = new GetPaymentOrderInput(getPaymentOrderParams);
 		try {
-			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(null, getPaymentOrderInput);
+			CamelContext ctx = new DefaultCamelContext();
+			Exchange exchange = new DefaultExchange(ctx);
+			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer(
+					"CreateNewPaymentOrder", exchange);
+			HttpRequest<String> httpRequest = httpRequestTransformer.transform();
+			HttpRequestContext context = FunctionInputBuilder.buildContext(httpRequest);
+			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(context, getPaymentOrderInput);
 			Assert.assertNotNull(paymentOrderStatus);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
@@ -177,7 +183,7 @@ public class PaymentOrderFunctionUnitTest {
 			paymentStatus.setDetails("Test");
 			paymentStatus.setStatus("test");
 			UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
-			PaymentStatus status = updatePaymentOrder.invoke(null, paymentOrderInput);
+			PaymentStatus status = updatePaymentOrder.invoke(context, paymentOrderInput);
 			Assert.assertNotNull(status);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
