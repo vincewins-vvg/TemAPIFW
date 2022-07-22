@@ -435,7 +435,42 @@ pit:
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:  
   # targetMemoryUtilizationPercentage: 80
   
+audit:
+# Name : ENABLE_AUDIT
+# Description : Enable the audit log feature.
+  ENABLE_AUDIT:
+# Name : ENABLE_AUDIT_FOR_GET_API
+# Description : Capture audit logs for get APIs.
+  ENABLE_AUDIT_FOR_GET_API:
+# Name : ENABLE_AUDIT_TO_CAPTURE_RESPONSE
+# Description : Capture response in the audit logs.
+  ENABLE_AUDIT_TO_CAPTURE_RESPONSE:  
+  
 # Name			: imagePullSecrets
 # Description	: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. imagePullSecrets Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
 imagePullSecrets: 
  
+#Name                 :resources
+#Description          :Resource management for pods/Containers -- Kubernetes uses to control resources such as CPU and memory.can declare limits for CPU and memory for all pod containers.
+resources:
+  ingester:
+#Name                 :cpulimit
+#Description          :The CPU limit defines a hard ceiling on how much CPU time that the container can use. it should not be less than 1m. can specific cpu limit as 1m or 0.001.
+#Default Value        :100m
+    cpulimit: "500m"
+#Name                 :memorylimit
+#Description          :If you specify a memory limit for every container in a Pod, Kubernetes can infer the Pod-level memory limit by adding up the limits for its containers
+#Default Value        :1G
+    memorylimit: 2G
+    java:
+#Name                 :heaplimit
+#Description          :To change the value of experimental flags, you must unlock them first. You can do this by setting -XX:+UnlockExperimentalVMOptions explicitly on the command line before any experimental flags. The flag -XX:+UseCGroupMemoryLimitForHeap lets the JVM detect what the max heap size in a container should be. MaxRAMPercentage parameter allows setting the maximum heap size for a JVM running with a large amount of memory (greater than 200 MB).
+#Default Value        :-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0    
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -agentlib:jdwp=transport=dt_socket,address=40500,suspend=n,server=y '
+      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'
+  eventingester:
+    cpulimit: "500m"
+    memorylimit: 2G
+    java:
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 '
+      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'

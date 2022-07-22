@@ -45,6 +45,7 @@ public class EventHandlerImpl implements EventProcessor {
 				FUNCTION_DIAGNOSTIC.prepareDebug(e.getMessage());
 			}
 			paymentOrder = noSqlDao.getByPartitionKey(paymentOrderId).get();
+			context.setBusinessKey(paymentOrderId);
 			paymentOrder.setStatus("Completed");
 			noSqlDao.saveEntity(paymentOrder);
 	}

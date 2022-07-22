@@ -97,6 +97,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 			throw new InvalidInputException(new FailureMessage("Invalid Payment Order Id Entered",
 					MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
+		ctx.setBusinessKey(paymentOrderId);
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}
 

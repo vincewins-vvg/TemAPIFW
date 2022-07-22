@@ -29,6 +29,7 @@ import com.temenos.microservice.framework.core.file.reader.StorageReadException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.paymentorder.view.EnumCurrency;
@@ -51,8 +52,12 @@ public class GetPaymentOrderImpl implements GetPaymentOrder {
 	public PaymentOrderStatus invoke(Context ctx, GetPaymentOrderInput input) throws FunctionException {
 		validateInput(input);
 		GetPaymentOrderParams params = input.getParams().get();
+		String paymentOrderId = null;
+		if (params.getPaymentId() != null && params.getPaymentId().get(0) != null)
+			paymentOrderId = params.getPaymentId().get(0);
 
 		validateParam(params);
+		ctx.setBusinessKey(paymentOrderId);
 		return executeGetPaymentOrder(params);
 	}
 

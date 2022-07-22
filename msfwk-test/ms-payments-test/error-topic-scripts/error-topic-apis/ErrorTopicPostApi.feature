@@ -14,7 +14,7 @@ Feature: ErrorTopicPostApi
       | TestCaseID              | AvroJson                                      | ApplicationName |
       | MS-Test-PO-Ingester-001 | avro/ingester/PaymentOrderInputAvroData1.avro | PAYMENT_ORDER   |
     And set timeout session for 30 seconds
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
     Then Set the following data criteria
       | TestCaseID              | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-Ingester-001 | status     | eq       | string   | UNPROCESSED |

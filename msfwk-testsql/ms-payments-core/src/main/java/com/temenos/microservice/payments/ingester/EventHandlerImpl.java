@@ -43,6 +43,7 @@ public class EventHandlerImpl implements EventProcessor {
 			e.printStackTrace();
 		}
 		paymentOrder = SqlDao.findById(paymentOrderId, PaymentOrder.class);
+		context.setBusinessKey(paymentOrderId);
 		paymentOrder.setStatus("Completed");
 		SqlDao.saveEntity(paymentOrder);
 	}

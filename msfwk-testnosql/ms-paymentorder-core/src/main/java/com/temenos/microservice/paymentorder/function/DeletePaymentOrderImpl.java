@@ -5,6 +5,8 @@
  */
 package com.temenos.microservice.paymentorder.function;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.temenos.microservice.framework.core.FunctionException;
@@ -12,6 +14,7 @@ import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.DeletePaymentOrderParams;
@@ -44,6 +47,7 @@ public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 		PaymentStatus paymentStatus = new PaymentStatus();
 		paymentStatus.setPaymentId(paymentId);
 		paymentStatus.setStatus("DELETED");
+		ctx.setBusinessKey(paymentStatus.getPaymentId());
 		return paymentStatus;
 	}
 

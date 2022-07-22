@@ -17,7 +17,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.MapKeyColumn;
@@ -26,16 +25,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.temenos.microservice.framework.core.data.BaseEntity;
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
-import com.temenos.microservice.framework.core.data.JPAEntity;
 
 @Entity
 @Table(name = "ms_payment_order")
-public class PaymentOrder implements ExtendableEntity {
+public class PaymentOrder extends BaseEntity implements ExtendableEntity {
 
 	@Id
 	private String paymentOrderId;

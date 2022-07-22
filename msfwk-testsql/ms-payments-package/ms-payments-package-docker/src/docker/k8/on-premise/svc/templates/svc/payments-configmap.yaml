@@ -81,6 +81,9 @@ data:
   ID_TOKEN_SIGNED: {{ .Values.pit.ID_TOKEN_SIGNED | quote }}
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED | quote }}
   JWT_TOKEN_PUBLIC_KEY: {{ .Values.pit.JWT_TOKEN_PUBLIC_KEY| quote }}
+  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
+  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
+  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
   temn.msf.security.tokengen.oauth.url: "http://10.92.201.101:8180/auth/realms/msf/protocol/openid-connect/token"
   temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
   temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
@@ -281,6 +284,10 @@ data:
   VALIDATE_PAYMENT_ORDER: "false"
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
+  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
+  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
+  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
+  java_options: {{ .Values.resources.ingester.java.heaplimit }}
   IRIS_PROTOCOL: http
   IRIS_HOST_IP: "10.92.14.71"
   IRIS_PORT: "9089"
@@ -308,6 +315,9 @@ data:
   temn.msf.security.tokengen.oauth.grant.type: "client_credentials"
   temn.msf.security.tokengen.oauth.client.id : "msfauthcode"   
   temn.msf.security.tokengen.oauth.scope: "openid"
+  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
+  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
+  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
   serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
@@ -364,6 +374,10 @@ data:
   temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl
   temn.msf.ingest.event.processor: com.temenos.microservice.payments.ingester.EventHandlerImpl
   temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.payments.ingester.PoHandlerImpl
+  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
+  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
+  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
+  java_options: {{ .Values.resources.eventingester.java.heaplimit }}
 # temn.msf.raise.received.event: "true"
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"

@@ -18,8 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 
+import com.temenos.microservice.framework.core.data.BaseEntity;
+
 @Entity
-public class PaymentMethod implements com.temenos.microservice.framework.core.data.Entity {
+public class PaymentMethod extends BaseEntity implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	private long id;

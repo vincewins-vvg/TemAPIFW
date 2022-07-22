@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
 <PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" Version="1.0" PolicySetId="USER" PolicyCombiningAlgId="urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit">
    <Description />
    <Target>
@@ -1284,7 +1291,7 @@
          </Condition>
       </Rule>
    </Policy>
- <Policy PolicyId="permit-reportgeneration" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+ <Policy PolicyId="permit-getAuditLog" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />
       <PolicyDefaults>
          <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
@@ -1297,7 +1304,7 @@
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ExecuteSubjectAccessRequest</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetUserAudit</AttributeValue>
                   <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
                </Match>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -1307,31 +1314,7 @@
             </AllOf>
          </AnyOf>
       </Target>
-      <Rule RuleId="permit-reportgeneration" Effect="Permit" />
+      <Rule RuleId="permit-getAuditLog" Effect="Permit" />
    </Policy>
-   <Policy PolicyId="permit-errorrequest" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
-      <Description />
-      <PolicyDefaults>
-         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
-      </PolicyDefaults>
-      <Target>
-         <AnyOf>
-            <AllOf>
-               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
-                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
-               </Match>
-               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ExecuteCDPErasureRequest</AttributeValue>
-                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
-               </Match>
-               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
-                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
-               </Match>
-            </AllOf>
-         </AnyOf>
-      </Target>
-      <Rule RuleId="permit-errorrequest" Effect="Permit" />
-   </Policy>
+   
 </PolicySet>

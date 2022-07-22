@@ -12,6 +12,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.support.DefaultExchange;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +25,13 @@ import com.temenos.microservice.framework.core.data.DaoFactory;
 import com.temenos.microservice.framework.core.data.MSTransaction;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataEntity;
 import com.temenos.microservice.framework.core.data.sql.ReferenceDataIdEntity;
+import com.temenos.microservice.framework.core.function.FunctionInputBuilder;
+import com.temenos.microservice.framework.core.function.HttpRequest;
+import com.temenos.microservice.framework.core.function.HttpRequestContext;
+import com.temenos.microservice.framework.core.function.HttpRequestTransformer;
 import com.temenos.microservice.framework.core.function.RequestContext;
 import com.temenos.microservice.framework.core.function.RequestImpl;
+import com.temenos.microservice.framework.core.function.camel.CamelHttpRequestTransformer;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrder;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderImpl;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
@@ -109,7 +118,13 @@ public class PaymentOrderFunctionUnitTest {
 		getPaymentOrderParams.setPaymentId(Arrays.asList("70010"));
 		GetPaymentOrderInput getPaymentOrderInput = new GetPaymentOrderInput(getPaymentOrderParams);
 		try {
-			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(null, getPaymentOrderInput);
+			CamelContext ctx = new DefaultCamelContext();
+			Exchange exchange = new DefaultExchange(ctx);
+			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer(
+					"CreateNewPaymentOrder", exchange);
+			HttpRequest<String> httpRequest = httpRequestTransformer.transform();
+			HttpRequestContext context = FunctionInputBuilder.buildContext(httpRequest);
+			PaymentOrderStatus paymentOrderStatus = getPaymentOrder.invoke(context, getPaymentOrderInput);
 			Assert.assertNotNull(paymentOrderStatus);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());
@@ -174,6 +189,13 @@ public class PaymentOrderFunctionUnitTest {
 			PaymentStatus PymtStatus = createNewPaymentOrder.invoke(new RequestContext(new RequestImpl()),
 					createNewPaymentOrderInput);
 
+			CamelContext ctx = new DefaultCamelContext();
+			Exchange exchange = new DefaultExchange(ctx);
+			HttpRequestTransformer<String> httpRequestTransformer = new CamelHttpRequestTransformer(
+					"CreateNewPaymentOrder", exchange);
+			HttpRequest<String> httpRequest = httpRequestTransformer.transform();
+			HttpRequestContext context = FunctionInputBuilder.buildContext(httpRequest);
+
 			UpdatePaymentOrder updatePaymentOrder = new UpdatePaymentOrderImpl();
 			UpdatePaymentOrderParams orderParams = new UpdatePaymentOrderParams();
 //			orderParams.setPaymentId(Arrays.asList("70010"));
@@ -184,7 +206,9 @@ public class PaymentOrderFunctionUnitTest {
 //			paymentStatus.setPaymentId("12355");
 			paymentStatus.setStatus("test");
 			UpdatePaymentOrderInput paymentOrderInput = new UpdatePaymentOrderInput(orderParams, paymentStatus);
-			PaymentStatus status = updatePaymentOrder.invoke(null, paymentOrderInput);
+			DaoFactory.getDao(null).beginTransaction();
+			PaymentStatus status = updatePaymentOrder.invoke(context, paymentOrderInput);
+			DaoFactory.getDao(null).commitTransaction();
 			Assert.assertNotNull(status);
 		} catch (FunctionException e) {
 			Assert.fail(e.getMessage());

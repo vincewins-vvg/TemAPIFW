@@ -20,8 +20,10 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 
+import com.temenos.microservice.framework.core.data.BaseEntity;
+
 @Entity
-public class ExchangeRate implements com.temenos.microservice.framework.core.data.Entity {
+public class ExchangeRate extends BaseEntity implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="EXCH_SEQ")

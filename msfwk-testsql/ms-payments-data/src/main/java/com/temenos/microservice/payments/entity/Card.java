@@ -19,9 +19,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 
+import com.temenos.microservice.framework.core.data.BaseEntity;
+
 @Entity
 @Table(indexes = { @Index(columnList = "cardname") })
-public class Card implements com.temenos.microservice.framework.core.data.Entity {
+public class Card extends BaseEntity implements com.temenos.microservice.framework.core.data.Entity {
 
 	@Id
 	private long cardid;

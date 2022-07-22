@@ -13,7 +13,7 @@ Feature: ErrorTopicGetApi
       | TestCaseID              | AvroJson                                      | ApplicationName |
       | MS-Test-PO-Ingester-001 | avro/ingester/PaymentOrderInputAvroData1.avro | PAYMENT_ORDER   |
     And set timeout session for 30 seconds
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
     Then Set the following data criteria
       | TestCaseID              | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-Ingester-001 | status     | eq       | string   | UNPROCESSED |
@@ -190,8 +190,8 @@ Scenario: To validate the error top get api with status in query parameters
     When Send Data to Topic for following records
       | TestCaseID              | AvroJson                                      | ApplicationName |
       | MS-Test-PO-Ingester-001 | avro/ingester/PaymentOrderInputAvroData2.avro | PAYMENT_ORDER   |
-    And set timeout session for 30 seconds
-    And set timeout session for 30 seconds
+    And set timeout session for 60 seconds
+    And set timeout session for 60 seconds
     Then Set the following data criteria
       | TestCaseID              | ColumnName | Operator | DataType | ColumnValue |
       | MS-Test-PO-Ingester-001 | status     | eq       | string   | UNPROCESSED |
