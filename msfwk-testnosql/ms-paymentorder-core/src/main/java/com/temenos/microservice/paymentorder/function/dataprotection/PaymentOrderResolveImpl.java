@@ -7,6 +7,7 @@ package com.temenos.microservice.paymentorder.function.dataprotection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,13 +26,22 @@ import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 public class PaymentOrderResolveImpl implements IResolve {
 
 	@Override
-	public Object[] resolveEntity(String entityType, String customerId, String partyId) throws FunctionException {
+	public Object[] resolveEntity(String entityType, String customerId, String partyId,
+			Map<String, String> customEntityIdentifier) throws FunctionException {
+
 		
 		NoSqlDbDao<com.temenos.microservice.paymentorder.entity.Customer> customerDao = DaoFactory
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.Customer.class);
-		Optional<com.temenos.microservice.paymentorder.entity.Customer> customerOptional = customerDao.getByPartitionKey(customerId);
-		if(customerOptional.isPresent()) {
-			String accountId = customerOptional.get().getAccount();
+		
+		Criteria customercriteria = new Criteria();
+		customercriteria.condition(MsLogicalOperator.AND);
+		List<Object> customerIdList = new ArrayList<Object>();
+		customerIdList.add(customerId);
+		customercriteria.add(new CriterionImpl(Customer.PARTITION_KEY_COLUMN, Operator.equal, customerIdList));
+		List<com.temenos.microservice.paymentorder.entity.Customer> customerList = customerDao.getByIndexes(customercriteria);
+		
+		if(customerList != null && !customerList.isEmpty()) {
+			String accountId = customerList.get(0).getAccount();
 			NoSqlDbDao<com.temenos.microservice.paymentorder.entity.PaymentOrder> paymentOrderDao = DaoFactory
 					.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 			
@@ -48,5 +58,6 @@ public class PaymentOrderResolveImpl implements IResolve {
 			}
 		}
 		return null;
+	
 	}
 }
