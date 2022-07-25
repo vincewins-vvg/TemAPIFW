@@ -351,9 +351,9 @@ data:
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.name: ms-paymentorder
   temn.msf.service: CommandIngester 
-  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.inboxtopic | quote }}
+  temn.msf.ingest.source.stream: paymentorder-inbox-topic
   temn.msf.ingest.source.stream.consumergroup.id: {{ .Values.kafkatopic.sourcestream_consumergroupid | quote }}
-  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.inboxerrortopic | quote }}
+  temn.msf.ingest.sink.error.stream: paymentorder-inbox-error-topic
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstream_producerid | quote }}
   temn.msf.ingest.generic.ingester: com.temenos.microservice.payments.ingester.POCommandIngester
   temn.msf.exec.env: server
