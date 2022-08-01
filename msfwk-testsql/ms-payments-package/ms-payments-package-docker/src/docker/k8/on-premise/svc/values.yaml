@@ -328,6 +328,7 @@ env:
 #Description      : Specify the Frequency to trigger the scheduler job is set in this property. Default is 5 minutes
 #DefaultValue     : 5
     schedule: 5
+    timeunit: "MINUTES"
   sqlinboxcatchupscheduler:
 #Name             : temn_msf_scheduler_inboxcleanup_schedule
 #Description      : Specifies No of Minutes required to hold the records inside ms_inbox_events table before automatic deletion.
