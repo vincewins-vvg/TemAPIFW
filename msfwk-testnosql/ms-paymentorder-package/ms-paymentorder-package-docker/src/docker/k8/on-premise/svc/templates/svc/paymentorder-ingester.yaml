@@ -124,6 +124,66 @@ spec:
                 name: ponosqldbsecret
                 key: PASSWORD    
 ---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"       
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-inbox-config" }}    
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD    
+---
 #Event Ingester Ingester
 apiVersion: apps/v1
 kind: Deployment
