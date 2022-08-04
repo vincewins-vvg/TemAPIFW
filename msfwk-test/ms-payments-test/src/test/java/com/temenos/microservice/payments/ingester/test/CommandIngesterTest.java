@@ -1,4 +1,4 @@
-package com.temenos.microservice.payments.ingester.test;
+/* package com.temenos.microservice.payments.ingester.test;
 
 import static com.temenos.microservice.framework.core.ingester.IngesterLogger.ingesterAlert;
 import static org.junit.Assert.assertEquals;
@@ -87,9 +87,10 @@ public class CommandIngesterTest extends ITTest {
 			}
 		}
 
-		/*
-		 * Assertion for the Inbox record eventId & inbox record correlationId
-		 */
+		
+		  Assertion for the Inbox record eventId & inbox record correlationId
+		 
 		assertEquals(inboxAttributesMap.get("eventid"), "5213a00f-1ab3-478e-a4d7-53b0f4326d00");
 	}
 }
+ */
