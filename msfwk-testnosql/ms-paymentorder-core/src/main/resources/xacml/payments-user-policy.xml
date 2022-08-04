@@ -1367,5 +1367,30 @@
       </Target>
       <Rule RuleId="permit-getAuditLog" Effect="Permit" />
    </Policy>
+   <Policy PolicyId="permit-dynamicorder" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+      <Description />
+      <PolicyDefaults>
+         <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+      </PolicyDefaults>
+      <Target>
+         <AnyOf>
+            <AllOf>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PAYMENT</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceManagerId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GetDynamicOrder</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceId" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">API</AttributeValue>
+                  <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resourceType" DataType="http://www.w3.org/2001/XMLSchema#string" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" MustBePresent="true" />
+               </Match>
+            </AllOf>
+         </AnyOf>
+      </Target>
+      <Rule RuleId="permit-dynamicorder" Effect="Permit" />
+   </Policy>
    
 </PolicySet>

@@ -3,6 +3,7 @@
  * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
  * *******************************************************************************
  */
+
 /**
 ======================
  Modification History 
@@ -12,27 +13,20 @@
 *              Response headers and response code added in the exposed method. 
 *  
 */
-package com.temenos.microservice.payments.function;
+
+package com.temenos.microservice.paymentorder.function;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
-import com.temenos.microservice.payments.core.GetPaymentOrdersProcessor;
-import com.temenos.microservice.paymentsorder.function.GetDynamicOrder;
-import com.temenos.microservice.paymentsorder.function.GetDynamicOrderInput;
-import com.temenos.microservice.framework.core.function.Context;
-
+import com.temenos.microservice.paymentorder.function.GetDynamicOrder;
+import com.temenos.microservice.paymentorder.function.GetDynamicOrderInput;
+import com.temenos.microservice.paymentorder.view.GetDynamicOrderParams;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject; 
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import com.temenos.microservice.framework.core.util.FrameworkConstants;
-import com.temenos.microservice.framework.core.util.JsonUtil;
-import com.temenos.microservice.paymentsorder.view.*;
-import java.lang.Object;
-import java.lang.String; 
 
 public class GetDynamicOrderImpl implements GetDynamicOrder {
 
@@ -47,7 +41,7 @@ public class GetDynamicOrderImpl implements GetDynamicOrder {
 
 		context.setResponseCode("202");   // Setting response code
 		context.setResponseHeaders(responseheaders);   // Setting response header
-        
+
 		JSONParser parser = new JSONParser();
 		List<Integer> list = test.getId();
 		List<String> list1 = test.getOrder();
