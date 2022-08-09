@@ -30,6 +30,33 @@ paths:
             application/json:    
               schema:
                 $ref: "#/components/schemas/PaymentStatus"
+  /getDynamicType/orders:
+     get:
+      summary: Get all DynamicType details
+      operationId: GetDynamicOrder
+      tags:
+        - Payments
+      parameters:
+      - name: id
+        in: query
+        description: Dynamic Id
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: order
+        in: query
+        description: details
+        required: false
+        schema:
+          type: string	  
+      responses:
+        '200':
+          description: Get DynamicType details
+          content:
+            application/json: 
+              schema:
+                type: object
   /payments/upload:
     post:
       tags:

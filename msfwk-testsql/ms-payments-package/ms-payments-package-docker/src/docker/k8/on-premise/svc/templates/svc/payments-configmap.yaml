@@ -55,7 +55,6 @@ data:
   API_HEALTH_CHECK_BUSINESS_CONDITION: com.temenos.microservice.payments.core.BusinessConditionImpl
   className_ReprocessEvents: com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl
   className_GetErrorEvents: com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl
-  className_GetDynamicOrder: com.temenos.microservice.payments.function.GetDynamicOrderImpl
   class.package.name: com.temenos.microservice.payments.function
   temn.msf.ingest.reprocess.source.stream: reprocess-event
   IRIS_PROTOCOL: http
