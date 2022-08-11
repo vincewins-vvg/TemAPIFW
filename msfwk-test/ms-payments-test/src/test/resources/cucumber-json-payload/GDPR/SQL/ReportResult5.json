@@ -1,0 +1,20 @@
+{
+    "partyId": "205761453936",
+    "customerId": "PO~354-ER10~123-ABC~USD~485",
+    "serviceId": "PARTY",
+    "requestId": "144.ERASURE",
+    "reportType": "SAR",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency"
+                },
+                {
+                    "attributeName": "amount"
+                }
+            ]
+        }
+    ]
+}

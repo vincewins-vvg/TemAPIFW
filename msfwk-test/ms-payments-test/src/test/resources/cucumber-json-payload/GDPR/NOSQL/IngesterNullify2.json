@@ -1,0 +1,231 @@
+{
+  "eventId": "9dc99a2c-c3ee-4393-8e58-c4ef920ef025NULLIFY",
+  "dateTime": "2020-10-12T19:33:39.995+0000",
+  "priority": 0,
+  "status": "New",
+  "eventSourceId": "ms-paymentorder",
+  "headers": {
+    "authorization": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMjkwMDA4NjQ3MzI4OSIsInJvbGVJZCI6IkJhbGFuY2VWaWV3ZXIiLCJpYXQiOjE1ODk1OTMxNDAsImV4cCI6MzYyMTEyOTE0Mn0.YYalWJ7qoWwZnDD2MB5zgtCwK3DgnVwcBBfeeKX7DBVIpilCNLslyNWRO895LJsP6n-eC_RdeuPkyauG400mG35SweW35oJRqH8jsgoFI4lPLDK-xjC18rZ-ibjv_irJNv97siCfoUjhLZbG64klYCJki4eFTaZEZIiXMPYhaW2nW-xReuyDdDQ7tOaj_9Cg-cOoTjfRprZYqkgqEHx20xOu-i-37xVQUhMj9prLQAZPs7Kvxn-aASpPLUtd7eYQW30fByq4PMUSM1_524yfXMLzZV-VHHYuMK8pb1xSLdizvn9QcbbDDuvSNPyLpTGhoBbFgZ9_geGjFIky6yjVzw",
+    "serviceid": "client",
+    "channelid": "web",
+    "customfilterid": "test"
+  },
+  "eventType": "ms-paymentorder.ExecuteCDPErasureRequest",
+  "payload": {
+    "params": {
+      "erasureRequestId": [
+        "123345"
+      ]
+    },
+    "body": {
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "IG1",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+        "currency": "100"
+    },
+    "personalData": [
+         {
+            "purpose": "tax",
+            "dataDefinitions": [
+         
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "amount",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentDate",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentReference",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        },{
+            "purpose": "tax1",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentDetails",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentReference",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder.PaymentMethod",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "name",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": ""
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "status",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        },{
+            "purpose": "payment",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder.payeeDetails",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "payeeName",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "payeeType",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                }
+            ]
+        },{
+            "purpose": "card",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder.paymentMethod.card",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "cardname",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "cardlimit",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        
+        
+        
+        {
+            "purpose": "cardexchange",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder.exchangeRates",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "name",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "value",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "Customer",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "dateOfJoining",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        },{
+                            "dataEntityFieldName": "loanTypes",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "NULLIFY",
+                                "optionsValue": " "
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+  }
+}

@@ -1,0 +1,116 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "ER8",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+
+    "fromAccount": "150-IOB",
+    "toAccount": "334-IOB",
+    "paymentDetails": "doc",
+    "currency": "INR"
+
+  },
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "paymentDate",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "amount",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "paymentDetails",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "paymentReference",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "dataEntityFields": [
+                
+                {
+                    "dataEntityFieldName": "cardname",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "cardlimit",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "name",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "value",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "currency",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "status",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "paymentDate",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "debitAccount",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "creditAccount",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "payeeName",
+                    "dataEntityFieldDataType": "decimal"
+                },{
+                    "dataEntityFieldName": "payeeType",
+                    "dataEntityFieldDataType": "decimal"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "name",
+                    "dataEntityFieldDataType": "decimal"
+                }
+            ]
+        },{
+            "dataEntityName": "Customer",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "dateOfJoining",
+                    "dataEntityFieldDataType": "decimal"
+                },{
+                    "dataEntityFieldName": "customerId",
+                    "dataEntityFieldDataType": "decimal"
+                },{
+                    "dataEntityFieldName": "loanTypes",
+                    "dataEntityFieldDataType": "list"
+                }
+            ]
+        }
+    ]
+}
