@@ -86,10 +86,6 @@ export dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
 # Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. adapter_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
 export dbinit_Image_Pull_Secret=""
 
-
-
-
-
 cd ../..
 
 ./build.sh build
@@ -104,9 +100,11 @@ cd k8/on-premise/db
 
 cd ../
 
-kubectl create namespace mongopaymentorder
+kubectl create ns poappinit
 
-helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinit_Image_Pull_Secret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${db_Connection_Url}\"
+export APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
+
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=mongodb --set env.appinit.databaseName=$database_Name --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=\"${db_Connection_Url}\" --set env.appinit.dbautoupgrade="N"
 
 kubectl create namespace paymentorder
 

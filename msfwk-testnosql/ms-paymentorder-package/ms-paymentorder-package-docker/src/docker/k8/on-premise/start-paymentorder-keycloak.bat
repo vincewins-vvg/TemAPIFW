@@ -89,9 +89,11 @@ REM call start-mongo-operator.bat
 
 cd ../
 
-kubectl create ns mongopaymentorder
+kubectl create ns poappinit
 
-helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=%dbinitImage% --set env.mongoinit.migration=../migration --set imagePullSecrets=%dbinit_Image_Pull_Secret% --set image.tag=%tag% --set env.mongoinit.dbConnectionUrl=%db_Connection_Url%
+SET APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
+
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=mongodb --set env.appinit.databaseName=%database_Name% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set image.appinit.repository=%APP_INIT_IMAGE% 
 
 kubectl create namespace paymentorder
 

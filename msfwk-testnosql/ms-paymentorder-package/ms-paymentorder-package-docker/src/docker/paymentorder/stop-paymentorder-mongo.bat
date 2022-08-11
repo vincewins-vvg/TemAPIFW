@@ -4,12 +4,10 @@
 @REM *******************************************************************************
 @REM
 
-helm uninstall appinit -n mongopaymentorder
-
-helm uninstall dbinit -n mongopaymentorder
+helm uninstall poappinit -n poappinit
 
 helm uninstall paymentorder -n paymentorder
 
-kubectl delete namespace mongopaymentorder
+kubectl delete namespace poappinit
 
 kubectl delete namespace paymentorder

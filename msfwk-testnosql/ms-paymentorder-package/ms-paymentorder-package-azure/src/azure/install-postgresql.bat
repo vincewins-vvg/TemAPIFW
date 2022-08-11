@@ -161,6 +161,12 @@ SET EVENT_HUB_COMMAND_EVENT_TOPIC="paymentorder-inbox-topic"
 
 SET EVENTDIRECTLYDELIVERY="true"
 
+REM Appinit Variables
+SET APPINT_NAME="appinit"
+SET TEM_APPINIT_DISABLEINBOX="true"
+SET APPINIT_AUTHZ_ENABLED="false"
+SET DB_AUTO_UPGRADE="N"
+
 call ingester_creator %APP_NAME% %JAR_NAME% %JAR_VERSION% 
 
 call ingester_creator %APP_NAME% %AVRO_APP_NAME% %JAR_NAME% %JAR_VERSION% 
@@ -194,6 +200,9 @@ if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Daz
 
 rem OutboxListener function
 if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%OUTBOX_LISTENER_APP_NAME% -Dsubscription.id=%SUBSCRIPTION_ID% -f pom-azure-deploy.xml -X ) else ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%OUTBOX_LISTENER_APP_NAME% -f pom-azure-deploy.xml -X )
+
+rem deploy appinit function app in to azure enviornment
+if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%APPINT_NAME% -Dsubscription.id=%SUBSCRIPTION_ID% -f pom-azure-deploy.xml -X ) else ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%APPINT_NAME% -f pom-azure-deploy.xml -X )
 
 REM PROPERTIES FOR TOPICS AND HUB NAME/CONSUMERGROUP NAME CREATION
 
@@ -253,6 +262,11 @@ set /p storageconnectionString=< out1.txt
 set AZURE_STORAGE_CONNECTION_STRING=%storageconnectionString%
 del out1.txt
 
+REM Exporting master key from appinit function app
+call az functionapp keys list -g %RESOURCE_GROUP_NAME% -n %APPINT_NAME% --query masterKey  >> out1.txt
+SET /p MASTER_KEY=< out1.txt
+del out1.txt
+
 REM CREATING APP/LISTENERS/INGESTERS APP
  
 rem Environment variable settings
@@ -272,5 +286,10 @@ call az functionapp config appsettings set --name %EVENT_APP_NAME% --resource-gr
 rem Environment variable settings
 call az functionapp config appsettings set --name %OUTBOX_LISTENER_APP_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings className_CreateNewPaymentOrder=%CREATEPAYMENT% className_GetPaymentOrders=%GETpaymentorder% className_UpdatePaymentOrder=%UPDATEPAYMENT% className_GetPaymentOrder=%GETPAYMENT% className_deletePaymentOrder=%DELETE_PAYMENTORDER% className_invokepaymentordertate=%INVEPAYMENT% className_getHealthCheck=%HEATHCHECK% className_GetPaymentOrderCurrency=%PAYMENT_ORDER_CURRENCY% className_createReferenceData=%CREATE_REFERENCE_DATA% className_updateReferenceData=%UPDATE_REFERENCE_DATA% className_addReferenceData=%ADD_REFERENCE_DATA% className_deleteReferenceData=%DELETE_REFERENCE_DATA% className_UpdateStatus=%UPDATE_STATUS% className_DeleteWithCondition=%DELETE_CONDITION% className_CreateUser=%CREATE_USER% className_GetUser=%GET_USER% className_CreateAccount=%CREATE_ACCOUNT% className_GetAccount=%GET_ACCOUNT% className_DeleteAccount=%DELETE_ACCOUNT% className_UpdateAccount=%UPDATE_ACCOUNT% className_createCustomer=%CREATE_CUSTOMER% className_getCustomers=%GET_CUSTOMER% className_GetInputValidation=%GET_INPUT_VALIDATION% className_searchUsers=%SEARCH_USERS% className_GetAccountValidate=%GET_ACCOUNT_VALIDATE% DATABASE_NAME=%DATABASE_NAME% DATABASE_KEY=%DATABASE_KEY% POSTGRESQL_CONNECTIONURL=%DATABASE_CONNECTIONURL% POSTGRESQL_USERNAME=%DATABASE_USERNAME% POSTGRESQL_PASSWORD=%DATABASE_PASSWORD%  temn.msf.security.authz.enabled=%AUTHZ_ENABLED% temn_msf_name=%MSF_NAME% temn_msf_schema_registry_url=%REGISTRY_URL% EXECUTION_ENV=%EXECUTION_ENV% eventHubConnection=%eventHubConnection% eventHubName=%EVENT_HUB_OUTBOX% eventHubConsumerGroup=%EVENT_HUB_OUTBOX_CG%  temn.msf.ingest.sink.error.stream=%SINK_ERROR_STREAM% temn.msf.ingest.generic.ingester=%GENERIC_INGESTER% VALIDATE_PAYMENT_ORDER=%VALIDATE_PAYMENT_ORDER% class.outbox.dao=%OUTBOX_DAO% class.inbox.dao=%INBOX_DAO% temn.msf.ingest.source.stream=%INGEST_SOURCE_STREAM% temn.msf.ingest.generic.ingester=%INBOXOUTBOX_INGESTER% temn.exec.env=%EXEC_ENV% class.package.name=%PACKAGE_NAME% temn.msf.function.class.CreateNewPaymentOrder=%CreateNewPaymentOrder% temn.queue.impl=%QUEUE_IMPL% temn.msf.stream.kafka.sasl.enabled=%SSL_ENABLED% temn.msf.stream.kafka.sasl.jaas.config=%SASL_JASS_CONFIG% temn.msf.stream.kafka.bootstrap.servers=%KAFKA_SERVER% temn.msf.stream.vendor.outbox=%QUEUE_IMPL% temn.msf.ingest.consumer.max.poll.records=%MAX_POLL_RECORDS% MIN_POOL_SIZE=%DB_CONNECTION_MIN_POOL_SIZE% MAX_POOL_SIZE=%DB_CONNECTION_MAX_POOL_SIZE% temn.msf.ingest.is.avro.event.ingester=%AVRO_INGEST_EVENT% className_FileDownload=%FILE_DOWNLOAD% className_FileUpload=%FILE_UPLOAD% className_FileDelete=%FILE_DELETE% temn.msf.storage.home=%RESOURCE_STORAGE_HOME% schedulerTime=%SCHEDULER_TIME%	className_paymentscheduler=%PAYMENT_SCHEDULER% temn.entitlement.stubbed.service.enabled=%ENTITLEMENT_STUBBED_SERVICE_ENABLED%  className_initiateDbMigration=%INITIATE_DBMIGRATION% className_getDbMigrationStatus=%GET_DBMIGRATION% temn.msf.ingest.is.cloud.event=%CLOUD_EVENT_FLAG% temn.msf.azure.storage.connection.string=%AZURE_STORAGE_CONNECTION_STRING% temn.keystore.database.url=%DATABASE_CONNECTIONURL% temn.keystore.database.password=%DATABASE_PASSWORD% temn.keystore.database.user=%DATABASE_USERNAME%  temn.msf.stream.security.kafka.security.protocol=%STREAM_KAFKA_PROTOCOL% temn.msf.stream.kafka.sasl.mechanism=%STREAM_KAFKA_SASL_MECHANISM% temn.meter.disabled=%METER_DISABLE% temn.msf.tracer.enabled=%TRACER_ENABLED% className_DoInputValidation=%DOINPUTVALIDATION% temn.msf.stream.kafka.ssl.enabled=%STREM_SSL_ENABLED% temn.keystore.database.driver=org.postgresql.Driver  operationId=paymentscheduler temn.msf.outbox.direct.delivery.enabled=%EVENTDIRECTLYDELIVERY%
 
-Rem Command to execute DB scripts
-call java -cp target/azure-functions/%APP_NAME%/lib/microservice-package-azure-resources-DEV.0.0-SNAPSHOT.jar -Drds_instance_host=%DATABASE_CONNECTIONURL% -Drds_instance_username=%DATABASE_USERNAME% -Drds_instance_password=%DATABASE_PASSWORD% -DScript_Path=db/postgresql/postgresqlinit.sql com.temenos.microservice.azure.query.execution.AzurePostgresqlScriptExecution
+REM Set environment variables for appinit function app
+call az functionapp config appsettings set --name %APPINT_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings POSTGRESQL_CONNECTIONURL=%DATABASE_CONNECTIONURL% POSTGRESQL_USERNAME=%DATABASE_USERNAME% POSTGRESQL_PASSWORD=%DATABASE_PASSWORD% DATABASE_KEY=%DATABASE_KEY% temn_msf_name=%MSF_NAME%  EXECUTION_ENV=%EXECUTION_ENV% DATABASE_NAME=%DATABASE_NAME% class_package_name=%PACKAGE_NAME% tem_msf_disableInbox=%TEM_APPINIT_DISABLEINBOX% temn_msf_security_authz_enabled=%APPINIT_AUTHZ_ENABLED%   temn_msf_database_auto_upgrade=%DB_AUTO_UPGRADE%
+
+timeout /t 10 /nobreak
+
+REM Execute appinit api which internally creates tables and indexes for first time and also executes scripts for DB upgrade.
+curl -H "Content-Type: application/json" -X POST https://%APPINT_NAME%.azurewebsites.net/api/v1.0.0/dbmigration?code=%MASTER_KEY%  

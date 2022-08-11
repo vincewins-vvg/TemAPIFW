@@ -161,17 +161,17 @@ export mysqlImage=ms-paymentorder-mysql
 # Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. es_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
 export es_Image_Pull_Secret=""
 
-kubectl create namespace dbinitpayments
-
 kubectl create namespace payments
 
-kubectl create namespace appinitpayments
+kubectl create namespace posqlappinit
+
+export dbinit_Connection_Url="jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments"
+
+export APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
 cd helm-chart
 
-helm install dbinit ./dbinit -n dbinitpayments --set env.sqlinit.databaseKey=$database_Key --set env.sqlinit.databaseName=$database_Name --set env.sqlinit.dbdialect=$dialect --set env.sqlinit.dbusername=$db_Username --set env.sqlinit.dbpassword=$db_Password --set env.sqlinit.dbconnectionurl=jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433
-
-helm install appinit ./appinit -n appinitpayments --set env.sqlinit.databaseKey=$database_Key --set env.sqlinit.databaseName=$database_Name --set env.sqlinit.dbdialect=$dialect --set env.sqlinit.dbusername=$db_Username --set env.sqlinit.dbpassword=$db_Password --set env.sqlinit.dbconnectionurl=jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments --set env.sqlinit.dbdriver=$driver_Name --set env.sqlinit.dbautoupgrade="N"
+helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=$database_Key --set env.sqlinit.databaseName=$database_Name --set env.sqlinit.dbusername=$db_Username --set env.sqlinit.dbpassword=$db_Password --set image.tag=$tag --set image.sqlinit.repository=$APP_INIT_IMAGE --set env.sqlinit.dbconnectionurl=$dbinit_Connection_Url --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=$dialect --set env.sqlinit.dbdriver=$driver_Name
 
 helm install payments ./svc -n payments --set env.database.host=$db_Host --set env.database.db_username=$db_Username --set env.database.db_password=$db_Password --set env.database.database_key=$database_Key  --set env.database.database_name=$database_Name --set env.database.driver_name=$driver_Name --set env.database.dialect=$dialect --set env.database.db_connection_url=$db_Connection_Url --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.max_pool_size=$max_Pool_Size --set env.database.min_pool_size=$min_Pool_Size --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.schema_registry_url=$schema_Registry_Url --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.scheduler.time=$scheduler_Time --set image.tag=$tag --set image.paymentsapi.repository=$apiImage --set image.paymentsingester.repository=$ingesterImage --set image.paymentseventdelivery.repository=$inboxoutboxImage --set image.schemaregistry.repository=$schemaregistryImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.mysql.repository=$mysqlImage --set imagePullSecrets=$es_Image_Pull_Secret --set audit.ENABLE_AUDIT=$ENABLE_AUDIT --set audit.ENABLE_AUDIT_FOR_GET_API=$ENABLE_AUDIT_FOR_GET_API --set audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE=$ENABLE_AUDIT_TO_CAPTURE_RESPONSE
 

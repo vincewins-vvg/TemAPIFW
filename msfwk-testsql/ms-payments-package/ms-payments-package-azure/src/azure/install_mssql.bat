@@ -152,6 +152,12 @@ SET SQL_INBOX_SCHEDULER="com.temenos.microservice.framework.scheduler.core.SqlIn
 
 SET EVENTDIRECTLYDELIVERY="true"
 
+REM APPINIT Environment variables 
+SET APPINT_NAME="appinit"
+SET TEM_APPINIT_DISABLEINBOX="true"
+SET APPINIT_AUTHZ_ENABLED="false"
+SET JPA_ENABLED="none"
+
 call ingester_creator %APP_NAME% %JAR_NAME% %JAR_VERSION% 
 
 call ingester_creator %APP_NAME% %AVRO_APP_NAME% %JAR_NAME% %JAR_VERSION% 
@@ -184,6 +190,8 @@ if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Daz
 rem OutboxListener function
 if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%OUTBOX_LISTENER_APP_NAME% -Dsubscription.id=%SUBSCRIPTION_ID% -f pom-azure-deploy.xml -X ) else ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%OUTBOX_LISTENER_APP_NAME% -f pom-azure-deploy.xml -X )
 
+rem appinit function
+if NOT [%SUBSCRIPTION_ID%] == [] ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%APPINT_NAME% -Dsubscription.id=%SUBSCRIPTION_ID% -f pom-azure-deploy.xml -X ) else ( call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%APPINT_NAME% -f pom-azure-deploy.xml -X )
 
 rem deployment azure package into azure enviornment
 rem call mvn -Pdeploy azure-functions:deploy -Dazure.region=%LOCATION% -Dazure.resourceGroup=%RESOURCE_GROUP_NAME% -DappName=%INGESTER_APP_1% -Dsubscription.id=%SUBSCRIPTION_ID% -f pom-azure-deploy.xml -X
@@ -253,6 +261,11 @@ set /p storageconnectionString=< out1.txt
 set AZURE_STORAGE_CONNECTION_STRING=%storageconnectionString%
 del out1.txt
 
+rem Retrieve masterkey for appinit function
+call az functionapp keys list -g %RESOURCE_GROUP_NAME% -n %APPINT_NAME% --query masterKey  >> out1.txt
+SET /p MASTER_KEY=< out1.txt
+del out1.txt
+
 rem Environment variable settings
 call az functionapp config appsettings set --name %APP_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings className_CreateNewPaymentOrder=%CREATEPAYMENT% className_GetPaymentOrders=%GETPAYMENTS% className_UpdatePaymentOrder=%UPDATEPAYMENT% className_GetPaymentOrder=%GETPAYMENT% className_invokePaymentState=%INVEPAYMENT% className_getHealthCheck=%HEATHCHECK% className_GetPaymentOrderCurrency=%GET_CURRENCY% DATABASE_NAME=%DATABASE_NAME% DB_CONNECTION_URL=%DB_CONNECTION_URL% DRIVER_NAME=%DRIVER_NAME% DIALECT=%DIALECT% DB_PASSWORD=%DB_PASSWORD% DB_USERNAME=%DB_USERNAME% JAVA_OPTS=%JAVA_OPTS% temn.msf.security.authz.enabled=%AUTHZ_ENABLED% WEBSITE_USE_PLACEHOLDER=0 temn_msf_ingest_sink_error_stream=%ERROR_STREAM%   temn_msf_name=%MSF_NAME% temn_msf_schema_registry_url=%REGISTRY_URL% EXECUTION_ENV=%EXECUTION_ENV% eventHubConnection=%eventHubConnection%  eventHubName=%EVENT_HUB% eventHubConsumerGroup=%EVENT_HUB_CG% VALIDATE_PAYMENT_ORDER=%VALIDATE_PAYMENT_ORDER% class.outbox.dao=%OUTBOX_DAO%   class.inbox.dao=%INBOX_DAO% DATABASE_KEY=sql temn.msf.ingest.source.stream=%INGEST_SOURCE_STREAM% temn.msf.ingest.sink.error.stream=%SINK_ERROR_STREAM% temn.msf.ingest.generic.ingester=%GENERIC_INGESTER% temn.exec.env=%EXEC_ENV% temn.msf.stream.outbox.topic=%OUTBOX_TOPIC% class.package.name=%PACKAGE_NAME% temn.msf.function.class.CreateNewPaymentOrder=%CreateNewPaymentOrder% temn.msf.ingest.is.avro.event.ingester=%AVRO_INGEST_EVENT% temn.queue.impl=%QUEUE_IMPL% temn.msf.stream.kafka.sasl.enabled=%SSL_ENABLED% temn.msf.stream.kafka.sasl.jaas.config=%SASL_JASS_CONFIG% temn.msf.stream.kafka.bootstrap.servers=%KAFKA_SERVER% temn.msf.stream.vendor.outbox=%QUEUE_IMPL% temn.msf.ingest.consumer.max.poll.records=%MAX_POLL_RECORDS% MIN_POOL_SIZE=%DB_CONNECTION_MIN_POOL_SIZE% MAX_POOL_SIZE=%DB_CONNECTION_MAX_POOL_SIZE% temn.msf.azure.storage.connection.string=%AZURE_STORAGE_CONNECTION_STRING% className_createReferenceData=%CREATE_REFERENCE_DATA% className_getReferenceData=%GET_REFERENCE_DATA% JWT_TOKEN_ISSUER=%JWT_TOKEN_ISSUER% ID_TOKEN_SIGNED=%ID_TOKEN_SIGNED% JWT_TOKEN_PUBLIC_KEY=%JWT_TOKEN_PUBLIC_KEY% className_updateReferenceData=%UPDATE_REFERENCE_DATA% className_addReferenceData=%ADD_REFERENCE_DATA% className_FileDownload=%FILE_DOWNLOAD% className_FileDelete=%FILE_DELETE% className_FileUpload=%FILE_UPLOAD% className_deleteReferenceData=%DELETE_REFERENCE_DATA% temn.msf.max.file.upload.size=%MAX_FILE_UPLOAD_SIZE% temn.msf.storage.home=%RESOURCE_STORAGE_HOME%  ms_security_tokencheck_enabled=%ms_security_tokencheck_enabled% EXECUTION_ENVIRONMENT=%EXECUTION_ENVIRONMENT%  className_DoInputValidation=%DOINPUTVALIDATION% className_paymentscheduler=%PAYMENT_SCHEDULER% schedulerTime=%SCHEDULER_TIME% operationId=paymentscheduler className_CreateEmployee=%CREATE_EMPLOYEE% className_GetEmployee=%GET_EMPLOYEE% className_UpdateEmployee=%UPDATE_EMPLOYEE% className_DeleteEmployee=%DELETE_EMPLOYEE% temn.entitlement.stubbed.service.enabled=%ENTITLEMENT_STUBBED_SERVICE_ENABLED% className_initiateDbMigration=%INITIATE_DBMIGRATION% className_getDbMigrationStatus=%GET_DBMIGRATION% SqlInboxCleanupSchedulerTime=%SQL_INBOX_CLEANUP_SCHEDULER_TIME% className_sqlinboxcleanup=%SQL_INBOX_SCHEDULER% temn.msf.scheduler.inboxcleanup.schedule=%INBOX_CLEANUP_MINUTES% ENVIRONMENT_CONF=%ENVIRONMENT_CONF% operationId=paymentscheduler temn.meter.disabled=%METER_DISABLE% temn.msf.tracer.enabled=%TRACER_ENABLED% temn.msf.database=%DATABASE% JWT_TOKEN_PRINCIPAL_CLAIM=%JWT_TOKEN_PRINCIPAL_CLAIM% className_ReprocessEvents=com.temenos.microservice.framework.core.error.function.ReprocessEventsImpl className_GetErrorEvents=com.temenos.microservice.framework.core.error.function.GetErrorEventsImpl temn.msf.ingest.reprocess.source.stream=reprocess-event temn.msf.outbox.direct.delivery.enabled=%EVENTDIRECTLYDELIVERY%
 
@@ -276,3 +289,10 @@ call az functionapp config appsettings set --name %OUTBOX_LISTENER_APP_NAME% --r
 REM properties for Avro Ingester
 rem call az functionapp config appsettings set --name %INGESTER_APP_1% --resource-group %RESOURCE_GROUP_NAME% --settings DATABASE_NAME=%DATABASE_NAME% DB_CONNECTION_URL=%DB_CONNECTION_URL% DRIVER_NAME=%DRIVER_NAME% DIALECT=%DIALECT% DB_PASSWORD=%DB_PASSWORD% DB_USERNAME=%DB_USERNAME% JAVA_OPTS=%JAVA_OPTS% temn.msf.security.authz.enabled=%AUTHZ_ENABLED% temn_msf_ingest_sink_error_stream=%ERROR_STREAM% temn_msf_name=%MSF_NAME% temn_msf_schema_registry_url=%REGISTRY_URL% EXECUTION_ENV=%EXECUTION_ENV% eventHubConnection=%eventHubConnection% eventHubName=%INGEST_SOURCE_STREAM_AVRO% eventHubConsumerGroup=%EVENT_HUB_AVRO_CG% class.outbox.dao=%OUTBOX_DAO% class.inbox.dao=%INBOX_DAO% DATABASE_KEY=sql temn.msf.ingest.source.stream=%INGEST_SOURCE_STREAM_AVRO%  temn.msf.ingest.sink.error.stream=%SINK_ERROR_STREAM% temn.exec.env=%EXEC_ENV% temn.msf.stream.outbox.topic=%OUTBOX_TOPIC%  class.package.name=%PACKAGE_NAME% temn.queue.impl=%QUEUE_IMPL% temn.msf.stream.kafka.sasl.enabled=%SSL_ENABLED% temn.msf.stream.kafka.sasl.
 rem jaas.config=%SASL_JASS_CONFIG% temn.msf.stream.kafka.bootstrap.servers=%KAFKA_SERVER%  temn.msf.stream.vendor.outbox=%QUEUE_IMPL% temn.msf.ingest.consumer.max.poll.records=%MAX_POLL_RECORDS% MIN_POOL_SIZE=%DB_CONNECTION_MIN_POOL_SIZE% MAX_POOL_SIZE=%DB_CONNECTION_MAX_POOL_SIZE% EXECUTION_ENVIRONMENT=%EXECUTION_ENVIRONMENT% temn.msf.scheduler.inboxcleanup.schedule=%INBOX_CLEANUP_MINUTES% ENVIRONMENT_CONF=%ENVIRONMENT_CONF%temn.meter.disabled=%METER_DISABLE% PAYMENT_ORDEREvent=%PAYMENT_ORDER_EVENT% temn.msf.tracer.enabled=%TRACER_ENABLED% temn.msf.ingest.event.ingester=%INGEST_EVENT_INGESTER% temn.msf.ingest.is.avro.event.ingester="true"
+
+rem Environment variable settings for appinit functionapp
+call az functionapp config appsettings set --name %APPINT_NAME% --resource-group %RESOURCE_GROUP_NAME% --settings DATABASE_NAME=%DATABASE_NAME% DB_CONNECTION_URL=%DB_CONNECTION_URL% DRIVER_NAME=%DRIVER_NAME% DIALECT=%DIALECT% DB_PASSWORD=%DB_PASSWORD% DB_USERNAME=%DB_USERNAME% DATABASE_KEY=sql temn_msf_name=%MSF_NAME%  EXECUTION_ENV=%EXECUTION_ENV%  class_package_name=%PACKAGE_NAME% tem_msf_disableInbox=%TEM_APPINIT_DISABLEINBOX% temn_msf_security_authz_enabled=%APPINIT_AUTHZ_ENABLED% JPA_ENABLED=%JPA_ENABLED% MIN_POOL_SIZE=%DB_CONNECTION_MIN_POOL_SIZE% MAX_POOL_SIZE=%DB_CONNECTION_MAX_POOL_SIZE% temn_msf_database_auto_upgrade="N"
+
+timeout /t 10 /nobreak
+
+curl -H "Content-Type: application/json" -X POST https://%APPINT_NAME%.azurewebsites.net/api/v1.0.0/dbmigration?code=%MASTER_KEY% 

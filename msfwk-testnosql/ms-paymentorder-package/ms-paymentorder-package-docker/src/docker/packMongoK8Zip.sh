@@ -42,11 +42,6 @@ find . -name 'repackbuild.sh' | xargs dos2unix
 ./repackbuild.sh app/ms-framework-scheduler ms-paymentorder-scheduler.jar $@
 
 
-
-
-#REM Now run Docker Compose
-docker-compose -f db-build.yml $@
-
 #REM Now run Docker Compose
 docker-compose -f db-appinit-build.yml $@
 	
@@ -62,8 +57,6 @@ cd helm-chart
 cd ../../
 
 cp -r k8/on-premise/svc paymentorder/helm-chart/svc
-
-cp -r k8/on-premise/dbinit paymentorder/helm-chart/dbinit
 
 cp -r k8/on-premise/appinit paymentorder/helm-chart/appinit
 
@@ -92,8 +85,6 @@ docker image save dev.local/temenos/ms-paymentorder-ingester:DEV > ms-paymentord
 docker image save dev.local/temenos/ms-paymentorder-inboxoutbox:DEV > ms-paymentorder-inboxoutboxDEV.tar
 
 docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedulerDEV.tar
-
-docker image save dev.local/temenos/ms-paymentorder-dbscripts:DEV > ms-paymentorder-dbscriptsDEV.tar
 
 docker image save dev.local/temenos/ms-paymentorder-fileingester:DEV > ms-paymentorder-fileingesterDEV.tar
 

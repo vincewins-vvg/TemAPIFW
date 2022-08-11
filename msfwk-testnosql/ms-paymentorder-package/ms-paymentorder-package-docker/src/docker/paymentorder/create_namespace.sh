@@ -4,6 +4,6 @@
 # *******************************************************************************
 #
 
-kubectl create namespace podbinit
+kubectl create namespace poappinit
 
 kubectl create namespace paymentorder
