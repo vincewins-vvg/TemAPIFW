@@ -167,14 +167,13 @@ export devdomain_Host_Name=""
 # Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
 export eventDirectDelivery=\"true\"
 
-
 cd helm-chart
 
-kubectl create namespace postgresqlpaymentorder
+export APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
 
-helm install appinit ./appinit -n postgresqlpaymentorder --set env.appinit.databaseKey=$database_Key --set env.appinit.databaseName=$database_Name --set env.appinit.dbUserName=$db_Username --set env.appinit.dbPassword=$db_Password --set env.appinit.dbConnectionUrl=$postgresql_Connection_Url --set env.appinit.dbautoupgrade="N"
+kubectl create ns poappinit
 
-helm install dbinit ./dbinit -n postgresqlpaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinit_Image_Pull_Secret --set image.tag=$tag
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbusername=$db_Username --set env.appinit.dbpassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$postgresql_Connection_Url  --set env.appinit.dbautoupgrade="N"
 
 sleep 90
 

@@ -167,9 +167,11 @@ export currentString="docker-compose"
 export replaceString="#docker-compose"
 sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-podb-scripts.sh
 
-kubectl create namespace mongopaymentorder
+kubectl create ns poappinit
 
-helm install dbinit ./dbinit -n mongopaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinit_Image_Pull_Secret --set image.tag=$tag --set env.mongoinit.dbConnectionUrl=\"${db_Connection_Url}\"
+export APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
+
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=mongodb --set env.appinit.databaseName=$database_Name --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=\"${db_Connection_Url}\" --set env.appinit.dbautoupgrade="N"
 
 kubectl create namespace paymentorder
 

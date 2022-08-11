@@ -16,8 +16,6 @@ cp -f ${DOCKER_ENV_LOCATION}/k8ENV.env .env
 # Now run Docker Compose
 docker-compose -f paymentorder.yml $@
 
-docker-compose -f db-build.yml $@
-
 docker-compose -f db-appinit-build.yml $@
 
 # call kafka.bat up --build -d

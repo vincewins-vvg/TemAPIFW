@@ -16,6 +16,9 @@ helm uninstall ponosql
 
 kubectl delete namespace paymentorder
 
+helm uninstall poappinit
+
+kubectl delete namespace poappinit
 
 #cd db
 

@@ -94,9 +94,17 @@ call start-podb-scripts.bat
 
 cd ../
 
-kubectl create namespace postgresqlpaymentorder
+export APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
 
-helm install dbinit ./dbinit -n postgresqlpaymentorder --set image.mongoinit.repository=$dbinitImage --set env.mongoinit.migration=../migration --set imagePullSecrets=$dbinit_Image_Pull_Secret --set image.tag=$tag
+export db_Username="paymentorderusr"
+
+export db_Password="paymentorderpass"
+
+export db_Connection_Url="jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb"
+
+kubectl create ns poappinit
+
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbusername=$db_Username --set env.appinit.dbpassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$db_Connection_Url  --set env.appinit.dbautoupgrade="N"
 
 kubectl create namespace paymentorder
 

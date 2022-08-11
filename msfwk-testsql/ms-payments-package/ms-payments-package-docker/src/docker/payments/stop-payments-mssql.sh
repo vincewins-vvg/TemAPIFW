@@ -4,14 +4,10 @@
 # *******************************************************************************
 #
 
-helm uninstall appinit -n appinitpayments
+helm uninstall posqlappinit -n posqlappinit
 
-helm uninstall dbinit -n dbinitpayments
+kubectl delete namespace posqlappinit
 
 helm uninstall payments -n payments
-
-kubectl delete namespace appinitpayments
-
-kubectl delete namespace dbinitpayments
 
 kubectl delete namespace payments
