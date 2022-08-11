@@ -114,4 +114,5 @@ aws lambda delete-function --function-name account-post-api-handler
 aws lambda delete-function --function-name account-put-api-handler
 aws lambda delete-function --function-name cdp_erasure
 aws lambda delete-function --function-name cdp_reportgeneration
+aws lambda delete-function --function-name dynamicorder-get-api-handler
 sleep 60
