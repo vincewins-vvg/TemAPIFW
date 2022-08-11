@@ -1,0 +1,58 @@
+{
+    "partyId": "205761453936",
+    "customerId": "ER6",
+    "serviceId": "PARTY",
+    "requestId": "143.ERASURE",
+    "reportType": "SAR",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname"
+                },
+                {
+                    "attributeName": "cardlimit"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "eeeeeeeee"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "XXXXXXX"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "XXXXXXXX"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "XXXX"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name"
+                }
+            ]
+        }
+    ]
+}

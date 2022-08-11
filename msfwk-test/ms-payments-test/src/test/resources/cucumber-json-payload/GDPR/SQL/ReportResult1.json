@@ -1,0 +1,103 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "PO~352-ER8~321-ZXC~INR~125",
+    "serviceId": "PARTY",
+    "requestId": "111.ERASURE",
+    "reportType": "SAR",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "9999-12-31"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "999.99"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "XXXXXXXXX"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "QQQQQQQQQQQQQQQ"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "TTTTTT"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "9.99"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "NNNNNN"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "9.99"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "INR"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "SSSSSSSSS"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "9999-12-31"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-ER8"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "321-ZXC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "*********"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "aaaa"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "XXXXXXXXXXXXX"
+                }
+            ]
+        }
+    ]
+}

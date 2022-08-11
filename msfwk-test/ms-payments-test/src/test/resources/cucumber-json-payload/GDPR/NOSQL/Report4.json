@@ -1,0 +1,65 @@
+{
+    "partyId": "205761453936",
+    "customerId": "ER6",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+
+    "fromAccount": "150-IOB",
+    "toAccount": "334-IOB",
+    "paymentDetails": "doc",
+    "currency": "INR"
+
+  },
+    "personalData": [
+        
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "dataEntityFields": [
+                
+                {
+                    "dataEntityFieldName": "cardname",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "cardlimit",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "currency",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "status",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "paymentDetails",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "payeeName",
+                    "dataEntityFieldDataType": "decimal"
+                },{
+                    "dataEntityFieldName": "payeeType",
+                    "dataEntityFieldDataType": "decimal"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "name",
+                    "dataEntityFieldDataType": "decimal"
+                }
+            ]
+        }
+    ]
+}

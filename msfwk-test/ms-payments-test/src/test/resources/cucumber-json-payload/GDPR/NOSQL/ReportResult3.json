@@ -1,0 +1,108 @@
+{
+    "partyId": "205761453936",
+    "customerId": "ER9",
+    "serviceId": "PARTY",
+    "requestId": "142.ERASURE",
+    "reportType": "SAR",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate"
+                },
+                {
+                    "attributeName": "amount"
+                }
+                ,
+                {
+                    "attributeName": "paymentDetails"
+                },
+                {
+                    "attributeName": "paymentReference"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "dataEntityFields": [
+                
+                {
+                    "attributeName": "cardname"
+                },
+                {
+                    "attributeName": "cardlimit"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name"
+                },
+                {
+                    "attributeName": "value"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency", 
+                     "attributeValue": "INR"
+                },
+                {
+                    "attributeName": "status"
+                },
+                {
+                    "attributeName": "paymentDate"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "353-ER9"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "321-ZXC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName"
+                },
+                {
+                    "attributeName": "payeeType"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "dataEntityFields": [
+                
+                {
+                    "attributeName": "name"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "Customer",
+            "dataEntityFields": [
+                {
+                    "attributeName": "dateOfJoining"
+                },
+                {
+                    "attributeName": "customerId",
+                    "attributeValue": "ER9"
+                },{
+                    "attributeName": "loanTypes",
+                    "attributeValue": "[]"
+                }
+            ]
+        }
+    ]
+}

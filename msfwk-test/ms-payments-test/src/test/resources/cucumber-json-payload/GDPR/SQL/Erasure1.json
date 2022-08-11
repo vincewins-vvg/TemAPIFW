@@ -1,0 +1,174 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "PO~352-ER8~321-ZXC~INR~125",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+        "amount": "111"
+    },
+    "personalData": [
+        {
+            "purpose": "tax",
+            "dataDefinitions": [
+               
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "amount",
+                            "dataEntityFieldDataType": "decimal"
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentDate",
+                            "dataEntityFieldDataType": "decimal"
+                        }
+                    ]
+                },{
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentReference",
+                            "dataEntityFieldDataType": "decimal",
+                                "erasureOptions": {
+                                "optionsId": "AL",
+                                "optionsValue": "^"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "purpose": "tax1",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "paymentDetails",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": ""
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "paymentReference",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "Q"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder.PaymentMethod",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "name",
+                            "dataEntityFieldDataType": "decimal"
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "status",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "S"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "dataEntityName": "PaymentOrder.exchangeRates",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "name",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "N"
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "value",
+                            "dataEntityFieldDataType": "decimal",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "N"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "purpose": "payment",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder.payeeDetails",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "payeeName",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "*"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "purpose": "card",
+            "dataDefinitions": [
+                {
+                    "dataEntityName": "PaymentOrder.paymentMethod.card",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "cardname",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "T"
+                            }
+                        },
+                        {
+                            "dataEntityFieldName": "cardlimit",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "p"
+                            }
+                        }
+                    ]
+                },
+            
+            
+                {
+                    "dataEntityName": "PaymentOrder.payeeDetails",
+                    "dataEntityFields": [
+                        {
+                            "dataEntityFieldName": "payeeType",
+                            "dataEntityFieldDataType": "string",
+                            "erasureOptions": {
+                                "optionsId": "ALPHA",
+                                "optionsValue": "a"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

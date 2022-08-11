@@ -1,0 +1,29 @@
+{
+    "partyId": "205761453936",
+    "customerId": "ER10",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+
+    "fromAccount": "150-IOB",
+    "toAccount": "334-IOB",
+    "paymentDetails": "doc",
+    "currency": "INR"
+
+  },
+    "personalData": [
+        
+        {
+            "dataEntityName": "PaymentOrder",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "currency",
+                    "dataEntityFieldDataType": "string"
+                },{
+                    "dataEntityFieldName": "amount",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        }
+        
+    ]
+}
