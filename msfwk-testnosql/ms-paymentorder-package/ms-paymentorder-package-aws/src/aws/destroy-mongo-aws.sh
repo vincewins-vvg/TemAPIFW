@@ -114,7 +114,7 @@ aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-get-referen
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-gettype-reference-record-api-handler
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_reportgeneration
 aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-cdp_erasure
-
+aws lambda delete-function --function-name ${DEPLOYMENT_ENVIRONMENT}-dynamicorder-get-api-handler
 
 
 

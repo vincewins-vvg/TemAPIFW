@@ -3,6 +3,7 @@
  * * Copyright © Temenos Headquarters SA 2021. All rights reserved.
  * *******************************************************************************
  */
+
 /**
 ======================
  Modification History 
@@ -12,27 +13,20 @@
 *              Response headers and response code added in the exposed method. 
 *  
 */
-package com.temenos.microservice.payments.function;
+
+package com.temenos.microservice.paymentorder.function;
 
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
-import com.temenos.microservice.payments.core.GetPaymentOrdersProcessor;
-import com.temenos.microservice.payments.function.GetDynamicOrder;
-import com.temenos.microservice.payments.function.GetDynamicOrderInput;
-import com.temenos.microservice.payments.view.GetDynamicOrderParams;
-import com.temenos.microservice.framework.core.function.Context;
-
+import com.temenos.microservice.paymentorder.function.GetDynamicOrder;
+import com.temenos.microservice.paymentorder.function.GetDynamicOrderInput;
+import com.temenos.microservice.paymentorder.view.GetDynamicOrderParams;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import com.temenos.microservice.framework.core.util.FrameworkConstants;
-import com.temenos.microservice.framework.core.util.JsonUtil;
-import java.lang.Object;
-import java.lang.String;
 
 public class GetDynamicOrderImpl implements GetDynamicOrder {
 
@@ -42,11 +36,11 @@ public class GetDynamicOrderImpl implements GetDynamicOrder {
 		java.util.Optional<GetDynamicOrderParams> params = input.getParams();
 		GetDynamicOrderParams test = params.get();
 
-		Map<String, Object> responseheaders = new HashMap<>(); // HashMap Object is created.
-		responseheaders.put("ResponseAccept", "Accepted"); // key value pair added into map.
+		Map<String, Object> responseheaders = new HashMap<>();   // HashMap Object is created.
+		responseheaders.put("ResponseAccept", "Accepted");   // key value pair added into map.
 
-		context.setResponseCode("202"); // Setting response code
-		context.setResponseHeaders(responseheaders); // Setting response header
+		context.setResponseCode("202");   // Setting response code
+		context.setResponseHeaders(responseheaders);   // Setting response header
 
 		JSONParser parser = new JSONParser();
 		List<Integer> list = test.getId();
@@ -80,7 +74,6 @@ public class GetDynamicOrderImpl implements GetDynamicOrder {
 
 			}
 		}
-		
 		return json;
 
 	}
