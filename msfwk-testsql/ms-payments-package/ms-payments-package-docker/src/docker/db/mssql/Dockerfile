@@ -33,10 +33,10 @@ RUN dos2unix *
 # Grant permissions for the import-data script to be executable
 RUN chmod +x /usr/src/app/import-data.sh
 
+RUN chmod +x /usr/src/app/entrypoint.sh
+
 EXPOSE 1433
 
-# Switch back to mssql user and run the entrypoint script
-USER mssql
 ENTRYPOINT /bin/bash /usr/src/app/entrypoint.sh
 
 
