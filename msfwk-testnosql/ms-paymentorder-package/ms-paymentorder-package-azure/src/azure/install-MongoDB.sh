@@ -153,7 +153,7 @@ export endIP=255.255.255.25
 export EVENTDIRECTLYDELIVERY="true"
 
 # Appinit Variables
-export APPINT_NAME="appinit"
+export APPINT_NAME="paymentorderappinit"
 export TEM_APPINIT_DISABLEINBOX="true"
 export APPINIT_AUTHZ_ENABLED="false"
 export DB_AUTO_UPGRADE="N"

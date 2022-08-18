@@ -58,7 +58,7 @@ export APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
 export tag=DEV
 
-helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=$database_Key --set env.sqlinit.databaseName=$database_Name --set env.sqlinit.dbusername=$db_Username --set env.sqlinit.dbpassword=$db_Password --set image.tag=$tag --set image.sqlinit.repository=$APP_INIT_IMAGE --set env.sqlinit.dbconnectionurl=$dbinit_Connection_Url --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=$dialect --set env.sqlinit.dbdriver=$driver_Name
+helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbusername=sa --set env.sqlinit.dbpassword=Rootroot@12345 --set image.tag=$tag --set image.sqlinit.repository=$APP_INIT_IMAGE --set env.sqlinit.dbconnectionurl=$dbinit_Connection_Url --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=org.hibernate.dialect.SQLServer2012Dialect --set env.sqlinit.dbdriver=com.microsoft.sqlserver.jdbc.SQLServerDriver
 
 kubectl create namespace payments
 

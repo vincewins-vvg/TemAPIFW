@@ -157,7 +157,7 @@ export EVENT_HUB_COMMAND_EVENT_TOPIC="paymentorder-inbox-topic"
 export EVENTDIRECTLYDELIVERY="true"
 
 # Appinit Variables
-export APPINT_NAME="appinit"
+export APPINT_NAME="paymentorderappinit"
 export TEM_APPINIT_DISABLEINBOX="true"
 export APPINIT_AUTHZ_ENABLED="false"
 export DB_AUTO_UPGRADE="N"

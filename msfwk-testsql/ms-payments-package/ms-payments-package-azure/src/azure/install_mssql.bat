@@ -153,7 +153,7 @@ SET SQL_INBOX_SCHEDULER="com.temenos.microservice.framework.scheduler.core.SqlIn
 SET EVENTDIRECTLYDELIVERY="true"
 
 REM APPINIT Environment variables 
-SET APPINT_NAME="appinit"
+SET APPINT_NAME="paymentsappinit"
 SET TEM_APPINIT_DISABLEINBOX="true"
 SET APPINIT_AUTHZ_ENABLED="false"
 SET JPA_ENABLED="none"

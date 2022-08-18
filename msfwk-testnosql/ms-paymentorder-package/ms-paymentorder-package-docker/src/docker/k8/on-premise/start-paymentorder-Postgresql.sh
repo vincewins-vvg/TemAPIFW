@@ -176,7 +176,7 @@ export db_Connection_Url="jdbc:postgresql://po-postgresqldb-service.postgresql.s
 
 kubectl create ns poappinit
 
-helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbusername=$db_Username --set env.appinit.dbpassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$db_Connection_Url  --set env.appinit.dbautoupgrade="N"
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbUserName=$db_Username --set env.appinit.dbPassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$db_Connection_Url  --set env.appinit.dbautoupgrade="N"
 
 kubectl create namespace paymentorder
 

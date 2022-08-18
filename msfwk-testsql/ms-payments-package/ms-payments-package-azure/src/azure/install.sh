@@ -147,7 +147,7 @@ export SQL_INBOX_SCHEDULER="com.temenos.microservice.framework.scheduler.core.Sq
 export EVENTDIRECTLYDELIVERY="true"
 
 # APPINIT Environment variables 
-export APPINT_NAME="appinit"
+export APPINT_NAME="paymentsappinit"
 export TEM_APPINIT_DISABLEINBOX="true"
 export APPINIT_AUTHZ_ENABLED="false"
 export JPA_ENABLED="none"
