@@ -22,7 +22,7 @@ Background: To setup the preconfigs
 	Examples: 
 	
 		|payload|
-		|{"fromAccount":"103","toAccount":"112","paymentReference":"paytest","paymentDetails":null,"currency":"USD","amount":10,"expires":0,"fileContent":"dGVzdA==","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":null,"cardlimit":10}},"exchangeRates":[{"id":11,"name":null,"value":10},{"id":12,"name":"WesternUnion","value":10}],"payeeDetails":{"payeeName":"bsnl","payeeType":null},"descriptions":[null]}|
+		|{"fromAccount":"103","toAccount":"112","paymentReference":"paytest","paymentDetails":null,"currency":"USD","amount":10,"expires":0,"fileContent":"dGVzdA==","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":null,"cardlimit":10}},"exchangeRates":[{"id":11,"name":null,"value":10},{"id":12,"name":"WesternUnion","value":10}],"payeeDetails":{"payeeId":1234,"payeeName":"bsnl","payeeType":null},"descriptions":[null]}|
 		
 		
    Scenario Outline: Create a new Payment Order with Null value for Amount (i.e XACML Policy-Validation Applicable) 
@@ -35,7 +35,7 @@ Background: To setup the preconfigs
 	Examples: 
 	
 		|payload|
-		|{"fromAccount":"203","toAccount":"202","paymentReference":"paying","paymentDetails":"paymentDetails_TEST","currency":"USD","amount":450,"expires":0,"fileContent":"dGVzdA==","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":"HDFC","cardlimit":10}},"exchangeRates":[{"id":1,"name":"MoneyExchange","value":10}],"payeeDetails":{"payeeName":"bsnl","payeeType":"ONLINE"},"descriptions":[]}|
+		|{"fromAccount":"203","toAccount":"202","paymentReference":"paying","paymentDetails":"paymentDetails_TEST","currency":"USD","amount":450,"expires":0,"fileContent":"dGVzdA==","paymentMethod":{"id":1,"name":"ONLINE_TXN","card":{"cardid":1,"cardname":"HDFC","cardlimit":10}},"exchangeRates":[{"id":1,"name":"MoneyExchange","value":10}],"payeeDetails":{"payeeId":1234,"payeeName":"bsnl","payeeType":"ONLINE"},"descriptions":[]}|
 		
 		
    Scenario: To get PO with Null value for JSON-Data,Object,Nested-Object and Array 
@@ -65,7 +65,7 @@ Background: To setup the preconfigs
 	
 	Examples: 
 		|payload|
-		|  {"fromAccount":"793","toAccount":"1201","paymentReference":"paytest","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":null,"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+		|  {"fromAccount":"793","toAccount":"1201","paymentReference":"paytest","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":null,"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
 		
 		
    Scenario: To get created PO 
@@ -92,7 +92,7 @@ Background: To setup the preconfigs
 	
 	Examples: 
 		|payload|
-		|  {"fromAccount":"893","toAccount":"1201","paymentReference":"paytest","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+		|  {"fromAccount":"893","toAccount":"1201","paymentReference":"paytest","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[],"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
 		
 		
    Scenario: To get created PO

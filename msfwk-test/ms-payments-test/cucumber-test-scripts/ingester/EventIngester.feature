@@ -82,7 +82,7 @@ Feature: EventIngester
       
     Examples:    
     |payload|
-    |{"fromAccount":"100-CBE","toAccount":"232-EVEN","paymentReference":"payeveb","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+    |{"fromAccount":"100-CBE","toAccount":"232-EVEN","paymentReference":"payeveb","paymentDetails":"Success","currency":"INR","amount":125,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
     
   #Author: Sabapathy
   #MSF-2472
@@ -236,6 +236,6 @@ Feature: EventIngester
       
     Examples:    
     |payload|
-    |{"fromAccount":"101","toAccount":"102","paymentReference":"payfail","paymentDetails":"Success","currency":"INR","amount":200,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Test"]}|
+    |{"fromAccount":"101","toAccount":"102","paymentReference":"payfail","paymentDetails":"Success","currency":"INR","amount":200,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Test"]}|
     
     

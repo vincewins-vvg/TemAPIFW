@@ -6,7 +6,10 @@
   "properties": [
     {
       "name": "cardid",
-      "type": "number"     
+      "type": "number",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]    
     },
     {
       "name": "cardname",

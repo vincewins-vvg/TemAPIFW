@@ -33,6 +33,11 @@
 			"name": "payeeDetails",
 			"type": "userdefined",
 			"childevent": "PayeeDetailsEvent"
+		},
+		{
+			"name": "diff",
+			"type": "object",
+			"description": "Indicates the payment create state changes"
 		}
 	]
 }

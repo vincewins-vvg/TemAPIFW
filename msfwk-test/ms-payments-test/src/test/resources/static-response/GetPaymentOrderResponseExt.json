@@ -1,79 +1,76 @@
 {
-    "paymentOrder": {
-        "fromAccount": "111-ACD",
-        "toAccount": "321-ZXC",
-        "paymentReference": "paytest",
-        "paymentDetails": "extension",
-        "currency": "INR",
-        "fileContent": "dGVzdA==",
-        
-        
-        "extensionData": {
-            "array_BusDayCentres": [
-                "India",
-                "Aus"
-            ],
-            "paymentOrderProduct": "Temenos",
-            "array_NonOspiType": [
-                {
-                    "NonOspiType": "DebitCard",
-                    "NonOspiId": "12456"
-                },
-                {
-                    "NonOspiType": "UPI",
-                    "NonOspiId": "12456"
-                },
-                {
-                    "NonOspiType": "DebitCard",
-                    "NonOspiId": "3163"
-                }
-            ]
-        },
-        
-        "paymentMethod": {
-            "id": 1,
-            "name": "paymentmethod",
-            "extensionData": {
-                "array_BusDayCentres": [
-                    "India",
-                    "Aus"
-                ],
-                "paymentOrderProduct": "Temenos",
-                "array_NonOspiType": [
-                    {
-                        "NonOspiType": "DebitCardinPayment",
-                        "NonOspiId": "12456"
-                    },
-                    {
-                        "NonOspiType": "UPIinPayment",
-                        "NonOspiId": "12456"
-                    },
-                    {
-                        "NonOspiType": "DebitCardinPayment",
-                        "NonOspiId": "3163"
-                    }
-                ]
-            },
-            "card": {
-                "cardid": 1,
-                "cardname": "allwin",
-                "cardlimit": 1.11
-            }
-        },
-        "exchangeRates": [
+   "paymentOrder":{
+      "fromAccount":"111-ACD",
+      "toAccount":"321-ZXC",
+      "paymentReference":"paytest",
+      "paymentDetails":"extension",
+      "currency":"INR",
+      "fileContent":"dGVzdA==",
+      "extensionData":{
+         "array_BusDayCentres":[
+            "India",
+            "Aus"
+         ],
+         "paymentOrderProduct":"Temenos",
+         "array_NonOspiType":[
             {
-                "name": "allwin",
-                "value": 1.11
+               "NonOspiType":"DebitCard",
+               "NonOspiId":"12456"
+            },
+            {
+               "NonOspiType":"UPI",
+               "NonOspiId":"12456"
+            },
+            {
+               "NonOspiType":"DebitCard",
+               "NonOspiId":"3163"
             }
-        ],
-        "payeeDetails": {
-            "payeeName": "paydetail",
-            "payeeType": "visa"
-        }
-    },
-    "paymentStatus": {
-        "paymentId": "PO~111-ACD~321-ZXC~INR~125",
-        "status": "INITIATED",
-        "details": "extension"
-    }
+         ]
+      },
+      "paymentMethod":{
+         "id":1,
+         "name":"paymentmethod",
+         "extensionData":{
+            "array_BusDayCentres":[
+               "India",
+               "Aus"
+            ],
+            "paymentOrderProduct":"Temenos",
+            "array_NonOspiType":[
+               {
+                  "NonOspiType":"DebitCardinPayment",
+                  "NonOspiId":"12456"
+               },
+               {
+                  "NonOspiType":"UPIinPayment",
+                  "NonOspiId":"12456"
+               },
+               {
+                  "NonOspiType":"DebitCardinPayment",
+                  "NonOspiId":"3163"
+               }
+            ]
+         },
+         "card":{
+            "cardid":1,
+            "cardname":"allwin",
+            "cardlimit":1.11
+         }
+      },
+      "exchangeRates":[
+         {
+            "name":"allwin",
+            "value":1.11
+         }
+      ],
+      "payeeDetails":{
+         "payeeName":"paydetail",
+         "payeeType":"visa"
+      }
+   },
+   "paymentStatus":{
+      "paymentId":"PO~111-ACD~321-ZXC~INR~125",
+      "status":"INITIATED",
+      "details":"extension"
+   }
 }

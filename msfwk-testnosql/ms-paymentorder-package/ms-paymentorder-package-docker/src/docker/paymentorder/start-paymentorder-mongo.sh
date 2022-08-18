@@ -19,7 +19,7 @@ export Id_Token_Signed=true
 # Name : ENABLE_AUDIT
 # Description : Enable the audit log feature.
 # Default Value : true
-export ENABLE_AUDIT=false
+export ENABLE_AUDIT=true
 # Name : ENABLE_AUDIT_FOR_GET_API
 # Description : Capture audit logs for get APIs.
 # Default Value : true
@@ -151,6 +151,15 @@ export kafka1_Host_Name=""
 export kafka2_Host_Name=""
 export devdomain_Host_Name=""
 
+# Name            : inbox_Cleanup
+# Descripton        : Specifies No of Minutes required to hold the records inside ms_inbox_events table before automatic deletion.
+# Default Value    : 60
+export inbox_Cleanup="60"
+# Name             : schedule
+# Description        : Specify the Frequency to trigger the scheduler job is set in this property.
+# Default Value    : 5
+export schedule="5"
+
 # Name             : eventDirectDelivery
 # Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
 export eventDirectDelivery=\"true\"
@@ -167,7 +176,8 @@ sleep 90
 
 kubectl create namespace paymentorder
 
-helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$database_Key --set env.database.MONGODB_DBNAME=$database_Name --set env.database.MONGODB_CONNECTIONSTR=\"${db_Connection_Url}\"  --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name --set env.eventdelivery.outboxdirectdeliveryenabled=$eventDirectDelivery --set audit.ENABLE_AUDIT=$ENABLE_AUDIT --set audit.ENABLE_AUDIT_FOR_GET_API=$ENABLE_AUDIT_FOR_GET_API --set audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE=$ENABLE_AUDIT_TO_CAPTURE_RESPONSE
+helm install paymentorder ./svc -n paymentorder --set env.database.DATABASE_KEY=$database_Key --set env.database.MONGODB_DBNAME=$database_Name --set env.database.MONGODB_CONNECTIONSTR=\"${db_Connection_Url}\"  --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.paymentorderinboxoutbox.repository=$inboxoutboxImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name --set env.eventdelivery.outboxdirectdeliveryenabled=$eventDirectDelivery --set audit.ENABLE_AUDIT=$ENABLE_AUDIT --set audit.ENABLE_AUDIT_FOR_GET_API=$ENABLE_AUDIT_FOR_GET_API --set audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE=$ENABLE_AUDIT_TO_CAPTURE_RESPONSE --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=$inbox_Cleanup --set env.scheduler.schedule=$schedule
+
 
 
 cd ../

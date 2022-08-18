@@ -8,6 +8,7 @@
       "name": "id",
       "type": "number",
       "attributes" : [
+		"KEY_PARTITION",
         "GENERATEDVALUE"
       ]            
     },

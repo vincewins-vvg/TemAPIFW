@@ -1,0 +1,18 @@
+{
+	"name": "Payments.UpdatePayment.PaymentUpdated",	
+	"javaPackage": "com.temenos.microservice.payments.event",
+	"description": "Update Payment Order Event",
+	"type": "event",
+	"properties": [
+		{
+			"name": "paymentOrderId",
+			"type": "string",
+			"description": "Identifer indicates the Generated Payment Order Id for the Transaction"
+		},
+		{
+			"name": "diff",
+			"type": "object",
+			"description": "Indicates the payment update state changes"
+		}
+	]
+}

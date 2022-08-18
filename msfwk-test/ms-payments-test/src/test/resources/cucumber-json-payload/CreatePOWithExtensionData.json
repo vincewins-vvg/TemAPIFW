@@ -66,6 +66,7 @@
       }
     ],
     "payeeDetails": {
+      "payeeId":1234,
       "payeeName": "paydetail",
       "payeeType": "visa"
     },

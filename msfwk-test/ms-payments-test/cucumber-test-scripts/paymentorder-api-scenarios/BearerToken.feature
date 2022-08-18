@@ -30,7 +30,7 @@ Scenario Outline: Create a new Payment Order
 	Examples: 
 	
 		|payload|
-		|{"fromAccount":"118-BEA","toAccount":"222-VVG","paymentReference":"paytbearet","paymentDetails":"Success","currency":"USD","amount":433,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+		|{"fromAccount":"118-BEA","toAccount":"222-VVG","paymentReference":"paytbearet","paymentDetails":"Success","currency":"USD","amount":433,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
 		
 		
 Scenario: To get created PO with Bearer Token prefixed with JWT Token 

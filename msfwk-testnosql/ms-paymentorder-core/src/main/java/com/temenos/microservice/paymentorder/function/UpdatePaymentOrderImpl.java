@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.temenos.connect.InboxOutbox.logger.InboxOutboxConstants;
+import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
 import com.temenos.microservice.framework.core.data.DaoFactory;
@@ -20,6 +21,7 @@ import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.OutOfSequenceException;
 import com.temenos.microservice.framework.core.function.Request;
+import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.framework.core.util.SequenceUtil;
@@ -28,6 +30,7 @@ import com.temenos.microservice.paymentorder.entity.ExchangeRate;
 import com.temenos.microservice.paymentorder.entity.PaymentMethod;
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
+import com.temenos.microservice.payments.event.PaymentUpdated;
 
 public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 
@@ -84,6 +87,10 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 				paymentOrder.setExchangeRates(exchangeRates);
 			}
 			paymentOrderDao.saveEntity(paymentOrder);
+			PaymentUpdated paymentUpdated = new PaymentUpdated();
+			paymentUpdated.setPaymentOrderId(paymentOrderId);
+			paymentUpdated.setDiff(paymentOrder.diff());
+			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 			if (paymentOrderId.equals("PO~2568~2578~USD~45") && paymentStatus.getStatus().equals("holdUpdate")) {
 				try {
 					System.out.println("Timed wait started");

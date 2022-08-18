@@ -28,7 +28,7 @@ Scenario Outline: Create a new Payment Order using POST METHOD.
 	
 	Examples: 
 		|payload|
-		|  {  "fromAccount": "3004",  "toAccount": "123-ABC", "paymentReference": "paytest1","paymentDetails": "Success",  "currency": "USD",  "amount": 485,  "expires": 10,  "fileContent": "test",  "paymentDate":"2024-05-05",     "paymentMethod": {    "id": 100111,    "name": "HDFC",    "card": {      "cardid": 723,      "cardname": "Diners",      "cardlimit": 120000.11    }  },  "exchangeRates": [    {      "id": 30,      "name": "USD",      "value": 78.12    }          ],  "payeeDetails": {    "payeeName": "MSTester",    "payeeType": "temp"  },  "descriptions": [    "Tester"  ]}|
+		|  {  "fromAccount": "3004",  "toAccount": "123-ABC", "paymentReference": "paytest1","paymentDetails": "Success",  "currency": "USD",  "amount": 485,  "expires": 10,  "fileContent": "test",  "paymentDate":"2024-05-05",     "paymentMethod": {    "id": 100111,    "name": "HDFC",    "card": {      "cardid": 723,      "cardname": "Diners",      "cardlimit": 120000.11    }  },  "exchangeRates": [    {      "id": 30,      "name": "USD",      "value": 78.12    }          ],  "payeeDetails": {  "payeeId":1234,  "payeeName": "MSTester",    "payeeType": "temp"  },  "descriptions": [    "Tester"  ]}|
 		
 Scenario Outline: Update the status of the created payment order using the update clause
 	Given MS request URI is "v1.0.0/payments/orders/update" 
