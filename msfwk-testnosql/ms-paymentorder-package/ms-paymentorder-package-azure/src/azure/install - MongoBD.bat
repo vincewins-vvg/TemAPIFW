@@ -72,7 +72,7 @@ SET INBOX_CLEANUP_MINUTES="60"
 SET NOSQL_INBOX_SCHEDULER="com.temenos.microservice.framework.scheduler.core.NoSqlInboxCatchupProcessor"
 
 REM Appinit Variables
-SET APPINT_NAME="appinit"
+SET APPINT_NAME="paymentorderappinit"
 SET TEM_APPINIT_DISABLEINBOX="true"
 SET APPINIT_AUTHZ_ENABLED="false"
 SET DB_AUTO_UPGRADE="N"

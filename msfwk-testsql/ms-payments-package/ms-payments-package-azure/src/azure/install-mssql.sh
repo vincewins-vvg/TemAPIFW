@@ -152,7 +152,7 @@ export EVENTDIRECTLYDELIVERY="true"
 export ms_security_tokencheck_command_enabled=N
 
 # APPINIT Environment variables 
-export APPINT_NAME="appinit"
+export APPINT_NAME="paymentsappinit"
 export TEM_APPINIT_DISABLEINBOX="true"
 export APPINIT_AUTHZ_ENABLED="false"
 export JPA_ENABLED="none"
