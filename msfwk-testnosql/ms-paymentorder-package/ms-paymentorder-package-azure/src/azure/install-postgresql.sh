@@ -314,6 +314,11 @@ az functionapp config appsettings set --name "${OUTBOX_LISTENER_APP_NAME}" --res
 # Set environment variables for appinit function app
 az functionapp config appsettings set --name "${APPINT_NAME}" --resource-group "${RESOURCE_GROUP_NAME}"	 --settings POSTGRESQL_CONNECTIONURL="${DATABASE_CONNECTIONURL}" POSTGRESQL_USERNAME="${DATABASE_USERNAME}" POSTGRESQL_PASSWORD="${DATABASE_PASSWORD}" DATABASE_KEY="${DATABASE_KEY}" temn_msf_name="${MSF_NAME}" EXECUTION_ENV="${EXECUTION_ENV}" DATABASE_NAME="${DATABASE_NAME}" class_package_name="${PACKAGE_NAME}"  tem_msf_disableInbox="${TEM_APPINIT_DISABLEINBOX}" temn_msf_security_authz_enabled="${APPINIT_AUTHZ_ENABLED}" temn_msf_database_auto_upgrade="${DB_AUTO_UPGRADE}"
 
+# Remove double quotes from prefix and suffix of the master key variable
+MASTER_KEY=`sed -e 's/^"//' -e 's/"$//' <<<"$MASTER_KEY"`
+
+sleep 10
+
 #Execute appinit api which internally creates tables and indexes for first time and also executes scripts for DB upgrade.
 curl -H "Content-Type: application/json" -X POST https://${APPINT_NAME}.azurewebsites.net/api/v1.0.0/dbmigration?code=${MASTER_KEY}
 

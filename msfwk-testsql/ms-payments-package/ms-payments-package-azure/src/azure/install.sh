@@ -275,6 +275,9 @@ az functionapp config appsettings set --name "${OUTBOX_LISTENER_APP_NAME}" --res
 # Set environment variables for appinit function app
 az functionapp config appsettings set --name "${APPINT_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --settings DATABASE_NAME="${DATABASE_NAME}" DB_CONNECTION_URL="${DB_CONNECTION_URL}" DRIVER_NAME="${DRIVER_NAME}" DIALECT="${DIALECT}" DB_PASSWORD="${DB_PASSWORD}" DB_USERNAME="${DB_USERNAME}" DATABASE_KEY=sql  temn_msf_name="${MSF_NAME}"  EXECUTION_ENV="${EXECUTION_ENV}" class_package_name="${PACKAGE_NAME}"  tem_msf_disableInbox="${TEM_APPINIT_DISABLEINBOX}" temn_msf_security_authz_enabled="${APPINIT_AUTHZ_ENABLED}" temn_msf_database_auto_upgrade="${DB_AUTO_UPGRADE}" JPA_ENABLED="${JPA_ENABLED}" MIN_POOL_SIZE="${DB_CONNECTION_MIN_POOL_SIZE}" MAX_POOL_SIZE="${DB_CONNECTION_MAX_POOL_SIZE}"
 
+# Remove double quotes from prefix and suffix of the master key variable
+MASTER_KEY=`sed -e 's/^"//' -e 's/"$//' <<<"$MASTER_KEY"`
+
 sleep 10
 
 #Execute appinit api which internally creates tables and indexes for first time and also executes scripts for DB upgrade.
