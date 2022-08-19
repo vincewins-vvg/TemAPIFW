@@ -46,13 +46,12 @@ import com.temenos.microservice.framework.core.function.OutOfSequenceException;
 import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.function.ResponseStatus;
 import com.temenos.microservice.framework.core.outbox.EventManager;
-import com.temenos.microservice.framework.core.tracer.Tracer;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.framework.core.util.SequenceUtil;
 import com.temenos.microservice.paymentorder.entity.Card;
 import com.temenos.microservice.paymentorder.entity.PayeeDetails;
-import com.temenos.microservice.paymentorder.event.POAcceptedEvent;
+import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
 import com.temenos.microservice.paymentorder.event.POFailedEvent;
 import com.temenos.microservice.paymentorder.event.PayeeDetailsEvent;
 import com.temenos.microservice.paymentorder.exception.StorageException;
@@ -60,7 +59,6 @@ import com.temenos.microservice.paymentorder.view.ExchangeRate;
 import com.temenos.microservice.paymentorder.view.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
 import com.temenos.microservice.paymentorder.view.UpdatePaymentOrderParams;
-import com.temenos.microservice.paymentorder.event.CreatePaymentEvent;
 
 /**
  * CreateNewPaymentOrderImpl.
@@ -190,6 +188,11 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		com.temenos.microservice.paymentorder.entity.PaymentOrder paymentorder =  new com.temenos.microservice.paymentorder.entity.PaymentOrder();
+		paymentorder.setPaymentOrderId(entity.getPaymentOrderId());
+		entity.captureOldVersion(paymentorder);
+		entity.setClassName(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
+		paymentOrderEvent.setDiff(entity.diff());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
@@ -243,7 +246,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		if (view.getExchangeRates() != null) {
 			for (ExchangeRate exchange : view.getExchangeRates()) {
 				exchangeRate = new com.temenos.microservice.paymentorder.entity.ExchangeRate();
-//				exchangeRate.setId(exchange.getId());
+				exchangeRate.setId(exchange.getId());
 				exchangeRate.setName(exchange.getName());
 				exchangeRate.setValue(exchange.getValue());
 				exchangeRates.add(exchangeRate);
@@ -252,6 +255,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 
 		if (view.getPayeeDetails() != null) {
 			PayeeDetails payeeDetails = new PayeeDetails();
+			payeeDetails.setPayeeId(1234L);
 			payeeDetails.setPayeeName(view.getPayeeDetails().getPayeeName());
 			payeeDetails.setPayeeType(view.getPayeeDetails().getPayeeType());
 			entity.setPayeeDetails(payeeDetails);

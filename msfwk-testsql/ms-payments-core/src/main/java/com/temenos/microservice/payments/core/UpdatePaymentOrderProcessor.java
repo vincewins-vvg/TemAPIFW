@@ -5,13 +5,10 @@
  */
 package com.temenos.microservice.payments.core;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
@@ -19,18 +16,16 @@ import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
-import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.outbox.EventManager;
-import com.temenos.microservice.framework.core.util.JsonUtil;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
+import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PaymentMethod;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 import com.temenos.microservice.payments.event.PaymentUpdated;
 import com.temenos.microservice.payments.function.UpdatePaymentOrderInput;
 import com.temenos.microservice.payments.view.PaymentStatus;
-import com.temenos.microservice.payments.entity.ExchangeRate;
 
 @Component
 public class UpdatePaymentOrderProcessor {
@@ -40,7 +35,7 @@ public class UpdatePaymentOrderProcessor {
 		String paymentOrderId = input.getParams().get().getPaymentId().get(0);
 		String debitAccount = input.getBody().get().getDebitAccount();
 		PaymentOrder paymentOrderOpt = (PaymentOrder) PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao()
-				.findById(paymentOrderId, com.temenos.microservice.payments.entity.PaymentOrder.class);
+				.findByIdForUpdate(paymentOrderId, com.temenos.microservice.payments.entity.PaymentOrder.class);
 		if (paymentOrderOpt != null) {
 			if (paymentOrderOpt.getPaymentOrderId() != null && paymentStatus.getPaymentId() != null
 					&& !paymentOrderOpt.getPaymentOrderId().equalsIgnoreCase(paymentStatus.getPaymentId())) {
@@ -101,8 +96,7 @@ public class UpdatePaymentOrderProcessor {
 		ctx.setBusinessKey(paymentOrderId);
 		PaymentUpdated paymentUpdated = new PaymentUpdated();
 		paymentUpdated.setPaymentOrderId(paymentOrderId);
-		String diff = paymentOrderOpt.diff();
-		paymentUpdated.setStateChange(JsonUtil.parseJson(diff));
+		paymentUpdated.setDiff(paymentOrderOpt.diff());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}

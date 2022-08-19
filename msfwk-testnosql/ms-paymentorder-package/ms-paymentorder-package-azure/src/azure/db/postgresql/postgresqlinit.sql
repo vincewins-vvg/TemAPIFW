@@ -10,6 +10,7 @@ CREATE TABLE ms_payment_order_customer ( data jsonb );
 CREATE TABLE ms_payment_order_balance ( data jsonb );
 CREATE TABLE ms_payment_order_transaction ( data jsonb );
 CREATE TABLE ms_error ( data jsonb );
+CREATE TABLE ms_audit_log ( data jsonb );
 
 CREATE UNIQUE INDEX msaltkey ON ms_altkey ((data->'alternateKey'), (data->'alternateName'));
 CREATE UNIQUE INDEX msreftypevalue ON ms_reference_data ((data->'type'), (data->'value'));
@@ -22,3 +23,4 @@ CREATE UNIQUE INDEX mspotransaction ON ms_payment_order_transaction ((data->'rec
 CREATE UNIQUE INDEX mspayuser ON ms_payments_user ((data->'userId'));
 CREATE UNIQUE INDEX mspopayiddebitacc ON ms_payment_order ((data->'paymentOrderId'), (data->'debitAccount'));
 CREATE UNIQUE INDEX mspocusidcusname ON ms_payment_order_customer ((data->'customerId'), (data->'customerName'));
+CREATE UNIQUE INDEX msauitreqid ON ms_audit_log ((data->'requestId'), (data->'userId'));

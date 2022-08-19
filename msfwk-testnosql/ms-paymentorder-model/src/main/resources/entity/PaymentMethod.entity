@@ -6,7 +6,10 @@
   "properties": [
     {
       "name": "id",
-      "type": "number"     
+      "type": "number",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]    
     },
     {
       "name": "name",

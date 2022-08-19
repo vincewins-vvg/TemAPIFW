@@ -10,7 +10,7 @@
 			"description": "Identifer indicates the Generated Payment Order Id for the Transaction"
 		},
 		{
-			"name": "stateChange",
+			"name": "diff",
 			"type": "object",
 			"description": "Indicates the payment update state changes"
 		}

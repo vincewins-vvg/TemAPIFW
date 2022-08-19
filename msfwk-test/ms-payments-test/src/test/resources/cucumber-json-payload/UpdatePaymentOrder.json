@@ -1,21 +1,30 @@
 {
-  "debitAccount": "100-CBE",
-  "paymentId": "PO~100-CBE~222-VVG~USD~433",
-  "status": "changed",
-  "details": "changed",
-  "paymentMethod": {
-    "id": 22,
-    "name": "MSTester",
-    "card": {
-      "cardid": 11,
-      "cardname": "Diners",
-      "cardlimit": 11.11
-    }
-  },
-  "exchangeRates": [
-    {
-      "name": "INR",
-      "value": 22.22
-    }
-  ]
+    "debitAccount": "100-CBE",
+    "paymentId": "PO~100-CBE~222-VVG~USD~433",
+    "status": "changed",
+    "details": "changed",
+   "paymentMethod":{
+      "id":100100,
+      "name":"HDFC",
+      "card":{
+         "cardid":723,
+         "cardname":"Diners",
+         "cardlimit":120000.11
+      }
+   },
+   "exchangeRates":[
+      {
+         "id":30,
+         "name":"USD",
+         "value":78.12
+      }
+   ],
+   "payeeDetails":{
+      "payeeId":1234,
+      "payeeName":"MSTester",
+      "payeeType":"temp"
+   },
+   "descriptions":[
+      "Tester"
+   ]
 }

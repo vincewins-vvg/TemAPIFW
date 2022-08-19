@@ -6,25 +6,25 @@
         "paymentDetails": "Success",
         "currency": "USD",
         "fileContent": "dGVzdA==",
-        
-        
+
+
         "extensionData": {},
         "paymentDate": "2024-05-05",
         "paymentMethod": {
-            "id": 22,
-            "name": "MSTester",
+            "id": 100100,
+            "name": "HDFC",
             "extensionData": {},
             "card": {
-                "cardid": 11,
+                "cardid": 723,
                 "cardname": "Diners",
-                "cardlimit": 11.11
+                "cardlimit": 120000.11
             }
         },
         "exchangeRates": [
             {
-                
-                "name": "INR",
-                "value": 22.22
+
+                "name": "USD",
+                "value": 78.12
             }
         ],
         "payeeDetails": {

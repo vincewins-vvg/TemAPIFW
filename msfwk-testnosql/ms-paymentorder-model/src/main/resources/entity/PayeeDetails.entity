@@ -6,7 +6,10 @@
   "properties": [
     {
       "name": "payeeId",
-      "type": "number"     
+      "type": "number",
+      "attributes" : [
+        "KEY_PARTITION"
+      ]
     },
     {
       "name": "payeeName",

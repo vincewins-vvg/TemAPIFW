@@ -34,7 +34,7 @@ Scenario Outline: Create a new Payment Order
 	
 	Examples: 
 		|payload|
-		|{"fromAccount":"400-cpe","toAccount":"401-cpe","paymentReference":"paycpep","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
+		|{"fromAccount":"400-cpe","toAccount":"401-cpe","paymentReference":"paycpep","paymentDetails":"Success","currency":"INR","amount":483,"expires":10,"fileContent":"dGVzdA==","paymentDate":"2024-05-05","paymentMethod":{"id":100100,"name":"HDFC","card":{"cardid":723,"cardname":"Diners","cardlimit":120000.11}},"exchangeRates":[{"id":30,"name":"USD","value":78.12}],"payeeDetails":{"payeeId":1234,"payeeName":"MSTester","payeeType":"temp"},"descriptions":["Tester"]}|
 		
 Scenario: To retrieve the created paymentorder using HTTP GET METHOD 
 

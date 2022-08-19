@@ -588,6 +588,9 @@ data:
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
   operationId: sqlOutboxCatchup
   temn.msf.scheduler.time.delay: "0"
+  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
+  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
+  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   

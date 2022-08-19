@@ -39,7 +39,6 @@ import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.function.InvocationFailedException;
-import com.temenos.microservice.framework.core.function.Request;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
@@ -192,6 +191,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		if (view.getPayeeDetails() != null) {
 			PayeeDetails payeeDetails = new PayeeDetails();
+			payeeDetails.setPayeeId(123);
 			payeeDetails.setPayeeName(view.getPayeeDetails().getPayeeName());
 			payeeDetails.setPayeeType(view.getPayeeDetails().getPayeeType());
 			entity.setPayeeDetails(payeeDetails);
@@ -219,6 +219,11 @@ public class CreateNewPaymentOrderProcessor {
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		com.temenos.microservice.payments.entity.PaymentOrder paymentorder = new com.temenos.microservice.payments.entity.PaymentOrder();
+		paymentorder.setPaymentOrderId(entity.getPaymentOrderId());
+		entity.captureOldVersion(paymentorder);
+		entity.setClassName(com.temenos.microservice.payments.entity.PaymentOrder.class);
+		paymentOrderEvent.setDiff(entity.diff());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return entity;

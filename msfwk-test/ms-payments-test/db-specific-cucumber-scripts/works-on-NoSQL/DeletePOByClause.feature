@@ -26,7 +26,7 @@ Scenario Outline: Create multiple Payment Orders using POST METHOD.
 	
 	Examples: 
 		|payload|
-		|  {  "fromAccount": "3011",  "toAccount": "123-ABC","paymentDetails": "Success", "paymentReference": "paymenttest", "currency": "USD",  "amount": 485,  "expires": 10,  "fileContent": "test",  "paymentDate":"2024-05-05",     "paymentMethod": {    "id": 100111,    "name": "HDFC",    "card": {      "cardid": 723,      "cardname": "Diners",      "cardlimit": 120000.11    }  },  "exchangeRates": [    {      "id": 30,      "name": "USD",      "value": 78.12    }          ],  "payeeDetails": {    "payeeName": "MSTester",    "payeeType": "temp"  },  "descriptions": [    "Tester"  ]}|
+		|  {  "fromAccount": "3011",  "toAccount": "123-ABC","paymentDetails": "Success", "paymentReference": "paymenttest", "currency": "USD",  "amount": 485,  "expires": 10,  "fileContent": "test",  "paymentDate":"2024-05-05",     "paymentMethod": {    "id": 100111,    "name": "HDFC",    "card": {      "cardid": 723,      "cardname": "Diners",      "cardlimit": 120000.11    }  },  "exchangeRates": [    {      "id": 30,      "name": "USD",      "value": 78.12    }          ],  "payeeDetails": {  "payeeId":1234,  "payeeName": "MSTester",    "payeeType": "temp"  },  "descriptions": [    "Tester"  ]}|
 		
 		#Update the status of the payment order using the update clause
 Scenario Outline: Update the status of PO as per details provided in the payload using update clause 
