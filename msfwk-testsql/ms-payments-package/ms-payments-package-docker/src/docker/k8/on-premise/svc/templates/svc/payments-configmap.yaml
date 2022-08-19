@@ -576,6 +576,7 @@ data:
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.executor.schedule: {{ .Values.env.paymentorderscheduler.schedule | quote }}
+  temn.msf.executor.schedule.timeunit: {{ .Values.env.paymentorderscheduler.timeunit | quote }}
   temn_msf_function_class_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
@@ -632,6 +633,7 @@ data:
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.executor.schedule: {{ .Values.env.paymentorderscheduler.schedule | quote }}
+  temn.msf.executor.schedule.timeunit: {{ .Values.env.paymentorderscheduler.timeunit | quote }}
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   temn_msf_name: paymentorder  
