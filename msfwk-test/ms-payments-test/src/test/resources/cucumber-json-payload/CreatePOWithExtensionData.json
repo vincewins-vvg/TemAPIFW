@@ -67,8 +67,8 @@
     ],
     "payeeDetails": {
       "payeeId":1234,
-      "payeeName": "paydetail",
-      "payeeType": "visa"
+      "payeeName": "MSTester",
+      "payeeType": "temp"
     },
     "descriptions": [
       "data"

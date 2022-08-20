@@ -12,7 +12,8 @@ Background: To setup the preconfigs
 	And MS request header "Content-Type" is set to "application/json" 
 	
    Scenario Outline: Create a new Payment Order with Null value for JSON-Data,Object,Nested-Object and Array 
-
+  
+  And set timeout session for 30 seconds
 	And post the static MS JSON as payload <payload> 
 	And MS query parameter for Azure env is set to value "" 
 	And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE" 

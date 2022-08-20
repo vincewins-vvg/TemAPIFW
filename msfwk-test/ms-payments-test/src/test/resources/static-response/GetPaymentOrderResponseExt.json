@@ -64,8 +64,8 @@
          }
       ],
       "payeeDetails":{
-         "payeeName":"paydetail",
-         "payeeType":"visa"
+         "payeeName":"MSTester",
+         "payeeType":"temp"
       }
    },
    "paymentStatus":{
