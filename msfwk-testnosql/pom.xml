@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.temenos.microservice</groupId>
 		<artifactId>microservice-parent</artifactId>
-		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
+		<version>DEV.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.temenos.microservice.paymentorder</groupId>
