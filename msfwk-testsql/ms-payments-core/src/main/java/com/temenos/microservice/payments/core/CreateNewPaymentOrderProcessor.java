@@ -221,7 +221,7 @@ public class CreateNewPaymentOrderProcessor {
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
 		com.temenos.microservice.payments.entity.PaymentOrder paymentorder = new com.temenos.microservice.payments.entity.PaymentOrder();
 		paymentorder.setPaymentOrderId(entity.getPaymentOrderId());
-		entity.captureOldVersion(paymentorder);
+		entity.captureStateChange(paymentorder);
 		entity.setClassName(com.temenos.microservice.payments.entity.PaymentOrder.class);
 		paymentOrderEvent.setDiff(entity.diff());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);

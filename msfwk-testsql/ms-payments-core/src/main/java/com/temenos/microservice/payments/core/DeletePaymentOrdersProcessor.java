@@ -63,7 +63,7 @@ public class DeletePaymentOrdersProcessor {
 			paymentDeleted.setPaymentOrderId(paymentOrder.getPaymentOrderId());
 			com.temenos.microservice.payments.entity.PaymentOrder entity = new com.temenos.microservice.payments.entity.PaymentOrder();
 			entity.setPaymentOrderId(paymentOrder.getPaymentOrderId());
-			paymentOrder.captureOldVersion(entity);
+			paymentOrder.captureStateChange(entity);
 			paymentOrder.setClassName(com.temenos.microservice.payments.entity.PaymentOrder.class);
 			paymentDeleted.setDiff(paymentOrder.deleteDiff());
 			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
