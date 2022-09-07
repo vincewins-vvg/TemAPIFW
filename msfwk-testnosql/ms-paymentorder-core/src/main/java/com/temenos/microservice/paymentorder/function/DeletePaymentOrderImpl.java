@@ -52,7 +52,7 @@ public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 				paymentDeleted.setPaymentOrderId(paymentId);
 				com.temenos.microservice.paymentorder.entity.PaymentOrder entity =  new com.temenos.microservice.paymentorder.entity.PaymentOrder();
 				entity.setPaymentOrderId(paymentId);
-				paymentOrder.captureOldVersion(entity);
+				paymentOrder.captureStateChange(entity);
 				paymentOrder.setClassName(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 				paymentDeleted.setDiff(paymentOrder.deleteDiff());
 				EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));

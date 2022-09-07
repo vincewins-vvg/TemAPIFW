@@ -190,7 +190,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
 		com.temenos.microservice.paymentorder.entity.PaymentOrder paymentorder =  new com.temenos.microservice.paymentorder.entity.PaymentOrder();
 		paymentorder.setPaymentOrderId(entity.getPaymentOrderId());
-		entity.captureOldVersion(paymentorder);
+		entity.captureStateChange(paymentorder);
 		entity.setClassName(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		paymentOrderEvent.setDiff(entity.diff());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
