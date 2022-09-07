@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
 		<artifactId>microservice-package-docker-nosql</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.temenos.microservice.paymentorder</groupId>
@@ -89,6 +89,12 @@
 						</execution>
 					</executions>
 				</plugin>
+				
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.11.0</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
