@@ -11,8 +11,8 @@
 	<name>frmwktestsuite</name>
 	<description>framework test suite for payment order project</description>
 	<modules>  
-		<module>msfwk-testnosql</module>
-		<module>msfwk-testsql</module>
-		<module>JMSConsumer</module>
+		<module>msfwk-testnosql/msf-primary.xml</module>
+		<module>msfwk-testsql/msf-primary.xml</module>
+		<module>JMSConsumer/msf-primary.xml</module>
   </modules>
 </project>
