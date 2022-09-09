@@ -23,9 +23,9 @@
 		<sonar.skip>true</sonar.skip>
 	</properties>
 	<modules>
-		<module>ms-paymentorder-dynamo</module>
-		<module>ms-paymentorder-mongo</module>
-		<module>ms-paymentorder-cassandra</module>
-		<module>ms-paymentorder-postgresql</module>
+		<module>ms-paymentorder-dynamo/msf-primary.xml</module>
+		<module>ms-paymentorder-mongo/msf-primary.xml</module>
+		<module>ms-paymentorder-cassandra/msf-primary.xml</module>
+		<module>ms-paymentorder-postgresql/msf-primary.xml</module>
 	</modules>
 </project>
