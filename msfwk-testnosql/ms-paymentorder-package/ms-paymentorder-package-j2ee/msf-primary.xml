@@ -12,29 +12,41 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
-		<artifactId>microservice-package-aws-nosql</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<artifactId>microservice-package-j2ee-nosql</artifactId>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.temenos.microservice.paymentorder</groupId>
-	<artifactId>ms-paymentorder-package-aws</artifactId>
-	<name>ms-paymentorder-package-aws</name>
-	<description>Payment Order aws packaging</description>
+	<artifactId>ms-paymentorder-package-j2ee</artifactId>
+	<name>ms-paymentorder-package-j2ee</name>
+	<description>ms-paymentorder j2ee packaging</description>
 	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
-		<!-- msf name -->
-		<msf.name>ms-paymentorder</msf.name>
 		<!-- Enable Model unpack and MSF CodeGen -->
 		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
-		<aws.codegen.enabled>false</aws.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
 
 		<!-- Directory name inside the final Assembly -->
-		<assemblyOutputDirectory>ms-paymentorder-AWS</assemblyOutputDirectory>
+		<assemblyOutputDirectory>paymentorder-j2ee</assemblyOutputDirectory>
+
+		<!-- Provider API WAR filename as it would be used as /context-root -->
+		<web.apiPackageFileName>ms-paymentorder-j2ee.war</web.apiPackageFileName>
+
+		<!-- Data Ingester App Name -->
+		<web.ingester.data.app.name>ms-paymentorder-data-ingester.war</web.ingester.data.app.name>
+
+		<!-- Command Ingester App Name -->
+		<web.ingester.command.app.name>ms-paymentorder-command-ingester.war</web.ingester.command.app.name>
+
+		<web.ingester.file.app.name>ms-paymentorder-file-ingester.war</web.ingester.file.app.name>
+
+		<!-- Ingester for ignite name -->
+		<web.inboxoutbox.app.name>ms-paymentorder-inboxoutbox-app.war</web.inboxoutbox.app.name>
+		<web.ms-framework-scheduler-web.name>ms-paymentorder-scheduler-web.war</web.ms-framework-scheduler-web.name>
+
 		<sonar.skip>true</sonar.skip>
-		<skip.assembly>true</skip.assembly>
 	</properties>
 
 	<dependencies>
@@ -52,14 +64,14 @@
 					<artifactId>ms-framework-gen</artifactId>
 					<executions>
 						<execution>
-							<id>generate-api-AWS</id>
+							<id>generate-api-web</id>
 							<phase>generate-sources</phase>
 							<goals>
 								<goal>generate-api</goal>
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
-								<targetPlatform>AWS</targetPlatform>
+								<targetPlatform>Camel</targetPlatform>
 								<enableInbox>true</enableInbox>
 								<apiCamelVersion>1.1</apiCamelVersion>
 							</configuration>

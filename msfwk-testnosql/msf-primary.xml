@@ -12,40 +12,31 @@
 	<parent>
 		<groupId>com.temenos.microservice</groupId>
 		<artifactId>microservice-parent</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.temenos.microservice.payments</groupId>
-	<artifactId>ms-payments</artifactId>
+	<groupId>com.temenos.microservice.paymentorder</groupId>
+	<artifactId>ms-paymentorder</artifactId>
 	<version>DEV.0.0-SNAPSHOT</version>
-	<properties>
-		<minimum.code.coverage>0.0</minimum.code.coverage>
-		<mysql.connector.version>8.0.15</mysql.connector.version>
-		<org.apache.httpcomponents.httpclient.version>4.5.5</org.apache.httpcomponents.httpclient.version>
-	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>ms-payments-core</artifactId>
+				<artifactId>ms-paymentorder-core</artifactId>
 				<version>DEV.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>ms-payments-model</artifactId>
-				<version>DEV.0.0-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>ms-payments-data</artifactId>
+				<artifactId>ms-paymentorder-model</artifactId>
 				<version>DEV.0.0-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-  <modules>
-    <module>ms-payments-model</module>
-    <module>ms-payments-data</module>
-    <module>ms-payments-core</module>
-    <module>ms-payments-package</module>
+	<modules>
+		<module>ms-paymentorder-model</module>
+		<module>ms-paymentorder-core</module>
+		<module>ms-paymentorder-package</module>
+		
   </modules>
 </project>

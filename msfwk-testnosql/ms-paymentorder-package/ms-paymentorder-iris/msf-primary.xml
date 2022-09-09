@@ -12,7 +12,7 @@
 <parent>
 		<groupId>com.temenos.microservice.paymentorder</groupId>
 		<artifactId>ms-paymentorder-package</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>ms-paymentorder-iris</artifactId>
 	<modelVersion>4.0.0</modelVersion>

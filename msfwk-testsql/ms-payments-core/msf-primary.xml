@@ -6,25 +6,40 @@
     *******************************************************************************
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>com.temenos.microservice.paymentorder</groupId>
-		<artifactId>ms-paymentorder</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<groupId>com.temenos.microservice.payments</groupId>
+		<artifactId>ms-payments</artifactId>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ms-paymentorder-core</artifactId>
-	<name>ms-paymentorder-core</name>
+	<artifactId>ms-payments-core</artifactId>
+	<name>ms-payments-core</name>
 	<description>Payment order implementation</description>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<!-- Project depdendencies -->
 		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ms-paymentorder-model</artifactId>
+			<artifactId>ms-payments-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ms-payments-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.microservice.framework</groupId>
@@ -35,32 +50,57 @@
 			<artifactId>ms-framework-cdp</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des</groupId>
 			<artifactId>stream-processor</artifactId>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-core</artifactId>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des</groupId>
 			<artifactId>event-schemas</artifactId>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-kafka</artifactId>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.des.stream-vendor-io</groupId>
 			<artifactId>stream-vendor-io-kinesis</artifactId>
+
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -68,5 +108,5 @@
 			<artifactId>javax.jms-api</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        </dependencies>
 </project>
