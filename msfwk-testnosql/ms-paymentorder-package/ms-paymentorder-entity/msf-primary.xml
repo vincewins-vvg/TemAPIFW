@@ -12,18 +12,20 @@
 <parent>
 		<groupId>com.temenos.microservice.paymentorder</groupId>
 		<artifactId>ms-paymentorder-package</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>ms-paymentorder-iris</artifactId>
+	<artifactId>ms-paymentorder-entity</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
-	<name>ms-paymentorder-iris</name>
-	<description>Payment Order iris packaging project</description>
+	<name>ms-paymentorder-entity</name>
+	<description>Payment Order entity packaging project</description>
 	<properties>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 	<modules>
-		<module>ms-paymentorder-nosql-iris-service</module>
-		<module>ms-paymentorder-nosql-iris-container</module>
+		<module>ms-paymentorder-dynamo</module>
+		<module>ms-paymentorder-mongo</module>
+		<module>ms-paymentorder-cassandra</module>
+		<module>ms-paymentorder-postgresql</module>
 	</modules>
 </project>

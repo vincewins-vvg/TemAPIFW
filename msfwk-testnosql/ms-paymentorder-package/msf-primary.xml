@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     *******************************************************************************
@@ -9,21 +9,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<parent>
-		<groupId>com.temenos.microservice.paymentorder</groupId>
-		<artifactId>ms-paymentorder-package</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>ms-paymentorder-iris</artifactId>
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.paymentorder</groupId>
+		<artifactId>ms-paymentorder</artifactId>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>ms-paymentorder-package</artifactId>
 	<packaging>pom</packaging>
-	<name>ms-paymentorder-iris</name>
-	<description>Payment Order iris packaging project</description>
+	<name>ms-paymentorder-package</name>
+	<description>Payment Order packaging project</description>
+
 	<properties>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 	<modules>
-		<module>ms-paymentorder-nosql-iris-service</module>
-		<module>ms-paymentorder-nosql-iris-container</module>
+		<module>ms-paymentorder-entity</module>
+		<module>ms-paymentorder-package-knative</module>
+		<module>ms-paymentorder-package-docker</module>
+		<module>ms-paymentorder-package-aws</module>
+		<module>ms-paymentorder-package-azure</module>
 	</modules>
 </project>

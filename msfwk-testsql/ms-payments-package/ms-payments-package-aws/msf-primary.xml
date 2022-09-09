@@ -12,36 +12,76 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
-		<artifactId>microservice-package-aws-nosql</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<artifactId>microservice-package-aws-jpa</artifactId>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.temenos.microservice.paymentorder</groupId>
-	<artifactId>ms-paymentorder-package-aws</artifactId>
-	<name>ms-paymentorder-package-aws</name>
-	<description>Payment Order aws packaging</description>
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments-package-aws</artifactId>
+	<name>ms-payments-package-aws</name>
+	<description>ms-payments aws packaging</description>
 	<version>DEV.0.0-SNAPSHOT</version>
 
 	<properties>
-		<!-- msf name -->
-		<msf.name>ms-paymentorder</msf.name>
 		<!-- Enable Model unpack and MSF CodeGen -->
 		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
-		<aws.codegen.enabled>false</aws.codegen.enabled>
-		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
+		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
+		<packager.dataIncludeArtifactId>ms-payments-data</packager.dataIncludeArtifactId>		
 
 		<!-- Directory name inside the final Assembly -->
-		<assemblyOutputDirectory>ms-paymentorder-AWS</assemblyOutputDirectory>
+		<assemblyOutputDirectory>ms-payments-AWS</assemblyOutputDirectory>
 		<sonar.skip>true</sonar.skip>
-		<skip.assembly>true</skip.assembly>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ms-paymentorder-core</artifactId>
+			<artifactId>ms-payments-core</artifactId>
 			<version>DEV.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.temenos.microservice.framework</groupId>
+					<artifactId>kafka-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.kafka</groupId>
+					<artifactId>kafka-clients</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.temenos.des.stream-vendor-io</groupId>
+					<artifactId>stream-vendor-io-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.temenos.microservice.framework</groupId>
+					<artifactId>ms-sample_impl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjrt</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.glassfish.hk2.external</groupId>
+					<artifactId>aopalliance-repackaged</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.glassfish.jaxb</groupId>
+					<artifactId>txw2</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.mail</groupId>
+					<artifactId>javax.mail</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>

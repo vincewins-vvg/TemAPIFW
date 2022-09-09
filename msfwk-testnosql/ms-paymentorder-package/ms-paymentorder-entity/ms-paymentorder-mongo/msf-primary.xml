@@ -13,13 +13,13 @@
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
 		<artifactId>microservice-package-entity-nosql</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.temenos.microservice.paymentorder</groupId>
-	<artifactId>ms-paymentorder-entity-dynamo</artifactId>
-	<name>ms-paymentorder-entity-dynamo</name>
-	<description>Payment Order entity dynamo</description>
+	<artifactId>ms-paymentorder-entity-mongo</artifactId>
+	<name>ms-paymentorder-entity-mongo</name>
+	<description>Payment Order entity mongo</description>
 	<packaging>jar</packaging>
 	<version>DEV.0.0-SNAPSHOT</version>
 
@@ -29,8 +29,7 @@
 		<msf.codegen.enabled>true</msf.codegen.enabled>
 		<aws.codegen.enabled>false</aws.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-paymentorder-model</packager.modelIncludeArtifactId>
-		<msf.vocabulary.validation.enabled>false</msf.vocabulary.validation.enabled>
-
+        <msf.vocabulary.validation.enabled>false</msf.vocabulary.validation.enabled>
 		<!-- Directory name inside the final Assembly -->
 		<assemblyOutputDirectory>ms-paymentorder-entity</assemblyOutputDirectory>
 		<sonar.skip>true</sonar.skip>

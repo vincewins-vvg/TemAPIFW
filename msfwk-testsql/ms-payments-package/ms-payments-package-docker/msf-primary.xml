@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     *******************************************************************************
@@ -6,43 +6,46 @@
     *******************************************************************************
 
 -->
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.temenos.microservice.package</groupId>
-		<artifactId>microservice-package-azure-sql</artifactId>
-		<version>DEV.0.0-SNAPSHOT</version>
+		<artifactId>microservice-package-docker-jpa</artifactId>
+		<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.temenos.microservice.payments</groupId>
-	<artifactId>ms-payments-package-azure</artifactId>
+	<artifactId>ms-payments-package-docker</artifactId>
+	<name>ms-payments-package-docker</name>
+	<description>ms-payments docker packaging</description>
 	<version>DEV.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>ms-payments-package-azure</name>
-	<description>Payments Azure packaging</description>
-	<url>http://maven.apache.org</url>
 
 	<properties>
-		<!-- Enable code gen -->
+		<!-- Enable Model unpack and MSF CodeGen -->
+		<skipModelUnpack>false</skipModelUnpack>
 		<msf.codegen.enabled>true</msf.codegen.enabled>
 		<packager.modelIncludeArtifactId>ms-payments-model</packager.modelIncludeArtifactId>
 		<packager.dataIncludeArtifactId>ms-payments-data</packager.dataIncludeArtifactId>		
 
 		<!-- Directory name inside the final Assembly -->
-		<assemblyOutputDirectory>ms-payments-Azure</assemblyOutputDirectory>
+		<assemblyOutputDirectory>ms-payments-Docker</assemblyOutputDirectory>
+
+		<!-- Provider API WAR filename as it would be used as /context-root -->
+		<docker.apiPackageFileName>ms-payments-api.war</docker.apiPackageFileName>
+		<!-- Ingester App Name -->
+		<docker.ingester.app.name>ms-payments-ingester.jar</docker.ingester.app.name>
+		<docker.inbox.app.name>ms-paymentorder-inboxoutbox.jar</docker.inbox.app.name>
+		<docker.ms-framework-scheduler.name>ms-paymentorder-scheduler.jar</docker.ms-framework-scheduler.name>
 		<sonar.skip>true</sonar.skip>
-		<applicationName>paymentsapp</applicationName>
-		<applicationListenerName>paymentsapplistener</applicationListenerName>
-		<saasEnabled>true</saasEnabled>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ms-payments-core</artifactId>
-			<version>${project.version}</version>
+			<version>DEV.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -53,14 +56,14 @@
 					<artifactId>ms-framework-gen</artifactId>
 					<executions>
 						<execution>
-							<id>generate-api-azure</id>
+							<id>generate-api-Docker</id>
 							<phase>generate-sources</phase>
 							<goals>
 								<goal>generate-api</goal>
 							</goals>
 							<configuration>
 								<modelDirectory>${modelDirectory}/api</modelDirectory>
-								<targetPlatform>Azure</targetPlatform>
+								<targetPlatform>Camel</targetPlatform>
 								<enableInbox>true</enableInbox>
 								<apiCamelVersion>1.1</apiCamelVersion>
 							</configuration>
