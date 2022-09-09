@@ -31,6 +31,7 @@
 		<dependency>
 			<groupId>com.temenos.microservice.framework</groupId>
 			<artifactId>ms-framework-core</artifactId>
+			<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -39,6 +40,7 @@
 				<plugin>
 					<groupId>com.temenos.microservice.plugin</groupId>
 					<artifactId>ms-framework-gen</artifactId>
+					<version>PRE-PRIMARY.0.0-SNAPSHOT</version>
 					<executions>
 						<execution>
 							<id>generate-function</id>
