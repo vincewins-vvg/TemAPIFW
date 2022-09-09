@@ -43,9 +43,9 @@
 		</dependencies>
 	</dependencyManagement>
   <modules>
-    <module>ms-payments-model</module>
-    <module>ms-payments-data</module>
-    <module>ms-payments-core</module>
-    <module>ms-payments-package</module>
+    <module>ms-payments-model/msf-primary.xml</module>
+    <module>ms-payments-data/msf-primary.xml</module>
+    <module>ms-payments-core/msf-primary.xml</module>
+    <module>ms-payments-package/msf-primary.xml</module>
   </modules>
 </project>
