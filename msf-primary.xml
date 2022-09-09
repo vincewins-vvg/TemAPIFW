@@ -13,6 +13,6 @@
 	<modules>  
 		<module>msfwk-testnosql/msf-primary.xml</module>
 		<module>msfwk-testsql/msf-primary.xml</module>
-		<module>JMSConsumer/msf-primary.xml</module>
+		<module>JMSConsumer</module>
   </modules>
 </project>
