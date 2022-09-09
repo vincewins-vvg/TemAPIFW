@@ -34,9 +34,9 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
-		<module>ms-paymentorder-model</module>
-		<module>ms-paymentorder-core</module>
-		<module>ms-paymentorder-package</module>
+		<module>ms-paymentorder-model/msf-primary.xml</module>
+		<module>ms-paymentorder-core/msf-primary.xml</module>
+		<module>ms-paymentorder-package/msf-primary.xml</module>
 		
   </modules>
 </project>
