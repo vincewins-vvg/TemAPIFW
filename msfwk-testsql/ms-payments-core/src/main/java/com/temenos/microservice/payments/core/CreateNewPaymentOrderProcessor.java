@@ -208,7 +208,7 @@ public class CreateNewPaymentOrderProcessor {
 			entity.setExchangeRates(exchangeRates);
 		}
 
-		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
+		entity=PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
 		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
 		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
@@ -219,11 +219,7 @@ public class CreateNewPaymentOrderProcessor {
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
-		com.temenos.microservice.payments.entity.PaymentOrder paymentorder = new com.temenos.microservice.payments.entity.PaymentOrder();
-		paymentorder.setPaymentOrderId(entity.getPaymentOrderId());
-		entity.captureStateChange(paymentorder);
-		entity.setClassName(com.temenos.microservice.payments.entity.PaymentOrder.class);
-		paymentOrderEvent.setDiff(entity.diff());
+		paymentOrderEvent.setDiff(entity.stateChange());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return entity;

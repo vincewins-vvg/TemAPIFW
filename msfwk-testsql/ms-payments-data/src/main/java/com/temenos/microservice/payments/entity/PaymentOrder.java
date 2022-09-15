@@ -47,7 +47,6 @@ public class PaymentOrder extends BaseEntity implements ExtendableEntity {
 
 	private String paymentDetails;
 
-	@JsonFormat(pattern = "yyyyMMdd")
 	private Date paymentDate;
 
 	private BigDecimal amount;

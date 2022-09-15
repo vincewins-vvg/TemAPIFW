@@ -31,4 +31,4 @@ USER appuser
 
 WORKDIR app/
 
-CMD java -cp "ms-paymentorder-scheduler.jar:" -Dloader.main=${SCHEDULER_MAIN_CLASS} org.springframework.boot.loader.PropertiesLauncher
+CMD java ${java_options} -cp "ms-paymentorder-scheduler.jar:" -Dloader.main=${SCHEDULER_MAIN_CLASS} org.springframework.boot.loader.PropertiesLauncher

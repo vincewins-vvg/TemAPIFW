@@ -569,7 +569,12 @@ data:
   DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  java_options: {{ .Values.resources.ingester.java.heaplimit }}
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }}
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -577,16 +582,17 @@ data:
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.executor.schedule: {{ .Values.env.paymentorderscheduler.schedule | quote }}
   temn.msf.executor.schedule.timeunit: {{ .Values.env.paymentorderscheduler.timeunit | quote }}
-  temn_msf_function_class_paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
+  temn.msf.function.class.paymentscheduler: com.temenos.microservice.payments.scheduler.PaymentOrderScheduler
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: ms-paymentorder
+  temn.msf.name: ms-paymentorder
   temn.msf.service: Scheduler   
-  temn_msf_security_authz_enabled: "false" 
+  temn.msf.security.authz.enabled: "false" 
   className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
   operationId: sqlOutboxCatchup
+  temn.msf.outbox.direct.delivery.enabled: "true"
   temn.msf.scheduler.time.delay: "0"
   temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
   temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
@@ -629,7 +635,12 @@ data:
   DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  java_options: {{ .Values.resources.ingester.java.heaplimit }}
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }}
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -639,9 +650,10 @@ data:
   temn.msf.executor.schedule.timeunit: {{ .Values.env.paymentorderscheduler.timeunit | quote }}
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn_msf_name: paymentorder  
-  temn_msf_security_authz_enabled: "false" 
+  temn.msf.name: paymentorder  
+  temn.msf.security.authz.enabled: "false" 
   operationId : sqlInboxCatchup
+  temn.msf.outbox.direct.delivery.enabled: "true"  
   className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
   temn.msf.scheduler.inboxcleanup.schedule: {{ .Values.env.sqlinboxcatchupscheduler.temn_msf_scheduler_inboxcleanup_schedule | quote }}
 {{- if .Values.logging.exportType }}        
