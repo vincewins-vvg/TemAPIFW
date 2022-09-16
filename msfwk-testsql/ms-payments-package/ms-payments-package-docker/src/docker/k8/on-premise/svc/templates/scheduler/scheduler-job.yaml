@@ -32,17 +32,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: PASSWORD
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: DB_PASS_ENCRYPTION_KEY                
       {{- end }}
 
@@ -52,17 +52,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: PASSWORD 
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: DB_PASS_ENCRYPTION_KEY                
       {{- end }}      
 --- 
@@ -93,17 +93,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: PASSWORD
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: DB_PASS_ENCRYPTION_KEY                
       {{- end }}     
       
@@ -113,17 +113,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: PASSWORD 
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: eventstoredbsecret
+                name: posqldbsecret
                 key: DB_PASS_ENCRYPTION_KEY                
       {{- end }}                
         

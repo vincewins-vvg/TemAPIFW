@@ -347,31 +347,7 @@
 				</AllOf>
 			</AnyOf>
 		</Target>
-		<Rule RuleId="permit-getPaymentOrder" Effect="Permit">
-			<Description/>
-			<Condition>
-				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-							<AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:serviceid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-						</Apply>
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">client</AttributeValue>
-					</Apply>
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-							<AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:channelid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-						</Apply>
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">web</AttributeValue>
-					</Apply>
-					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-						<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-							<AttributeDesignator Category="urn:oasis:names:tc:xacml:3.0:attribute-category:subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:customfilterid" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-						</Apply>
-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">test</AttributeValue>
-					</Apply>
-				</Apply>
-			</Condition>
-		</Rule>
+		<Rule RuleId="permit-getPaymentOrder" Effect="Permit" />
 	</Policy>
 	<Policy PolicyId="permit-putPaymentOrders" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
 		<Description/>

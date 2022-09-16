@@ -200,21 +200,44 @@ env:
 #Description	  : Specify the name of the database used in sql server.
 #Default value    : payments
     database_name: payments
+  
+#Name			  : db_username
+#Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
+#Default value    : root
+    db_username: root
+#Name			  : db_password
+#Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
+#Default value    : password
+    db_password: password
 #Name 			  : driver_name
 #Description      : Driver provides Java database connectivity from any Java application, application server, or Java-enabled applet.
-#Default value    : oracle.jdbc.OracleDriver
-    driver_name: oracle.jdbc.OracleDriver
+#Default value    : com.mysql.jdbc.Driver
+    driver_name: com.mysql.jdbc.Driver
 #Name			  : dialect
 #Description      : For connecting any hibernate application with the database, it is required to provide the configuration of SQL dialect.
-#Default value    : org.hibernate.dialect.Oracle10gDialect
-    dialect: org.hibernate.dialect.Oracle10gDialect
+#Default value    : org.hibernate.dialect.MySQL5InnoDBDialect
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 # Name			  : db_connection_url
 # Description	  : The general form of the connection URL is
     #  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
     #  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
     #  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
 
-    db_connection_url: jdbc:oracle:thin:@host.docker.internal:1521:orcl
+    # We are using sql by default 
+
+    # jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;databaseName=<db_name>]
+    # jdbc:sqlserver:// (Required) is known as the subprotocol and is constant.
+
+    # serverName (Optional) is the address of the server to connect to. This address can be a DNS or IP address, or it can be localhost or 127.0.0.1 for the local computer. If not specified in the connection URL, the server name must be specified in the properties collection.
+
+    # instanceName (Optional) is the instance to connect to on serverName. If not specified, a connection to the default instance is made.
+
+    # portNumber (Optional) is the port to connect to on serverName. The default is 1433. If you're using the default, you don't have to specify the port, nor its preceding ':', in the URL.
+
+    # databaseName is the name of the database to be used in sql server'
+
+#Default value  : jdbc:mysql://paymentorder-db-service:3306/databaseName=payments 
+    db_connection_url: jdbc:mysql://paymentorder-db-service:3306/databaseName=payments    
 #Name			  : max_pool_size
 #Descripton		  : Maximum number of connections maintained in the pool.
 #Default Value    : 150
@@ -327,7 +350,7 @@ env:
 #Name             : schedule
 #Description      : Specify the Frequency to trigger the scheduler job is set in this property. Default is 5 minutes
 #DefaultValue     : 5
-    schedule: 5
+    schedule: 2
     timeunit: "MINUTES"
   sqlinboxcatchupscheduler:
 #Name             : temn_msf_scheduler_inboxcleanup_schedule

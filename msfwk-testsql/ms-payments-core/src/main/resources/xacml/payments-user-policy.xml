@@ -77,12 +77,7 @@
             </AllOf>
          </AnyOf>
       </Target>
-      <Rule RuleId="permit-getPaymentOrder" Effect="Permit">
-         <Description />
-         <Condition>
-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and" />
-         </Condition>
-      </Rule>
+      <Rule RuleId="permit-getPaymentOrder" Effect="Permit" />
    </Policy>
    <Policy PolicyId="permit-putPaymentOrders" Version="1.0" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
       <Description />

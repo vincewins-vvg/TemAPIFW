@@ -78,7 +78,7 @@ public class UpdatePaymentOrderProcessor {
 				}
 				paymentOrderOpt.setExchangeRates(exchangeRates);
 			}
-			PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().save(paymentOrderOpt);
+			paymentOrderOpt=PaymentOrderDao.getInstance(PaymentOrder.class).getSqlDao().save(paymentOrderOpt);
 			if (paymentOrderOpt.getPaymentOrderId().equals("PO~2568~2578~USD~45")
 					&& paymentOrderOpt.getPaymentDetails().equals("refDet")) {
 				try {
@@ -96,7 +96,7 @@ public class UpdatePaymentOrderProcessor {
 		ctx.setBusinessKey(paymentOrderId);
 		PaymentUpdated paymentUpdated = new PaymentUpdated();
 		paymentUpdated.setPaymentOrderId(paymentOrderId);
-		paymentUpdated.setDiff(paymentOrderOpt.diff());
+		paymentUpdated.setDiff(paymentOrderOpt.stateChange());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}

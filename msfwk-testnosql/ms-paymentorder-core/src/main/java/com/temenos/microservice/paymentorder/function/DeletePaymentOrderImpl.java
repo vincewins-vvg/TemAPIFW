@@ -50,11 +50,7 @@ public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 				DaoFactory.getNoSQLDao(PaymentOrder.class).deleteEntity(order);
 				PaymentDeleted paymentDeleted = new PaymentDeleted();
 				paymentDeleted.setPaymentOrderId(paymentId);
-				com.temenos.microservice.paymentorder.entity.PaymentOrder entity =  new com.temenos.microservice.paymentorder.entity.PaymentOrder();
-				entity.setPaymentOrderId(paymentId);
-				paymentOrder.captureStateChange(entity);
-				paymentOrder.setClassName(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
-				paymentDeleted.setDiff(paymentOrder.deleteDiff());
+				paymentDeleted.setDiff(paymentOrder.stateChangeForDelete());
 				EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
 			} catch (Exception e) {
 				throw new InvalidInputException(new FailureMessage("Payment Delete option failed ", "400"));
