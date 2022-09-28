@@ -31,7 +31,7 @@ Background: To setup the preconfigs
 	And post the static MS JSON as payload <payload> 
 	And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE" 
 	When a "POST" request is sent to MS 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	
 	Examples: 
 	
@@ -62,7 +62,7 @@ Background: To setup the preconfigs
 	And post the static MS JSON as payload <payload> 
 	And MS query parameter for Azure env is set to value "" 
 	When a "POST" request is sent to MS 
-	Then MS response code should be 200
+	Then MS response code should be 201
 	
 	Examples: 
 		|payload|
@@ -89,7 +89,7 @@ Background: To setup the preconfigs
 	And post the static MS JSON as payload <payload> 
 	And MS query parameter for Azure env is set to value "" 
 	When a "POST" request is sent to MS 
-	Then MS response code should be 200
+	Then MS response code should be 201
 	
 	Examples: 
 		|payload|

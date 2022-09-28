@@ -43,7 +43,7 @@ public class DoInputValidationITTest extends ITTest {
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_VALIDATE_DATATYPES), String.class))
 					.exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.CREATED));
 		assertTrue(createResponse.bodyToMono(String.class).block().contains(
 				"{\"paymentId\":22,\"personalAccNo\":32,\"branchId\":14,\"monthCount\":8,\"penaltyInterest\":6.4,\"yearWiseInterest\":56.0,\"userIdenfication\":88,\"paymentMethod\":\"card\",\"fileReadWrite\":\"file\",\"paymentDate\":1500658348000,\"actualDate\":\"2017-07-21\",\"socialSecurityNo\":\"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\"seniorCitizen\":false,\"paymentOrders\":[{\"fileOverWrite\":false,\"paymentMethod\":{\"id\":33,\"name\":\"Card\"}}],\"currency\":\"USD\",\"extensionData\":{\"id\":\"43\"},\"paymentOrdersItems\":{\"name\":\"Card\",\"id\":33}}"));
 	}

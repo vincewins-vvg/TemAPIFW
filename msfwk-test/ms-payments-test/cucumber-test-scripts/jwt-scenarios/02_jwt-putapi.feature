@@ -26,7 +26,7 @@ Feature: 02_jwt-putapi
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/CreatePaymentOrderjwt2.json"
     When a "POST" request is sent to MS
     And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 201
    
    #Actual Update via PO PUT Api   
     Given create a new MS request with code using Restassured arguments "UPDATE_PAYMENTORDER_AUTH_CODE"

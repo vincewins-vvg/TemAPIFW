@@ -20,7 +20,7 @@ Background: To set the preconfig for the scenarios
     And create a new MS request with code using Restassured arguments "CREATE_PAYMENTORDER_AUTH_CODE"
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
-    Then MS response code should be 200  
+    Then MS response code should be 201  
     
     Examples:
     
