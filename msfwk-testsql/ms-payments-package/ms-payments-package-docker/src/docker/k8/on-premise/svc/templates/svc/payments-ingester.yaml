@@ -116,7 +116,7 @@ spec:
       - name: payments-command-inbox-ingester
         image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
         ports:
-        - containerPort: 8093
+        - containerPort: 8096
         envFrom:
           - configMapRef:
               name: payments-ingester-command-inbox-config

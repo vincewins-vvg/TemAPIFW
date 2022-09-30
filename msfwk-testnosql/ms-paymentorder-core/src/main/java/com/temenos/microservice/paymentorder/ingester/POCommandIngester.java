@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.temenos.inboxoutbox.core.GenericCommand;
+import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.inboxoutbox.function.InboxOutboxException;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.MSLogCode;
@@ -28,6 +29,7 @@ import com.temenos.microservice.framework.core.ingester.BinaryIngesterUpdater;
 import com.temenos.microservice.framework.core.ingester.CommandInputBuilder;
 import com.temenos.microservice.framework.core.ingester.Transformation;
 import com.temenos.microservice.framework.core.ingester.TransformationFactory;
+import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.CloudEventUtil;
 import com.temenos.microservice.framework.core.util.FrameworkConstants;
 
@@ -104,7 +106,7 @@ public class POCommandIngester extends BinaryIngesterUpdater {
 
 	@Override
 	public void process(Context context) throws FunctionException {
-		//baseProcessor.invokeST(context, command);
+		EventManager.raiseBusinessEvent(context, new GenericEvent(command));
 	}
 	
 	@Override
