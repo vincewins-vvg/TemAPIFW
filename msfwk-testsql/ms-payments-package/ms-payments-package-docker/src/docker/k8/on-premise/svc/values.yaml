@@ -459,17 +459,6 @@ pit:
   JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:  
   # targetMemoryUtilizationPercentage: 80
   
-audit:
-# Name : ENABLE_AUDIT
-# Description : Enable the audit log feature.
-  ENABLE_AUDIT:
-# Name : ENABLE_AUDIT_FOR_GET_API
-# Description : Capture audit logs for get APIs.
-  ENABLE_AUDIT_FOR_GET_API:
-# Name : ENABLE_AUDIT_TO_CAPTURE_RESPONSE
-# Description : Capture response in the audit logs.
-  ENABLE_AUDIT_TO_CAPTURE_RESPONSE:  
-  
 # Name			: imagePullSecrets
 # Description	: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. imagePullSecrets Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
 imagePullSecrets: 
