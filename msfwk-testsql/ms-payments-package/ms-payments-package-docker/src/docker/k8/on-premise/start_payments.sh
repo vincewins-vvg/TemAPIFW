@@ -19,18 +19,7 @@ export Jwt_Token_Principal_Claim=sub
 # Description : Enables the JWT signature validation along with the header and payload
 # Default Value : true
 export Id_Token_Signed=true
-# Name : ENABLE_AUDIT
-# Description : Enable the audit log feature.
-# Default Value : true
-export ENABLE_AUDIT=true
-# Name : ENABLE_AUDIT_FOR_GET_API
-# Description : Capture audit logs for get APIs.
-# Default Value : true
-export ENABLE_AUDIT_FOR_GET_API=true
-# Name : ENABLE_AUDIT_TO_CAPTURE_RESPONSE
-# Description : Capture response in the audit logs.
-# Default Value : true
-export ENABLE_AUDIT_TO_CAPTURE_RESPONSE=true
+
 # Name : Jwt_Token_Public_Key
 # Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
 export Jwt_Token_Public_Key="TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuenlpczFaamZOQjBiQmdLRk1Tdg0KdmtUdHdsdkJzYUpxN1M1d0Era3plVk9WcFZXd2tXZFZoYTRzMzhYTS9wYS95cjQ3YXY3K3ozVlRtdkRSeUFIYw0KYVQ5MndoUkVGcEx2OWNqNWxUZUpTaWJ5ci9Ncm0vWXRqQ1pWV2dhT1lJaHdyWHdLTHFQci8xMWluV3NBa2ZJeQ0KdHZIV1R4WllFY1hMZ0FYRnVVdWFTM3VGOWdFaU5Rd3pHVFUxdjBGcWtxVEJyNEI4blczSENONDdYVXUwdDhZMA0KZStsZjRzNE94UWF3V0Q3OUo5LzVkM1J5MHZiVjNBbTFGdEdKaUp2T3dSc0lmVkNoRHBZU3RUY0hUQ01xdHZXYg0KVjZMMTFCV2twekdYU1c0SHY0M3FhK0dTWU9EMlFVNjhNYjU5b1NrMk9CK0J0T0xwSm9mbWJHRUdndm13eUNJOQ0KTXdJREFRQUI"

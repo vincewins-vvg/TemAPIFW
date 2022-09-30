@@ -70,9 +70,6 @@ data:
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
-  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
-  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
-  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
   IRIS_PROTOCOL: "http"
   IRIS_HOST_IP: "localhost"
   IRIS_PORT: "9089"
@@ -224,9 +221,6 @@ data:
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
   class.package.name: com.temenos.microservice.paymentorder.function
-  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
-  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
-  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
   IRIS_PROTOCOL: "http"
   IRIS_HOST_IP: "localhost"
   IRIS_PORT: "9089"
@@ -389,9 +383,6 @@ data:
   ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
-  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
-  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
-  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
   JWT_TOKEN_ISSUER: https://localhost:9443/oauth2/token
   JWT_TOKEN_PRINCIPAL_CLAIM: "sub"
   ID_TOKEN_SIGNED: "true"
@@ -585,9 +576,6 @@ data:
   operationId: nosqlOutboxCatchup
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.scheduler.time.delay: "0"
-  temn.msf.audit.enabled: {{ .Values.audit.ENABLE_AUDIT | quote }}
-  temn.msf.audit.get.enabled: {{ .Values.audit.ENABLE_AUDIT_FOR_GET_API | quote }}
-  temn.msf.audit.response.enabled: {{ .Values.audit.ENABLE_AUDIT_TO_CAPTURE_RESPONSE | quote }}
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   
