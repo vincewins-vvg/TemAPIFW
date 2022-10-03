@@ -383,6 +383,7 @@ data:
   IRIS_R18_PATH: irisR18/api
   IRIS_VERSION: "v1.0.0"
   ms.security.tokencheck.enabled: "N"
+  temn.msf.outbox.direct.delivery.enabled: "true"
   temn.entitlement.stubbed.service.enabled: "true"
   temn.msf.mdal.keys.MDLPAT.Paymentorder.paymentorder: getCustomerProfile
   temn.msf.mdal.operationId.getCustomerProfile: GetPaymentOrder

@@ -8,7 +8,7 @@
    "requestConfigId":"ApplyDebitCard",
    "commandName":"ApplyDebitCard",
    "serviceReqId":"DNU1523814700",
-   "eventType":"ms-paymentorder.CreateNewPaymentOrder",
+   "eventType":"ms-paymentorder.GetPaymentOrder",
    "requestOut":{
       "cardProductId":"7f5da684-e7a5-4f63-a8bd-36fcfa276317",
       "accountId":"102032",

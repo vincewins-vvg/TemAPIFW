@@ -49,7 +49,7 @@ public class CommandIngesterTest extends ITTest {
 		inboxTableName = "ms_inbox_events";
 
 		deleteInboxRecord(inboxTableName, "eventId", "eq", "string", "5213a00f-1ab3-478e-a4d7-53b0f4326d00",
-				"eventType", "eq", "string", "ms-paymentorder.CreateNewPaymentOrder");
+				"eventType", "eq", "string", "ms-paymentorder.GetPaymentOrder");
 		daoFacade.closeConnection();
 		producer.close();
 	}
@@ -77,7 +77,7 @@ public class CommandIngesterTest extends ITTest {
 			System.out.println("Sleeping for 15 sec before reading data from database...");
 			Thread.sleep(60000);
 			System.out.println("Reading record back from db, try=" + (retryCount + 1));
-			inboxResultMap = readInboxRecord("5213a00f-1ab3-478e-a4d7-53b0f4326d00", "ms-paymentorder.CreateNewPaymentOrder");
+			inboxResultMap = readInboxRecord("5213a00f-1ab3-478e-a4d7-53b0f4326d00", "ms-paymentorder.GetPaymentOrder");
 			retryCount = retryCount + 1;
 		} while (inboxResultMap.get(1) == null && retryCount < maxDBReadRetryCount);
 
@@ -95,7 +95,7 @@ public class CommandIngesterTest extends ITTest {
 		
 		Thread.sleep(90000);
 		Map<String, JSONObject> streamTopicResult = ITtestStreamTopicReader.getTopicValueByCommandTypeInCloudEvent(
-				"ms-eventstore-inbox-topic", "5213a00f-1ab3-478e-a4d7-53b0f4326d00", "ms-paymentorder.CreateNewPaymentOrder");
+				"ms-eventstore-inbox-topic", "5213a00f-1ab3-478e-a4d7-53b0f4326d00", "ms-paymentorder.GetPaymentOrder");
 		assertTrue(!streamTopicResult.isEmpty());
 	}
 }
