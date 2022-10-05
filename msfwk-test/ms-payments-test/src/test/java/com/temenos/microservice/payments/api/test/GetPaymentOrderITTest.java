@@ -75,9 +75,9 @@ public class GetPaymentOrderITTest extends ITTest {
 
 		do {
 			getResponse = this.client.get()
-					.uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTORDER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web")
+					.uri("/v1.0.0/payments/orders/" + "PO~123~124~USD~100" + ITTest.getCode("GET_PAYMENTRDER_AUTH_CODE")).header("serviceid", "client").header("channelid", "web")
 					.exchange().block();
 		} while (getResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
-		assertTrue(getResponse.statusCode().equals(HttpStatus.OK));
+		assertTrue(getResponse.statusCode().equals(HttpStatus.UNAUTHORIZED));
 	}
 }
