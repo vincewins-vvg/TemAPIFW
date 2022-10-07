@@ -16,7 +16,7 @@ Scenario Outline: create customer using post method
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
@@ -43,7 +43,7 @@ Scenario Outline: create customer using post method
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
@@ -71,7 +71,7 @@ Scenario Outline: create customer using post method
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
@@ -99,7 +99,7 @@ Scenario Outline: create customer using post method
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	
@@ -113,7 +113,7 @@ Scenario Outline: create customer using post method
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "customerId" should exist 
 	And MS JSON response string property key "status" should equal value "Created"
 	

@@ -28,7 +28,7 @@ Feature: 04_jwt-getallapi
     When a "POST" request is sent to MS
     And log all MS response in console
     #Then MS response code should be 200
-   Then MS response code should be 200
+   Then MS response code should be 201
    
    #Actual retrieving via PO GET All Api   
     And create a new MS request with code using Restassured arguments "GET_PAYMENTORDERS_AUTH_CODE"

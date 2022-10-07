@@ -24,7 +24,7 @@ Scenario Outline: Create a new Payment Order for checking IO box entries
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	
 	Examples: 
 	

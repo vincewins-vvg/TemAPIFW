@@ -24,7 +24,7 @@ Feature: EventIngester
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
     And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 201
 
     When Send Data to Topic paymentorder-event-topic from file avro/ingester/CreatePOEventIngester.json for Application PAYMENT_ORDER
    
@@ -108,7 +108,7 @@ Feature: EventIngester
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
     #And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 201
 	
 	#1.SequenceCompleted with prehook failure
 	

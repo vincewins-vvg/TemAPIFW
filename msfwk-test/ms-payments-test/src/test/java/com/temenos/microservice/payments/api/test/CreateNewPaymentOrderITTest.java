@@ -71,7 +71,7 @@ public class CreateNewPaymentOrderITTest extends ITTest {
 					.body(BodyInserters.fromPublisher(Mono.just(JSON_BODY_TO_INSERT), String.class)).exchange().block();
 		} while (createResponse.statusCode().equals(HttpStatus.GATEWAY_TIMEOUT));
 
-		assertTrue(createResponse.statusCode().equals(HttpStatus.OK));
+		assertTrue(createResponse.statusCode().equals(HttpStatus.CREATED));
 
 		Map<Integer, List<Attribute>> insertedRecord = readPaymentOrderRecord("ms_payment_order", "paymentOrderId",
 				"eq", "string", "PO~123~124~USD~100", "debitAccount", "eq", "string", "123");

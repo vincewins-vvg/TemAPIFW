@@ -27,7 +27,7 @@ Feature: CreatePaymentOrder
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/CreatePaymentOrder.json"
     When a "POST" request is sent to MS
     And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 201
     And MS JSON property "paymentId" should exist
     And MS JSON response string property key "status" should equal value "INITIATED"
     And MS JSON response string property key "details" should equal value "Success"
@@ -43,7 +43,7 @@ Feature: CreatePaymentOrder
     And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/CreatePOWithExtensionData.json"
     When a "POST" request is sent to MS
     And log all MS response in console
-    Then MS response code should be 200
+    Then MS response code should be 201
     And MS JSON property "paymentId" should exist
     And MS JSON response string property key "status" should equal value "INITIATED"
     And MS JSON response string property key "details" should equal value "extension"

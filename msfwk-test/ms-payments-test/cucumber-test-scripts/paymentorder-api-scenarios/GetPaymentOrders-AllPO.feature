@@ -16,7 +16,7 @@
     And MS query parameter for Azure env is set to value ""
     And post the static MS JSON as payload <payload>
     When a "POST" request is sent to MS
-    Then MS response code should be 200
+    Then MS response code should be 201
     
     Examples:
     
