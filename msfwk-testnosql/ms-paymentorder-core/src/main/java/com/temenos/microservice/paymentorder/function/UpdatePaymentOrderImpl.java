@@ -89,7 +89,7 @@ public class UpdatePaymentOrderImpl implements UpdatePaymentOrder {
 			paymentOrderDao.saveEntity(paymentOrder);
 			PaymentUpdated paymentUpdated = new PaymentUpdated();
 			paymentUpdated.setPaymentOrderId(paymentOrderId);
-			paymentUpdated.setDiff(paymentOrder.stateChange());
+			paymentUpdated.setChangedEntityValues(paymentOrder.stateChange());
 			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 			if (paymentOrderId.equals("PO~2568~2578~USD~45") && paymentStatus.getStatus().equals("holdUpdate")) {
 				try {

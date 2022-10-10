@@ -50,7 +50,7 @@ public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 				DaoFactory.getNoSQLDao(PaymentOrder.class).deleteEntity(order);
 				PaymentDeleted paymentDeleted = new PaymentDeleted();
 				paymentDeleted.setPaymentOrderId(paymentId);
-				paymentDeleted.setDiff(paymentOrder.stateChangeForDelete());
+				paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
 				EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
 			} catch (Exception e) {
 				throw new InvalidInputException(new FailureMessage("Payment Delete option failed ", "400"));

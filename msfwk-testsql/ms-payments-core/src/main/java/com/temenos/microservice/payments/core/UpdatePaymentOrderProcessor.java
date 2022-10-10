@@ -96,7 +96,7 @@ public class UpdatePaymentOrderProcessor {
 		ctx.setBusinessKey(paymentOrderId);
 		PaymentUpdated paymentUpdated = new PaymentUpdated();
 		paymentUpdated.setPaymentOrderId(paymentOrderId);
-		paymentUpdated.setDiff(paymentOrderOpt.stateChange());
+		paymentUpdated.setChangedEntityValues(paymentOrderOpt.stateChange());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
 	}

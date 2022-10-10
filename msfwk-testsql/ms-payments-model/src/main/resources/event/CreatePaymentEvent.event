@@ -3,6 +3,7 @@
 	"javaPackage": "com.temenos.microservice.payments.event",
 	"description": "Create New Payment Order Event",
 	"type": "event",
+	"isAuditable": true,
 	"properties": [
 		{
 			"name": "paymentOrderId",
@@ -33,11 +34,6 @@
 			"name": "payeeDetails",
 			"type": "userdefined",
 			"childevent": "PayeeDetailsEvent"
-		},
-		{
-			"name": "diff",
-			"type": "object",
-			"description": "Indicates the payment create state changes"
 		}
 	]
 }
