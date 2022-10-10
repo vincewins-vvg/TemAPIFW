@@ -165,6 +165,7 @@ public class IngestorStepDefinition {
 				|| topicName.equals("paymentorder-event-topic") == true
 				|| topicName.equals("ms-adapterservice-event-topic") == true
 				|| topicName.equals("ms-adapterservice-second-event-topic") == true
+				|| topicName.equals("paymentorder-inbox-topic") == true				
 				|| topicName.equals("virtualtable-inbox-topic") == true 
 				|| topicName.equals("ms-eventstore-inbox-topic") == true
 				)
