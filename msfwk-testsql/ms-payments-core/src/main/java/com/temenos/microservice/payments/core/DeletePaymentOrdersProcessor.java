@@ -61,7 +61,7 @@ public class DeletePaymentOrdersProcessor {
 			PaymentOrder paymentOrder = (PaymentOrder) po;
 			PaymentDeleted paymentDeleted = new PaymentDeleted();
 			paymentDeleted.setPaymentOrderId(paymentOrder.getPaymentOrderId());
-			paymentDeleted.setDiff(paymentOrder.stateChangeForDelete());
+			paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
 			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
 		}
 		AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
