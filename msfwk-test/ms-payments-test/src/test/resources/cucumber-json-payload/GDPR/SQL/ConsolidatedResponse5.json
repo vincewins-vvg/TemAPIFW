@@ -1,0 +1,82 @@
+[
+    {
+        "errorMessage": "ServiceId is null or Empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "PartyId is null or Empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name or Field Type should not be null",
+        "errorCode": "MSF-701",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "requestId": "200.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    }
+]

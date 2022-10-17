@@ -1,0 +1,35 @@
+{
+    "partyId": "205761453936",
+    "customerId": "LS2",
+    "serviceId": "PARTY",
+    "customEntityidentifier": {
+        "currency": "INR"
+    },
+    "personalData": [
+        {
+            "dataEntityName": "Customer",
+            "dataEntityFields": [
+                {
+                    "dataEntityFieldName": "customerId",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "customerName",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "account",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "loanTypes",
+                    "dataEntityFieldDataType": "string"
+                },
+                {
+                    "dataEntityFieldName": "dateOfJoining",
+                    "dataEntityFieldDataType": "string"
+                }
+            ]
+        }
+    ]
+}

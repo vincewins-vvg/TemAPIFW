@@ -1,0 +1,47 @@
+[
+    {
+        "errorMessage": "Class not found com.temenos.microservice.payments.function.dataprotection.PaymentOrder2ResolveImpl -com.temenos.microservice.payments.function.dataprotection.PaymentOrder2ResolveImpl",
+        "errorCode": "MSF-702",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "124.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.ExchangeRate.getValue1-com.temenos.microservice.payments.entity.ExchangeRate.getValue1()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "124.sqlresponse"
+    },
+    {
+        "errorMessage": "If optionId is NULLIFY, Optionvalue should be an empty string",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "124.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.Card.getCardlimit21-com.temenos.microservice.payments.entity.Card.getCardlimit21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "124.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.PaymentOrder.getExchangeRateszz-com.temenos.microservice.payments.entity.PaymentOrder.getExchangeRateszz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "124.sqlresponse"
+    }
+]

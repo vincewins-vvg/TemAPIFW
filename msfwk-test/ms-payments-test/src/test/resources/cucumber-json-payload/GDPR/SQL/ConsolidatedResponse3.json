@@ -1,0 +1,47 @@
+[
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.PaymentOrder.getPaymentDates-com.temenos.microservice.payments.entity.PaymentOrder.getPaymentDates()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.ExchangeRate.getValue1-com.temenos.microservice.payments.entity.ExchangeRate.getValue1()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.sqlresponse"
+    },
+    {
+        "errorMessage": "If optionId is NULLIFY, Optionvalue should be an empty string",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.Card.getCardlimit21-com.temenos.microservice.payments.entity.Card.getCardlimit21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.sqlresponse"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.ExchangeRate.getPayeeName22-com.temenos.microservice.payments.entity.ExchangeRate.getPayeeName22()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOES1~123-ABC~USD~485",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.sqlresponse"
+    }
+]

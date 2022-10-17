@@ -4,9 +4,11 @@
     "serviceId": "PARTY",
     "requestId": "143.ERASURE",
     "reportType": "SAR",
+    "statusCode": "200",
     "personalData": [
         {
             "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~350-ER6~123-ABC~USD~485",
             "dataEntityFields": [
                 {
                     "attributeName": "cardname"
@@ -18,6 +20,7 @@
         },
         {
             "dataEntityName": "PaymentOrder",
+            "entityId": "PO~350-ER6~123-ABC~USD~485",
             "dataEntityFields": [
                 {
                     "attributeName": "currency",
@@ -35,6 +38,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~350-ER6~123-ABC~USD~485",
             "dataEntityFields": [
                 {
                     "attributeName": "payeeName",
@@ -48,6 +52,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.PaymentMethod",
+            "entityId": "PO~350-ER6~123-ABC~USD~485",
             "dataEntityFields": [
                 {
                     "attributeName": "name"

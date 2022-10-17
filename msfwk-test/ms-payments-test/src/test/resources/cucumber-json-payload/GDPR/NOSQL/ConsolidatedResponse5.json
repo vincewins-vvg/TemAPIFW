@@ -1,0 +1,82 @@
+[
+    {
+        "errorMessage": "ServiceId is null or Empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "PartyId is null or Empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Entity Field Name or Field Type should not be null",
+        "errorCode": "MSF-701",
+        "customerId": "LOER1",
+        "requestId": "200.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    }
+]

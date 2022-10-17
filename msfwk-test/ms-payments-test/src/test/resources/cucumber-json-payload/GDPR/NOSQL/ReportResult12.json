@@ -1,0 +1,9 @@
+{
+    "partyId": "6789",
+    "customerId": "RH34",
+    "serviceId": "PARTY",
+    "requestId": "111.LSRECORD",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": []
+}

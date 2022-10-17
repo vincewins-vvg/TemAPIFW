@@ -1,0 +1,298 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "LOER1",
+    "serviceId": "PARTY",
+    "requestId": "203.RESPONSE",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~101-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "485"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "Success"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "paytestresponserg2"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~102-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "485"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "Success"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "paytestresponserg3"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "485"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "Success"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "paytestresponserg1"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~352-LOER1~101-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "Diners"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "120000.11"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~352-LOER1~102-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "Diners"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "120000.11"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~352-LOER1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "Diners"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "120000.11"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~352-LOER1~101-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "78.12"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~352-LOER1~102-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "78.12"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~352-LOER1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "78.12"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~101-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "INITIATED"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-LOER1"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "101-ABC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~102-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "INITIATED"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-LOER1"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "102-ABC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOER1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "INITIATED"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-LOER1"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "100-ABC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~352-LOER1~101-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "MSTester"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "temp"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~352-LOER1~102-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "MSTester"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "temp"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~352-LOER1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "MSTester"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "temp"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "Customer",
+            "entityId": "LOER1",
+            "dataEntityFields": [
+                {
+                    "attributeName": "dateOfJoining",
+                    "attributeValue": "2020-08-26"
+                },
+                {
+                    "attributeName": "customerId",
+                    "attributeValue": "LOER1"
+                },
+                {
+                    "attributeName": "loanTypes",
+                    "attributeValue": "[education loan, housing loan, car loan]"
+                }
+            ]
+        }
+    ]
+}

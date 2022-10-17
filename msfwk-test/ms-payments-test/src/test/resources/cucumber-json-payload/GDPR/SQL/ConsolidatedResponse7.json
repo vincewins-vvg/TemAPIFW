@@ -1,0 +1,22 @@
+[
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.PaymentOrder.getPaymentDatezz-com.temenos.microservice.payments.entity.PaymentOrder.getPaymentDatezz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "serviceId": "PARTY",
+        "requestId": "202.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.payments.entity.PayeeDetails.getPayeeType21-com.temenos.microservice.payments.entity.PayeeDetails.getPayeeType21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+        "serviceId": "PARTY",
+        "requestId": "202.SQLRESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    }
+]

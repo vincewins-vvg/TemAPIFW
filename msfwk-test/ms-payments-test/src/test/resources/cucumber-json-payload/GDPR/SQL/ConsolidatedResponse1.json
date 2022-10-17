@@ -1,0 +1,79 @@
+[
+    {
+        "errorMessage": "ServiceId is null or Empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "CustomerId is null or Empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Name or Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Name or Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Name should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    },
+    {
+        "errorMessage": "Entity Field Type should not be null or empty",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "statusCode": "400",
+        "erasureRequestId": "123.sqlresponse"
+    }
+]
