@@ -1,0 +1,109 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "PO~352-LOES1~123-ABC~USD~485",
+    "serviceId": "PARTY",
+    "requestId": "127.SQLRESPONSE",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "9999-12-31"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "999.99"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "XXXXXXX"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "QQQQQQQQQQQQQQQQQQQ"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "TTTTTT"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "999999.99"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "99.99"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "XXXXXXXXX"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "9999-12-31"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-LOES1"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "123-ABC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "********"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "temp"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.PaymentMethod",
+            "entityId": "PO~352-LOES1~123-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "XXXX"
+                }
+            ]
+        }
+    ]
+}

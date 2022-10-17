@@ -1,0 +1,28 @@
+{
+    "partyId": "6789",
+    "customerId": "RH3",
+    "serviceId": "PARTY",
+    "requestId": "112.LSRECORD",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": [
+        {
+            "dataEntityName": "Customer",
+            "entityId": "RH3",
+            "dataEntityFields": [
+                {
+                    "attributeName": "dateOfJoining",
+                    "attributeValue": "2020-08-26"
+                },
+                {
+                    "attributeName": "customerId",
+                    "attributeValue": "RH3"
+                },
+                {
+                    "attributeName": "loanTypes",
+                    "attributeValue": "[education loan]"
+                }
+            ]
+        }
+    ]
+}

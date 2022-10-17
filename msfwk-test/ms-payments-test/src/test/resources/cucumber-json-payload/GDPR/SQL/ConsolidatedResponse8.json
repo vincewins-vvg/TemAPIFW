@@ -1,0 +1,100 @@
+{
+    "partyId": "PO~DATEST~CADEST~USD~100",
+    "customerId": "PO~352-LOERS1~100-ABC~USD~485",
+    "serviceId": "PARTY",
+    "requestId": "203.SQLRESPONSE",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": [
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOERS1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "amount",
+                    "attributeValue": "485.00"
+                },
+                {
+                    "attributeName": "paymentDetails",
+                    "attributeValue": "Success"
+                },
+                {
+                    "attributeName": "paymentReference",
+                    "attributeValue": "paytestsqlresponserg1"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~352-LOERS1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "cardname",
+                    "attributeValue": "Diners"
+                },
+                {
+                    "attributeName": "cardlimit",
+                    "attributeValue": "120000.11"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~352-LOERS1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "name",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "value",
+                    "attributeValue": "78.12"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder",
+            "entityId": "PO~352-LOERS1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "currency",
+                    "attributeValue": "USD"
+                },
+                {
+                    "attributeName": "status",
+                    "attributeValue": "INITIATED"
+                },
+                {
+                    "attributeName": "paymentDate",
+                    "attributeValue": "2024-05-05"
+                },
+                {
+                    "attributeName": "debitAccount",
+                    "attributeValue": "352-LOERS1"
+                },
+                {
+                    "attributeName": "creditAccount",
+                    "attributeValue": "100-ABC"
+                }
+            ]
+        },
+        {
+            "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~352-LOERS1~100-ABC~USD~485",
+            "dataEntityFields": [
+                {
+                    "attributeName": "payeeName",
+                    "attributeValue": "MSTester"
+                },
+                {
+                    "attributeName": "payeeType",
+                    "attributeValue": "temp"
+                }
+            ]
+        }
+    ]
+}

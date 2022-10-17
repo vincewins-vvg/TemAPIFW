@@ -4,9 +4,11 @@
     "serviceId": "PARTY",
     "requestId": "144.ERASURE",
     "reportType": "SAR",
+    "statusCode": "200",
     "personalData": [
         {
             "dataEntityName": "PaymentOrder",
+             "entityId": "PO~354-ER10~123-ABC~USD~485",
             "dataEntityFields": [
                 {
                     "attributeName": "currency"

@@ -1,0 +1,72 @@
+[
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDatezz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21-com.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21-com.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21-com.temenos.microservice.paymentorder.entity.PayeeDetails.getPayeeType21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.Customer.getDateOfJoiningz-com.temenos.microservice.paymentorder.entity.Customer.getDateOfJoiningz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "202.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    }
+]

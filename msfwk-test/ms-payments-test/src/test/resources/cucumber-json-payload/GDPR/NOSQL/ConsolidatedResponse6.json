@@ -1,0 +1,32 @@
+[
+    {
+        "errorMessage": "Class not found com.temenos.microservice.paymentorder.function.dataprotection.PaymentOrdersResolveImpl -com.temenos.microservice.paymentorder.function.dataprotection.PaymentOrdersResolveImpl",
+        "errorCode": "MSF-702",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "201.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentMethod.getCardzz-com.temenos.microservice.paymentorder.entity.PaymentMethod.getCardzz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "201.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPayeeDetailss-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPayeeDetailss()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOER1",
+        "serviceId": "PARTY",
+        "requestId": "201.RESPONSE",
+        "reportType": "SAR",
+        "statusCode": "400"
+    }
+]

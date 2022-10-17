@@ -4,9 +4,11 @@
     "serviceId": "PARTY",
     "requestId": "142.ERASURE",
     "reportType": "SAR",
+    "statusCode": "200",
     "personalData": [
         {
             "dataEntityName": "PaymentOrder",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 {
                     "attributeName": "paymentDate"
@@ -25,6 +27,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.paymentMethod.card",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 
                 {
@@ -37,6 +40,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.exchangeRates",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 {
                     "attributeName": "name"
@@ -48,6 +52,7 @@
         },
         {
             "dataEntityName": "PaymentOrder",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 {
                     "attributeName": "currency",
@@ -71,6 +76,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.payeeDetails",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 {
                     "attributeName": "payeeName"
@@ -82,6 +88,7 @@
         },
         {
             "dataEntityName": "PaymentOrder.PaymentMethod",
+            "entityId": "PO~353-ER9~321-ZXC~INR~125",
             "dataEntityFields": [
                 
                 {

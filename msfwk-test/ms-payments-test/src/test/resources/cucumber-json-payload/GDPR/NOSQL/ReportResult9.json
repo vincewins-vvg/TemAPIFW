@@ -1,0 +1,36 @@
+{
+    "partyId": "205761453936",
+    "customerId": "LS2",
+    "serviceId": "PARTY",
+    "requestId": "112.LSERASURE",
+    "reportType": "SAR",
+    "statusCode": "200",
+    "personalData": [
+        {
+            "dataEntityName": "Customer",
+            "entityId": "LS2",
+            "dataEntityFields": [
+                {
+                    "attributeName": "customerId",
+                    "attributeValue": "LS2"
+                },
+                {
+                    "attributeName": "customerName",
+                    "attributeValue": "Riya"
+                },
+                {
+                    "attributeName": "account",
+                    "attributeValue": "352-LS2"
+                },
+                {
+                    "attributeName": "loanTypes",
+                    "attributeValue": "[]"
+                },
+                {
+                    "attributeName": "dateOfJoining",
+                    "attributeValue": "9999-12-31"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,146 @@
+[
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates-com.temenos.microservice.paymentorder.entity.PaymentOrder.getPaymentDates()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1-com.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "If optionId is NULLIFY, Optionvalue should be an empty string",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1-com.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "If optionId is NULLIFY, Optionvalue should be an empty string",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1-com.temenos.microservice.paymentorder.entity.ExchangeRate.getValue1()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "If optionId is NULLIFY, Optionvalue should be an empty string",
+        "errorCode": "MSF-701",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.Card.getCardlimit21-com.temenos.microservice.paymentorder.entity.Card.getCardlimit21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.Card.getCardlimit21-com.temenos.microservice.paymentorder.entity.Card.getCardlimit21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.Card.getCardlimit21-com.temenos.microservice.paymentorder.entity.Card.getCardlimit21()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22-com.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22-com.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22-com.temenos.microservice.paymentorder.entity.ExchangeRate.getPayeeName22()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    },
+    {
+        "errorMessage": "Method not foundcom.temenos.microservice.paymentorder.entity.Customer.getDateOfJoiningzz-com.temenos.microservice.paymentorder.entity.Customer.getDateOfJoiningzz()",
+        "errorCode": "MSF-703",
+        "partyId": "PO~DATEST~CADEST~USD~100",
+        "customerId": "LOE1",
+        "serviceId": "PARTY",
+        "statusCode": "400",
+        "erasureRequestId": "125.response"
+    }
+]
