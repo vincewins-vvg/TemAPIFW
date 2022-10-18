@@ -17,7 +17,7 @@ Feature: ListOfStringErasure_Validation
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "LS1"
 	And MS JSON response string property key "status" should equal value "Created"
               
@@ -87,7 +87,7 @@ Scenario: to retrieve a customer using query param account to check the loan typ
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "LS2"
 	And MS JSON response string property key "status" should equal value "Created"
 
@@ -157,7 +157,7 @@ Scenario: to retrieve a customer using query param account to check the loan typ
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "LS3"
 	And MS JSON response string property key "status" should equal value "Created"
               
@@ -227,7 +227,7 @@ Scenario Outline: Nullifying the above created entry with option value for nulli
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "LS4"
 	And MS JSON response string property key "status" should equal value "Created"
 	

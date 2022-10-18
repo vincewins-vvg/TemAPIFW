@@ -15,7 +15,7 @@ Feature: ErasureAndNullify_Validation
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "ER9"
 	And MS JSON response string property key "status" should equal value "Created"
 
@@ -39,7 +39,7 @@ Examples:
 	And the MS request body is set to the contents of "src/test/resources/cucumber-json-payload/GDPR/NOSQL/CreatePOWithExtensionData_Erasure2.json"
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "paymentId" should exist 
 	And MS JSON response string property key "status" should equal value "INITIATED" 
 	

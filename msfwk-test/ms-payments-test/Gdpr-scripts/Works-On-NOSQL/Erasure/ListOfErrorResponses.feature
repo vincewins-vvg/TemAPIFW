@@ -15,7 +15,7 @@ Feature: ListOfErrorResponses
 	When post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON response string property key "customerId" should equal value "LOE1"
 	And MS JSON response string property key "status" should equal value "Created"
 
@@ -38,7 +38,7 @@ Examples:
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "paymentId" should exist 
 	And MS JSON response string property key "status" should equal value "INITIATED" 
 	
@@ -60,7 +60,7 @@ Examples:
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "paymentId" should exist 
 	And MS JSON response string property key "status" should equal value "INITIATED" 
 	
@@ -82,7 +82,7 @@ Examples:
 	And post the static MS JSON as payload <payload> 
 	When a "POST" request is sent to MS 
 	And log all MS response in console 
-	Then MS response code should be 200 
+	Then MS response code should be 201 
 	And MS JSON property "paymentId" should exist 
 	And MS JSON response string property key "status" should equal value "INITIATED" 
 	
