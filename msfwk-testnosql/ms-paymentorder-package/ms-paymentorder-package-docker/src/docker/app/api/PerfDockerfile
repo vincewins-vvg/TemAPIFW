@@ -1,17 +1,40 @@
-ARG API_BASE_IMAGE
-FROM ${API_BASE_IMAGE}
+ARG BASE_IMAGE
+ARG STAGING_IMAGE
 
+FROM ${STAGING_IMAGE} AS staging
 ARG api_artifactid
-ARG api_java_options
-ARG performance_agent_artifactid
 ARG performance_logger_artifactid
-
+ARG ssl_enabled
+ARG keystore_pass
 ENV artifactid ${api_artifactid}
-ENV java_options ${api_java_options}
-ENV JAVA_OPTS ${java_options}
-ENV performance_agent ${performance_agent_artifactid}
 ENV performance_logger ${performance_logger_artifactid}
 
-COPY ${artifactid} /usr/local/tomcat/webapps/${artifactid}
-COPY ${performance_agent} /usr/local/${performance_agent}
-COPY ${performance_logger} /usr/local/tomcat/lib/${performance_logger}
+ADD java-* /tmp/
+RUN microdnf -y install tar gzip \
+    && mkdir -p /tmp/tomcat/target/logs \
+	&& mkdir -p /tmp/java \
+    && curl -k https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.tar.gz -L -o "/tmp/tomcat.tar.gz" \
+    && tar -zxf "/tmp/tomcat.tar.gz" -C /tmp/tomcat/ --strip-components=1 \
+	&& chmod -R 775 /tmp/tomcat/ \
+	&& sed -i 's+endorsed+e+g' /tmp/tomcat/bin/catalina.sh \
+	&& mv /tmp/java-*/* /tmp/java/ 
+COPY api/${artifactid} /tmp/tomcat/webapps/${artifactid}
+COPY api/${performance_logger} /tmp/tomcat/lib/${performance_logger}
+
+
+FROM ${BASE_IMAGE}
+ARG api_java_options
+ARG performance_agent_artifactid
+ENV java_options ${api_java_options}
+ENV performance_agent ${performance_agent_artifactid}
+ENV JAVA_OPTS ${java_options}
+ENV JAVA_HOME=/java
+ENV PATH="/java/bin:$PATH"
+
+RUN mkdir -p /java \
+	&& mkdir -p /tomcat
+COPY api/${performance_agent} /${performance_agent}
+COPY --from=staging /tmp/java /java/
+COPY --from=staging /tmp/tomcat /tomcat/
+EXPOSE 8080 
+CMD ["/tomcat/bin/catalina.sh", "run"]

@@ -16,10 +16,11 @@ networks:
 services:
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: api/Dockerfile
       args:
-        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
@@ -84,10 +85,11 @@ services:
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
   avroIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -127,10 +129,11 @@ services:
       temn.msf.pdp.resource.manager: PAYMENT
   avroJoltConfigIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -173,10 +176,11 @@ services:
       temn.msf.storage.home: "path:etc/configbasedmapping/"
   avroDataEventIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -218,10 +222,11 @@ services:
       temn.msf.ingest.multi.event.ingester.class:  com.temenos.microservice.payments.ingester.BalanceAndTransactionIngesterCommandUpdater
   avroJoltConfigDataEventIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -266,10 +271,11 @@ services:
       temn.ingester.mapping.enabled: "true"    
   commandIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -310,10 +316,11 @@ services:
       VALIDATE_PAYMENT_ORDER: "false"      
   outboxDeliveryApp:
     build:
-      context: ${INBOXOUTBOX_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: inboxoutbox/Dockerfile
       args:
-        BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${inboxoutbox_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}

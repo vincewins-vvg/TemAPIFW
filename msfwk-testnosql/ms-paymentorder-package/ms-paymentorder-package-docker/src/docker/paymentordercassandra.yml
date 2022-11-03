@@ -28,10 +28,11 @@ services:
   
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: api/Dockerfile
       args:
-        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        API_BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
@@ -84,10 +85,11 @@ services:
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
   ingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -130,10 +132,11 @@ services:
       temn.queue.impl: kafka
   configavroingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -174,10 +177,11 @@ services:
       temn.queue.impl: kafka
   ingesterbinary:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -221,10 +225,11 @@ services:
       IRIS_VERSION: v1.0.0
   stateingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -266,10 +271,11 @@ services:
       temn.queue.impl: kafka
   businessingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -310,10 +316,11 @@ services:
 
   configBinaryIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -354,10 +361,11 @@ services:
       
   eventingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -398,10 +406,11 @@ services:
 
   inboxoutboxprocessorapp:
     build:
-      context: ${INBOXOUTBOX_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: inboxoutbox/Dockerfile
       args:
-        BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${inboxoutbox_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}

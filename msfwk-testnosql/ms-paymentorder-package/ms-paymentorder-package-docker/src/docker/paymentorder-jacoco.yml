@@ -53,10 +53,11 @@ services:
       # - db-service3
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: api/Dockerfile
       args:
-        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG} ${api_jacoco_jvm_opts}
         keystore_pass: ${KEYSTORE_PASS}
@@ -156,10 +157,11 @@ services:
       serviceadaptor.preprocessorimpl.class: "com.temenos.microservice.framework.core.security.GenerateKeycloakToken"       
   paymentorderScheduler:
     build:
-      context: ${SCHEDULER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ms-framework-scheduler/Dockerfile
       args:
-        BASE_IMAGE: ${SCHEDULER_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${scheduler_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
         SCHEDULER_MAIN_CLASS: ${SCHEDULER_MAIN_CLASS}        
@@ -192,10 +194,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)        
   inboxoutboxprocessorapp:
     build:
-      context: ${INBOXOUTBOX_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: inboxoutbox/Dockerfile
       args:
-        BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${inboxoutbox_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
@@ -232,10 +235,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)         
   ingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -286,10 +290,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)               
   configavroingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -331,10 +336,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)         
   ingesterbinary:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -388,10 +394,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)      
   stateingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -434,10 +441,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)         
   businessingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -478,10 +486,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)       
   configBinaryIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -522,10 +531,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)         
   eventingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
@@ -566,10 +576,11 @@ services:
       temn.msf.logger.exportType: #socket (console,socket)          
   fileingester:
     build:
-      context: ${FILEINGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: fileingester/Dockerfile
       args:
-        BASE_IMAGE: ${FILEINGESTER_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${fileingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${FILEINGESTER_IMAGE}
