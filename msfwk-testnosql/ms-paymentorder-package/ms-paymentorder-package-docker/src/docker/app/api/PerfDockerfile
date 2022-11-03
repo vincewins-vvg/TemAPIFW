@@ -13,6 +13,8 @@ ADD java-* /tmp/
 RUN microdnf -y install tar gzip \
     && mkdir -p /tmp/tomcat/target/logs \
 	&& mkdir -p /tmp/java \
+	&& mkdir -p /tmp/app/lib/target/logs \
+	&& mkdir -p /tmp/target/logs \
     && curl -k https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.tar.gz -L -o "/tmp/tomcat.tar.gz" \
     && tar -zxf "/tmp/tomcat.tar.gz" -C /tmp/tomcat/ --strip-components=1 \
 	&& chmod -R 775 /tmp/tomcat/ \
@@ -32,8 +34,12 @@ ENV JAVA_HOME=/java
 ENV PATH="/java/bin:$PATH"
 
 RUN mkdir -p /java \
-	&& mkdir -p /tomcat
+	&& mkdir -p /app \
+	&& mkdir -p /tomcat \
+	&& mkdir -p /target
 COPY api/${performance_agent} /${performance_agent}
+COPY --from=staging /tmp/target /target/
+COPY --from=staging /tmp/app /app/
 COPY --from=staging /tmp/java /java/
 COPY --from=staging /tmp/tomcat /tomcat/
 EXPOSE 8080 
