@@ -47,8 +47,8 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${FILEINGESTER_IMAGE}
     volumes:
-      - '/usr/local/tomcat/temp'
-      - '/usr/local/tomcat'
+      - '/tomcat/temp'
+      - '/tomcat'
   scheduler:
     build:
       context: ../${SCHEDULER_CONTEXT}

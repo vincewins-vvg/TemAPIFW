@@ -479,8 +479,8 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${FILEINGESTER_IMAGE}
     volumes:
-      - '/usr/local/tomcat/temp'
-      - '/usr/local/tomcat'
+      - /tomcat/temp'
+      - '/tomcat'
     depends_on:
       - postgresdb
     ports:
@@ -494,7 +494,7 @@ services:
       temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
-      temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
-      temn.msf.ingest.file.procesed.path: /usr/local/tomcat
+      temn.msf.ingest.file.source.path: /tomcat/temp
+      temn.msf.ingest.file.procesed.path: /tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.paymentorder.ingester.PoFileIngester
       temn.msf.outbox.direct.delivery.enabled: "true"

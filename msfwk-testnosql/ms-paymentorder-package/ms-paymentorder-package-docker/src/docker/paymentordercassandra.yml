@@ -37,7 +37,7 @@ services:
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
     volumes:
-      - 'c:\testing:/usr/local/tomcat/temp'
+      - 'c:\testing:/tomcat/temp'
     depends_on:
       - db-service
     ports:

@@ -568,8 +568,8 @@ services:
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${FILEINGESTER_IMAGE}
     volumes:
-      - '/usr/local/tomcat/temp'
-      - '/usr/local/tomcat'
+      - '/tomcat/temp'
+      - '/tomcat'
     ports:
       - "40520:40500"
       - "8091:8080"
@@ -588,8 +588,8 @@ services:
       temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
-      temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
-      temn.msf.ingest.file.procesed.path: /usr/local/tomcat
+      temn.msf.ingest.file.source.path: /tomcat/temp
+      temn.msf.ingest.file.procesed.path: /tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.payments.ingester.PoFileIngester 
       temn.msf.stream.vendor: kafka
       temn.msf.ingest.sink.stream: table-update-splitData
