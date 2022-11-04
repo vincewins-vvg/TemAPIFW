@@ -16,6 +16,7 @@ ENV artifactid ${api_artifactid}
 ADD java-* /tmp/
 RUN microdnf -y install tar gzip shadow-utils \
     && mkdir -p /tmp/tomcat/target/logs \
+	&& mkdir -p /tmp/tomcat/temp \
 	&& mkdir -p /tmp/java \
 	&& mkdir -p /tmp/app/lib/target/logs \
 	&& mkdir -p /tmp/target/logs \

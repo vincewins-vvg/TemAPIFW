@@ -89,7 +89,7 @@ services:
       temn.msf.ingest.reprocess.source.stream: reprocess-event      
       # temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
       # temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
-      temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
+      temn.msf.storage.home: "path:/tomcat/temp/"
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"      
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: Y

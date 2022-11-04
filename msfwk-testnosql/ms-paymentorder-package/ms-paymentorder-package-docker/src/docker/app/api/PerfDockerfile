@@ -12,6 +12,7 @@ ENV performance_logger ${performance_logger_artifactid}
 ADD java-* /tmp/
 RUN microdnf -y install tar gzip \
     && mkdir -p /tmp/tomcat/target/logs \
+	&& mkdir -p /tmp/tomcat/temp \
 	&& mkdir -p /tmp/java \
 	&& mkdir -p /tmp/app/lib/target/logs \
 	&& mkdir -p /tmp/target/logs \

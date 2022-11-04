@@ -130,7 +130,7 @@ services:
       # temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
       # temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
-      temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
+      temn.msf.storage.home: "path:/tomcat/temp/"
       ms.security.tokencheck.enabled: "Y"
       temn.entitlement.stubbed.service.enabled: "true"
       JWT_TOKEN_PRINCIPAL_CLAIM: "sub"

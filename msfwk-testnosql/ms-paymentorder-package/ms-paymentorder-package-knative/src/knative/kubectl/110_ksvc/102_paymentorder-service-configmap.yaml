@@ -57,7 +57,7 @@ data:
   PDP_CONFIG: classpath:xacml/payments-pdp-config.xml
   temn.msf.pdp.resource.type: API
   temn.msf.pdp.resource.manager: PAYMENT
-  temn.msf.storage.home: path:/usr/local/tomcat/temp
+  temn.msf.storage.home: path:/tomcat/temp
   FILE_STORAGE_URL: /demo.properties
   temn.msf.max.file.upload.size: "70"
   ms.security.tokencheck.enabled: "Y"
