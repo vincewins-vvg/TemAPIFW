@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    *******************************************************************************
+    * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+    *******************************************************************************
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.temenos.microservice.package</groupId>
+		<artifactId>microservice-package-docker-jpa</artifactId>
+		<version>DEV.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.temenos.microservice.payments</groupId>
+	<artifactId>ms-payments-package-helm</artifactId>
+	<packaging>pom</packaging>
+	<name>ms-payments-package-helm</name>
+	<description>payments helm packaging</description>
+	<version>DEV.0.0-SNAPSHOT</version>
+	
+	<dependencies>
+		<dependency>
+			<groupId>kr.motd.maven</groupId>
+			<artifactId>os-maven-plugin</artifactId>
+			<version>1.7.0</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>ant-contrib</groupId>
+			<artifactId>ant-contrib</artifactId>
+			<version>1.0b3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-nodeps</artifactId>
+			<version>1.8.1</version>
+		</dependency>
+	</dependencies>
+		
+	<profiles>
+		<profile>
+			<id>helm.pack</id>
+			<activation>
+				<property>
+					<name>helm.pack</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<taskdef resource="net/sf/antcontrib/antlib.xml" 
+										classpathref="maven.plugin.classpath" />
+										<if>
+										    <contains string="${os.name}" substring="Windows" casesensitive="false"/>
+										    <then>
+											    <exec dir="${project.basedir}" executable="${project.basedir}/start-ms-payments-HELM-script.bat"  failonerror="true">
+													<arg value="${do.deploy}"/>
+												</exec> 
+										    </then>
+										</if> 
+										<if>
+										    <contains string="${os.name}" substring="Linux" casesensitive="false"/>
+										    <then>
+											    <exec executable="bash">
+												   <arg value="start-ms-payments-HELM-script.sh"/>
+												   <arg value="${do.deploy}"/>
+											    </exec>
+										    </then>
+										</if> 
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

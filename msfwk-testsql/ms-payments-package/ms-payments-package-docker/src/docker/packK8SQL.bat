@@ -44,11 +44,11 @@ xcopy k8\on-premise\appinit payments\helm-chart\appinit /s /e /h /y /i
 
 xcopy k8\on-premise\samples payments\samples /s /e /h /y /i
 
-xcopy /s /e k8\on-premise\db payments\samples\db
+xcopy /s /e k8\on-premise\db payments\samples\db\
   
-xcopy /s /e k8\on-premise\streams payments\samples\streams  
+xcopy /s /e k8\on-premise\streams payments\samples\streams\  
 
-xcopy /s /e db\*.* payments\samples\db\db\.
+xcopy /s /e db\*.* payments\samples\db\db\.\
 
 copy .env payments\samples\db\
 
