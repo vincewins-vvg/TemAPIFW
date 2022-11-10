@@ -85,7 +85,7 @@ data:
   #temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
   temn.msf.scripts.location: "scripts"    
   TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"
-  temn.msf.storage.home: "path:/usr/local/tomcat/temp"
+  temn.msf.storage.home: "path:/tomcat/temp"
   FILE_STORAGE_URL:  /demo.properties
   temn.msf.max.file.upload.size: "70"
   ms.security.tokencheck.enabled: "Y"

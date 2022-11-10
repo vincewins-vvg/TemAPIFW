@@ -60,7 +60,7 @@ data:
   temn.msf.stream.kafka.bootstrap.servers: my-cluster-kafka-bootstrap.kafka:9092
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-  temn.msf.storage.home: path:/usr/local/tomcat/temp
+  temn.msf.storage.home: path:/tomcat/temp
   FILE_STORAGE_URL: /demo.properties
   temn.msf.max.file.upload.size: "70"
   ms.security.tokencheck.enabled: "Y"

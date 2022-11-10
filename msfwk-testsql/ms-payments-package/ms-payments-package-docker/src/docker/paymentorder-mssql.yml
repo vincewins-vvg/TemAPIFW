@@ -29,10 +29,11 @@ services:
   
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: api/Dockerfile
       args:
-        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
         keystore_pass: ${KEYSTORE_PASS}
@@ -103,7 +104,7 @@ services:
       temn.msf.ingest.reprocess.source.stream: reprocess-event      
       temn.config.service.base.path: http://10.93.24.15:8095/ms-genericconfig-api/api/v1.0.0/
       temn.config.service.resource.path: system/configurationGroups/{groupId}/configuration/{configName}
-      temn.msf.storage.home: "path:/usr/local/tomcat/temp/"
+      temn.msf.storage.home: "path:/tomcat/temp/"
       TEMN_MSF_ADAPTER_CONFIG_CLASSPATH: "false"      
       temn.msf.max.file.upload.size: ${MAX_FILE_UPLOAD_SIZE}
       ms.security.tokencheck.enabled: "Y"
@@ -126,10 +127,11 @@ services:
       #- "entitlement-api:10.93.23.73"
   paymentorderScheduler:
     build:
-      context: ${SCHEDULER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ms-framework-scheduler/Dockerfile
       args:
-        BASE_IMAGE: ${SCHEDULER_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${scheduler_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
         SCHEDULER_MAIN_CLASS: ${SCHEDULER_MAIN_CLASS}
@@ -174,10 +176,11 @@ services:
       temn.msf.outbox.direct.delivery.enabled: "true"
   inboxoutboxprocessorapp:
     build:
-      context: ${INBOXOUTBOX_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: inboxoutbox/Dockerfile
       args:
-        BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${inboxoutbox_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INBOXOUTBOX_IMAGE}
@@ -215,10 +218,11 @@ services:
       temn.msf.outbox.direct.delivery.enabled: "true"     
   ingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -267,10 +271,11 @@ services:
       temn.msf.outbox.direct.delivery.enabled: "true"
   configavroingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -312,10 +317,11 @@ services:
   
   stateingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -357,10 +363,11 @@ services:
   
   businessingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -398,10 +405,11 @@ services:
       
   ingesterbinary:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -463,10 +471,11 @@ services:
       temn.msf.outbox.direct.delivery.enabled: "true"
   configBinaryIngester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -506,10 +515,11 @@ services:
 
   eventingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -549,16 +559,17 @@ services:
       temn.msf.outbox.direct.delivery.enabled: "true"
   fileingester:
     build:
-      context: ${FILEINGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: fileingester/Dockerfile
       args:
-        BASE_IMAGE: ${FILEINGESTER_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${fileingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${FILEINGESTER_IMAGE}
     volumes:
-      - '/usr/local/tomcat/temp'
-      - '/usr/local/tomcat'
+      - '/tomcat/temp'
+      - '/tomcat'
     depends_on:
       - db-service
     ports:
@@ -579,8 +590,8 @@ services:
       temn.msf.name: ms-paymentorder
       temn.msf.security.authz.enabled: "false"
       VALIDATE_PAYMENT_ORDER: "false"
-      temn.msf.ingest.file.source.path: /usr/local/tomcat/temp
-      temn.msf.ingest.file.procesed.path: /usr/local/tomcat
+      temn.msf.ingest.file.source.path: /tomcat/temp
+      temn.msf.ingest.file.procesed.path: /tomcat
       temn.msf.ingest.file.ingester: com.temenos.microservice.payments.ingester.PoFileIngester 
       temn.msf.stream.vendor: kafka
       temn.msf.ingest.sink.stream: table-update-splitData

@@ -28,10 +28,11 @@ services:
   
   api:
     build:
-      context: ${API_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: api/Dockerfile
       args:
-        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         api_artifactid: ${api_artifactid}
         api_java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${API_IMAGE}
@@ -66,10 +67,11 @@ services:
  
   ingesterbinary:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
@@ -113,10 +115,11 @@ services:
       temn.msf.ingest.consumer.max.poll.records: "1"
   eventingester:
     build:
-      context: ${INGESTER_CONTEXT}
-      dockerfile: Dockerfile
+      context: ${APP_CONTEXT}
+      dockerfile: ingester/Dockerfile
       args:
-        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        BASE_IMAGE: ${BASE_IMAGE}
+        STAGING_IMAGE: ${STAGING_IMAGE}
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG}
     image: ${INGESTER_IMAGE}
