@@ -25,8 +25,9 @@
 	</properties>
 	<modules>
 		<module>ms-paymentorder-entity</module>
-		<module>ms-paymentorder-package-knative</module>
 		<module>ms-paymentorder-package-docker</module>
+		<module>ms-paymentorder-package-helm</module>
+		<module>ms-paymentorder-package-knative</module>	
 		<module>ms-paymentorder-package-aws</module>
 		<module>ms-paymentorder-package-azure</module>
 	</modules>
