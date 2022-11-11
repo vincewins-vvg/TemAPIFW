@@ -28,7 +28,4 @@ kubectl apply -f mongo_services.yaml
 
 sleep 180
 
-kubectl apply -f mongo-setup.yaml
-
-
 cd ../../..
