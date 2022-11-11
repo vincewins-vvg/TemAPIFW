@@ -28,6 +28,4 @@ kubectl apply -f mongo_services.yaml
 
 timeout /t 180 >nul
 
-kubectl apply -f mongo-setup.yaml
-
 cd ../../../

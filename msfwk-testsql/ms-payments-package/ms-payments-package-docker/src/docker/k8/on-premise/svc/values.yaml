@@ -473,17 +473,17 @@ resources:
     cpulimit: "500m"
 #Name                 :memorylimit
 #Description          :If you specify a memory limit for every container in a Pod, Kubernetes can infer the Pod-level memory limit by adding up the limits for its containers
-#Default Value        :1G
-    memorylimit: 2G
+#Default Value        :500M
+    memorylimit: 500M
     java:
 #Name                 :heaplimit
 #Description          :To change the value of experimental flags, you must unlock them first. You can do this by setting -XX:+UnlockExperimentalVMOptions explicitly on the command line before any experimental flags. The flag -XX:+UseCGroupMemoryLimitForHeap lets the JVM detect what the max heap size in a container should be. MaxRAMPercentage parameter allows setting the maximum heap size for a JVM running with a large amount of memory (greater than 200 MB).
 #Default Value        :-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0    
-      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -agentlib:jdwp=transport=dt_socket,address=40500,suspend=n,server=y '
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 -agentlib:jdwp=transport=dt_socket,address=40500,suspend=n,server=y '
       heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'
   eventingester:
     cpulimit: "500m"
-    memorylimit: 2G
+    memorylimit: 500M
     java:
-      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 '
-      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 '
+      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2' 

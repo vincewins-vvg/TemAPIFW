@@ -46,6 +46,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
         ports:
         - containerPort: 8092
         envFrom:
@@ -106,6 +110,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}        
         ports:
         - containerPort: 8093
         envFrom:
@@ -166,6 +174,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
         ports:
         - containerPort: 8093
         envFrom:
@@ -226,6 +238,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}        
         ports:
         - containerPort: 8094
         envFrom:
@@ -268,6 +284,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
         image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.eventdelivery.cpulimit }}
+            memory: {{ .Values.resources.eventdelivery.memorylimit }}             
         ports:
         - containerPort: 8095
         envFrom:
@@ -310,6 +330,10 @@ spec:
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
         image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}          
         ports:
         - containerPort: 8080
         envFrom:

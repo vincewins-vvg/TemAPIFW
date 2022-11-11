@@ -10,6 +10,7 @@ ARG STAGING_IMAGE
 FROM ${STAGING_IMAGE} AS staging
 ARG artifactid
 ENV artifactid ${artifactid}
+ENV packageArtifact "ms-package-docker.jar" 
 
 ADD java-* /tmp/
 RUN mkdir -p /tmp/app \
@@ -21,7 +22,7 @@ RUN mkdir -p /tmp/app \
 	&& chown -R appuser:appgroup /tmp \
 	&& chmod -R +x /tmp
 COPY inboxoutbox/${artifactid} /tmp/app/${artifactid}
-
+COPY package/${packageArtifact} /tmp/app/${packageArtifact}
 
 FROM ${BASE_IMAGE}
 ARG artifactid
@@ -31,6 +32,7 @@ ENV java_options ${java_options}
 ENV JAVA_OPTS ${java_options}
 ENV JAVA_HOME=/java
 ENV PATH="/java/bin:$PATH"
+ENV packageArtifact "ms-package-docker.jar" 
 
 RUN mkdir -p /java \
 	&& mkdir -p /app \
@@ -41,4 +43,4 @@ COPY --from=staging /tmp/java /java/
 COPY --from=staging /tmp/app /app/ 
 WORKDIR /app
 USER appuser
-CMD java ${java_options} -jar ${artifactid}
+CMD java ${java_options} -cp ${artifactid} -Dloader.path=${packageArtifact} org.springframework.boot.loader.PropertiesLauncher
