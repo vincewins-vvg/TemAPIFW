@@ -548,7 +548,7 @@ resources:
 #Name                 :cpulimit
 #Description          :The CPU limit defines a hard ceiling on how much CPU time that the container can use. it should not be less than 1m. can specific cpu limit as 1m or 0.001.
 #Default Value        :100m
-    cpulimit: "500m"
+    cpulimit: "100m"
 #Name                 :memorylimit
 #Description          :If you specify a memory limit for every container in a Pod, Kubernetes can infer the Pod-level memory limit by adding up the limits for its containers
 #Default Value        :500M
@@ -561,7 +561,7 @@ resources:
       heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'
 
   eventdelivery:
-    cpulimit: "500m"
+    cpulimit: "100m"
     memorylimit: 500M
     java:
       heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 -agentlib:jdwp=transport=dt_socket,address=40500,suspend=n,server=y '
