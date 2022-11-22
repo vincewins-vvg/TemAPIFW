@@ -10,20 +10,26 @@ ENV artifactid ${api_artifactid}
 ENV performance_logger ${performance_logger_artifactid}
 
 ADD java-* /tmp/
-RUN microdnf -y install tar gzip \
+RUN microdnf -y install tar gzip shadow-utils \
     && mkdir -p /tmp/tomcat/target/logs \
 	&& mkdir -p /tmp/tomcat/temp \
+	&& mkdir -p /tmp/tomcat/dump \
 	&& mkdir -p /tmp/java \
 	&& mkdir -p /tmp/app/lib/target/logs \
 	&& mkdir -p /tmp/target/logs \
     && curl -k https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.tar.gz -L -o "/tmp/tomcat.tar.gz" \
     && tar -zxf "/tmp/tomcat.tar.gz" -C /tmp/tomcat/ --strip-components=1 \
-	&& chmod -R 775 /tmp/tomcat/ \
 	&& sed -i 's+endorsed+e+g' /tmp/tomcat/bin/catalina.sh \
-	&& mv /tmp/java-*/* /tmp/java/ 
+	&& mv /tmp/java-*/* /tmp/java/ \
+	&& groupadd -f appgroup && useradd appuser -G appgroup \
+	&& chown -R appuser:appgroup /tmp \
+	&& chmod -R 777 /tmp/tomcat/ \
+	&& chmod -R 777 /tmp/target/ \
+	&& chmod -R 777 /tmp/app/ \
+	&& chmod -R +x /tmp/java/
 COPY api/${artifactid} /tmp/tomcat/webapps/${artifactid}
 COPY api/${performance_logger} /tmp/tomcat/lib/${performance_logger}
-
+COPY api/${performance_agent} /tmp/tomcat/${performance_agent}
 
 FROM ${BASE_IMAGE}
 ARG api_java_options
@@ -38,7 +44,7 @@ RUN mkdir -p /java \
 	&& mkdir -p /app \
 	&& mkdir -p /tomcat \
 	&& mkdir -p /target
-COPY api/${performance_agent} /${performance_agent}
+COPY --from=staging /tmp/tomcat/${performance_agent} /${performance_agent}
 COPY --from=staging /tmp/target /target/
 COPY --from=staging /tmp/app /app/
 COPY --from=staging /tmp/java /java/

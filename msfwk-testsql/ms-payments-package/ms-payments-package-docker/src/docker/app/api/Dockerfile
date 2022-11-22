@@ -17,6 +17,7 @@ ADD java-* /tmp/
 RUN microdnf -y install tar gzip shadow-utils \
     && mkdir -p /tmp/tomcat/target/logs \
 	&& mkdir -p /tmp/tomcat/temp \
+	&& mkdir -p /tmp/tomcat/dump \
 	&& mkdir -p /tmp/java \
 	&& mkdir -p /tmp/app/lib/target/logs \
 	&& mkdir -p /tmp/target/logs \
@@ -25,20 +26,18 @@ RUN microdnf -y install tar gzip shadow-utils \
 	&& sed -i 's/endorsed/e/g' /tmp/tomcat/bin/catalina.sh \
 	&& mv /tmp/java-*/* /tmp/java/ \
 	&& groupadd -f appgroup && useradd appuser -G appgroup \
-	&& chown -R appuser:appgroup /tmp/tomcat \
-	&& chmod -R 775 /tmp/tomcat/ \
-	&& chown -R appuser:appgroup /tmp/target/ \
-	&& chmod -R +x /tmp/target/ \
-	&& chown -R appuser:appgroup /tmp/java/ \
+	&& chown -R appuser:appgroup /tmp \
+	&& chmod -R 777 /tmp/tomcat/ \
+	&& chmod -R 777 /tmp/target/ \
+	&& chmod -R 777 /tmp/app/ \
 	&& chmod -R +x /tmp/java/ 
+RUN if [ "$ssl_enabled" = "true" ]; then sed -i 's+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443"/>+<Connector port="8443" SSLEnabled="true" clientAuth="false" maxThreads="150" protocol="org.apache.coyote.http11.Http11NioProtocol" keystoreFile="/tmp/tomcat/.keystore" keystorePass="'"$keystore_pass"'" scheme="https" secure="true" sslProtocol="TLS"/><Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />+g' /tmp/tomcat/conf/server.xml ; fi	
+COPY api/wait-for-it.sh /tmp/wait-for-it.sh
+RUN chmod +x /tmp/wait-for-it.sh \
+	&& sed -i 's/\r//' /tmp/wait-for-it.sh	
 COPY api/${artifactid} /tmp/tomcat/webapps/${artifactid}
 #COPY api/jacocoagent.jar /tmp/tomcat/webapps/jacocoagent.jar
-COPY api/wait-for-it.sh /tmp/wait-for-it.sh
-RUN chown appuser:appgroup /tmp/wait-for-it.sh \
-	&& chmod +x /tmp/wait-for-it.sh \
-	&& sed -i 's/\r//' /tmp/wait-for-it.sh	
 COPY api/.keystore/.keystore /tmp/tomcat/.keystore	
-RUN if [ "$ssl_enabled" = "true" ]; then sed -i 's+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443"/>+<Connector port="8443" SSLEnabled="true" clientAuth="false" maxThreads="150" protocol="org.apache.coyote.http11.Http11NioProtocol" keystoreFile="/tmp/tomcat/.keystore" keystorePass="'"$keystore_pass"'" scheme="https" secure="true" sslProtocol="TLS"/><Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />+g' /tmp/tomcat/conf/server.xml ; fi	
 
 
 FROM ${BASE_IMAGE}
@@ -50,6 +49,7 @@ ENV PATH="/java/bin:$PATH"
 
 RUN mkdir -p /java \
 	&& mkdir -p /tomcat \
+	&& mkdir -p /app \
 	&& mkdir -p /target
 COPY --from=staging /etc/passwd /etc/passwd
 COPY --from=staging /tmp/target /target/

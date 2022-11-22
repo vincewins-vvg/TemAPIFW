@@ -13,14 +13,16 @@ ENV artifactid ${artifactid}
 ENV packageArtifact "ms-package-docker.jar" 
 
 ADD java-* /tmp/
-RUN mkdir -p /tmp/app \
+RUN mkdir -p /tmp/app/target/logs \
 	&& mkdir -p /tmp/target/logs \
 	&& mkdir -p /tmp/java \
 	&& mv /tmp/java-*/* /tmp/java/ \
 	&& microdnf -y install shadow-utils \
 	&& groupadd -f appgroup && useradd appuser -G appgroup \
 	&& chown -R appuser:appgroup /tmp \
-	&& chmod -R +x /tmp
+	&& chmod -R +x /tmp/app \
+	&& chmod -R 777 /tmp/target \
+	&& chmod -R +x /tmp/java
 COPY inboxoutbox/${artifactid} /tmp/app/${artifactid}
 COPY package/${packageArtifact} /tmp/app/${packageArtifact}
 
