@@ -12,14 +12,16 @@ ARG artifactid
 ENV artifactid ${artifactid}
 
 ADD java-* /tmp/
-RUN mkdir -p /tmp/app \
+RUN mkdir -p /tmp/app/target/logs \
 	&& mkdir -p /tmp/target/logs \
 	&& mkdir -p /tmp/java \
 	&& mv /tmp/java-*/* /tmp/java/ \
 	&& microdnf -y install shadow-utils \
 	&& groupadd -f appgroup && useradd appuser -G appgroup \
 	&& chown -R appuser:appgroup /tmp \
-	&& chmod -R +x /tmp
+	&& chmod -R +x /tmp/app \
+	&& chmod -R 777 /tmp/target \
+	&& chmod -R +x /tmp/java
 COPY inboxoutbox/${artifactid} /tmp/app/${artifactid}
 
 

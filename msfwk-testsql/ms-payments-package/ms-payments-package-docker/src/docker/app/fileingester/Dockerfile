@@ -12,13 +12,16 @@ ARG artifactid
 ENV artifactid ${artifactid}
 
 ADD java-* /tmp/
-RUN mkdir -p /tmp/app \
+RUN mkdir -p /tmp/app/target/logs \
+	&& mkdir -p /tmp/target/logs \
 	&& mkdir -p /tmp/java \
 	&& mv /tmp/java-*/* /tmp/java/ \
 	&& microdnf -y install shadow-utils \
 	&& groupadd -f appgroup && useradd appuser -G appgroup \
 	&& chown -R appuser:appgroup /tmp \
-	&& chmod -R +x /tmp 
+	&& chmod -R +x /tmp/app \
+	&& chmod -R 777 /tmp/target \
+	&& chmod -R +x /tmp/java
 COPY fileingester/${artifactid} /tmp/app/${artifactid}
 
 
@@ -32,8 +35,10 @@ ENV JAVA_HOME=/java
 ENV PATH="/java/bin:$PATH"
 
 RUN mkdir -p /java \
-	&& mkdir -p /app
+	&& mkdir -p /app \
+	&& mkdir -p /target
 COPY --from=staging /etc/passwd /etc/passwd
+COPY --from=staging /tmp/target /target/
 COPY --from=staging /tmp/java /java/
 COPY --from=staging /tmp/app /app/ 
 WORKDIR /app
