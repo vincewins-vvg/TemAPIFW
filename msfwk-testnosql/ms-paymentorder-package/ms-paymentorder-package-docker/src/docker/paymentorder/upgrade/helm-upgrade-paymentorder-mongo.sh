@@ -8,7 +8,7 @@
 #@echo off
 #REM --------------------------------------------------------------
 
-#REM - Script to start ServiceRequest Microservice
+#REM - Script to start paymentorder Microservice
 #REM --------------------------------------------------------------
 
 # -------------------------------------------------------------
