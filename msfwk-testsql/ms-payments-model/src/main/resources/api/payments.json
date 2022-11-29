@@ -581,6 +581,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Config'  
+  /payments/orders/transaction:
+    post:
+      summary: Creates a new payment order transaction
+      operationId: CreatePaymentOrderTxn
+      tags:
+        - Payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentTransaction"
+      responses:
+        '201':
+          description: Created payment order Transaction
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/TransactionReference"                
 components:
   schemas:
     Card:
@@ -1042,3 +1060,28 @@ components:
         ConfigName:
           type: string
           description: Identifier that indicates the Config Name
+    PaymentTransaction:
+      properties:
+        companyCode:
+          type: string
+          description: Indicates the Company Code
+        amount:
+          type: string
+          description: Indicates the Amount involved in transaction
+        accountNumber:
+          type: integer
+          description: Indicates the Account number   
+        accountOfficer:
+          type: string
+          description: Indicates the Account officer authorises the transaction
+        currency:
+          type: string
+          description: Indicates the Currency
+    TransactionReference:
+      properties:
+        txnReference:
+          type: string
+          description: Indicates the Transaction Reference
+        status:
+          type: string
+          description: Indicates the Status of the Transaction
