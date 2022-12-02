@@ -29,6 +29,7 @@ public class CreatePaymentOrderTxnImpl implements CreatePaymentOrderTxn {
 
 	private TransactionReference executeStatus(Context ctx, PaymentTransaction paymentTransaction)
 			throws FunctionException {
+		validateParameter(paymentTransaction);
 		String paymentTxnId = ("PoTxn~" + paymentTransaction.getAccountNumber().toString() + "~"
 				+ paymentTransaction.getCurrency() + "~" + paymentTransaction.getAmount()).toUpperCase();
 		if (paymentTxnId != null) {
@@ -76,6 +77,18 @@ public class CreatePaymentOrderTxnImpl implements CreatePaymentOrderTxn {
 	public void validateInput(CreatePaymentOrderTxnInput input) throws InvalidInputException {
 		if (!input.getBody().isPresent()) {
 			throw new InvalidInputException(new FailureMessage("Input body is empty", "PAYM-PORD-A-2001"));
+		}
+	}
+
+	public void validateParameter(PaymentTransaction input) throws InvalidInputException {
+		if (input.getAccountNumber() == null) {
+			throw new InvalidInputException(new FailureMessage("Account Number cannot be empty", "PAYM-PORD-A-2001"));
+		}
+		if (input.getCurrency() == null) {
+			throw new InvalidInputException(new FailureMessage("Input Currency cannot be empty", "PAYM-PORD-A-2002"));
+		}
+		if (input.getAmount() == null) {
+			throw new InvalidInputException(new FailureMessage("Amount cannot be empty", "PAYM-PORD-A-2003"));
 		}
 	}
 
