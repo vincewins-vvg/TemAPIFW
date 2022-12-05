@@ -55,6 +55,7 @@ public class CreatePaymentOrderTxnImpl implements CreatePaymentOrderTxn {
 			paymentTxn.setAccountOfficer(txn.getAccountOfficer());
 			paymentTxn.setCompanyCode(txn.getCompanyCode());
 			paymentTxn.setCurrency(txn.getCurrency());
+			paymentTxn.setAmountLcy(txn.getAmount());
 			Set<com.temenos.microservice.payments.entity.PaymentOrderDetails> paymentTxnDetailsEntities = new HashSet<>();
 			com.temenos.microservice.payments.entity.PaymentOrderDetails details = new com.temenos.microservice.payments.entity.PaymentOrderDetails(
 					txnId, txn.getAmount());
