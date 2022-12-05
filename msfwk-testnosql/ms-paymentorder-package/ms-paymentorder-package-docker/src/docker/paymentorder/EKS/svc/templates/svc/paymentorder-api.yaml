@@ -1,0 +1,127 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-api" }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-api" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicacount.paymentorderapi }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "paymentorderapi.selectorLabels" . | nindent 6 }}
+      app: paymentorder-api
+  template:
+    metadata:
+      labels:
+        {{- include "paymentorderapi.selectorLabels" . | nindent 8 }}
+        app: paymentorder-api
+    spec:
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }} 
+    {{- end }}
+      serviceAccountName: paymentorder-serviceaccount
+      containers:
+        - name: {{ .Chart.Name }}{{ "-api" }}
+          image: "{{ .Values.image.paymentorderapi.repository }}"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          securityContext:
+            privileged: true
+          envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
+        {{- if eq .Values.env.database.POSTGRESQL_CRED "Y" }}  
+          env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+            valueFrom:
+              secretKeyRef:
+                name: clientsecret
+                key: CLIENT_SECRET
+        {{- end }}                
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvc" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvc" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.paymentorderapi.type }}  
+  ports:
+    - name: http
+      port: {{ .Values.service.paymentorderapi.port }}
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: {{ .Values.apideployment }}    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvcnp" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvcnp" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - name: {{ .Values.ports.name }}
+      port: {{ .Values.ports.port }}
+      protocol: {{ .Values.ports.protocol }}
+      nodePort: {{ .Values.ports.targetport }} 
+  selector:
+    app: {{ .Values.apideployment }}  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-poapisvc-jacoco" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-poapisvc-jacoco" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 36320
+      protocol: TCP
+      nodePort: 30320
+  selector:
+    app: {{ .Values.apideployment }}    
+    app: {{ .Values.apideployment }}            
