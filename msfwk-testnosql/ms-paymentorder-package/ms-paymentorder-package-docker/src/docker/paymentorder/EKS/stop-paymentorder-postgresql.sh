@@ -38,6 +38,11 @@ cd ../..
 #To delete the ECR repository 
 aws ecr delete-repository --repository-name $repositoryName --force
 
+#To delete the schema registry ,kafka and zookeeper ECR repositories
+aws ecr delete-repository --repository-name cp-schema-registry --force
+aws ecr delete-repository --repository-name cp-kafka --force
+aws ecr delete-repository --repository-name cp-zookeeper --force
+
 aws kinesis delete-stream --stream-name ms-paymentorder-inbox-topic 
 aws kinesis delete-stream --stream-name paymentorder-event-topic 
 aws kinesis delete-stream --stream-name ms-paymentorder-inbox-error-topic 
