@@ -6,15 +6,20 @@
 package com.temenos.microservice.payments.entity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 
 import com.temenos.microservice.framework.core.data.ExtendableEntity;
 
@@ -36,6 +41,10 @@ public class PaymentTransaction implements ExtendableEntity {
 	private java.util.Date bookingDate;
 	private java.lang.String customerId;
 	private java.lang.String currency;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "paymentOrderTxnDetails.recId", fetch = FetchType.EAGER, targetEntity = PaymentOrderDetails.class)
+	private Set<PaymentOrderDetails> paymentOrderDetails;
+
 	@ElementCollection
 	@MapKeyColumn(name = "name")
 	@Column(name = "value")
@@ -160,5 +169,17 @@ public class PaymentTransaction implements ExtendableEntity {
 
 	public void setCurrency(java.lang.String currency) {
 		this.currency = currency;
+	}
+
+	public Set<PaymentOrderDetails> getpaymentOrderDetails() {
+		return paymentOrderDetails;
+	}
+
+	public void setpaymentOrderDetails(Set<PaymentOrderDetails> paymentOrderDetails) {
+		if (this.paymentOrderDetails != null) {
+			this.paymentOrderDetails.clear();
+		}
+		this.paymentOrderDetails = this.paymentOrderDetails == null ? new HashSet<>() : this.paymentOrderDetails;
+		this.paymentOrderDetails.addAll(paymentOrderDetails);
 	}
 }
