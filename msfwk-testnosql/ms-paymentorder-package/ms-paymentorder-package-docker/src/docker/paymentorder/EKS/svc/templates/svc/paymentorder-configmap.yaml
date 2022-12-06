@@ -149,14 +149,13 @@ data:
   temn.msf.stream.vendor: kinesis
   temn.queue.impl: kinesis
   temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
-  temn.msf.ingest.source.stream: 600670497877:ms-adapterservice-event-topic:1663593140000
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.avrotopic }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
   temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
   temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
   temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
   com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
   temn.msf.security.authz.enabled: "false"
-  temn.msf.ingest.is.avro.event.ingester: "true"
   class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
   class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
   PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
