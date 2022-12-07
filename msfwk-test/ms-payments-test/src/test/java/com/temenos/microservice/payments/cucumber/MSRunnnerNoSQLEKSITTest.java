@@ -13,7 +13,7 @@ import cucumber.api.junit.Cucumber;
  * 
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(junit = "--no-step-notifications",monochrome = true , features = {"error-topic-scripts/error-topic-apis/","db-specific-cucumber-scripts/works-on-NoSQL/","Gdpr-scripts/Works-On-NOSQL/"}, glue = {
+@CucumberOptions(junit = "--no-step-notifications",monochrome = true , features = {"db-specific-cucumber-scripts/works-on-NoSQL/","Gdpr-scripts/Works-On-NOSQL/","cucumber-test-scripts/multi-part-scenarios/","cucumber-test-scripts/response-pagination/","cucumber-test-scripts/jwt-scenarios/","cucumber-test-scripts/inbox-outbox-for-api/"}, glue = {
 		"cucumber.api.spring", "com.temenos.useragent.cucumber.steps", "com.temenos.interaction.cucumber.stepdefs",
 		"com.temenos.microservice.payments.cucumber",
 		"com.temenos.microservice.cucumber.t24datastepdefinitions" }, format = { "pretty", "html:target/cucumber",
