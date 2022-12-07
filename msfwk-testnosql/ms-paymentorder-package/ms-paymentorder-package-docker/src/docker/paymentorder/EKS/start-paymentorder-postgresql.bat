@@ -185,7 +185,7 @@ docker tag %appInitImage%:%tag% %appInitImageTag%
 
 docker push %appInitImageTag%
 
-REM Uncomment the below lines to run the mysql db
+REM Uncomment the below lines to run the postgresql db
 REM docker tag ms-paymentorder-postgres:latest %accountId%.dkr.ecr.eu-west-2.amazonaws.com/%repositoryname%:postgresql
 REM docker push %accountId%.dkr.ecr.eu-west-2.amazonaws.com/%repositoryname%:postgresql
 
