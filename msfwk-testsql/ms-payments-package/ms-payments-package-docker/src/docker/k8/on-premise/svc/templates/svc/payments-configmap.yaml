@@ -73,6 +73,8 @@ data:
   temn.msf.storage.home: path:/tomcat/temp
   FILE_STORAGE_URL: /demo.properties
   temn.msf.max.file.upload.size: "70"
+  temn.msf.query.enable.system.events: {{ .Values.env.audit.query_enable_system_events | quote }}
+  temn.msf.query.enable.response: {{ .Values.env.audit.query_enable_response | quote }}
   ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
   JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
@@ -287,6 +289,8 @@ data:
   IRIS_PATH: irf-provider-container/api
   IRIS_R18_PATH: irisR18/api
   IRIS_VERSION: "v1.0.0"
+  temn.msf.query.enable.system.events: {{ .Values.env.audit.query_enable_system_events | quote }}
+  temn.msf.query.enable.response: {{ .Values.env.audit.query_enable_response | quote }}
   ms.security.tokencheck.enabled: "Y"
   temn.entitlement.stubbed.service.enabled: "true"
   temn.msf.mdal.keys.MDLPAT.Paymentorder.paymentorder: getCustomerProfile
@@ -453,6 +457,8 @@ data:
   temn.msf.ingest.event.processor.POAccepted: com.temenos.microservice.payments.ingester.PoHandlerImpl
   java_options: {{ .Values.resources.eventingester.java.heaplimit }}
 # temn.msf.raise.received.event: "true"
+  temn.msf.query.enable.system.events: {{ .Values.env.audit.query_enable_system_events | quote }}
+  temn.msf.query.enable.response: {{ .Values.env.audit.query_enable_response | quote }}
   temn.msf.ingest.is.avro.event.ingester: "false"
   temn.msf.security.authz.enabled: "false"
   JWT_TOKEN_ISSUER: {{ .Values.pit.JWT_TOKEN_ISSUER | quote }}
@@ -520,7 +526,9 @@ data:
   tmn.inbox.thread.pool.count: "10"
   tmn.outbox.thread.pool.count: "10"
   VALIDATE_PAYMENT_ORDER: "false"
-  temn.msf.ingest.is.cloud.event: "true"  
+  temn.msf.ingest.is.cloud.event: "true"
+  temn.msf.query.enable.system.events: {{ .Values.env.audit.query_enable_system_events | quote }}
+  temn.msf.query.enable.response: {{ .Values.env.audit.query_enable_response | quote }}  
 {{- if .Values.logging.exportType }}        
   temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
 {{- if eq .Values.logging.exportType "socket" }}   

@@ -39,7 +39,7 @@ import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
-import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.event.PaymentOrderCreated;
 import com.temenos.microservice.payments.view.AllPaymentStatus;
 import com.temenos.microservice.payments.view.PaymentStatus;
 import com.temenos.microservice.paymentsorder.view.PaymentOrder;
@@ -204,7 +204,7 @@ public class CreateNewPaymentOrderSchemaImpl implements CreateNewPaymentOrderSch
 
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
-		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+		PaymentOrderCreated paymentOrderEvent = new PaymentOrderCreated();
 		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
 		paymentOrderEvent.setAmount(entity.getAmount());
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
