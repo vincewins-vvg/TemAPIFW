@@ -282,7 +282,7 @@ aws kinesis create-stream --stream-name Test-topic --shard-count 1
 # kubectl apply -f db-secrets.yaml
 # cd ../..
 
-helm install kafka-oss cp-helm-charts --version 0.5.0 -n kafka --set cp-zookeeper.image=600670497877.dkr.ecr.eu-west-2.amazonaws.com/cp-zookeeper --set cp-zookeeper.imageTag=5.2.2 --set cp-kafka.image=600670497877.dkr.ecr.eu-west-2.amazonaws.com/cp-kafka --set cp-kafka.imageTag=5.2.2 --set cp-schema-registry.image=600670497877.dkr.ecr.eu-west-2.amazonaws.com/cp-schema-registry --set cp-schema-registry.imageTag=5.2.2 --create-namespace
+helm install kafka-oss cp-helm-charts --version 0.5.0 -n kafka --set cp-zookeeper.image=%accountId%.dkr.ecr.eu-west-2.amazonaws.com/cp-zookeeper --set cp-zookeeper.imageTag=5.2.2 --set cp-kafka.image=%accountId%.dkr.ecr.eu-west-2.amazonaws.com/cp-kafka --set cp-kafka.imageTag=5.2.2 --set cp-schema-registry.image=%accountId%.dkr.ecr.eu-west-2.amazonaws.com/cp-schema-registry --set cp-schema-registry.imageTag=5.2.2 --create-namespace
 
 kubectl create ns poappinit
 
