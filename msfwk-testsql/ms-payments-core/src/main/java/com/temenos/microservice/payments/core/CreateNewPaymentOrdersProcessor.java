@@ -27,7 +27,7 @@ import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
-import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.event.PaymentOrderCreated;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrdersInput;
 import com.temenos.microservice.payments.function.PaymentOrderFunctionHelper;
 import com.temenos.microservice.payments.view.AllPaymentStatus;
@@ -162,7 +162,7 @@ public class CreateNewPaymentOrdersProcessor {
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.saveOrMergeEntityList(entityarrayList, false);
 		for (int j = 0; j < entityarrayList.size(); j++) {
-			CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+			PaymentOrderCreated paymentOrderEvent = new PaymentOrderCreated();
 			paymentOrderEvent.setPaymentOrderId(entityarrayList.get(j).getPaymentOrderId());
 			paymentOrderEvent.setAmount(entityarrayList.get(j).getAmount());
 			paymentOrderEvent.setCreditAccount(entityarrayList.get(j).getCreditAccount());

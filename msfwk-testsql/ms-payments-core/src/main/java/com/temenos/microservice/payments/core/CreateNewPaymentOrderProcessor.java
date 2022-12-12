@@ -46,7 +46,7 @@ import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
-import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.event.PaymentOrderCreated;
 import com.temenos.microservice.payments.event.PayeeDetailsEvent;
 import com.temenos.microservice.payments.exception.StorageException;
 import com.temenos.microservice.payments.function.CreateNewPaymentOrderInput;
@@ -119,7 +119,7 @@ public class CreateNewPaymentOrderProcessor {
 			throw new StorageException(
 					new FailureMessage(e.getMessage(), MSFrameworkErrorConstant.UNEXPECTED_ERROR_CODE));
 		}
-		ctx.setBusinessKey(paymentStatus.getPaymentId());
+		//ctx.setBusinessKey(paymentStatus.getPaymentId());
 		return paymentStatus;
 	}
 
@@ -210,7 +210,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		entity=PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
-		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+		PaymentOrderCreated paymentOrderEvent = new PaymentOrderCreated();
 		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
 		paymentOrderEvent.setAmount(entity.getAmount());
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());
@@ -219,6 +219,7 @@ public class CreateNewPaymentOrderProcessor {
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		ctx.setBusinessKey(paymentOrderEvent.getPaymentOrderId());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return entity;

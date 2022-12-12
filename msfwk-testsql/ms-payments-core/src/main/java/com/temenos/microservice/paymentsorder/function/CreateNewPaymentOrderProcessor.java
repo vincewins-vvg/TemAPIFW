@@ -52,7 +52,7 @@ import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PayeeDetails;
-import com.temenos.microservice.payments.event.CreatePaymentEvent;
+import com.temenos.microservice.payments.event.PaymentOrderCreated;
 
 public class CreateNewPaymentOrderProcessor {
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -201,7 +201,7 @@ public class CreateNewPaymentOrderProcessor {
 
 		PaymentOrderDao.getInstance(com.temenos.microservice.payments.entity.PaymentOrder.class).getSqlDao()
 				.save(entity);
-		CreatePaymentEvent paymentOrderEvent = new CreatePaymentEvent();
+		PaymentOrderCreated paymentOrderEvent = new PaymentOrderCreated();
 		paymentOrderEvent.setPaymentOrderId(entity.getPaymentOrderId());
 		paymentOrderEvent.setAmount(entity.getAmount());
 		paymentOrderEvent.setCreditAccount(entity.getCreditAccount());

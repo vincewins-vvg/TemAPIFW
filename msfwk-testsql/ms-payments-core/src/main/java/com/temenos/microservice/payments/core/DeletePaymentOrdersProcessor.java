@@ -61,8 +61,9 @@ public class DeletePaymentOrdersProcessor {
 			PaymentOrder paymentOrder = (PaymentOrder) po;
 			PaymentDeleted paymentDeleted = new PaymentDeleted();
 			paymentDeleted.setPaymentOrderId(paymentOrder.getPaymentOrderId());
-			paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
-			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
+			ctx.setBusinessKey(paymentOrder.getPaymentOrderId());
+			//paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
+			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted), po);
 		}
 		AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
 		for (int i = 0; i < paymentIdList.size(); i++) {
@@ -70,7 +71,6 @@ public class DeletePaymentOrdersProcessor {
 			paymentStatus.setStatus("Deleted this PaymentId	: " + paymentIdList.get(i));
 			allPaymentStatus.add(paymentStatus);
 		}
-		ctx.setBusinessKey(paymentId[0]);
 		return allPaymentStatus;
 	}
 
