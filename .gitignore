@@ -19,7 +19,7 @@ src-gen/
 **/src-gen
 pom.xml.tag
 
-###### Eclipse template
+####### Eclipse template
 
 .metadata
 .settings/
