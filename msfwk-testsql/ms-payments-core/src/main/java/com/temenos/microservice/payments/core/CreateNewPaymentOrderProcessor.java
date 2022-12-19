@@ -28,6 +28,10 @@ import com.temenos.inboxoutbox.core.GenericCommand;
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.conf.Environment;
+import com.temenos.microservice.framework.core.data.DataAccessException;
+import com.temenos.microservice.framework.core.data.DatabaseOperationException;
+import com.temenos.microservice.framework.core.data.Entity;
+import com.temenos.microservice.framework.core.data.sql.BaseSqlDao;
 import com.temenos.microservice.framework.core.file.reader.FileReaderConstants;
 import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapter;
 import com.temenos.microservice.framework.core.file.reader.MSStorageReadAdapterFactory;
@@ -42,6 +46,7 @@ import com.temenos.microservice.framework.core.function.InvocationFailedExceptio
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.DataTypeConverter;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.payments.dao.AccountingDao;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
@@ -220,9 +225,43 @@ public class CreateNewPaymentOrderProcessor {
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
 		ctx.setBusinessKey(paymentOrderEvent.getPaymentOrderId());
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
+		//Entry in ms_payment_accounting table
+		List<com.temenos.microservice.payments.entity.Accounting> accountingEntities = createAccounting(view, paymentOrderId);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity, accountingEntities.get(0), accountingEntities.get(1));
 		raiseCommandEvent(ctx, entity);
 		return entity;
+	}
+
+	private List<com.temenos.microservice.payments.entity.Accounting> createAccounting(com.temenos.microservice.payments.view.PaymentOrder view, String paymentOrderId) throws DatabaseOperationException, DataAccessException {
+		
+		List<com.temenos.microservice.payments.entity.Accounting> entityArrayList = new ArrayList<com.temenos.microservice.payments.entity.Accounting>();
+		com.temenos.microservice.payments.entity.Accounting debitAcct = new com.temenos.microservice.payments.entity.Accounting();
+		com.temenos.microservice.payments.entity.Accounting creditAcct = new com.temenos.microservice.payments.entity.Accounting();
+		
+		//Entry for debit account
+		debitAcct.setPaymentOrderId(paymentOrderId);
+		debitAcct.setAccountNumber(view.getFromAccount());
+		debitAcct.setAmount(view.getAmount());
+		debitAcct.setCurrency(view.getCurrency().toString());
+		debitAcct.setPaymentType("DEBIT");
+		debitAcct.setProcessedDate(Date.from(Instant.now()));
+		
+		//Entry for credit account
+		creditAcct.setPaymentOrderId(paymentOrderId);
+		creditAcct.setAccountNumber(view.getToAccount());
+		creditAcct.setAmount(view.getAmount());
+		creditAcct.setCurrency(view.getCurrency().toString());
+		creditAcct.setProcessedDate(Date.from(Instant.now()));
+		creditAcct.setPaymentType("CREDIT");
+		
+		entityArrayList.add(debitAcct);
+		entityArrayList.add(creditAcct);
+		
+		AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class).getSqlDao()
+		.saveOrMergeEntityList(entityArrayList, true);
+		
+		return entityArrayList;
+		
 	}
 
 	private PaymentStatus readStatus(String debitAccount, String paymentOrderId) throws FunctionException {

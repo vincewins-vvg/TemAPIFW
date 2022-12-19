@@ -11,15 +11,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.data.DataAccessException;
+import com.temenos.microservice.framework.core.data.DatabaseOperationException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
+import com.temenos.microservice.payments.dao.AccountingDao;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
+import com.temenos.microservice.payments.entity.Accounting;
 import com.temenos.microservice.payments.entity.PaymentMethod;
 import com.temenos.microservice.payments.entity.PaymentOrder;
 import com.temenos.microservice.payments.event.PaymentDeleted;
@@ -63,7 +72,9 @@ public class DeletePaymentOrdersProcessor {
 			paymentDeleted.setPaymentOrderId(paymentOrder.getPaymentOrderId());
 			ctx.setBusinessKey(paymentOrder.getPaymentOrderId());
 			//paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
-			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted), po);
+			List<com.temenos.microservice.payments.entity.Accounting> accountingEntities = getAccounting(paymentOrder.getPaymentOrderId());
+			deleteAccounting(accountingEntities);
+			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted), po, accountingEntities.get(0), accountingEntities.get(1));
 		}
 		AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
 		for (int i = 0; i < paymentIdList.size(); i++) {
@@ -72,6 +83,33 @@ public class DeletePaymentOrdersProcessor {
 			allPaymentStatus.add(paymentStatus);
 		}
 		return allPaymentStatus;
+	}
+
+	private List<Accounting> getAccounting(String paymentOrderId) throws DataAccessException {
+
+		List<com.temenos.microservice.payments.entity.Accounting> entityArrayList = new ArrayList<com.temenos.microservice.payments.entity.Accounting>();
+
+		CriteriaBuilder criteriaBuilder = AccountingDao
+				.getInstance(com.temenos.microservice.payments.entity.Accounting.class).getSqlDao().getEntityManager()
+				.getCriteriaBuilder();
+		CriteriaQuery<com.temenos.microservice.payments.entity.Accounting> criteriaQuery = criteriaBuilder
+				.createQuery(com.temenos.microservice.payments.entity.Accounting.class);
+		Root<com.temenos.microservice.payments.entity.Accounting> root = criteriaQuery
+				.from(com.temenos.microservice.payments.entity.Accounting.class);
+		criteriaQuery.select(root);
+		if (paymentOrderId != null) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("paymentOrderId"), paymentOrderId)));
+			entityArrayList = AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
+							com.temenos.microservice.payments.entity.Accounting.class);
+		}
+		return entityArrayList;
+	}
+
+	private void deleteAccounting(List<Accounting> accountingEntities) throws DatabaseOperationException, DataAccessException {
+		AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class).getSqlDao()
+		.deleteByIdList(accountingEntities);
 	}
 
 }
