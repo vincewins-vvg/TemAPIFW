@@ -76,7 +76,7 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from (ms_inbox_events)database...");
-			Thread.sleep(60000);
+			Thread.sleep(15000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("c2964e99-22f2-4c70-bd75-bae4866bc869", "POAccepted");
 			System.out.println("inboxResultMap  " + inboxResultMap);

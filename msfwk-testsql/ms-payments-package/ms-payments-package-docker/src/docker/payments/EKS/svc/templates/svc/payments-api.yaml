@@ -1,0 +1,84 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-order-api
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-order-api
+  template:
+    metadata:
+      labels:
+        app: payments-order-api
+    spec:
+    {{- if eq .Values.serviceaccount.enabled "Y" }}
+      serviceAccountName: payments-serviceaccount
+    {{- end }}
+      containers:
+      - name: payments-order-api
+        image: {{ .Values.image.paymentsapi.repository }}
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: payments-api-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+            valueFrom:
+              secretKeyRef:
+                name: clientsecret
+                key: CLIENT_SECRET                  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-order-svc
+  name: payments-order-api-svc
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-order-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels: 
+    app.kubernetes.io/name: payments-order-svc-jacoco
+  name: payments-order-svc-jacoco  
+  namespace: {{ .Values.paymentsnamespace }}
+spec: 
+  selector: 
+    app: payments-order-api
+  ports: 
+    - name: http
+      protocol: TCP
+      port: 36320
+      nodePort: 30320
+  type: NodePort     
