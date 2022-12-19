@@ -185,51 +185,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: posqldbsecret
-                key: PASSWORD   
----
-#Event Delivery
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: payments-event-delivery
-  namespace: {{.Values.paymentsnamespace}}
-spec:
-  replicas: {{ .Values.paymentsingesterReplicaCount }}
-  selector:
-    matchLabels:
-      app: payments-event-delivery
-  template:
-    metadata:
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
-      labels:
-        app: payments-event-delivery
-    spec:
-      hostAliases:
-      - ip: "{{ .Values.env.kafka.generic_ip }}"
-        hostnames:
-        - "kafka"
-        - "schema-registry"    
-      containers:
-      - name: payments-event-delivery
-        image: {{ .Values.image.paymentseventdelivery.repository }}:{{ .Values.image.paymentseventdelivery.tag }}
-        ports:
-        - containerPort: 8095
-        envFrom:
-          - configMapRef:
-              name: payments-eventdelivery-config
-        env:
-          # Use secret in real usage
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: posqldbsecret
-                key: USER_NAME 
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD   
+                key: PASSWORD
 ---
 apiVersion: apps/v1
 kind: Deployment

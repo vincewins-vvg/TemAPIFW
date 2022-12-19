@@ -66,8 +66,6 @@ docker image save temenos/ms-paymentorder-service:DEV > ms-paymentorder-serviceD
 
 docker image save temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingesterDEV.tar
 
-docker image save temenos/ms-paymentorder-inboxoutbox:DEV > ms-paymentorder-inboxoutboxDEV.tar
-
 docker image save temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedulerDEV.tar
 
 docker image save temenos/ms-paymentorder-initscripts:DEV > ms-paymentorder-initscripts-DEV.tar
