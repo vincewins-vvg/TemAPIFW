@@ -133,7 +133,7 @@ public class UpdatePaymentOrderProcessor {
 					.and(criteriaBuilder.equal(root.get("paymentOrderId"), paymentOrderOpt.getPaymentOrderId())));
 			accountList = AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class)
 					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
-							com.temenos.microservice.payments.entity.Accounting.class);
+							com.temenos.microservice.payments.entity.Accounting.class, true, true);
 		}
 
 		for (Accounting accountentity : accountList) {

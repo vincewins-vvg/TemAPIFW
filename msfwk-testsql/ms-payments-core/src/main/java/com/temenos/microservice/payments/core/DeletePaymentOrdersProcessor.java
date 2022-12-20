@@ -102,7 +102,7 @@ public class DeletePaymentOrdersProcessor {
 			predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("paymentOrderId"), paymentOrderId)));
 			entityArrayList = AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class)
 					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
-							com.temenos.microservice.payments.entity.Accounting.class);
+							com.temenos.microservice.payments.entity.Accounting.class, true, true);
 		}
 		return entityArrayList;
 	}
