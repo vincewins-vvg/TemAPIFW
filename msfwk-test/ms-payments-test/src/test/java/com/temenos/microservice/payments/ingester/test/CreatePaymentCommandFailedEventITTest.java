@@ -64,6 +64,7 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		}
 		try {
 			producer.batch().send();
+			System.out.println("after sent");
 		} catch (StreamProducerException e) {
 			ingesterAlert.prepareError(MSLogCode.EVENT_PROCESSING_FAILED)
 					.tag("functionName", e.getStackTrace()[0].getMethodName()).log();
@@ -74,9 +75,14 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from database...");
+<<<<<<< HEAD
 			Thread.sleep(15000);
+=======
+			Thread.sleep(50000);
+>>>>>>> 82d43ced (MFW-4301 : AKS implementation in Payment-Order [NoSQL] MS)
 			System.out.println("Reading record back from db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442e", "CommandFailed");
+			System.out.println("inboxResultMap  " + inboxResultMap);
 			retryCount = retryCount + 1;
 		} while (inboxResultMap.get(1) == null && retryCount < maxDBReadRetryCount);
 

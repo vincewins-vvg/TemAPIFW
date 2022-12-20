@@ -74,7 +74,11 @@ public class CreatePaymentCommandProcessedEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from (ms_inbox_events)database...");
+<<<<<<< HEAD
 			Thread.sleep(15000);
+=======
+			Thread.sleep(50000);
+>>>>>>> 82d43ced (MFW-4301 : AKS implementation in Payment-Order [NoSQL] MS)
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442b", "CommandProcessed");
 			System.out.println("inboxResultMap  " + inboxResultMap);

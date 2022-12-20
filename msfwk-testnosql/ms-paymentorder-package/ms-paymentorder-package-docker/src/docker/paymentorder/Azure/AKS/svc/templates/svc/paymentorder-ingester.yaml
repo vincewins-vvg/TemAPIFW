@@ -1,0 +1,539 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"     
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}             
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
+        ports:
+        - containerPort: 8092
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-avro-config" }}
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"       
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}        
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-config" }}    
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD    
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"       
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-command-inbox-config" }}    
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD    
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+    spec:
+    {{- if eq .Values.env.kafka.kafkaAliases "Y" }} 
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.kafka0ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka0HostName }}"
+      - ip: "{{ .Values.env.kafka.kafka1ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka1HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafka2ip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafka2HostName }}" 
+      - ip: "{{ .Values.env.kafka.kafkaip }}"
+        hostnames:
+        - "{{ .Values.env.kafka.kafkaHostName }}"
+      - ip: "{{ .Values.env.kafka.devdomain }}"
+        hostnames:
+        - "{{ .Values.env.kafka.devdomainHostName }}" 
+    {{- end }}    
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}        
+        ports:
+        - containerPort: 8094
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-event-config" }}  
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+---
+#Event Delivery
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
+        image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.eventdelivery.cpulimit }}
+            memory: {{ .Values.resources.eventdelivery.memorylimit }}             
+        ports:
+        - containerPort: 8095
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }} 
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD   
+---
+#Data Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"        
+      containers:
+      - name: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+        image: "{{ .Values.image.paymentorderingester.repository }}:{{ .Values.image.paymentorderingester.tag | default .Chart.AppVersion }}"
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}          
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }} 
+        env:
+          # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD     
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentorder-file-ingester
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: {{ .Values.replicacount.paymentorderingester }}
+  selector:
+    matchLabels:
+      app: paymentorder-file-ingester
+  template:
+    metadata:
+      labels:
+        app: paymentorder-file-ingester
+    spec:
+      volumes:
+      - name: filestorage
+        hostPath:
+          path: /var/lib/fileingesterstorage
+          type: DirectoryOrCreate
+      - name: fileprocessed
+        hostPath:
+          path: /var/lib
+          type: DirectoryOrCreate
+      containers:
+      - name: paymentorder-file-ingester
+        image: {{ .Values.image.fileingester.repository }}:{{ .Values.image.fileingester.tag }}
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /var/lib/fileingesterstorage
+          name: filestorage
+        - mountPath: /var/lib
+          name: fileprocessed
+        envFrom:
+          - configMapRef:
+              name: paymentorder-ingester-file-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD        
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD             
+---
+#Data Ingester Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc" }}
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30007
+  type: NodePort    
+---
+#Command Ingester Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc" }}
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30008
+  type: NodePort  
+---
+#Data Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-data-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30330
+  type: NodePort    
+---
+#Avro Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-avro-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-avro-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30331
+  type: NodePort    
+---
+#Event Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-event-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-event-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30336
+  type: NodePort    
+---
+#Command Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-command-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30334
+  type: NodePort 
+---
+#File Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-file-ingester-svc-jacoco" }}
+  name: {{ include "paymentorder.name" . }}{{ "-file-ingester-svc-jacoco" }}
+  namespace: {{.Values.namespace}}
+spec:
+  selector:
+    app: {{ include "paymentorder.name" . }}{{ "-file-ingester" }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30337
+  type: NodePort   
