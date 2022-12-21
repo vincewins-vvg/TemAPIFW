@@ -21,6 +21,8 @@ spec:
       app: paymentorder-scheduler
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
         app: paymentorder-scheduler      

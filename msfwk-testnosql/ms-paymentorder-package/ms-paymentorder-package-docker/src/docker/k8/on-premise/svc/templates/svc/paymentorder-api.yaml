@@ -24,6 +24,8 @@ spec:
       app: paymentorder-api
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         {{- include "paymentorderapi.selectorLabels" . | nindent 8 }}
         app: paymentorder-api
