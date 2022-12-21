@@ -48,17 +48,19 @@ REM To delete the kinesis data streams
 aws kinesis delete-stream --stream-name ms-paymentorder-inbox-topic 
 aws kinesis delete-stream --stream-name paymentorder-event-topic 
 aws kinesis delete-stream --stream-name ms-paymentorder-inbox-error-topic 
-aws kinesis delete-stream --stream-name ms-payment-outbox-topic 
+aws kinesis delete-stream --stream-name payment-outbox-topic
+aws kinesis delete-stream --stream-name payment-outbox
 aws kinesis delete-stream --stream-name error-paymentorder 
 aws kinesis delete-stream --stream-name table-update-paymentorder 
 aws kinesis delete-stream --stream-name table-update 
-aws kinesis delete-stream --stream-name ms-paymentorder-outbox 
+aws kinesis delete-stream --stream-name paymentorder-inbox-topic 
 aws kinesis delete-stream --stream-name ms-eventstore-inbox-topic 
 aws kinesis delete-stream --stream-name multipart-topic 
 aws kinesis delete-stream --stream-name ms-paymentorder-ingester-consumer 
 aws kinesis delete-stream --stream-name ms-paymentorder-ingester-error-producer
 aws kinesis delete-stream --stream-name multipart-1
 aws kinesis delete-stream --stream-name reprocess-event
+aws kinesis delete-stream --stream-name Test-topic
 
 REM To delete the nodegroup attached to the EKS cluster
 eksctl delete nodegroup --cluster=%clusterName% --region %clusterRegion% --name=%nodeName%

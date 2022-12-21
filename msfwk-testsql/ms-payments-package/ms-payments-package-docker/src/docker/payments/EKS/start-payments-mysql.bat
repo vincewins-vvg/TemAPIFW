@@ -6,6 +6,7 @@
 
 @echo off
 
+REM AWS Credentials details
 SET accountId=600670497877
 SET awsRegion=eu-west-2
 SET accesskeyId=ASIAYXWWANRKUGEMMIMZ
@@ -250,18 +251,18 @@ aws kinesis create-stream --stream-name ms-paymentorder-ingester-error-producer 
 timeout /t 10 >nul
 aws kinesis create-stream --stream-name Test-topic --shard-count 1
 timeout /t 10 >nul
-aws kinesis create-stream --stream-name table-update-splitData --shard-count 1
-timeout /t 10 >nul
 aws kinesis create-stream --stream-name reprocess-event --shard-count 1
+timeout /t 10 >nul
 
 aws s3 mb %storage%
 timeout /t 10 >nul
 
-cd db/mysql
-kubectl apply -f namespace.yaml
-kubectl apply -f mysql-db.yaml
-kubectl apply -f db-secrets.yaml
-cd ../..
+REM Run the below to start the mysql db
+REM cd db/mysql
+REM kubectl apply -f namespace.yaml
+REM kubectl apply -f mysql-db.yaml
+REM kubectl apply -f db-secrets.yaml
+REM cd ../..
 
 
 kubectl create namespace posqlappinit

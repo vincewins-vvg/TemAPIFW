@@ -19,7 +19,7 @@ import cucumber.api.junit.Cucumber;
 		"com.temenos.microservice.cucumber.t24datastepdefinitions" }, format = { "pretty", "html:target/cucumber",
 				"json:target/cucumber/cucumber.json" })
 
-public class MSRunnnerSQLIEKSTTest {
+public class MSRunnnerSQLEKSITTest {
 
 	@BeforeClass
 	public static void beforeSuite() {

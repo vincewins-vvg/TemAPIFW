@@ -7,7 +7,7 @@
 # --------------------------------------------------------------
 # - Script to start Service
 # --------------------------------------------------------------
-
+#Aws configuration details
 export accountId=600670497877
 export awsRegion=eu-west-2
 export accesskeyId=ASIAYXWWANRKUGEMMIMZ
@@ -212,8 +212,8 @@ docker tag $appInitImage:$tag $appInitImageTag
 docker push $appInitImageTag
 
 # Uncomment the below to push the mssql image into ECR
-docker tag temenos/ms-paymentorder-mssql:DEV $accountId.dkr.ecr.eu-west-2.amazonaws.com/$repositoryname:mssql
-docker push $accountId.dkr.ecr.eu-west-2.amazonaws.com/$repositoryname:mssql
+# docker tag temenos/ms-paymentorder-mssql:DEV $accountId.dkr.ecr.eu-west-2.amazonaws.com/$repositoryname:mssql
+# docker push $accountId.dkr.ecr.eu-west-2.amazonaws.com/$repositoryname:mssql
 
 aws kinesis create-stream --stream-name table-update-paymentorder --shard-count 1 
 sleep 10
@@ -243,9 +243,8 @@ aws kinesis create-stream --stream-name ms-paymentorder-ingester-error-producer 
 sleep 10
 aws kinesis create-stream --stream-name Test-topic --shard-count 1
 sleep 10
-aws kinesis create-stream --stream-name table-update-splitData --shard-count 1
-sleep 10
 aws kinesis create-stream --stream-name reprocess-event --shard-count 1
+sleep 10
 
 aws s3 mb $storage
 sleep 10

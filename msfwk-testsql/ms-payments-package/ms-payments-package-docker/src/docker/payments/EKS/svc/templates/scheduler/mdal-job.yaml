@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: paymentms-job
-        image: 600670497877.dkr.ecr.eu-west-2.amazonaws.com/ms-paymentimagerepository:schedulerservice
+        image: {{ .Values.image.paymentorderscheduler.repository }}
         envFrom:
           - configMapRef:
               name: payments-mdal-config                  

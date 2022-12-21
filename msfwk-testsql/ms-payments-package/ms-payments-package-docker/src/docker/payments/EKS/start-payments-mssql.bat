@@ -5,7 +5,7 @@
 @REM
 
 @echo off
-
+REM Aws configuration details
 SET accountId=600670497877
 SET awsRegion=eu-west-2
 SET accesskeyId=ASIAYXWWANRKUGEMMIMZ
@@ -251,9 +251,8 @@ aws kinesis create-stream --stream-name ms-paymentorder-ingester-error-producer 
 timeout /t 10 >nul
 aws kinesis create-stream --stream-name Test-topic --shard-count 1
 timeout /t 10 >nul
-aws kinesis create-stream --stream-name table-update-splitData --shard-count 1
-timeout /t 10 >nul
 aws kinesis create-stream --stream-name reprocess-event --shard-count 1
+timeout /t 10 >nul
 
 aws s3 mb %storage%
 timeout /t 10 >nul
