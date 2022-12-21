@@ -17,6 +17,8 @@ spec:
       app: payments-avro-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-avro-ingester
     spec:
@@ -59,6 +61,8 @@ spec:
       app: payments-command-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-command-ingester
     spec:
@@ -104,6 +108,8 @@ spec:
       app: payments-command-inbox-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-command-inbox-ingester
     spec:
@@ -146,6 +152,8 @@ spec:
       app: payments-event-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-event-ingester
     spec:
@@ -192,6 +200,8 @@ spec:
       app: payments-event-delivery
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-event-delivery
     spec:
@@ -233,6 +243,8 @@ spec:
       app: payments-data-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-data-ingester
     spec:
@@ -274,6 +286,8 @@ spec:
       app: payments-file-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-file-ingester
     spec:

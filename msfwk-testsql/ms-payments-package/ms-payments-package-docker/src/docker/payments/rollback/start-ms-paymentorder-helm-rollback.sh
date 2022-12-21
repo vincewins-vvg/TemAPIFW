@@ -10,7 +10,7 @@
 
 echo "Starting the Helm rollback for paymentorder micro service"
 
-helm rollback paymentorder -n paymentorder
+helm rollback payments -n payments
 
 sleep 90
 
