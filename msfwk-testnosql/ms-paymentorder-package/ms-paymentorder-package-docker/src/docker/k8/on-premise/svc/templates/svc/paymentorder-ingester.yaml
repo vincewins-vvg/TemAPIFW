@@ -17,6 +17,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-avro-ingester" }}
     spec:
@@ -81,6 +83,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-command-ingester" }}
     spec:
@@ -145,6 +149,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-command-inbox-ingester" }}
     spec:
@@ -209,6 +215,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-event-ingester" }}
     spec:
@@ -273,6 +281,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
     spec:
@@ -319,6 +329,8 @@ spec:
       app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: {{ include "paymentorder.name" . }}{{ "-data-ingester" }}
     spec:
@@ -364,6 +376,8 @@ spec:
       app: paymentorder-file-ingester
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: paymentorder-file-ingester
     spec:

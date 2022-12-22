@@ -8,6 +8,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+configmap:
+  location: svc/payments-configmap.yaml
+
 #Name			  : ReplicaCount
 #Description      : ReplicaCount is used to specify the number of Pod instances running in a cluster any given time to prevent users from losing access to their application when a Pod fails or is inaccessible.
 ReplicaCount:
@@ -453,19 +456,19 @@ tracing:
 pit:
 # Name : Jwt_Token_Issuer
 # Description : Identifies the issuer of the authentication token.
-  JWT_TOKEN_ISSUER:
+  JWT_TOKEN_ISSUER: ""
 # Name : Jwt_Token_Principal_Claim
 # Description : Indicates the claim in which the user principal is provided.
-  JWT_TOKEN_PRINCIPAL_CLAIM:
+  JWT_TOKEN_PRINCIPAL_CLAIM: ""
 # Name : Id_Token_Signed
 # Description : Enables the JWT signature validation along with the header and payload
-  ID_TOKEN_SIGNED:
+  ID_TOKEN_SIGNED: ""
 # Name : Jwt_Token_Public_Key
 # Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
-  JWT_TOKEN_PUBLIC_KEY:
+  JWT_TOKEN_PUBLIC_KEY: ""
 # Name : Jwt_Token_Public_Key_Cert_Encoded
 # Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
-  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:  
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED: ""
   # targetMemoryUtilizationPercentage: 80
   
 # Name			: imagePullSecrets

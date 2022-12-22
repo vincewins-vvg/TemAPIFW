@@ -16,6 +16,8 @@ spec:
       app: payments-order-api
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
       labels:
         app: payments-order-api
     spec:

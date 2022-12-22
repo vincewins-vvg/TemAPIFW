@@ -8,6 +8,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Default values for paymentorder svc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# Name			: configmap
+# Description 	: location specfied for the configmap.yaml
+# Default Value : svc/paymentorder-configmap.yaml
+configmap:
+  location: svc/paymentorder-configmap.yaml
+
 namespace: paymentorder
 #Name			  : ReplicaCount
 #Description      : ReplicaCount is used to specify the number of Pod instances running in a cluster any given time to prevent users from losing access to their application when a Pod fails or is inaccessible.
