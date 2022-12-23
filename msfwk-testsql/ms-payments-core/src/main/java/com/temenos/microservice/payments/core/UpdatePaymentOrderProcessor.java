@@ -5,20 +5,31 @@
  */
 package com.temenos.microservice.payments.core;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Component;
 
 import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
+import com.temenos.microservice.framework.core.data.DataAccessException;
+import com.temenos.microservice.framework.core.data.DatabaseOperationException;
 import com.temenos.microservice.framework.core.function.Context;
 import com.temenos.microservice.framework.core.function.FailureMessage;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
 import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.util.MSFrameworkErrorConstant;
+import com.temenos.microservice.payments.dao.AccountingDao;
 import com.temenos.microservice.payments.dao.PaymentOrderDao;
+import com.temenos.microservice.payments.entity.Accounting;
 import com.temenos.microservice.payments.entity.Card;
 import com.temenos.microservice.payments.entity.ExchangeRate;
 import com.temenos.microservice.payments.entity.PaymentMethod;
@@ -96,9 +107,43 @@ public class UpdatePaymentOrderProcessor {
 		ctx.setBusinessKey(paymentOrderId);
 		PaymentUpdated paymentUpdated = new PaymentUpdated();
 		paymentUpdated.setPaymentOrderId(paymentOrderId);
-		paymentUpdated.setChangedEntityValues(paymentOrderOpt.stateChange());
-		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated));
+		//paymentUpdated.setChangedEntityValues(paymentOrderOpt.stateChange());
+		List<com.temenos.microservice.payments.entity.Accounting> accountingEntities = updateAccounting(paymentOrderOpt);
+		EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentUpdated", paymentUpdated), paymentOrderOpt, accountingEntities.get(0), accountingEntities.get(1));
 		return readStatus(debitAccount, paymentOrderId, paymentStatus.getStatus());
+	}
+
+	private List<Accounting> updateAccounting(PaymentOrder paymentOrderOpt)
+			throws DataAccessException {
+
+		List<com.temenos.microservice.payments.entity.Accounting> accountList = new ArrayList<com.temenos.microservice.payments.entity.Accounting>();
+		List<com.temenos.microservice.payments.entity.Accounting> updatedaccountList = new ArrayList<com.temenos.microservice.payments.entity.Accounting>();
+
+		CriteriaBuilder criteriaBuilder = AccountingDao
+				.getInstance(com.temenos.microservice.payments.entity.Accounting.class).getSqlDao().getEntityManager()
+				.getCriteriaBuilder();
+		CriteriaQuery<com.temenos.microservice.payments.entity.Accounting> criteriaQuery = criteriaBuilder
+				.createQuery(com.temenos.microservice.payments.entity.Accounting.class);
+		Root<com.temenos.microservice.payments.entity.Accounting> root = criteriaQuery
+				.from(com.temenos.microservice.payments.entity.Accounting.class);
+		criteriaQuery.select(root);
+		if (paymentOrderOpt.getPaymentOrderId() != null) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			predicates.add(criteriaBuilder
+					.and(criteriaBuilder.equal(root.get("paymentOrderId"), paymentOrderOpt.getPaymentOrderId())));
+			accountList = AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class)
+					.getSqlDao().executeCriteriaQuery(criteriaBuilder, criteriaQuery, root, predicates,
+							com.temenos.microservice.payments.entity.Accounting.class, true, true);
+		}
+
+		for (Accounting accountentity : accountList) {
+			accountentity.setProcessedDate(Date.from(Instant.now()));
+			AccountingDao.getInstance(com.temenos.microservice.payments.entity.Accounting.class).getSqlDao()
+					.saveOrMergeEntity(accountentity, false);
+			updatedaccountList.add(accountentity);
+		}
+
+		return updatedaccountList;
 	}
 
 	private PaymentStatus readStatus(String debitAccount, String paymentOrderId, String status)

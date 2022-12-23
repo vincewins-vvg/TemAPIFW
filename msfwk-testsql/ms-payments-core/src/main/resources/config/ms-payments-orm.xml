@@ -25,5 +25,5 @@ http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
 <entity class="com.temenos.microservice.payments.entity.PaymentTransaction"/> 
 <entity class="com.temenos.microservice.payments.entity.Transaction"/>
 <entity class="com.temenos.microservice.payments.entity.PaymentOrderDetails"/>
-
+<entity class="com.temenos.microservice.payments.entity.Accounting"/>
 </entity-mappings>
