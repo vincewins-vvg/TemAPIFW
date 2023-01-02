@@ -393,38 +393,3 @@ services:
       temn.msf.ingest.is.avro.event.ingester: "false"
       temn.msf.security.authz.enabled: "false"
       temn.queue.impl: kafka
-  inboxoutboxprocessorapp:
-    build:
-      context: ${APP_CONTEXT}
-      dockerfile: inboxoutbox/Dockerfile
-      args:
-        BASE_IMAGE: ${BASE_IMAGE}
-        STAGING_IMAGE: ${STAGING_IMAGE}
-        artifactid: ${inboxoutbox_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
-    image: ${INBOXOUTBOX_IMAGE}
-    depends_on:
-      - db-service1
-    ports:
-      - "40514:40500"
-      - "8089:8080"
-    environment:
-      DATABASE_KEY: dynamodb
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      DYNAMODB_ENPOINT: ${DYNAMODB_ENDPOINT}
-      temn.msf.name: ms-paymentorder
-      temn.msf.stream.vendor: kafka
-      temn.msf.stream.kafka.bootstrap.servers: kafka:29092
-      temn.msf.exec.env: server
-      temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
-      temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
-      class.package.name: com.temenos.microservice.paymentorder.function
-      class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
-      class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
-      temn.msf.security.authz.enabled: "false"
-      tmn.inbox.source.namespace: paymentorder-inbox
-      tmn.outbox.source.namespace: paymentorder-outbox
-      temn.queue.impl: kafka
-      tmn.inbox.thread.pool.count: 10
-      tmn.outbox.thread.pool.count: 10  

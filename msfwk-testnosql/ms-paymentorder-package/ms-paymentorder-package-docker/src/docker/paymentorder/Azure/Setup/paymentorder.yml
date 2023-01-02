@@ -28,15 +28,6 @@ services:
         artifactid: ${ingester_artifactid}
         java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
     image: ${INGESTER_IMAGE}
-  inboxoutbox:
-    build:
-      context: ../../../${INBOXOUTBOX_CONTEXT}
-      dockerfile: Dockerfile
-      args:
-        BASE_IMAGE: ${INBOXOUTBOX_BASE_IMAGE}
-        artifactid: ${inboxoutbox_artifactid}
-        java_options: ${java_options} ${REMOTE_DEBUG}
-    image: ${INBOXOUTBOX_IMAGE}
   scheduler:
     build:
       context: ../${CATCHUPPROCESSOR_CONTEXT}

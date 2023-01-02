@@ -211,7 +211,7 @@ spec:
         - "schema-registry"    
       containers:
       - name: payments-data-ingester
-        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentseventdelivery.tag }}
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
         ports:
         - containerPort: 8080
         envFrom:

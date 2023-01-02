@@ -266,55 +266,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD  
----
-#Event Delivery
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
-  namespace: {{ .Values.namespace }}
-spec:
-  replicas: {{ .Values.replicacount.paymentorderingester }}
-  selector:
-    matchLabels:
-      app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
-  template:
-    metadata:
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/" .Values.configmap.location ) . | sha256sum }}
-      labels:
-        app: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
-    spec:
-      hostAliases:
-      - ip: "{{ .Values.env.kafka.generic_ip }}"
-        hostnames:
-        - "kafka"
-        - "schema-registry"        
-      containers:
-      - name: {{ include "paymentorder.name" . }}{{ "-event-delivery" }}
-        image: "{{ .Values.image.paymentorderinboxoutbox.repository }}:{{ .Values.image.paymentorderinboxoutbox.tag | default .Chart.AppVersion }}"
-        resources:
-          limits:
-            cpu: {{ .Values.resources.eventdelivery.cpulimit }}
-            memory: {{ .Values.resources.eventdelivery.memorylimit }}             
-        ports:
-        - containerPort: 8095
-        envFrom:
-          - configMapRef:
-              name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }} 
-        env:
-          # Use secret in real usage
-          - name: POSTGRESQL_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: ponosqldbsecret
-                key: USER_NAME 
-          - name: POSTGRESQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ponosqldbsecret
-                key: PASSWORD   
+                key: PASSWORD
 ---
 #Data Ingester
 apiVersion: apps/v1

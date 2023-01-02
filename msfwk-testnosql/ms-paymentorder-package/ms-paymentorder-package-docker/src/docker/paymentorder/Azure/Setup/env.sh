@@ -24,7 +24,6 @@ export DB_POSTGRES_IMAGE="ms-paymentorder-postgres:latest"
 export INGESTER_IMAGE="dev.local/temenos/ms-paymentorder-ingester"
 export FILEINGESTER_IMAGE="dev.local/temenos/ms-paymentorder-fileingester"
 export SCHEDULER_IMAGE="dev.local/temenos/ms-paymentorder-scheduler"
-export INBOX_OUTBOX_IMAGE="dev.local/temenos/ms-paymentorder-inboxoutbox"
 
 export FILE_SHARE_NAME="paymentordershare"
 export STORAGE_ACCOUNT_NAME="paymentorder"

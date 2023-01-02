@@ -18,7 +18,6 @@ cp -f ${DOCKER_ENV_LOCATION}/k8ENV.env .env
 #REM copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 
 ./repackbuild.sh app/api ms-paymentorder-api.war $@  
-./repackbuild.sh app/inboxoutbox ms-paymentorder-inboxoutbox.jar $@  
 ./repackbuild.sh app/ingester ms-paymentorder-ingester.jar $@  
 ./repackbuild.sh app/ms-framework-scheduler ms-paymentorder-scheduler.jar $@
 ./repackbuild.sh app/fileingester ms-fileingester.jar $@  

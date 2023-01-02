@@ -18,7 +18,6 @@ copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 REM copy %DOCKER_ENV_LOCATION%\k8ENV.env .env > NUL
 
 call repackbuild.bat app\api ms-paymentorder-api.war %*  
-call repackbuild.bat app\inboxoutbox ms-paymentorder-inboxoutbox.jar %*  
 call repackbuild.bat app\ingester ms-paymentorder-ingester.jar %*  
 call repackbuild.bat app\ms-framework-scheduler ms-paymentorder-scheduler.jar %*
 call repackbuild.bat app\fileingester ms-fileingester.jar %*  
