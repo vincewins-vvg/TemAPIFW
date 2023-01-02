@@ -73,7 +73,7 @@ public class CommandIngesterTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from database...");
-			Thread.sleep(60000);
+			Thread.sleep(15000);
 			System.out.println("Reading record back from db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("5213a00f-1ab3-478e-a4d7-53b0f4326d00", "ms-paymentorder.GetPaymentOrder");
 			retryCount = retryCount + 1;

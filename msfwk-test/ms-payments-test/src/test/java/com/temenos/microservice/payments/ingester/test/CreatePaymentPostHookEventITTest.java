@@ -74,7 +74,7 @@ public class CreatePaymentPostHookEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from (ms_inbox_events)database...");
-			Thread.sleep(60000);
+			Thread.sleep(15000);
 			System.out.println("Reading record back from ms_inbox_events db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("34ae9209-856e-4ed4-8980-1c658eb0a204", "PostHookEvent");
 			System.out.println("inboxResultMap  " + inboxResultMap);

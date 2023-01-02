@@ -74,7 +74,7 @@ public class CreatePaymentCommandFailedEventITTest extends ITTest {
 		int retryCount = 0;
 		do {
 			System.out.println("Sleeping for 15 sec before reading data from database...");
-			Thread.sleep(60000);
+			Thread.sleep(15000);
 			System.out.println("Reading record back from db, try=" + (retryCount + 1));
 			inboxResultMap = readInboxRecord("f75affa2-b53f-4dbc-80d7-e9c0df80442e", "CommandFailed");
 			retryCount = retryCount + 1;
