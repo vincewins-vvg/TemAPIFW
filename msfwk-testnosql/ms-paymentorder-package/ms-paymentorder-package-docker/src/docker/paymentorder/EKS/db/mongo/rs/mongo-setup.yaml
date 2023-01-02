@@ -1,0 +1,28 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongosetup
+spec:
+  template:
+    metadata:
+      name: mongosetup
+    spec:
+      containers:
+      - name: mongosetup
+        image: 600670497877.dkr.ecr.eu-west-2.amazonaws.com/ms-paymentorderimagerepository:appinitservice
+        env: 
+          - name: database.key
+            value: mongodb
+          - name: database.name
+            value: ms_paymentorder
+          - name: db.connection.url
+            value: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+          - name: db.scripts.location
+            value: ../migration
+      restartPolicy: OnFailure
