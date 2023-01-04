@@ -1,0 +1,21 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: po-postgresqldb-service
+  namespace: postgresql
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 5432 
+  selector:
+    name: paymentorder-db
+    

@@ -1,0 +1,89 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "paymentorderscheduler.selectorLabels" . | nindent 6 }}
+      app: paymentorder-scheduler
+  template:
+    metadata:
+      labels:
+        {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
+        app: paymentorder-scheduler      
+    spec:
+       containers:
+       - name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
+         image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+         imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         env:
+         # Use secret in real usage
+           - name: POSTGRESQL_USERNAME
+             valueFrom:
+               secretKeyRef:
+                 name: ponosqldbsecret
+                 key: USER_NAME 
+           - name: POSTGRESQL_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: ponosqldbsecret
+                 key: PASSWORD  
+         envFrom:
+           - configMapRef:
+               name: paymentorder-scheduler-config
+
+--- 
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nosqlinboxcatchup-scheduler-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-api" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "paymentorderscheduler.selectorLabels" . | nindent 6 }}
+      app: paymentorder-scheduler
+  template:
+    metadata:
+      labels:
+        {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
+        app: paymentorder-scheduler       
+    spec:
+       containers:
+       - name: nosqlinboxcatchup-scheduler-config
+         image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
+         imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         env:
+         # Use secret in real usage
+          - name: POSTGRESQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: USER_NAME 
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: PASSWORD  
+          - name: temn.msf.security.tokengen.client.secret
+         envFrom:
+          - configMapRef:
+              name: nosqlinboxcatchup-scheduler-config
