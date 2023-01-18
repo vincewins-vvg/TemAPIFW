@@ -35,11 +35,6 @@ docker tag "${FILEINGESTER_IMAGE}":"${VERSION}" "${ACR_NAME}".azurecr.io/"${FILE
 docker push "${ACR_NAME}".azurecr.io/"${FILEINGESTER_IMAGE}":"${VERSION}"
 
 
-docker tag "${INBOX_OUTBOX_IMAGE}":"${VERSION}" "${ACR_NAME}".azurecr.io/"${INBOX_OUTBOX_IMAGE}":"${VERSION}"
-
-docker push "${ACR_NAME}".azurecr.io/"${INBOX_OUTBOX_IMAGE}":"${VERSION}"
-
-
 docker tag "${SCHEDULER_IMAGE}":"${VERSION}" "${ACR_NAME}".azurecr.io/"${SCHEDULER_IMAGE}":"${VERSION}"
 
 docker push "${ACR_NAME}".azurecr.io/"${SCHEDULER_IMAGE}":"${VERSION}"

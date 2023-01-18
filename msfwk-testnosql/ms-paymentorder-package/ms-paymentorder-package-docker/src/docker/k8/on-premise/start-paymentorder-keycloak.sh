@@ -56,7 +56,7 @@ export db_Connection_Url="mongodb+srv://user01:user01@mongodb01.jx2tl.mongodb.ne
 
 # Name             : eventDirectDelivery
 # Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
-export eventDirectDelivery=\"true\"
+export eventDirectDelivery=true
 
 # -------------------------------------------------------------
 # 

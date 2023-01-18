@@ -30,7 +30,7 @@ spec:
           - configMapRef:
               name: payments-api-config
       imagePullSecrets:
-      - name: paymentsregcredentials          
+      - name: paymentsregcredentials       
 ---
 apiVersion: v1
 kind: Service

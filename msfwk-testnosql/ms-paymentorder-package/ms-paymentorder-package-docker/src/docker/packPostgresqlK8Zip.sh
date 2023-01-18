@@ -41,7 +41,6 @@ find . -name 'repackbuild.sh' | xargs dos2unix
 
 ./repackbuild.sh app/api ms-paymentorder-api.war $@
 ./repackbuild.sh app/ingester ms-paymentorder-ingester.jar $@
-./repackbuild.sh app/inboxoutbox ms-paymentorder-inboxoutbox.jar $@
 ./repackbuild.sh app/ms-framework-scheduler ms-paymentorder-scheduler.jar $@
 
 
@@ -83,8 +82,6 @@ cd images
 docker image save dev.local/temenos/ms-paymentorder-service:DEV > ms-paymentorder-serviceDEV.tar
 
 docker image save dev.local/temenos/ms-paymentorder-ingester:DEV > ms-paymentorder-ingesterDEV.tar
-
-docker image save dev.local/temenos/ms-paymentorder-inboxoutbox:DEV > ms-paymentorder-inboxoutboxDEV.tar
 
 docker image save dev.local/temenos/ms-paymentorder-scheduler:DEV > ms-paymentorder-schedulerDEV.tar
 

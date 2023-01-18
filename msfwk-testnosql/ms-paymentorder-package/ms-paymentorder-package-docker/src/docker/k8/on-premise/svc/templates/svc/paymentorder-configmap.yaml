@@ -421,61 +421,6 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}
-  namespace: {{ .Values.namespace }}
-  labels:
-    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-eventdelivery-config" }}
-    helm.sh/chart: {{ include "paymentorder.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-data:  
-  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
-  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
-  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
-  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
-  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
-  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
-  temn.msf.name: {{ .Values.msf.others.name }}
-  temn.msf.service: EventDelivery
-  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
-  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
-  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
-  temn.msf.exec.env: server
-  temn.msf.stream.outbox.topic: ms-paymentorder-outbox-topic
-  temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled | quote }}
-  temn.msf.function.class.CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
-  temn.msf.security.authz.enabled: "{{ .Values.msf.others.authzenabled }}"
-  tmn.inbox.source.namespace: {{ .Values.inboxoutbox.inbox.namespace }}
-  tmn.outbox.source.namespace: {{ .Values.inboxoutbox.outbox.namespace }} 
-  tmn.inbox.thread.pool.count: "{{ .Values.inboxoutbox.inbox.threadpoolcount }}"
-  tmn.outbox.thread.pool.count: "{{ .Values.inboxoutbox.outbox.threadpoolcount }}"
-  temn.msf.ingest.is.cloud.event: "{{ .Values.msf.ingest.cloudevent }}"   
-  temn.msf.ingest.is.cloud.event: "true"
-{{- if .Values.logging.exportType }}        
-  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
-{{- if eq .Values.logging.exportType "socket" }}   
-  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
-  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
-  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
-{{- end }}    
-{{- end }}
-{{- if .Values.metrics.metricsDisabled | quote }}        
-  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
-{{- if eq .Values.metrics.metricsDisabled "false" }}   
-  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
-  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
-{{- end }}    
-{{- end }}
-{{- if .Values.tracing.enabled }}        
-  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
-  temn.msf.tracer.name: ms_adapter_api
-  temn.tracer.port: {{ .Values.tracing.port | quote}} 
-  temn.tracer.host: {{ .Values.tracing.host | quote}}   
-{{- end }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: {{ include "paymentorder.name" . }}{{ "-ingester-data-config" }}
   namespace: {{.Values.namespace}}
   labels:

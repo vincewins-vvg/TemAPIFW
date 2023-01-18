@@ -14,7 +14,6 @@ export VERSION="DEV"
 export DB_IMAGE="ms-paymentorder-mysql"
 export API_IMAGE="temenos/ms-paymentorder-service"
 export INGESTER_IMAGE="temenos/ms-paymentorder-ingester"
-export INBOX_OUTBBOX_IMAGE="temenos/ms-paymentorder-inboxoutbox"
 export FILE_INGESTER_IMAGE="temenos/ms-paymentorder-fileingester"
 export SCHEDULER_IMAGE="temenos/ms-paymentorder-scheduler"
 
@@ -39,12 +38,6 @@ docker push "${ACR_NAME}".azurecr.io/"${API_IMAGE}":"${VERSION}"
 docker tag "${INGESTER_IMAGE}" "${ACR_NAME}".azurecr.io/"${INGESTER_IMAGE}":"${VERSION}"
 
 docker push "${ACR_NAME}".azurecr.io/"${INGESTER_IMAGE}":"${VERSION}"
-
-
-
-docker tag "${INBOX_OUTBBOX_IMAGE}" "${ACR_NAME}".azurecr.io/"${INBOX_OUTBBOX_IMAGE}":"${VERSION}"
-
-docker push "${ACR_NAME}".azurecr.io/"${INBOX_OUTBBOX_IMAGE}":"${VERSION}"
 
 
 

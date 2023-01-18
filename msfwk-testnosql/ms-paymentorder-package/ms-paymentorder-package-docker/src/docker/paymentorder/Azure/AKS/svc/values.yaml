@@ -136,18 +136,6 @@ image:
     pullPolicy: IfNotPresent
 #Name             : paymentorderinboxoutbox repository
 #Description      : Specifies the name of the inboxoutbox image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
-#Default Value    : dev.local/temenos/ms-paymentorder-inboxoutbox
-  paymentorderinboxoutbox:
-    repository: dev.local/temenos/ms-paymentorder-inboxoutbox
-#Name             : tag
-#Description      : Specifies the release version of the image
-    tag: DEV
-#Name             : pullPolicy
-#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
-#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
-    pullPolicy: IfNotPresent  
-#Name             : schemaregistry repository
-#Description      : Specifies the name of the schema-registry image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
 #Default Value    : confluentinc/cp-schema-registry 
   schemaregistry:
     repository: confluentinc/cp-schema-registry
