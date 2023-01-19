@@ -40,6 +40,6 @@ docker tag "${SCHEDULER_IMAGE}":"${VERSION}" "${ACR_NAME}".azurecr.io/"${SCHEDUL
 docker push "${ACR_NAME}".azurecr.io/"${SCHEDULER_IMAGE}":"${VERSION}"
 
 
-docker tag "${DB_MYSQL_IMAGE}" "${ACR_NAME}".azurecr.io/"${DB_MYSQL_IMAGE}"
+docker tag "${DB_IMAGE}" "${ACR_NAME}".azurecr.io/"${DB_IMAGE}"
 
-docker push "${ACR_NAME}".azurecr.io/"${DB_MYSQL_IMAGE}"
+docker push "${ACR_NAME}".azurecr.io/"${DB_IMAGE}"

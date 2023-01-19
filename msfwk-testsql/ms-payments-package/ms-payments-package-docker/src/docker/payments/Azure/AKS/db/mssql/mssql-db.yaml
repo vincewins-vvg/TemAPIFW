@@ -20,8 +20,10 @@ spec:
       labels:
         name: paymentorder-db
     spec:
+      imagePullSecrets:
+      - name: paymentorderregcredentials
       containers:
-      - image: temenos/ms-paymentorder-mssql:DEV
+      - image: paymentorderacr.azurecr.io/temenos/ms-paymentorder-mssql:DEV
         env:
           # Use secret in real usage
         - name: DB_USERNAME

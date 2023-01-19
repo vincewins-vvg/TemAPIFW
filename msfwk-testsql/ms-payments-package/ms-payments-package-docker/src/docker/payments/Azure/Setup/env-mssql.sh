@@ -20,7 +20,7 @@ export VERSION="DEV"
 
 export APPINIT_IMAGE="temenos/ms-paymentorder-appinit"
 export API_IMAGE="temenos/ms-paymentorder-service"
-export DB_IMAGE="ms-paymentorder-mysql:latest"
+export DB_IMAGE="temenos/ms-paymentorder-mssql:DEV"
 export INGESTER_IMAGE="temenos/ms-paymentorder-ingester"
 export FILEINGESTER_IMAGE="temenos/ms-paymentorder-fileingester"
 export SCHEDULER_IMAGE="temenos/ms-paymentorder-scheduler"
