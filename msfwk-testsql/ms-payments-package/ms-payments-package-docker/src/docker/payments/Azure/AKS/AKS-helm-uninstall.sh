@@ -6,10 +6,14 @@
 
 ##Apply the required kubernetes manifest files
 
-source ./env-mongo.sh
+source ./env-mysql.sh
 
-#uninstall the helm chart changes
+#uninstall the helm chart changes 
 
-helm uninstall "${NAMESPACE}" -n "${NAMESPACE}"
+helm uninstall "${NAMESPACE}" -n "${NAMESPACE}" 
 
-kubectl delete ns postgresql
+kubectl delete ns payments 
+
+helm uninstall posqlappinit -n posqlappinit 
+
+kubectl delete ns posqlappinit

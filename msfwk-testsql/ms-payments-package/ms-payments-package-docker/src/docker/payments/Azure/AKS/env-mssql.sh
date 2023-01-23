@@ -29,7 +29,7 @@ export kafkainboxerrortopic="ms-paymentorder-inbox-error-topic"
 export kafkaerrorproducerid="ms-paymentorder-ingester-error-producer"
 
 #DATABASE
-export db_Connection_Url=jdbc:sqlserver://paymentorder-db-service:3007;databaseName=payments
+export db_Connection_Url="jdbc:sqlserver://paymentorder-db-service:1433;databaseName=payments"
 export db_Username=sa
 export db_Password=Rootroot@12345
 export database_Name=payments
@@ -38,7 +38,7 @@ export database_Name=payments
 export database_Key=sql
 export driver_Name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 export dialect=org.hibernate.dialect.SQLServer2012Dialect
-export dbinit_Connection_Url="jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:3007;databaseName=payments"
+export dbinit_Connection_Url="jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments"
 export min_Pool_Size="10"
 export max_Pool_Size="150"
 
