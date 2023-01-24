@@ -1,0 +1,390 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+#Config based Avro Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-avro-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-avro-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-avro-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"   
+      containers:
+      - name: payments-avro-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-avro-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+#Command Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-command-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"    
+      containers:
+      - name: payments-command-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.ingester.cpulimit }}
+            memory: {{ .Values.resources.ingester.memorylimit }}
+        ports:
+        - containerPort: 8093
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-command-inbox-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-command-inbox-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-command-inbox-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"    
+      containers:
+      - name: payments-command-inbox-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8096
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-command-inbox-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
+#Event Ingester Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-event-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-event-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-event-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"    
+      containers:
+      - name: payments-event-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.eventingester.cpulimit }}
+            memory: {{ .Values.resources.eventingester.memorylimit }}
+        ports:
+        - containerPort: 8094
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-event-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD     
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-data-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-data-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-data-ingester
+    spec:
+      hostAliases:
+      - ip: "{{ .Values.env.kafka.generic_ip }}"
+        hostnames:
+        - "kafka"
+        - "schema-registry"    
+      containers:
+      - name: payments-data-ingester
+        image: {{ .Values.image.paymentsingester.repository }}:{{ .Values.image.paymentsingester.tag }}
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-data-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-file-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-file-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-file-ingester
+    spec:
+      volumes:
+      - name: filestorage
+        hostPath:
+          path: /var/lib/fileingesterstorage
+          type: DirectoryOrCreate
+      - name: fileprocessed
+        hostPath:
+          path: /var/lib
+          type: DirectoryOrCreate
+      containers:
+      - name: payments-file-ingester
+        image: {{ .Values.image.fileingester.repository }}:{{ .Values.image.fileingester.tag }}
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /var/lib/fileingesterstorage
+          name: filestorage
+        - mountPath: /var/lib
+          name: fileprocessed
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-file-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD                   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-data-ingester-svc
+  name: payments-data-ingester-svc
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-data-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30007
+  type: NodePort    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-command-ingester-svc
+  name: payments-command-ingester-svc
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-command-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30008
+  type: NodePort  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-data-ingester-svc-jacoco
+  name: payments-data-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-data-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30330
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-avro-ingester-svc-jacoco
+  name: payments-avro-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-avro-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30331
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-command-ingester-svc-jacoco
+  name: payments-command-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-command-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30334
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-event-ingester-svc-jacoco
+  name: payments-event-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-event-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30336
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-file-ingester-svc-jacoco
+  name: payments-file-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-file-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 36330
+      nodePort: 30337
+  type: NodePort  

@@ -1,0 +1,22 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: paymentorder-db-service
+  name: paymentorder-db-service
+  namespace: payments
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "1433"
+    protocol: TCP
+    port: 1433
+    targetPort: 30108
+  selector:
+    name: paymentorder-db

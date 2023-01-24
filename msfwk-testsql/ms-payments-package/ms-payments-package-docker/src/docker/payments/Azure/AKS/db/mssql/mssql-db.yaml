@@ -1,0 +1,45 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentorder-db
+  namespace: payments
+spec:
+  selector:
+    matchLabels:
+      name: paymentorder-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: paymentorder-db
+    spec:
+      imagePullSecrets:
+      - name: paymentorderregcredentials
+      containers:
+      - image: paymentorderacr.azurecr.io/temenos/ms-paymentorder-mssql:DEV
+        env:
+          # Use secret in real usage
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: posqldbsecret
+              key: USER_NAME
+        - name: SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: posqldbsecret
+              key: PASSWORD
+        - name: ACCEPT_EULA
+          value: "Y"     
+        imagePullPolicy: IfNotPresent
+        name: paymentorder-db
+        ports:
+        - containerPort: 1433
+---

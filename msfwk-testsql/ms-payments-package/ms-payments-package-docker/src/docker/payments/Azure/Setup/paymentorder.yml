@@ -1,0 +1,39 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+#-------------------------------------------------------------
+#- Docker compose base definition file to run containers.
+#-----------------------------------------------------------
+
+version: '3.6'
+services:      
+  api:
+    build:
+      context: ../../../${API_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        API_BASE_IMAGE: ${API_BASE_IMAGE}
+        api_artifactid: ${api_artifactid}
+        api_java_options: ${java_options}
+    image: ${API_IMAGE}
+  ingester:
+    build:
+      context: ../../../${INGESTER_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${INGESTER_APP_BASE_IMAGE}
+        artifactid: ${ingester_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG} ${ingester_jacoco_jvm_opts}
+    image: ${INGESTER_IMAGE}
+  scheduler:
+    build:
+      context: ../${CATCHUPPROCESSOR_CONTEXT}
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${CATCHUPPROCESSOR_BASE_IMAGE}
+        artifactid: ${catchupprocessor_artifactid}
+        java_options: ${java_options} ${REMOTE_DEBUG}
+    image: ${CATCHUPPROCESSOR_IMAGE}   

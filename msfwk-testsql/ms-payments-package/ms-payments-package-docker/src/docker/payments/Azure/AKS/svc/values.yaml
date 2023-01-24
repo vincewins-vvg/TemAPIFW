@@ -1,0 +1,511 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+# Default values for holdingsmsvc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#Name			  : ReplicaCount
+#Description      : ReplicaCount is used to specify the number of Pod instances running in a cluster any given time to prevent users from losing access to their application when a Pod fails or is inaccessible.
+ReplicaCount:
+#Name			  : paymentsapiReplicaCount
+#Description      : Specifies the No of replicas for api pods for payments
+#Default Value    : 1
+  paymentsapiReplicaCount: 1
+#Name			  : paymentsingesterReplicaCount
+#Description      : Specifies the No of replicas for ingester pods for payments
+#Default Value    : 1
+  paymentsingesterReplicaCount: 1
+#Name			  : topicreplicacount
+#Description      : Specifies the No of replicas for topic
+#Default Value    : 1
+  topicreplicacount: 1
+#Name			  : schemaregistryreplicacount
+#Description      : Specifies the No of replicas for schema registry
+#Default Value    : 1
+  schemaregistryreplicacount: 1
+
+paymentsnamespace: payments
+
+
+apideployment: payments-api
+schemaregistry: schema-registry
+schemaregistrysvc: schema-registry-svc
+#Name             : kafkatopic
+#Description      : Kafka topics names are the categories used to organize messages.Each topic has a name that is unique across the entire Kafka cluster. 
+kafkatopic:
+#Name			  : avrotopic
+#Description      : Specifies the topic which is used to fetch events when it is produced for avro use case.
+#Default Value    : table-update-paymentorder
+  avrotopic: table-update-paymentorder
+#Name	          : avrodatatopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : table-update
+  avrodatatopic: table-update
+#Name	          : outboxtopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : paymentorder-outbox
+  outboxtopic: paymentorder-outbox
+#Name	          : eventstoretopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : ms-eventstore-inbox-topic
+  eventstoretopic: ms-eventstore-inbox-topic
+#Name	          : inboxtopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : ms-paymentorder-inbox-topic
+  inboxtopic: ms-paymentorder-inbox-topic
+#Name	          : eventtopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : paymentorder-event-topic
+  eventtopic: paymentorder-event-topic
+#Name	          : eventtopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : error-paymentorder
+  errortopic: error-paymentorder
+#Name			  : inboxerrortopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : ms-paymentorder-inbox-error-topic
+  inboxerrortopic: ms-paymentorder-inbox-error-topic
+#Name			  : multiparttopic
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : multipart-topic
+  multiparttopic: multipart-topic
+#Name			  : sourcestream_consumergroupid
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : ms-paymentorder-ingester-consumer
+  sourcestream_consumergroupid: ms-paymentorder-ingester-consumer
+#Name			  : errorstream_producerid
+#Description      : Specifies the topic which is used to fetch events with message when it is consumed.
+#Default Value    : ms-paymentorder-ingester-error-producer
+  errorstream_producerid: ms-paymentorder-ingester-error-producer
+#Name             : retentionms
+#Description      : This configuration controls the maximum time we will retain a log before we will discard old log segments to free up space if we are using the "delete" retention policy. This represents an SLA on how soon consumers must read their data.
+  retentionms: 7200000
+#Name             : segmentbytes
+#Description      : The log for a topic partition is stored as a directory of segment files. This setting controls the size to which a segment file will grow before a new segment is rolled over in the log.
+  segmentbytes: 1073741824
+#Name             : topicpartitions
+#Description      : The default number of partitions per topic.
+#Default Value    : 3
+  topicpartitions: 3
+#Name             : image
+#Description      : A container image represents binary data that encapsulates an application and all its software dependencies. Images are  pushed to external repositories, this section contains the name of repositories, image and tag 
+#Example          : Consider our external repository is "acr.azurecr.io" and tag is "21.0.0". It should be like acr.azurecr.io/temenos/ms-paymentorder-service:21.0.0
+image:
+#Name             : paymentsapi repository
+#Description      : Specifies the name of the api image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-service
+  tag: DEV 
+  paymentsapi:
+    repository: temenos/ms-paymentorder-service
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: DEV
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent
+#Name             : paymentsingester repository
+#Description      : Specifies the name of the ingester image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-ingester
+  paymentsingester:
+    repository: temenos/ms-paymentorder-ingester
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: DEV
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent
+#Name             : schemaregistry repository
+#Description      : Specifies the name of the schema-registry image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : confluentinc/cp-schema-registry 
+  schemaregistry:
+    repository: confluentinc/cp-schema-registry
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: 5.3.0
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent
+#Name             : paymentorderscheduler repository
+#Description      : Specifies the name of the scheduler image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-scheduler
+  paymentorderscheduler:
+    repository: temenos/ms-paymentorder-scheduler
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: DEV
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent 
+#Name             : mysql repository
+#Description      : Specifies the name of the mysql image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : ms-paymentorder-mysql
+  mysql: 
+    repository: ms-paymentorder-mysql
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: latest
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent
+#Name             : fileingester repository
+#Description      : Specifies the name of the fileingester image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-fileingester
+  fileingester:
+    repository: temenos/ms-paymentorder-fileingester
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: DEV
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent
+
+  paymentordermdal:
+    repository: temenos/ms-paymentorder-scheduler
+#Name             : tag
+#Description      : Specifies the release version of the image
+    tag: DEV
+#Name             : pullPolicy
+#Description      : When creating the POD, one can specify the imagePullPolicyspecification, which guides the Kubelet service on how to pull the specified image during an update
+#Possible Values  : Always--> Kubernetes will always pull the image from the Repository | IfNotPresent --> Kubernetes will only pull the image when it does not already exist on the node | Never--> Kubernetes will never pull the image
+    pullPolicy: IfNotPresent    
+
+
+#Name             : env
+#Description      : Environmental variables are specified here
+env:
+  azurestorageaccountname: ""
+  azurestorageaccountkey: ""
+  executionenv: TEST
+  name:
+  azure:
+   jaas_config:
+   saas_enabled: "true" 
+   eventhub_connection:
+   eventHubName: paymentorder-Kafka
+   temn_msf_stream_security_kafka_security_protocol: SASL_SSL
+   temn_msf_stream_kafka_sasl_mechanism: PLAIN
+   temn_msf_stream_kafka_ssl_enabled: "true"
+   apikey: jPoFqN9wqradOmH8pxZme5B6gEGARhBYhTgINV9NJMZuVLDgFZuCTA==
+   runtime: AZURE
+#Name             : database
+#Description      : database related parameters values are specified here.
+  database:
+#Name 			  : database_key
+#Description 	  : specify the name of the database server.
+#Possible values  : sql | orcl
+#Default Value    : sql   
+    database_key: sql
+#Name			  : host
+#Description      : Specifies the host name of the sql server.
+#Default value    : host.docker.internal
+    host: host.docker.internal
+#Name			  : database_name
+#Description	  : Specify the name of the database used in sql server.
+#Default value    : payments
+    database_name: payments
+  
+#Name			  : db_username
+#Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
+#Default value    : root
+    db_username: root
+#Name			  : db_password
+#Description      : To run a SQL query or otherwise interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
+#Default value    : password
+    db_password: password
+#Name 			  : driver_name
+#Description      : Driver provides Java database connectivity from any Java application, application server, or Java-enabled applet.
+#Default value    : com.mysql.jdbc.Driver
+    driver_name: com.mysql.jdbc.Driver
+#Name			  : dialect
+#Description      : For connecting any hibernate application with the database, it is required to provide the configuration of SQL dialect.
+#Default value    : org.hibernate.dialect.MySQL5InnoDBDialect
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+# Name			  : db_connection_url
+# Description	  : The general form of the connection URL is
+    #  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
+    #  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
+    #  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
+
+    # We are using sql by default 
+
+    # jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;databaseName=<db_name>]
+    # jdbc:sqlserver:// (Required) is known as the subprotocol and is constant.
+
+    # serverName (Optional) is the address of the server to connect to. This address can be a DNS or IP address, or it can be localhost or 127.0.0.1 for the local computer. If not specified in the connection URL, the server name must be specified in the properties collection.
+
+    # instanceName (Optional) is the instance to connect to on serverName. If not specified, a connection to the default instance is made.
+
+    # portNumber (Optional) is the port to connect to on serverName. The default is 1433. If you're using the default, you don't have to specify the port, nor its preceding ':', in the URL.
+
+    # databaseName is the name of the database to be used in sql server'
+
+#Default value  : jdbc:mysql://paymentorder-db-service:3306/databaseName=payments 
+    db_connection_url: jdbc:mysql://paymentorder-db-service:3306/databaseName=payments    
+#Name			  : max_pool_size
+#Descripton		  : Maximum number of connections maintained in the pool.
+#Default Value    : 150
+    max_pool_size: "150"
+#Name 			  : max_pool_size
+#Descripton		  : Minimum number of connections maintained in the pool.
+#Default Value    : 10
+    min_pool_size: "10" 
+#Name			  : MYSQL_CRED
+#Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If MYSQL_CRED is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
+#Possible values  : Y | N	  
+#Default value    : N
+    MYSQL_CRED: "N"
+#Name		      : MSSQL_CRED
+#Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If MSSQL_CRED is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
+#Possible Values  : Y | N	  
+#Default value    : N
+    MSSQL_CRED: "N"
+    
+    # database_key: sql
+    # host: eventstore-db-service
+    # database_name: ms_eventstore
+    # db_username: sa
+    # db_password: Rootroot@12345
+    #use the below variable to enable encryption
+    #db_password : ENC(0jDFL9aa9VbB/KfSH6zfEQ==) 
+    # driver_name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # dialect: org.hibernate.dialect.SQLServer2012Dialect
+    # db_connection_url: jdbc:sqlserver://eventstore-db-service:1433;databaseName=ms_eventstore
+    # max_pool_size: "150"
+    # min_pool_size: "10"
+    
+#Name		      :temn_msf_db_pass_encryption_key,temn_msf_db_pass_encryption_algorithm
+#Description      :For encrypting the plain text's, need some inputs i.e., Password and an Algorithm which is used to decrypt an encrypted input.These two values are mandatory to encrypt the plain text.
+#Default Value    :temenos, PBEWithMD5AndTripleDES
+    temn_msf_db_pass_encryption_key: temenos
+    temn_msf_db_pass_encryption_algorithm: PBEWithMD5AndTripleDES
+#Name             :kafka 
+#Description      :Kafka is used to build real-time streaming data pipelines and real-time streaming applications. A data pipeline reliably processes and moves data from one system to another, and a streaming application is an application that consumes streams of data      
+  kafka:
+#Name             :temnmsfstreamvendor
+#Description      :It specifies the vendor used to process messages to topic. by default we are using kafka as vendor
+#Default Value    :kafka
+    temnmsfstreamvendor: kafka
+#Name             :temnqueueimpl
+#Description      :It specifies the queue used to identify the listener container.(processing messages)
+#Default Value    :kafka
+    temnqueueimpl: kafka
+#Name             : generic_ip
+#Description      : specify the ip address value.
+    generic_ip: 127.0.0.1
+#Name 			  : kafkabootstrapservers
+#Descripton       : It contains a list of host/port pairs for establishing the initial connection to the Kafka cluster.A host and port pair uses : as the separator.
+#Example		  : localhost:9092,localhost:9092,another.host:9092
+#Default Value	  : my-cluster-kafka-bootstrap.kafka:9092
+    kafkabootstrapservers: my-cluster-kafka-bootstrap.kafka:9092
+#Name 			  : schema_registry_url
+#Description	  : Schema Registry is an application that resides outside of your Kafka cluster and handles the distribution of schemas to the producer and consumer by storing a copy of schema in its local cache. Schema registry url is used to connect schema registry in kafka.
+#Default Value	  : http://schema-registry-svc.kafka.svc.cluster.local
+    schema_registry_url: http://schema-registry-svc.kafka.svc.cluster.local
+# Name			  : kafkaip,kafka0ip,kafka1ip,kafka2ip,devdomain
+# Description	  : Set the following variables of kafka ip for hostAliases
+    kafkaip:
+    kafka0ip:
+    kafka1ip:
+    kafka2ip:
+    devdomain:
+# Name			  : kafkaHostName,kafka0HostName,kafka1HostName,kafka2HostName,devdomainHostName
+# Description	  : Set the following variables of kafka hostname for hostAliases    
+    kafkaHostName:
+    kafka0HostName:
+    kafka1HostName:
+    kafka2HostName:
+    devdomainHostName:
+  schemaregistry:
+# Name           : SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+# Description    : The Kafka cluster containing the bootstrap servers specified in kafkastore.bootstrap.servers is used to coordinate Schema Registry instances (leader election), and store schema data. When Kafka security is enabled, kafkastore.bootstrap.servers is also used to specify security protocols that Schema Registry uses to connect to Kafka.
+    SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://my-cluster-kafka-bootstrap.kafka:9092
+#Name             : SCHEMA_REGISTRY_HOST_NAME
+#Description      : Hostname to publish to ZooKeeper for clients to use
+#Default Value    : schema-registry 
+    SCHEMA_REGISTRY_HOST_NAME: schema-registry
+#Name             : SCHEMA_REGISTRY_LISTENERS  
+#Description      :listeners that listen for API requests over either HTTP or HTTPS.If multiple listeners are configured, the first listener’s port is used for its identity.
+    #Type: list
+    #Default: “http://0.0.0.0:8081”
+    #Importance: high
+    SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+#Name             : SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT  
+#Description      :The timeout for initialization of the Kafka store, including creation of the Kafka topic that stores schema data..
+#Default Value    : 500
+    SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_CUB_ZK_TIMEOUT  
+#Description      :ZooKeeper session timeout
+#Default Value    : 500
+    #ZooKeeper session timeout
+    SCHEMA_REGISTRY_CUB_ZK_TIMEOUT: "500"
+#Name             : SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL  
+#Description      : The security protocol to use when connecting with Kafka, the underlying persistent storage.
+#Default Value    : PLAINTEXT
+#Possible values  : PLAINTEXT | SASL_PLAINTEXT | SSL | SASL_SSL 
+    SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+  paymentorderscheduler:
+    temn_msf_name: PaymentOrder  
+    temn_msf_security_authz_enabled: "false" 
+    className_paymentscheduler: com.temenos.microservice.paymentorder.scheduler.PaymentOrderScheduler 
+    className_sqlInboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlInboxCatchupProcessor
+    className_sqlOutboxCatchup: com.temenos.microservice.framework.scheduler.core.SqlOutboxCatchupProcessor
+    operationId: paymentscheduler
+#Name             : schedule
+#Description      : Specify the Frequency to trigger the scheduler job is set in this property. Default is 5 minutes
+#DefaultValue     : 5
+    schedule: 2
+    timeunit: "MINUTES"
+  sqlinboxcatchupscheduler:
+#Name             : temn_msf_scheduler_inboxcleanup_schedule
+#Description      : Specifies No of Minutes required to hold the records inside ms_inbox_events table before automatic deletion.
+#Default value    : 60   
+     temn_msf_scheduler_inboxcleanup_schedule: "60"
+
+  audit:
+#Name             : query_enable_system_events,query_enable_response
+#Description      : To capture system events for query in ms_inbox_events table.
+#Default value    : false  
+     query_enable_system_events: "false"    
+     query_enable_response: "false" 
+     
+#Name             : eventdelivery
+#Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
+  eventdelivery:
+    outboxdirectdeliveryenabled: true
+   
+#Name             : service
+#Description      : A Service in Kubernetes is a REST object, similar to a Pod. Like all of the REST objects, you can POST a Service definition to the API server to create a new instance.#specifies the port ,type  for the eventstore api and ingester service.
+service:
+  paymentsapi:
+#Name             : type
+#Description      : When the Service type is set to LoadBalancer, Kubernetes provides functionality equivalent to type equals ClusterIP to pods within the cluster and extends it by programming the (external to Kubernetes) load balancer with entries for the nodes hosting the relevant Kubernetes pods
+#Default Value    : LoadBalancer
+    type: LoadBalancer
+#Name             : port
+#Description      : A port number is a way to identify a specific process to which an internet or other network message is to be forwarded when it arrives at a server for api.
+#Default value    :80
+    port: 80
+  schemaregistry:
+#This is the default service type that exposes the service on a cluster-internal IP by making the service only reachable within the cluster
+    type: ClusterIP
+#Name             : port
+#Description      : A port number is a way to identify a specific process to which an internet or other network message is to be forwarded when it arrives at a server for api.
+#Default value    :80
+    port: 80
+#Name           : targetport
+#Description    : A Service can map any incoming port to a targetPort. By default and for convenience, the targetPort is set to the same value as the port field.
+#Default value  : 8081
+    targetport: 8081
+  schemaregistrynp:
+#Node port is the port on which the service can be accessed from external users using Kube-Proxy.
+    type: NodePort
+#Name           : targetport
+#Description    : A Service can map any incoming port to a targetPort. By default and for convenience, the targetPort is set to the same value as the port field.
+#Default value  : 8081
+    port: 8081
+    nodeport: 32101 
+
+external:
+  enabled: true
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+logging:
+#Name           :socketHost
+#Description    :Specifies the Logstash exposed host name. To enable logging socketHost should be uncommented.
+#  socketHost: #ipaddress
+#  socketPort: #port
+  exportType: #socket (console,socket)
+  protocol: #TCP
+
+#Name                 : metrics
+#Description          : Metrics give us insights into the historical and current state of a system.Data instrumented from microservices are pushed to PushGateway service. Prometheus collects data from PushGateway on a regular interval. Grafana is used to visualize data in UI.  
+metrics:
+  #exporterPort: 9091 
+  #exporterHost: 192.168.228.193
+#Name                 :publisherPort
+#Description          :Specifies the PushGateway service exposed port .publisherPort should be uncommented and required port should be mentioned.
+  #publisherPort: 9091
+#Name                 :publisherHost
+#Description          :Specifies the PushGateway service exposed hostname .publisherHost should be uncommented and required port should be mentioned.
+  #publisherHost: 192.168.228.193
+#Name                 :metricsDisabled
+#Description          : #To enable metrics monitoring in microservices publisherPort,publisherHost can be configured with pushgateway port and host address. Metrics will be disabled by default. to enable change the value to false
+#Default value        : true
+#Possible Values      : true | false
+  metricsDisabled: "true"
+  
+#Name           : tracing
+#Description    :Tracing is a way of profiling and monitoring events in applications. With the right information, a trace can reveal the performance of critical operations. It can also help to a breakdown of our operations to our database, APIs, or other microservices.  
+tracing:
+#Name           : enabled
+#Description    : To enable Tracing. it should be changed to true.
+#Possible Values:true | false
+#Default Value  : false
+  enabled: false
+#Name           : port
+#Description    : Port number of tracer backend service.
+  # port: 14268
+#Name           : host
+#Description    : Host of any tracer backend service (Currently we are using Jaeger)
+  # host: 192.168.0.199
+  
+pit:
+# Name : Jwt_Token_Issuer
+# Description : Identifies the issuer of the authentication token.
+  JWT_TOKEN_ISSUER:
+# Name : Jwt_Token_Principal_Claim
+# Description : Indicates the claim in which the user principal is provided.
+  JWT_TOKEN_PRINCIPAL_CLAIM:
+# Name : Id_Token_Signed
+# Description : Enables the JWT signature validation along with the header and payload
+  ID_TOKEN_SIGNED:
+# Name : Jwt_Token_Public_Key
+# Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
+  JWT_TOKEN_PUBLIC_KEY:
+# Name : Jwt_Token_Public_Key_Cert_Encoded
+# Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate.
+  JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED:  
+  # targetMemoryUtilizationPercentage: 80
+  
+# Name			: imagePullSecrets
+# Description	: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. imagePullSecrets Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
+imagePullSecrets: 
+ 
+#Name                 :resources
+#Description          :Resource management for pods/Containers -- Kubernetes uses to control resources such as CPU and memory.can declare limits for CPU and memory for all pod containers.
+resources:
+  ingester:
+#Name                 :cpulimit
+#Description          :The CPU limit defines a hard ceiling on how much CPU time that the container can use. it should not be less than 1m. can specific cpu limit as 1m or 0.001.
+#Default Value        :100m
+    cpulimit: "500m"
+#Name                 :memorylimit
+#Description          :If you specify a memory limit for every container in a Pod, Kubernetes can infer the Pod-level memory limit by adding up the limits for its containers
+#Default Value        :500M
+    memorylimit: 500M
+    java:
+#Name                 :heaplimit
+#Description          :To change the value of experimental flags, you must unlock them first. You can do this by setting -XX:+UnlockExperimentalVMOptions explicitly on the command line before any experimental flags. The flag -XX:+UseCGroupMemoryLimitForHeap lets the JVM detect what the max heap size in a container should be. MaxRAMPercentage parameter allows setting the maximum heap size for a JVM running with a large amount of memory (greater than 200 MB).
+#Default Value        :-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0    
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 -agentlib:jdwp=transport=dt_socket,address=40500,suspend=n,server=y '
+      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2'
+  eventingester:
+    cpulimit: "500m"
+    memorylimit: 500M
+    java:
+      heaplimit: ' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=80.0 '
+      heaplimitsslconfig: '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMPercentage=75.0 -Djavax.net.ssl.keyStore=/var/lib/processed/temenosserver.keystore.jks -Djavax.net.ssl.keyStorePassword=Temenos123 -Djavax.net.ssl.trustStore=/var/lib/processed/temenosclient.jks -Djavax.net.ssl.trustStorePassword=Temenos123 -Dhttps.protocols=TLSv1.2' 
