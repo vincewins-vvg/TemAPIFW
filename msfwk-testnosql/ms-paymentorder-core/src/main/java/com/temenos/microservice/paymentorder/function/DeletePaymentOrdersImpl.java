@@ -24,11 +24,15 @@ import com.temenos.microservice.framework.core.data.NoSqlDbDao;
 import com.temenos.microservice.framework.core.data.Operator;
 import com.temenos.microservice.framework.core.function.Context;
 import org.springframework.stereotype.Component;
+
+import com.temenos.inboxoutbox.core.GenericEvent;
 import com.temenos.microservice.framework.core.FunctionException;
 import com.temenos.microservice.framework.core.function.InvalidInputException;
+import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.framework.core.security.Criteria;
 import com.temenos.microservice.framework.core.security.Criterion;
 import com.temenos.microservice.framework.core.security.CriterionImpl;
+import com.temenos.microservice.paymentorder.event.PaymentDeleted;
 
 @Component
 public class DeletePaymentOrdersImpl implements DeletePaymentOrders {
@@ -62,11 +66,20 @@ public class DeletePaymentOrdersImpl implements DeletePaymentOrders {
 				.getNoSQLDao(com.temenos.microservice.paymentorder.entity.PaymentOrder.class);
 		
 		paymentOrderDao.deleteByIdList(poList);
+		
 		AllPaymentStatus allPaymentStatus = new AllPaymentStatus();
-		for (int i = 0; i < paymentIdList.size(); i++) {
+		
+		for(Object po : poList) {
+		
+			PaymentOrder paymentOrder = (PaymentOrder) po;
 			PaymentStatus paymentStatus = new PaymentStatus();
-			paymentStatus.setStatus("Deleted this PaymentId	: " + paymentIdList.get(i));
+			paymentStatus.setStatus("Deleted this PaymentId	: " + paymentOrder.getPaymentOrderId());
 			allPaymentStatus.add(paymentStatus);
+			
+			PaymentDeleted paymentDeleted = new PaymentDeleted();
+			paymentDeleted.setPaymentOrderId(paymentOrder.getPaymentOrderId());
+			ctx.setBusinessKey(paymentOrder.getPaymentOrderId());
+			EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted), po);
 		}
 
 		return allPaymentStatus;
