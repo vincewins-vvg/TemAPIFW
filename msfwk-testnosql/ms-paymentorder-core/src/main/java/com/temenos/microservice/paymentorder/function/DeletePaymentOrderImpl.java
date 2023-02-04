@@ -19,7 +19,7 @@ import com.temenos.microservice.framework.core.outbox.EventManager;
 import com.temenos.microservice.paymentorder.entity.PaymentOrder;
 import com.temenos.microservice.paymentorder.view.DeletePaymentOrderParams;
 import com.temenos.microservice.paymentorder.view.PaymentStatus;
-import com.temenos.microservice.payments.event.PaymentDeleted;
+import com.temenos.microservice.paymentorder.event.PaymentDeleted;
 
 public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 
@@ -50,8 +50,7 @@ public class DeletePaymentOrderImpl implements DeletePaymentOrder {
 				DaoFactory.getNoSQLDao(PaymentOrder.class).deleteEntity(order);
 				PaymentDeleted paymentDeleted = new PaymentDeleted();
 				paymentDeleted.setPaymentOrderId(paymentId);
-				paymentDeleted.setChangedEntityValues(paymentOrder.stateChangeForDelete());
-				EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted));
+				EventManager.raiseBusinessEvent(ctx, new GenericEvent("PaymentDeleted", paymentDeleted), paymentOrder);
 			} catch (Exception e) {
 				throw new InvalidInputException(new FailureMessage("Payment Delete option failed ", "400"));
 			}

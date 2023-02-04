@@ -1,9 +1,8 @@
 {
 	"name": "Payments.UpdatePayment.PaymentDeleted",	
-	"javaPackage": "com.temenos.microservice.payments.event",
+	"javaPackage": "com.temenos.microservice.paymentorder.event",
 	"description": "Delete Payment Order Event",
 	"type": "event",
-	"isAuditable": true,
 	"properties": [
 		{
 			"name": "paymentOrderId",

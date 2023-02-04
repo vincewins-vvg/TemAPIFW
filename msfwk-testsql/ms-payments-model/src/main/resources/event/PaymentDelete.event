@@ -3,7 +3,6 @@
 	"javaPackage": "com.temenos.microservice.payments.event",
 	"description": "Delete Payment Order Event",
 	"type": "event",
-	"isAuditable": true,
 	"properties": [
 		{
 			"name": "paymentOrderId",
