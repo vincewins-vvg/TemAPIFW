@@ -188,6 +188,7 @@ public class CreateNewPaymentOrderImpl implements CreateNewPaymentOrder {
 		PayeeDetailsEvent payeeDetails = new PayeeDetailsEvent();
 		payeeDetails.setPayeeName("Google pay");
 		paymentOrderEvent.setPayeeDetails(payeeDetails);
+		ctx.setBusinessKey(entity.getPaymentOrderId());
 		EventManager.raiseBusinessEvent(ctx, new GenericEvent("POAccepted", paymentOrderEvent), entity);
 		raiseCommandEvent(ctx, entity);
 		return readStatus(entity);
