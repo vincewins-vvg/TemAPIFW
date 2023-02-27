@@ -24,6 +24,7 @@ RUN microdnf -y install tar gzip shadow-utils \
     && curl -k https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.tar.gz -L -o "/tmp/tomcat.tar.gz" \
     && tar -zxf "/tmp/tomcat.tar.gz" -C /tmp/tomcat/ --strip-components=1 \
 	&& sed -i 's/endorsed/e/g' /tmp/tomcat/bin/catalina.sh \
+	&& sed -i 's/<Context>/<Context>\n\n\t<JarScanner scanClassPath="false">\n\t\t<JarScanFilter defaultPluggabilityScan="false"\/>\n\t<\/JarScanner>/' /tmp/tomcat/conf/context.xml \
 	&& mv /tmp/java-*/* /tmp/java/ \
 	&& groupadd -f appgroup && useradd appuser -G appgroup \
 	&& chown -R appuser:appgroup /tmp \
