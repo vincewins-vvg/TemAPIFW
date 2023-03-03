@@ -13,7 +13,7 @@
 #### Log file
 *.log
 
-##### Maven template
+###### Maven template
 target/
 src-gen/
 **/src-gen
