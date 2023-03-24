@@ -41,7 +41,7 @@ SET database_Key=sql
 REM Name			: db_Host
 REM Description		: Specifies the host name of the sql server.
 REM Default value   : paymentorder-db-service-np
-SET db_Host=paymentorder-db-service-np
+SET db_Host=paymentorder-db-service.payments.svc.cluster.local
 REM Name			: database_Name
 REM Description		: Specify the name of the database used in sql server.
 REM Default value   : payments
@@ -81,7 +81,7 @@ REM instanceName (Optional) is the instance to connect to on serverName. If not 
 REM portNumber (Optional) is the port to connect to on serverName. The default is 1433. If you're using the default, you don't have to specify the port, nor its preceding ':', in the URL.
 
 REM db_name is the  name of the database to be used in sql server
-SET db_Connection_Url=jdbc:mysql://paymentorder-db-service:3306/payments
+SET db_Connection_Url=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments
 REM Name 			: min_Pool_Size
 REM Description		: Maximum number of connections maintained in the pool.
 REM Default Value   : 10
@@ -189,20 +189,17 @@ call start-sqldb-scripts-k8.bat
 
 cd ../
 
-kubectl create namespace posqlappinit
+REM kubectl create namespace posqlappinit
 
-SET dbinit_Connection_Url="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
+REM SET dbinit_Connection_Url="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
 
 SET APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
-helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=%database_Key% --set env.sqlinit.databaseName=%database_Name% --set env.sqlinit.dbusername=%db_Username% --set env.sqlinit.dbpassword=%db_Password% --set image.tag=%tag% --set image.sqlinit.repository=%APP_INIT_IMAGE% --set env.sqlinit.dbconnectionurl=%dbinit_Connection_Url% --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=%dialect% --set env.sqlinit.dbdriver=%driver_Name%
+REM helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=%database_Key% --set env.sqlinit.databaseName=%database_Name% --set env.sqlinit.dbusername=%db_Username% --set env.sqlinit.dbpassword=%db_Password% --set image.tag=%tag% --set image.sqlinit.repository=%APP_INIT_IMAGE% --set env.sqlinit.dbconnectionurl=%dbinit_Connection_Url% --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=%dialect% --set env.sqlinit.dbdriver=%driver_Name%
 
-helm install svc ./svc -n payments --set env.database.host=%db_Host% --set env.database.db_username=%db_Username% --set env.database.db_password=%db_Password% --set env.database.database_key=%database_Key% --set env.database.database_name=%database_Name% --set env.database.driver_name=%driver_Name% --set env.database.dialect=%dialect% --set env.database.db_connection_url=%db_Connection_Url% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.max_pool_size=%max_Pool_Size% --set env.database.min_pool_size=%min_Pool_Size% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.schema_registry_url=%schema_Registry_Url% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.scheduler.time=%scheduler_Time% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%es_Image_Pull_Secret% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set env.audit.query_enable_system_events=%query_enable_system_events% --set env.audit.query_enable_response=%query_enable_response%
-
-
+helm install svc ./svc -n payments --create-namespace -n payments --set env.database.host=%db_Host% --set env.database.db_username=%db_Username% --set env.database.db_password=%db_Password% --set env.database.database_key=%database_Key% --set env.database.database_name=%database_Name% --set env.database.driver_name=%driver_Name% --set env.database.dialect=%dialect% --set env.database.db_connection_url=%db_Connection_Url% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.max_pool_size=%max_Pool_Size% --set env.database.min_pool_size=%min_Pool_Size% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.schema_registry_url=%schema_Registry_Url% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.scheduler.time=%scheduler_Time% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%es_Image_Pull_Secret% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set env.audit.query_enable_system_events=%query_enable_system_events% --set env.audit.query_enable_response=%query_enable_response% --set image.appinit.repository=%APP_INIT_IMAGE%
 
 REM docker-compose -f kafka.yml -f paymentorder-nuo.yml %*
-
 
 cd streams/kafka
 
