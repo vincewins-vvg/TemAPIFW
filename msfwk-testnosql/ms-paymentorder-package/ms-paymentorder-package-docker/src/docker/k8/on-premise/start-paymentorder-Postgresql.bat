@@ -46,6 +46,13 @@ REM Description		: A Secret is an object that contains a small amount of sensiti
 REM Possible values : Y | N	  
 REM Default value   : N
 SET db_Enable_Secret="N"
+
+REM Name			: appinit_cred for appinit
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+REM Possible values : Y | N	  
+REM Default value   : N
+SET appinit_cred="N"
+
 REM Name : Jwt_Token_Issuer
 REM Description : Identifies the issuer of the authentication token.
 REM Default Value : https://localhost:9443/oauth2/token
@@ -173,7 +180,7 @@ SET db_Connection_Url="jdbc:postgresql://po-postgresqldb-service.postgresql.svc.
 
 kubectl create ns poappinit
 
-helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE%
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.dbcred=%appinit_cred% 
 
 kubectl create namespace paymentorder
 

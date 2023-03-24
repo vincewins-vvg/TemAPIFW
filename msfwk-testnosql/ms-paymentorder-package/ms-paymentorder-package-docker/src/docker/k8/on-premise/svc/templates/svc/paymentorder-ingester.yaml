@@ -63,12 +63,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD  
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 #Command Ingester
 apiVersion: apps/v1
@@ -129,12 +134,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD    
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 #Command Ingester
 apiVersion: apps/v1
@@ -195,12 +205,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD    
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 #Event Ingester Ingester
 apiVersion: apps/v1
@@ -261,12 +276,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 #Data Ingester
 apiVersion: apps/v1
@@ -309,12 +329,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD     
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -361,22 +386,27 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD        
+                key: POSTGRES_PASSWORD        
           - name: POSTGRESQL_USERNAME
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD             
+                key: POSTGRES_PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: ponosqldbsecret
+                key: ENCRYPTIONKEY                
 ---
 #Data Ingester Service
 apiVersion: v1

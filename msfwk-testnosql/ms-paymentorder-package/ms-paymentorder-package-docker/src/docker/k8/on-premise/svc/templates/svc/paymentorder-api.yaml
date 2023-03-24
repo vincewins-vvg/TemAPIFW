@@ -45,19 +45,19 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-api-config" }}
-        {{- if eq .Values.env.database.POSTGRESQL_CRED "Y" }}  
+        {{- if or (eq .Values.env.database.POSTGRESQL_CRED "Y") (eq .Values.env.database.MONGO_CRED "Y") }}  
           env:
           # Use secret in real usage
           - name: POSTGRESQL_USERNAME
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD  
+                key: POSTGRES_PASSWORD 
           - name: temn.msf.security.tokengen.client.secret
             valueFrom:
               secretKeyRef:
