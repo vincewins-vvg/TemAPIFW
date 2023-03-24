@@ -166,6 +166,10 @@ data:
   temn.msf.ingest.multipart.source.stream: multipart-topic
   temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 {{- if .Values.logging.exportType }}        
@@ -236,6 +240,10 @@ data:
   temn.msf.ingest.multipart.source.stream: multipart-topic
   temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 {{- if .Values.logging.exportType }}        
@@ -307,6 +315,10 @@ data:
   temn.msf.ingest.multipart.source.stream: 600670497877:multipart-topic:1663593140000
   temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 {{- if .Values.logging.exportType }}        

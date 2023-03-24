@@ -247,7 +247,25 @@ env:
     kinesisregion: eu-west-2
     runtime: AWS
   storage:
-    home: s3://paymentsstorage    
+    home: s3://paymentsstorage 
+  kinesis:
+# Name                 : requesttimeout 
+# Description          : The maximum time to wait for a future request from Kinesis to complete
+# Default Value        : 30 seconds, default value provided in kcl
+    requesttimeout: 30
+# Name                 : maxrecords 
+# Description          : Max records to fetch from Kinesis in a single GetRecords call
+# Default Value        : 10000, default value provided in kcl
+    maxrecords: 10000
+# Name                 : idleinterval 
+# Description          : The value for how long the ShardConsumer should sleep in between calls to getRecords.
+# Default Value        : 1000 milliseconds, default value provided in kcl
+    idleinterval: 1000
+# Name                 : leasesdeletionwaittime 
+# Description          : Duration to wait before deleting the leases for this stream.
+#                        Strategy for auto detection the old or former streams based on the streamConfigList and do deferred deletion based on leasesdeletionwaittime
+# Default Value        : 0 seconds, New streams are synced and stale Streams Are DeletedImmediately
+    leasesdeletionwaittime: 0
 #Name             :kafka 
 #Description      :Kafka is used to build real-time streaming data pipelines and real-time streaming applications. A data pipeline reliably processes and moves data from one system to another, and a streaming application is an application that consumes streams of data      
   kafka:
