@@ -731,3 +731,32 @@ data:
 {{- end }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled | quote }}
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payments-app-init
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    #"helm.sh/hook-delete-policy": hook-succeeded, before-hook-creation
+data:  
+  database.key: {{ .Values.env.database.database_key }}
+  database.name: {{ .Values.env.database.database_name }}
+{{- if eq .Values.env.database.database_key "sql" }} 
+  db.connection.url: {{ .Values.env.database.db_connection_url }}
+  db.dialect: {{ .Values.env.database.dialect | quote }}
+  db.driver.name: {{ .Values.env.database.driver_name | quote }}
+  db.username: {{ .Values.env.database.db_username | quote }}
+  db.password: {{ .Values.env.database.db_password | quote }}
+{{- else }}
+  db.connection.url: {{ .Values.env.database.mssql_connection_url }}
+  db.username: {{ .Values.env.database.mssql_username | quote }}
+  db.password: {{ .Values.env.database.mssql_password | quote }} 
+{{- end }}
+  db.auto.upgrade: {{ .Values.env.appinit.dbautoupgrade | quote }} 
+  temn.msf.logger.exportType: {{ .Values.env.appinit.exportType }}
+  temn.msf.logger.socketHost: {{ .Values.env.appinit.socketHost | quote }} 
+  temn.msf.logger.socketPort: {{ .Values.env.appinit.socketPort | quote }} 
+---

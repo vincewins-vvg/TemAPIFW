@@ -8,6 +8,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+#Name       : restartPolicy
+#Description : The spec of a Pod has a restartPolicy field with possible values Always, OnFailure, and Never.If you'd like your container to be killed and restarted if a probe fails, then specify a liveness/readiness probe, and specify a restartPolicy of Always or OnFailure.
+#Default Values : OnFailure
+#Possible Values : Always | OnFailure
+restartPolicy: OnFailure
+
 configmap:
   location: svc/payments-configmap.yaml
 
@@ -151,6 +157,13 @@ image:
 #Default Value    : ms-paymentorder-mysql
   mysql: 
     repository: ms-paymentorder-mysql
+
+#Name             : paymentorder appinit repository
+#Description      : Specifies the name of the appinit image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-appinit
+  appinit:
+    repository:  temenos/ms-paymentorder-appinit
+
 #Name             : tag
 #Description      : Specifies the release version of the image
     tag: latest
@@ -175,6 +188,14 @@ image:
 #Name             : env
 #Description      : Environmental variables are specified here
 env:
+  name:
+# Name             : appinit
+# Description      : dbinit/appinit related parameters values are specified here.
+  appinit:  
+    dbautoupgrade: "N"
+    exportType: socket
+    socketHost: ""
+    socketPort: 4560
 #Name             : database
 #Description      : database related parameters values are specified here.
   database:
@@ -260,6 +281,10 @@ env:
     # db_connection_url: jdbc:sqlserver://eventstore-db-service:1433;databaseName=ms_eventstore
     # max_pool_size: "150"
     # min_pool_size: "10"
+
+    mssql_connection_url: jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments
+    mssql_username: sa
+    mssql_password: Rootroot@12345
     
 #Name		      :temn_msf_db_pass_encryption_key,temn_msf_db_pass_encryption_algorithm
 #Description      :For encrypting the plain text's, need some inputs i.e., Password and an Algorithm which is used to decrypt an encrypted input.These two values are mandatory to encrypt the plain text.

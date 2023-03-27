@@ -24,8 +24,8 @@ kubectl delete -f kafka-topics.yaml
 
 kubectl delete -f schema-registry.yaml
 
-helm uninstall posqlappinit -n posqlappinit
+#helm uninstall posqlappinit -n posqlappinit
 
-kubectl delete namespace posqlappinit
+#kubectl delete namespace posqlappinit
 
 cd ../

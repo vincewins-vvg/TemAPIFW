@@ -10,16 +10,17 @@
 # --------------------------------------------------------------
 export MYSQL_CRED="N"
 export DATABASE_KEY=sql
+export DB_HOST=paymentorder-db-service-np.payments.svc.cluster.local
 export DB_USERNAME=root
 export DB_PASSWORD=password
 export DB_NAME=payments
 export DB_DRIVER=com.mysql.jdbc.Driver
 export DB_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
-export DB_CONNECTION_URL=jdbc:mysql://paymentorder-db-service:3306/payments
+export DB_CONNECTION_URL=jdbc:mysql://paymentorder-db-service-np.payments.svc.cluster.local:3306/payments
 export MIN_POOL_SIZE=5
 export MAX_POOL_SIZE=1
-export DB_HOST=paymentorder-db-service-np
-export DB_INIT_CONNECTION_URL="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
+
+# export DB_INIT_CONNECTION_URL="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
 
 # -------- KAFKA
 export kafkabootstrapservers="my-cluster-kafka-bootstrap.kafka:9092"
@@ -68,9 +69,10 @@ export apiMaxUnavailable="0"
 export ingesterMaxSurge="1"
 export ingesterMaxUnavailable="0"
 
+export APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
 cd ../helm-chart
 
-helm upgrade payments ./svc -n payments --set env.database.MYSQL_CRED=$MYSQL_CRED --set env.database.host=$DB_HOST --set env.database.db_username=$DB_USERNAME --set env.database.db_password=$DB_PASSWORD --set env.database.database_key=$DATABASE_KEY --set env.database.database_name=$DB_NAME --set env.database.driver_name=$DB_DRIVER --set env.database.dialect=$DB_DIALECT --set env.database.db_connection_url=$DB_CONNECTION_URL --set env.database.max_pool_size=$MAX_POOL_SIZE --set env.database.min_pool_size=$MIN_POOL_SIZE --set env.kafka.kafkabootstrapservers=$kafkabootstrapservers --set env.kafka.schema_registry_url=$schema_registry_url --set image.tag=$tag --set image.paymentsapi.repository=$apiImage --set image.paymentsingester.repository=$ingesterImage --set image.paymentseventdelivery.repository=$inboxoutboxImage --set image.schemaregistry.repository=$schemaregistryImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.mysql.repository=$mysqlImage --set imagePullSecrets=$soImagePullSecret --set env.kafka.kafkaAliases=$kafkaAliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafkaHostName --set env.kafka.kafka0HostName=$kafka0HostName --set env.kafka.kafka1HostName=$kafka1HostName --set env.kafka.kafka2HostName=$kafka2HostName --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=$inboxcleanup --set env.scheduler.schedule="5" --set env.name=$ENV_NAME --set rollingupdate.enabled=$rollingUpdate --set rollingupdate.api.maxsurge=$apiMaxSurge --set rollingupdate.api.maxunavailable=$apiMaxUnavailable --set rollingupdate.ingester.maxsurge=$ingesterMaxSurge --set rollingupdate.ingester.maxunavailable=$ingesterMaxUnavailable
+helm upgrade payments ./svc -n payments --set env.database.MYSQL_CRED=$MYSQL_CRED --set env.database.host=$DB_HOST --set env.database.db_username=$DB_USERNAME --set env.database.db_password=$DB_PASSWORD --set env.database.database_key=$DATABASE_KEY --set env.database.database_name=$DB_NAME --set env.database.driver_name=$DB_DRIVER --set env.database.dialect=$DB_DIALECT --set env.database.db_connection_url=$DB_CONNECTION_URL --set env.database.max_pool_size=$MAX_POOL_SIZE --set env.database.min_pool_size=$MIN_POOL_SIZE --set env.kafka.kafkabootstrapservers=$kafkabootstrapservers --set env.kafka.schema_registry_url=$schema_registry_url --set image.tag=$tag --set image.paymentsapi.repository=$apiImage --set image.paymentsingester.repository=$ingesterImage --set image.paymentseventdelivery.repository=$inboxoutboxImage --set image.schemaregistry.repository=$schemaregistryImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.appinit.repository=$APP_INIT_IMAGE --set imagePullSecrets=$soImagePullSecret --set env.kafka.kafkaAliases=$kafkaAliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafkaHostName --set env.kafka.kafka0HostName=$kafka0HostName --set env.kafka.kafka1HostName=$kafka1HostName --set env.kafka.kafka2HostName=$kafka2HostName --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=$inboxcleanup --set env.scheduler.schedule="5" --set env.name=$ENV_NAME --set rollingupdate.enabled=$rollingUpdate --set rollingupdate.api.maxsurge=$apiMaxSurge --set rollingupdate.api.maxunavailable=$apiMaxUnavailable --set rollingupdate.ingester.maxsurge=$ingesterMaxSurge --set rollingupdate.ingester.maxunavailable=$ingesterMaxUnavailable
 
 cd ../upgrade

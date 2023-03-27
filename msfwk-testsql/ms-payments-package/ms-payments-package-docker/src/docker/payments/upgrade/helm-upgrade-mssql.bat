@@ -10,13 +10,13 @@ REM - Script to start Service
 REM --------------------------------------------------------------
 SET MSSQL_CRED="N"
 SET DATABASE_KEY=sql
-SET DB_HOST=paymentorder-db-service
+SET DB_HOST=paymentorder-db-service.payments.svc.cluster.local
 SET DB_NAME=payments
 SET DB_USERNAME=sa
 SET DB_PASSWORD=Rootroot@12345
 SET DB_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
 SET DB_DIALECT=org.hibernate.dialect.SQLServer2012Dialect
-SET DB_CONNECTION_URL=jdbc:sqlserver://paymentorder-db-service:1433;databaseName=payments
+SET DB_CONNECTION_URL=jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments
 SET MIN_POOL_SIZE="5"
 SET MAX_POOL_SIZE="1"
 
@@ -71,8 +71,10 @@ SET apiMaxUnavailable="0"
 SET ingesterMaxSurge="1"
 SET ingesterMaxUnavailable="0"
 
+SET APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
+
 cd ../helm-chart
 
-helm upgrade payments ./svc -n payments --set env.database.MSSQL_CRED=%MSSQL_CRED% --set env.database.host=%DB_HOST% --set env.database.db_username=%DB_USERNAME% --set env.database.db_password=%DB_PASSWORD% --set env.database.database_key=%DATABASE_KEY% --set env.database.database_name=%DB_NAME% --set env.database.driver_name=%DB_DRIVER% --set env.database.dialect=%DB_DIALECT% --set env.database.db_connection_url=%DB_CONNECTION_URL% --set env.database.max_pool_size=%MAX_POOL_SIZE% --set env.database.min_pool_size=%MIN_POOL_SIZE% --set env.kafka.kafkabootstrapservers=%kafkabootstrapservers% --set env.kafka.schema_registry_url=%schema_registry_url% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.paymentseventdelivery.repository=%inboxoutboxImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.mysql.repository=%mysqlImage% --set imagePullSecrets=%soImagePullSecret% --set env.kafka.kafkaAliases=%kafkaAliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafkaHostName% --set env.kafka.kafka0HostName=%kafka0HostName% --set env.kafka.kafka1HostName=%kafka1HostName% --set env.kafka.kafka2HostName=%kafka2HostName% --set env.scheduler.time=%schedulertime% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inboxcleanup% --set env.scheduler.schedule=%schedule% --set env.name=%ENV_NAME% --set rollingupdate.enabled=%rollingUpdate% --set rollingupdate.api.maxsurge=%apiMaxSurge% --set rollingupdate.api.maxunavailable=%apiMaxUnavailable% --set rollingupdate.ingester.maxsurge=%ingesterMaxSurge% --set rollingupdate.ingester.maxunavailable=%ingesterMaxUnavailable%
+helm upgrade payments ./svc -n payments --set env.database.MSSQL_CRED=%MSSQL_CRED% --set env.database.host=%DB_HOST% --set env.database.db_username=%DB_USERNAME% --set env.database.db_password=%DB_PASSWORD% --set env.database.database_key=%DATABASE_KEY% --set env.database.database_name=%DB_NAME% --set env.database.driver_name=%DB_DRIVER% --set env.database.dialect=%DB_DIALECT% --set env.database.db_connection_url=%DB_CONNECTION_URL% --set env.database.max_pool_size=%MAX_POOL_SIZE% --set env.database.min_pool_size=%MIN_POOL_SIZE% --set env.kafka.kafkabootstrapservers=%kafkabootstrapservers% --set env.kafka.schema_registry_url=%schema_registry_url% --set image.tag=%tag% --set image.paymentsapi.repository=%apiImage% --set image.paymentsingester.repository=%ingesterImage% --set image.paymentseventdelivery.repository=%inboxoutboxImage% --set image.schemaregistry.repository=%schemaregistryImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.appinit.repository=%APP_INIT_IMAGE% --set imagePullSecrets=%soImagePullSecret% --set env.kafka.kafkaAliases=%kafkaAliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafkaHostName% --set env.kafka.kafka0HostName=%kafka0HostName% --set env.kafka.kafka1HostName=%kafka1HostName% --set env.kafka.kafka2HostName=%kafka2HostName% --set env.scheduler.time=%schedulertime% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inboxcleanup% --set env.scheduler.schedule=%schedule% --set env.name=%ENV_NAME% --set rollingupdate.enabled=%rollingUpdate% --set rollingupdate.api.maxsurge=%apiMaxSurge% --set rollingupdate.api.maxunavailable=%apiMaxUnavailable% --set rollingupdate.ingester.maxsurge=%ingesterMaxSurge% --set rollingupdate.ingester.maxunavailable=%ingesterMaxUnavailable%
 
 cd ../upgrade
