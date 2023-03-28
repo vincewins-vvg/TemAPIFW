@@ -4,6 +4,6 @@
 # *******************************************************************************
 #
 
-kubectl create namespace poappinit
+#kubectl create namespace poappinit
 
-kubectl create namespace paymentorder
+#kubectl create namespace paymentorder

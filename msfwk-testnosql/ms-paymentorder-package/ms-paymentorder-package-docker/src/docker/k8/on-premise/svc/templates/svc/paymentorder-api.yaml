@@ -61,7 +61,7 @@ spec:
           - name: temn.msf.security.tokengen.client.secret
             valueFrom:
               secretKeyRef:
-                name: clientsecret
+                name: paymentordersecretsvc
                 key: CLIENT_SECRET
         {{- end }}                
 

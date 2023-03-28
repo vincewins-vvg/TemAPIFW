@@ -636,3 +636,30 @@ data:
   temn.tracer.port: {{ .Values.tracing.port | quote}} 
   temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-app-init" }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    #"helm.sh/hook-delete-policy":  hook-succeeded, before-hook-creation  
+data:  
+  database.key: {{ .Values.env.database.DATABASE_KEY }}
+  database.name: {{ .Values.env.database.MONGODB_DBNAME }}
+  {{- if eq .Values.env.database.DATABASE_KEY "mongodb" }} 
+  db.connection.url: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  db.username: {{ .Values.env.database.MONGO_USER_NAME | quote }}
+  db.password: {{ .Values.env.database.MONGO_PASSWORD | quote }} 
+{{- else }}
+  db.connection.url: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  db.username: {{ .Values.env.database.POSTGRESQL_USERNAME | quote }}
+  db.password: {{ .Values.env.database.POSTGRESQL_PASSWORD | quote }} 
+{{- end }}    
+  db.auto.upgrade: {{ .Values.env.appinit.dbautoupgrade | quote }} 
+  temn.msf.logger.exportType: {{ .Values.env.appinit.exportType }}
+  temn.msf.logger.socketHost: {{ .Values.env.appinit.socketHost | quote }} 
+  temn.msf.logger.socketPort: {{ .Values.env.appinit.socketPort | quote }} 

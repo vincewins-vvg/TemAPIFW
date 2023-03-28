@@ -8,6 +8,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+#Name       : restartPolicy
+#Description : The spec of a Pod has a restartPolicy field with possible values Always, OnFailure, and Never.If you'd like your container to be killed and restarted if a probe fails, then specify a liveness/readiness probe, and specify a restartPolicy of Always or OnFailure.
+#Default Values : OnFailure
+#Possible Values : Always | OnFailure
+restartPolicy: OnFailure
+
 # Default values for paymentorder svc.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -99,6 +105,13 @@ kafkatopic:
 #Description      : A container image represents binary data that encapsulates an application and all its software dependencies. Images are  pushed to external repositories, this section contains the name of repositories, image and tag 
 #Example          : Consider our external repository is "acr.azurecr.io" and tag is "21.0.0". It should be like acr.azurecr.io/temenos/ms-paymentorder-service:21.0.0
 image:
+
+#Name             : paymentorder appinit repository
+#Description      : Specifies the name of the appinit image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
+#Default Value    : temenos/ms-paymentorder-appinit 
+  appinit:
+    repository:  temenos/ms-paymentorder-appinit
+
 #Name             : paymentsapi repository
 #Description      : Specifies the name of the api image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
 #Default Value    : dev.local/temenos/ms-paymentorder-service
@@ -179,6 +192,14 @@ schemaregistrysvc: schema-registry-svc
 #Name             : env
 #Description      : Environmental variables are specified here
 env:
+  name:
+
+  appinit:  
+    dbautoupgrade: "N"
+    exportType: socket
+    socketHost: ""
+    socketPort: 4560
+
 #Name             : database
 #Description      : database related parameters values are specified here.
   database:
@@ -205,6 +226,9 @@ env:
     
     #host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
     MONGODB_CONNECTIONSTR: mongodb://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+    MONGO_USER_NAME: ""
+    MONGO_PASSWORD: ""
+
 #Name			  : MONGO_CRED
 #Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If MONGO_CRED is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
 #Possible values  : Y | N	  
