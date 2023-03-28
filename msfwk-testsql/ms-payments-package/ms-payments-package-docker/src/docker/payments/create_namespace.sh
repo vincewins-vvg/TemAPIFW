@@ -4,6 +4,6 @@
 # *******************************************************************************
 #
 
-kubectl create namespace dbinitpayments
+# kubectl create namespace dbinitpayments
 
-kubectl create namespace payments
+# kubectl create namespace payments

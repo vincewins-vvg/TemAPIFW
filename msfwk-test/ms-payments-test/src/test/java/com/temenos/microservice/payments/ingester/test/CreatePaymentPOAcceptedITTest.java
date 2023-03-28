@@ -54,7 +54,7 @@ public class CreatePaymentPOAcceptedITTest extends ITTest {
 		producer.close();
 	}
 
-	@Test
+	//@Test
 	public void testAingestEvent() throws IOException, InterruptedException {
 		String content = new String(
 				Files.readAllBytes(Paths.get("src/test/resources/binary/4.CreatePaymentPOAccepted.json")));

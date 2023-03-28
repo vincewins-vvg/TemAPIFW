@@ -1,0 +1,58 @@
+#
+# *******************************************************************************
+# * Copyright © Temenos Headquarters SA 2021. All rights reserved.
+# *******************************************************************************
+#
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: payments-app-init
+  labels:
+    app.kubernetes.io/name: payments-app-init
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-1"
+    #"helm.sh/hook-delete-policy": hook-succeeded, before-hook-creation    
+spec:
+  template:
+    metadata:
+      name: payments-app-init
+    spec:
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }} 
+    {{- end }}    
+      containers:
+      - name: payments-app-init
+        image: "{{ .Values.image.appinit.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        envFrom:
+          - configMapRef:
+              name: payments-app-init
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}
+        env:
+          # Use secret in real usage
+          - name: db.username
+            valueFrom:
+              secretKeyRef:
+                name: paymentssecretsvc
+                key: USER_NAME 
+          - name: db.password
+            valueFrom:
+              secretKeyRef:
+                name: paymentssecretsvc
+                key: PASSWORD           
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: paymentssecretsvc
+                key: ENCRYPTIONKEY    
+      {{- end }}    
+      restartPolicy: {{ .Values.restartPolicy }} 
+  backoffLimit: 3

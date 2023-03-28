@@ -4,9 +4,9 @@
 # *******************************************************************************
 #
 
-helm uninstall posqlappinit -n posqlappinit
+# helm uninstall posqlappinit -n posqlappinit
 
-kubectl delete namespace posqlappinit
+# kubectl delete namespace posqlappinit
 
 helm uninstall payments -n payments
 

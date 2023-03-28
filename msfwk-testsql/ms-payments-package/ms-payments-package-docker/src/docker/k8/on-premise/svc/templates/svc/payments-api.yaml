@@ -45,9 +45,9 @@ spec:
                 key: PASSWORD  
           - name: temn.msf.security.tokengen.client.secret
             valueFrom:
-              secretKeyRef:
-                name: clientsecret
-                key: CLIENT_SECRET
+              secretKeyRef:                
+                name: paymentssecretsvc
+                key: CLIENT_SECRET 
       {{- end }}                
 ---
 apiVersion: v1
