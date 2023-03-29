@@ -148,6 +148,41 @@ export schedule="5"
 # Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
 export eventDirectDelivery=true
 
+# -- To enable the start version for DB upgradation
+export DB_UPGRADE_START_VERSION=""
+
+# Name		  : db_tlsEnabled
+# Description : Indicates one-way TLS is enabled for database by default
+export db_tlsEnabled=true
+	
+# Name		  : root_ca_cert_location
+# Description	  : Indicates the location of Certificate Authority File so that client verifies that it receives data from authorized server
+export root_ca_cert_location=./database/postgresql/certs/ca.crt
+
+# Name		  : postgresql_twoWayTLSEnabled
+# Description	  : Indicates 2-way TLS has to be enforced for database
+export postgresql_twoWayTLSEnabled=false
+
+# Name		  : client_cert_location
+# Description : Indicates the location of Client Certificate File, Name of the cert file must be "client.crt"
+export client_cert_location=./database/postgresql/certs/client.crt
+
+# Name		  : client_key_location
+# Description : Indicates the location of Client Key File, Name of the key file must be "client.pk8"
+export client_key_location=./database/postgresql/keys/client.pk8
+
+# Name		  : root_ca_cert
+# Description	  : Indicates the name of Certificate Authority File
+export root_ca_cert=${root_ca_cert_location##*/}
+
+# Name		  : client_cert
+# Description	  : Indicates the name of Client Certificate File
+export client_cert=${client_cert_location##*/}
+
+# Name		  : client_key
+# Description	  : Indicates the name of Client Key File
+export client_key=${client_key_location##*/}
+
 cd ../..
 
 ./build-Postgresql.sh create --build
@@ -158,7 +193,20 @@ export currentString="docker-compose"
 export replaceString="#docker-compose"
 sed -i -e 's/'"$currentString"'/'"$replaceString"'/g' start-postgresqldb-scripts.sh
 
-./start-postgresqldb-scripts.sh
+if [[ "$postgresql_twoWayTLSEnabled" == "true" ]]; then
+	./start-postgresqldb-scripts.sh ssl mutual
+else 
+	./start-postgresqldb-scripts.sh ssl
+fi
+
+if [[ "$postgresql_twoWayTLSEnabled" == "true" ]]; then
+	
+	kubectl create namespace paymentorder
+	kubectl create secret generic postgresql-ssl-secret --from-file=$root_ca_cert_location --from-file=$client_cert_location --from-file=$client_key_location -n paymentorder
+else 
+	kubectl create namespace paymentorder
+	kubectl create secret generic postgresql-ssl-secret --from-file=$root_ca_cert_location  -n paymentorder	
+fi
 
 cd ../
 
@@ -170,8 +218,7 @@ export db_Password="paymentorderpass"
 
 export db_Connection_Url="jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb"
 
-# -- To enable the start version for DB upgradation
-export DB_UPGRADE_START_VERSION=""
+
 
 #kubectl create ns poappinit
 
@@ -179,7 +226,7 @@ export DB_UPGRADE_START_VERSION=""
 
 #kubectl create namespace paymentorder
 
-helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.MONGODB_CONNECTIONSTR=$mongodb_Connection_Url --set env.database.MONGODB_DBNAME=$database_Name --set env.database.POSTGRESQL_CONNECTIONURL=$postgresql_Connection_Url --set env.database.DATABASE_KEY=postgresql --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name --set env.database.POSTGRESQL_USERNAME=$db_Username --set env.database.POSTGRESQL_PASSWORD=$db_Password --set env.database.POSTGRESQL_CRED=$db_Enable_Secret --set env.eventdelivery.outboxdirectdeliveryenabled=$eventDirectDelivery --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=$inbox_Cleanup --set env.scheduler.schedule=$schedule --set image.appinit.repository=$APP_INIT_IMAGE --set env.appinit.dbUpgradeStartVersion=$DB_UPGRADE_START_VERSION
+helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.MONGODB_CONNECTIONSTR=$mongodb_Connection_Url --set env.database.MONGODB_DBNAME=$database_Name --set env.database.POSTGRESQL_CONNECTIONURL=$postgresql_Connection_Url --set env.database.DATABASE_KEY=postgresql --set pit.JWT_TOKEN_ISSUER=$Jwt_Token_Issuer --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=$Jwt_Token_Principal_Claim --set pit.ID_TOKEN_SIGNED=$Id_Token_Signed --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=$Jwt_Token_Public_Key_Cert_Encoded --set pit.JWT_TOKEN_PUBLIC_KEY=$Jwt_Token_Public_Key --set env.database.temn_msf_db_pass_encryption_key=$encryption_Key --set env.database.temn_msf_db_pass_encryption_algorithm=$encryption_Algorithm --set env.genericconfig.basepath=$gc_Base_Path --set image.paymentorderapi.repository=$apiImage --set image.paymentorderingester.repository=$ingesterImage --set image.paymentorderscheduler.repository=$schedulerImage --set image.fileingester.repository=$fileingesterImage --set image.schemaregistry.repository=$schemaregistryImage --set imagePullSecrets=$po_Image_Pull_Secret --set image.tag=$tag --set env.kafka.kafkabootstrapservers=$kafka_Bootstrap_Servers --set env.kafka.kafkaAliases=$kafka_Aliases --set env.kafka.kafkaip=$kafkaip --set env.kafka.kafka0ip=$kafka0ip --set env.kafka.kafka1ip=$kafka1ip --set env.kafka.kafka2ip=$kafka2ip --set env.kafka.kafkaHostName=$kafka_Host_Name --set env.kafka.kafka0HostName=$kafka0_Host_Name --set env.kafka.kafka1HostName=$kafka1_Host_Name --set env.kafka.kafka2HostName=$kafka2_Host_Name --set env.kafka.devdomainHostName=$devdomain_Host_Name --set env.database.POSTGRESQL_USERNAME=$db_Username --set env.database.POSTGRESQL_PASSWORD=$db_Password --set env.database.POSTGRESQL_CRED=$db_Enable_Secret --set env.eventdelivery.outboxdirectdeliveryenabled=$eventDirectDelivery --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=$inbox_Cleanup --set env.scheduler.schedule=$schedule --set image.appinit.repository=$APP_INIT_IMAGE --set env.appinit.dbUpgradeStartVersion=$DB_UPGRADE_START_VERSION --set env.database.tlsEnabled=$db_tlsEnabled  --set env.database.POSTGRESQL_SERVER_CA_CERT=$root_ca_cert  --set env.database.POSTGRESQL_CLIENT_CERT=$client_cert --set env.database.POSTGRESQL_CLIENT_KEY=$client_key
 
 cd streams/kafka
 

@@ -34,9 +34,24 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }} 
     {{- end }}
+    {{- if .Values.env.database.tlsEnabled }}    
+      volumes:      
+      {{- if eq .Values.env.database.DATABASE_KEY "postgresql" }}
+        - name: postgresql-ssl-volume
+          secret:
+            secretName: postgresql-ssl-secret    
+      {{- end }}
+    {{- end }}    
       containers:
         - name: {{ .Chart.Name }}{{ "-api" }}
           image: "{{ .Values.image.paymentorderapi.repository }}:{{ .Values.image.paymentorderapi.tag | default .Chart.AppVersion }}"
+          {{- if .Values.env.database.tlsEnabled}}
+          volumeMounts:            
+           {{- if eq .Values.env.database.DATABASE_KEY "postgresql" }}
+           - name: postgresql-ssl-volume
+             mountPath: {{ .Values.env.database.TLS_MOUNTPATH }}        
+           {{- end }}
+          {{- end }}  
           ports:
             - containerPort: 80
               protocol: TCP

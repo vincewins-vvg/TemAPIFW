@@ -27,11 +27,26 @@ spec:
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }} 
-    {{- end }}    
+    {{- end }}  
+    {{- if .Values.env.database.tlsEnabled }}    
+      volumes:      
+      {{- if eq .Values.env.database.DATABASE_KEY "postgresql" }}
+        - name: postgresql-ssl-volume
+          secret:
+            secretName: postgresql-ssl-secret    
+      {{- end }}
+    {{- end }}     
       containers:
       - name: {{ include "paymentorder.name" . }}{{ "-app-init" }}
         image: "{{ .Values.image.appinit.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" 
         imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+      {{- if .Values.env.database.tlsEnabled}}
+        volumeMounts:            
+        {{- if eq .Values.env.database.DATABASE_KEY "postgresql" }}
+          - name: postgresql-ssl-volume
+            mountPath: {{ .Values.env.database.TLS_MOUNTPATH }}        
+        {{- end }}
+      {{- end }}
         envFrom:
           - configMapRef:
               name: {{ include "paymentorder.name" . }}{{ "-app-init" }}

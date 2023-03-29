@@ -199,6 +199,7 @@ env:
     exportType: socket
     socketHost: ""
     socketPort: 4560
+    dbUpgradeStartVersion:
 
 #Name             : database
 #Description      : database related parameters values are specified here.
@@ -237,6 +238,16 @@ env:
     
     #MONGODB_USER : root
     #MONGODB_PASS : ENC(0jDFL9aa9VbB/KfSH6zfEQ==)
+
+#Name			  : tlsEnabled
+#Description	  : To indicate if TLS needs to be enabled for database
+#Possible values  : true | false	  
+#Default value    : false   
+    tlsEnabled: false
+
+#Name			  : TLS_MOUNTPATH
+#Description	  : The path where the TLS certificates and keys will be mounted inside the pods
+    TLS_MOUNTPATH: /tls 
     
      #POSTGRESQL:
 #Name			  : POSTGRESQL_CRED
@@ -275,6 +286,11 @@ env:
 #Description      : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
 #Default value    : paymentorderpass   
     POSTGRESQL_PASSWORD: paymentorderpass
+ 
+#PostgreSQL TLS parameters            
+    POSTGRESQL_SERVER_CA_CERT: 
+    POSTGRESQL_CLIENT_CERT: 
+    POSTGRESQL_CLIENT_KEY:    
     
     #For encrypted password,
     #POSTGRESQL_PASSWORD: ENC(0QEqdsmi+qUTOAINlDjzKmLl9TIdoN4g7szv2l2u25Q=)

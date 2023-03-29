@@ -27,12 +27,37 @@ spec:
         {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
         app: paymentorder-scheduler      
     spec:
+       volumes: 
+       {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }}    
+        - name: keystore
+          secret:
+            secretName: {{ .Values.env.database.tlsClientSecret }}
+            items:
+            - key: truststore.jks
+              path: truststore
+            - key: keystore.jks
+              path: keystore
+       {{- end }}
+       {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "postgresql") }}
+        - name: postgresql-ssl-volume
+          secret:
+            secretName: postgresql-ssl-secret    
+       {{- end }}  
        containers:
        - name: {{ include "paymentorder.name" . }}{{ "-scheduler" }}
          image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
          imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         volumeMounts:
+         {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }}    
+          - mountPath: "{{ .Values.env.database.TLS_MOUNTPATH }}"        
+            name: keystore
+            readOnly: true
+         {{- end }}
+         {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "postgresql") }}
+          - name: postgresql-ssl-volume
+            mountPath: {{ .Values.env.database.TLS_MOUNTPATH }}        
+         {{- end }}
          env:
-         # Use secret in real usage
            - name: POSTGRESQL_USERNAME
              valueFrom:
                secretKeyRef:
@@ -42,7 +67,19 @@ spec:
              valueFrom:
                secretKeyRef:
                  name: ponosqldbsecret
-                 key: PASSWORD  
+                 key: PASSWORD 
+        {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }} 
+           - name: temn_msf_db_ssl_keystore_password
+             valueFrom:
+               secretKeyRef:
+                 name: keystore-pwd
+                 key: password
+           - name: temn_msf_db_ssl_truststore_password
+             valueFrom:
+               secretKeyRef:
+                 name: keystore-pwd
+                 key: password      
+        {{- end }}
          envFrom:
            - configMapRef:
                name: paymentorder-scheduler-config
@@ -69,12 +106,37 @@ spec:
         {{- include "paymentorderscheduler.selectorLabels" . | nindent 8 }}
         app: paymentorder-scheduler       
     spec:
+       volumes:    
+       {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }}    
+        - name: keystore
+          secret:
+            secretName: {{ .Values.env.database.tlsClientSecret }}
+            items:
+            - key: truststore.jks
+              path: truststore
+            - key: keystore.jks
+              path: keystore
+       {{- end }}
+       {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "postgresql") }}
+        - name: postgresql-ssl-volume
+          secret:
+            secretName: postgresql-ssl-secret    
+       {{- end }}  
        containers:
        - name: nosqlinboxcatchup-scheduler-config
          image: "{{ .Values.image.paymentorderscheduler.repository }}:{{ .Values.image.paymentorderscheduler.tag | default .Chart.AppVersion }}"
          imagePullPolicy: "{{ .Values.image.paymentorderscheduler.pullPolicy }}"
+         volumeMounts:    
+         {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }}    
+          - mountPath: "{{ .Values.env.database.TLS_MOUNTPATH }}"        
+            name: keystore
+            readOnly: true
+         {{- end }}
+         {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "postgresql") }}
+          - name: postgresql-ssl-volume
+            mountPath: {{ .Values.env.database.TLS_MOUNTPATH }}        
+         {{- end }}
          env:
-         # Use secret in real usage
           - name: POSTGRESQL_USERNAME
             valueFrom:
               secretKeyRef:
