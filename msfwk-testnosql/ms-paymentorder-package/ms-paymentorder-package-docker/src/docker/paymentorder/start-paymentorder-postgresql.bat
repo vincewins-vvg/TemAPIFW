@@ -73,6 +73,12 @@ REM Description      : To interact with a database, you generally first need to 
 REM Default Value 	 : paymentorderpass
 SET db_Password=paymentorderpass
 
+REM Name			: appinit_cred for appinit
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+REM Possible values : Y | N	  
+REM Default value   : N
+SET appinit_cred="N"
+
 REM -------------------------------------------------------------
 REM 
 REM IMAGE PROPERTIES
@@ -161,7 +167,7 @@ SET APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
 
 kubectl create ns poappinit
 
-helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE%
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.dbcred=%appinit_cred% 
 
 timeout /t 90 >nul
 

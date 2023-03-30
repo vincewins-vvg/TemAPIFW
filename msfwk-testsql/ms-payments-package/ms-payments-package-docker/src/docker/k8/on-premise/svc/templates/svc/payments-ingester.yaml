@@ -35,18 +35,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-avro-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD   
+                name: posqlsvcsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}                
 ---
 #Command Ingester
 apiVersion: apps/v1
@@ -83,18 +90,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-command-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}              
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD   
+                name: posqlsvcsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}                
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -126,18 +140,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-command-inbox-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}              
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD   
+                name: posqlsvcsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}                
 ---
 #Event Ingester Ingester
 apiVersion: apps/v1
@@ -174,18 +195,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-event-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}              
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}                
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -217,18 +245,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-data-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}              
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -269,18 +304,25 @@ spec:
         envFrom:
           - configMapRef:
               name: payments-ingester-file-config
+      {{- if or (eq .Values.env.database.MSSQL_CRED "Y") (eq .Values.env.database.MYSQL_CRED "Y") }}              
         env:
           # Use secret in real usage
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: PASSWORD                   
+                name: posqlsvcsecret
+                key: PASSWORD
+          - name: temn.msf.db.pass.encryption.key
+            valueFrom:
+              secretKeyRef:
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY
+      {{- end }}                
 ---
 apiVersion: v1
 kind: Service

@@ -37,12 +37,12 @@ spec:
              valueFrom:
                secretKeyRef:
                  name: ponosqldbsecret
-                 key: USER_NAME 
+                 key: POSTGRES_USER 
            - name: POSTGRESQL_PASSWORD
              valueFrom:
                secretKeyRef:
                  name: ponosqldbsecret
-                 key: PASSWORD  
+                 key: POSTGRES_PASSWORD  
          envFrom:
            - configMapRef:
                name: paymentorder-scheduler-config
@@ -79,12 +79,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD  
+                key: POSTGRES_PASSWORD  
           - name: temn.msf.security.tokengen.client.secret
          envFrom:
           - configMapRef:

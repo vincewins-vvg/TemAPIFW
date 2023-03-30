@@ -58,6 +58,12 @@ export Jwt_Token_Public_Key_Cert_Encoded=""
 # Default value   : N
 export db_Enable_Secret="N"
 
+# Name			: appinit_cred for appinit
+# Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+# Possible values : Y | N	  
+# Default value   : N
+export appinit_cred="N"
+
 # Name			 : db_Username
 # Description    : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
 # Default Value  : genericconfigusr
@@ -172,7 +178,7 @@ export db_Connection_Url="jdbc:postgresql://po-postgresqldb-service.postgresql.s
 
 kubectl create ns poappinit
 
-helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbUserName=$db_Username --set env.appinit.dbPassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$db_Connection_Url  --set env.appinit.dbautoupgrade="N"
+helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=postgresql --set env.appinit.databaseName=$database_Name --set env.appinit.dbUserName=$db_Username --set env.appinit.dbPassword=$db_Password --set image.appinit.repository=$APP_INIT_IMAGE --set image.tag=$tag --set env.appinit.dbConnectionUrl=$db_Connection_Url  --set env.appinit.dbautoupgrade="N" --set env.dbcred=$appinit_cred
 
 kubectl create namespace paymentorder
 
