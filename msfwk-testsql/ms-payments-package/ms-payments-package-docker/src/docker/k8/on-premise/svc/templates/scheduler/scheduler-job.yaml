@@ -34,17 +34,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: DB_PASS_ENCRYPTION_KEY                
       {{- end }}
 
@@ -54,18 +54,18 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD 
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: DB_PASS_ENCRYPTION_KEY                
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY                
       {{- end }}      
 --- 
 apiVersion: apps/v1
@@ -95,18 +95,18 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: DB_PASS_ENCRYPTION_KEY                
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY                
       {{- end }}     
       
       {{- if eq .Values.env.database.MYSQL_CRED "Y" }}                
@@ -115,17 +115,17 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: USER_NAME 
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
+                name: posqlsvcsecret
                 key: PASSWORD 
           - name: temn.msf.db.pass.encryption.key
             valueFrom:
               secretKeyRef:
-                name: posqldbsecret
-                key: DB_PASS_ENCRYPTION_KEY                
+                name: posqlsvcsecret
+                key: ENCRYPTIONKEY                
       {{- end }}                
         

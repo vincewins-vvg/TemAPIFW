@@ -37,6 +37,13 @@ export Jwt_Token_Public_Key_Cert_Encoded=""
 # Possible values   : Y | N	  
 # Default value     : N
 export db_Enable_Secret="N"
+
+# Name			: appinit_cred for appinit
+# Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+# Possible values : Y | N	  
+# Default value   : N
+export appinit_cred="N"
+
 # -------------------------------------------------------------
 # 
 # Database properties
@@ -166,7 +173,6 @@ export DB_UPGRADE_START_VERSION=""
 export appinit_DbAutoUpgrade="N"
 
 cd helm-chart
-
 
 
 #kubectl create ns poappinit

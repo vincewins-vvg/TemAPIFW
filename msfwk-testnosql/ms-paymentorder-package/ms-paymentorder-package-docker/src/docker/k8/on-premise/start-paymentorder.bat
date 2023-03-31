@@ -19,6 +19,18 @@ REM Description		: Specify the name of the database used in mongodb.
 REM Default value   : ms_paymentorder
 SET database_Name=ms_paymentorder 
 
+REM Name			  : db_Enable_Secret
+REM Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If db_Enable_Secret is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for Service pods.
+REM Possible values : Y | N	  
+REM Default value   : N
+export db_Enable_Secret="N"
+
+REM Name			: appinit_cred for appinit
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+REM Possible values : Y | N	  
+REM Default value   : N
+SET appinit_cred="N"
+
 REM Name			: db_Connection_Url
 REM Description		: The general form of the connection URL is
 REM  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
@@ -173,6 +185,7 @@ REM helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=
 REM kubectl create namespace paymentorder
 
 helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=%database_Key% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set image.appinit.repository=%APP_INIT_IMAGE%
+
 
 cd streams/kafka
 

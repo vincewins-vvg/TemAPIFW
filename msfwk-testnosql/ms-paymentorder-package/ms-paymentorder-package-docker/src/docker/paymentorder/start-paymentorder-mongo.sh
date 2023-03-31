@@ -42,6 +42,18 @@ export database_Key=mongodb
 # Default value   : paymentorder
 export database_Name=ms_paymentorder 
 
+# Name			: db_Enable_Secret
+# Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If db_Enable_Secret is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
+# Possible values : Y | N	  
+# Default value   : N
+export db_Enable_Secret="N"
+
+# Name			: appinit_cred for appinit
+# Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+# Possible values : Y | N	  
+# Default value   : N
+export appinit_cred="N"
+
 # Name			    : db_Connection_Url
 # Description		: The general form of the connection URL is
 #  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>

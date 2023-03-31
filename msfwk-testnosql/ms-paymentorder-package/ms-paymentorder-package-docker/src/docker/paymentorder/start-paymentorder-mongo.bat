@@ -43,6 +43,19 @@ REM Name			: database_Name
 REM Description		: Specify the name of the database used in mongodb.
 REM Default value   : ms_paymentorder
 SET database_Name=ms_paymentorder 
+
+REM Name			  : db_Enable_Secret
+REM Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If db_Enable_Secret is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for Service pods.
+REM Possible values : Y | N	  
+REM Default value   : N
+export db_Enable_Secret="N"
+
+REM Name			: appinit_cred for appinit
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+REM Possible values : Y | N	  
+REM Default value   : N
+SET appinit_cred="N"
+
 REM Name			: db_Connection_Url
 REM Description		: The general form of the connection URL is
 REM  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>

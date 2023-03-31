@@ -73,6 +73,12 @@ REM Description      : To interact with a database, you generally first need to 
 REM Default Value 	 : paymentorderpass
 SET db_Password=paymentorderpass
 
+REM Name			: appinit_cred for appinit
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
+REM Possible values : Y | N	  
+REM Default value   : N
+SET appinit_cred="N"
+
 REM -------------------------------------------------------------
 REM 
 REM IMAGE PROPERTIES
@@ -158,7 +164,6 @@ SET DB_UPGRADE_START_VERSION=""
 
 
 cd helm-chart
-
 
 
 REM kubectl create ns poappinit

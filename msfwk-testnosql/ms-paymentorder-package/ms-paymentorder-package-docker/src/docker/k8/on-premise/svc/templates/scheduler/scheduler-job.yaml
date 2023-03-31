@@ -62,12 +62,12 @@ spec:
              valueFrom:
                secretKeyRef:
                  name: ponosqldbsecret
-                 key: USER_NAME 
+                 key: POSTGRES_USER 
            - name: POSTGRESQL_PASSWORD
              valueFrom:
                secretKeyRef:
                  name: ponosqldbsecret
-                 key: PASSWORD 
+                 key: POSTGRESQL_PASSWORD 
         {{- if and (.Values.env.database.tlsEnabled) (eq .Values.env.database.DATABASE_KEY "mongodb") }} 
            - name: temn_msf_db_ssl_keystore_password
              valueFrom:
@@ -141,12 +141,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: USER_NAME 
+                key: POSTGRES_USER 
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: ponosqldbsecret
-                key: PASSWORD  
+                key: POSTGRES_PASSWORD  
           - name: temn.msf.security.tokengen.client.secret
          envFrom:
           - configMapRef:
