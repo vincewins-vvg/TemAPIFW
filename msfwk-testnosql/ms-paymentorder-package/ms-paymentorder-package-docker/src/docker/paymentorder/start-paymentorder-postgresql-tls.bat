@@ -27,64 +27,51 @@ REM Name : Jwt_Token_Public_Key_Cert_Encoded
 REM Description : Indicates Base64 encoded public key content that can be directly loaded as a public key certificate
 SET Jwt_Token_Public_Key_Cert_Encoded=""
 
-REM UNCOMMENT THE BELOW LINES TO ENABLE KEYCLOAK
+
+
+rem UNCOMMENT THE BELOW LINES TO ENABLE KEYCLOAK
+
 REM SET JWT_TOKEN_ISSUER=http://localhost:8180/auth/realms/msf
 REM SET JWT_TOKEN_PRINCIPAL_CLAIM=msuser
 REM SET ID_TOKEN_SIGNED=false
 REM SET JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED="MIIClTCCAX0CBgF6etFgtDANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDDANNc2YwHhcNMjEwNzA2MDc1NDQwWhcNMzEwNzA2MDc1NjIwWjAOMQwwCgYDVQQDDANNc2YwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCZKa8cuSEo8cf6pYC549K2Pcpu20b173iNhgdkhV/1XLW0YktMgnxySKrcCmDbqQJDhK5FWuXN1El8UkxABibqFt8riwesglCYUspNmAszkicZAEQ/X+pu89tAXQOdg8U5kU4ZK4hzOS5D0n8ZzW2TaWCsQDoH3ng0UWGPWA7LTv+zb8f2U+SK6rkP3tkfEZVEhqUrddOeiKGFa6we4mwLPT5ZczBoVRrfpwKBL6i1JDDrWpeCZRrUjm7SFem3lLQMyF6sRQVIPLONWl7AG4ZRv7Akicag7tUeMzbIO7jRAJasrK/40e54YJ4lnVRMUXq7powEFZFigcSLSMUKrZWxAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAAe9jK84bas1c+W0Ee4JfHaRPxa1x/Y+lmuWXc1kzFBRptzmQsOJXon6v1VHGTbnvpPnO8wNaxfU0iqPm4RO+LoZyxbGQpyFXYFD+fPZdK2a78oVpfi71g1aS4qjjBIPK1ERZSWalCGdaNxkjG5+wXquAo18tFbacDX41shN6CxHux8bvT9NbWlsjKj6gFhpCbN7oKsafLgTQ2+mqcQO1bQxObHj3o/LiuvIWhIyakz9SmFvh0wgAXhkVoiPvoP5LXMNdbaSv49LIt7wOMZHkbtkFWMTqKRBq32NSSKi0670Tv4IDm2I1cKVWLVy0RXSOc6CXR99G2z2PC6aPQjsXvc="
 REM SET JWT_TOKEN_PUBLIC_KEY=""
 
+REM Name			: db_Enable_Secret
+REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If db_Enable_Secret is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for MySQL DB.
+REM Possible values : Y | N	  
+REM Default value   : N
+SET db_Enable_Secret="N"
+
 REM Name 			: database_Key
 REM Description 	: specify the name of the database server.
 REM Possible values :  mongodb | postgresql
-REM Default Value   : mongodb
-SET database_Key=mongodb
+REM Default Value   : postgresql
+SET database_Key=postgresql
 REM Name			: database_Name
 REM Description		: Specify the name of the database used in mongodb.
 REM Default value   : ms_paymentorder
 SET database_Name=ms_paymentorder 
-
-REM Name			  : db_Enable_Secret
-REM Description	  : A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If db_Enable_Secret is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets for Service pods.
-REM Possible values : Y | N	  
-REM Default value   : N
-export db_Enable_Secret="N"
-
-REM Name			: appinit_cred for appinit
-REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
-REM Possible values : Y | N	  
-REM Default value   : N
-SET appinit_cred="N"
-
-REM Name			: db_Connection_Url
-REM Description		: The general form of the connection URL is
-REM  ex.  oracle:          jdbc:oracle:thin:@<host_or_ip>:1521:<db_name>
-REM  ex.  db2:             jdbc:db2://<host_or_ip>:50000/<db_name>
-REM  ex.  ms-sql:          jdbc:sqlserver://<host_or_ip>:1433;databaseName=<db_name>
-REM  ex.  mongodb:         mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
-
-
 REM Name 			: db_Connection_Url
-REM Description		: We are using mongodb by default 
+REM Description		: We are using mongodb by default  With JDBC, a database is represented by a URL
+REM jdbc:postgresql://host:port/database
+ 
+REM host -- The host name of the server. Defaults to localhost. To specify an IPv6 address your must enclose the host parameter with square brackets, for example:
+REM jdbc:postgresql://[::1]:5740/accounting
 
-REM The general form of the connection URL for shared cluster is
-    REM mongodb://<hostname>:<port>,<hostname>:<port>
-    REM mongodb://mongos0.example.com:27017,mongos1.example.com:27017,mongos2.example.com:27017
+REM port -- The port number the server is listening on. Defaults to the PostgreSQL™ standard port number (5432).
+REM database -- The database name.
+REM Default value   : jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb
 
-
-REM mongodb:// -- A required prefix to identify that this is a string in the standard connection format.
-    
-REM host[:port] -- The host (and optional port number) where mongos instance for a sharded cluster is running. You can specify a hostname, IP address, or UNIX domain socket. Specify as many hosts as appropriate for your deployment topology.If the port number is not specified, the default port 27017 is used.
-
-SET db_Connection_Url=mongodb\://mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017\,mongodb-1.mongodb-svc.mongodb.svc.cluster.local:27017\,mongodb-2.mongodb-svc.mongodb.svc.cluster.local:27017
+SET db_Connection_Url=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb
 REM Name			 : db_Username
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a username (uid) for a server login.
-REM Default Value    : root
-SET db_Username=root
+REM Default Value 	 : paymentorderusr
+SET db_Username=paymentorderusr
 REM Name			 : db_Password
 REM Description      : To interact with a database, you generally first need to connect to the server. You supply a password that match a server login.
-REM Default Value    : root
-SET db_Password=root
+REM Default Value 	 : paymentorderpass
+SET db_Password=paymentorderpass
 
 REM -------------------------------------------------------------
 REM 
@@ -94,20 +81,19 @@ REM --------------------------------------------------------------
 REM Name			: tag
 REM Description		: Specifies the release version of the image
 SET tag="DEV"
-REM Name			: apiImage,ingesterImage,schedulerImage,fileingesterImage,schemaregistryImage,dbinitImage
-REM Description 	: Specifies the name of Images for api ,ingester,scheduler,fileingesterImage,schemaregistryImage,dbinitImage that are  pushed to external repositories,
+REM Name			: apiImage,ingesterImage,schedulerImage,fileingesterImage,schemaregistryImage,appinitimage
+REM Description 	: Specifies the name of Images for api ,ingester,scheduler,fileingesterImage,schemaregistryImage,appinitimage that are  pushed to external repositories,
 REM Example			: Consider our external repository is "acr.azurecr.io" and tag is "DEV". It should be like acr.azurecr.io/temenos/ms-paymentorder-service:DEV
 SET apiImage=dev.local/temenos/ms-paymentorder-service
 SET ingesterImage=dev.local/temenos/ms-paymentorder-ingester
 SET schedulerImage=dev.local/temenos/ms-paymentorder-scheduler
 SET fileingesterImage=dev.local/temenos/ms-paymentorder-fileingester
 SET schemaregistryImage=confluentinc/cp-schema-registry
+SET APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
 
-SET dbinitImage=dev.local/temenos/ms-paymentorder-dbscripts
 REM Name			: po_Image_Pull_Secret,dbinit_Image_Pull_Secret
-REM Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htmREM:~:text=To%20create%20a%20Docker%20registry%20secret%3A. adapter_Image_Pull_Secret and dbinit_Image_Pull_Secret Specifies the <secret-name> is a name of your choice, that you will use in the manifest file to refer to the secret.
+REM Description		: Docker registry secret contains the Oracle Cloud Infrastructure credentials to use when pulling the image. You have to specify the image to pull from Container Registry, including the repository location and the Docker registry secret to use, in the application's manifest file. To build docker registry secret,kindly use kubectl create secret docker-registry <secret-name> --docker-server=<region-key>.ocir.io --docker-username='<tenancy-namespace>/<oci-username>' --docker-password='<oci-auth-token>' --docker-email='<email-address>'. Refer https://docs.oracle.com/en-us/iaas/Content/Registry/Tasks/registrypullingimagesfromocir.htm#:~:text=To%20create%20a%20Docker%20registry%20secret%3A. po_Image_Pull_Secret is a name of your choice, that you will use in the manifest file to refer to the secret.
 SET po_Image_Pull_Secret=""
-SET dbinit_Image_Pull_Secret=""
 REM Name			: encryption_Key,encryption_Algorithm
 REM Description 	: For encrypting the plain text's, need some inputs i.e., Password and an Algorithm which is used to encrypt/decrypt an given input. These two values are mandatory to encrypt the plain text.
 REM Default value 	: temenos for key and PBEWithMD5AndTripleDES for algorithm.
@@ -166,20 +152,65 @@ REM Name             : eventDirectDelivery
 REM Description      : If the value is true. Framework will directly deliver the events to respective topics. It skip the <msf>-outbox topic. If the value is false. It will delivers the events to <msf>-outbox topic and event delivery service will delivers the events to respective topic.
 SET eventDirectDelivery=true
 
+SET appinit_DbAutoUpgrade="N"
+
+REM -- To enable the start version for DB upgradation
+SET DB_UPGRADE_START_VERSION=""
+
+REM Name		  : db_tlsEnabled
+REM Description	  : Indicates 1-way TLS is enabled by default for database
+SET db_tlsEnabled=true
+
+REM Name		  : root_ca_cert_location
+REM Description	  : Indicates the location of Certificate Authority File so that client verifies that it receives data from authorized server
+SET root_ca_cert_location=samples/db/database/postgresql/certs/ca.crt
+
+REM Name		  : postgresql_twoWayTLSEnabled
+REM Description	  : Indicates 2-way TLS has to be enforced for database
+SET postgresql_twoWayTLSEnabled=false
+
+REM Name		  : client_cert_location
+REM Description	  : Indicates the location of Client Certificate File
+SET client_cert_location=samples/db/database/postgresql/certs/client.crt
+
+REM Name		  : client_key_location
+REM Description	  : Indicates the location of Client Key File
+SET client_key_location=samples/db/database/postgresql/keys/client.pk8
+
+REM Name		  : root_ca_cert
+REM Description	  : Indicates the name of Certificate Authority File
+SET "root_ca_cert=%root_ca_cert_location:/=" & set "root_ca_cert=%"
+
+REM Name		  : client_cert
+REM Description	  : Indicates the name of Client Certificate File
+SET "client_cert=%client_cert_location:/=" & set "client_cert=%"
+
+REM Name		  : client_key
+REM Description	  : Indicates the name of Client Key File
+SET "client_key=%client_key_location:/=" & set "client_key=%"
+	
+if "%postgresql_twoWayTLSEnabled%"=="true" (		
+	kubectl create namespace paymentorder	
+	kubectl create secret generic postgresql-ssl-secret --from-file=%root_ca_cert_location% --from-file=%client_cert_location% --from-file=%client_key_location% -n paymentorder	
+) else (
+	kubectl create namespace paymentorder
+	kubectl create secret generic postgresql-ssl-secret --from-file=%root_ca_cert_location%  -n paymentorder
+)
+
 
 cd helm-chart
 
+
+
 REM kubectl create ns poappinit
 
-SET APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
-
-REM helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set image.appinit.repository=%APP_INIT_IMAGE%
+REM helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE%
 
 REM timeout /t 90 >nul
 
 REM kubectl create namespace paymentorder
 
-helm install paymentorder ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.DATABASE_KEY=%database_Key% --set env.database.MONGODB_DBNAME=%database_Name%  --set env.database.MONGODB_CONNECTIONSTR=%db_Connection_Url% --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://ent-postgresqldb-service.postgresql.svc.cluster.local:5432/ms_paymentorder --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set image.appinit.repository=%APP_INIT_IMAGE%
+helm install paymentorder ./svc -n paymentorder --create-namespace -n paymentorder  --set env.database.DATABASE_KEY=%database_Key% --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.POSTGRESQL_CONNECTIONURL=%db_Connection_Url% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.database.POSTGRESQL_USERNAME=%db_Username% --set env.database.POSTGRESQL_PASSWORD=%db_Password% --set env.database.POSTGRESQL_CRED=%db_Enable_Secret% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.appinit.dbautoupgrade="N" --set env.appinit.dbUpgradeStartVersion=%DB_UPGRADE_START_VERSION% --set env.database.tlsEnabled=%db_tlsEnabled% --set env.database.POSTGRESQL_SERVER_CA_CERT=%root_ca_cert% --set env.database.POSTGRESQL_CLIENT_CERT=%client_cert% --set env.database.POSTGRESQL_CLIENT_KEY=%client_key%
 
 cd ../
 

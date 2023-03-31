@@ -20,6 +20,21 @@ spec:
       labels:
         name: paymentorder-db
     spec:
+      securityContext:
+        # Changes the ownership of the volume mounted folders to postgres user  
+        fsGroup: 999         
+      volumes:
+        - name: config-vol
+          configMap:
+            name: postgresql-config
+        - name: secret-cert-vol
+          secret:
+            secretName: postgresql-cert
+        - name: secret-key-vol
+          secret:
+            secretName: postgresql-key
+            # To restrict the access of private key files only to postgres group users
+            defaultMode: 0600
       containers:
         - name: paymentorder-db
           image: ms-paymentorder-postgres
@@ -37,9 +52,27 @@ spec:
                   name: posqldbsecret
                   key: POSTGRES_USER            
           imagePullPolicy: IfNotPresent
+          args:
+            - -c
+            - ssl=on
+            - -c
+            - hba_file=/etc/postgresql-config-vol/pg_hba.conf         
+            - -c
+            - ssl_ca_file=/etc/postgresql-cert-secrets-vol/ca.crt
+            - -c
+            - ssl_cert_file=/etc/postgresql-cert-secrets-vol/server.crt
+            - -c
+            - ssl_key_file=/etc/postgresql-key-secrets-vol/server.key
           name: paymentorder-db
           ports:
           - containerPort: 5432
+          volumeMounts:
+          - name: config-vol
+            mountPath: /etc/postgresql-config-vol
+          - name: secret-cert-vol
+            mountPath: /etc/postgresql-cert-secrets-vol
+          - name: secret-key-vol
+            mountPath: /etc/postgresql-key-secrets-vol  
 ---
 apiVersion: v1
 kind: Service

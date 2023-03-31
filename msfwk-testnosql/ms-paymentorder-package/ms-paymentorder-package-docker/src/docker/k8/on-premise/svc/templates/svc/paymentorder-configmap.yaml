@@ -21,6 +21,12 @@ data:
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
   POSTGRESQL_USERNAME: {{ .Values.env.database.POSTGRESQL_USERNAME }}
   POSTGRESQL_PASSWORD: {{ .Values.env.database.POSTGRESQL_PASSWORD }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }}   
   className_CreateNewPaymentOrder: com.temenos.microservice.paymentorder.function.CreateNewPaymentOrderImpl
@@ -138,6 +144,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
   temn.msf.name: {{ .Values.msf.others.name }}
@@ -202,6 +214,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
   temn.msf.name: {{ .Values.msf.others.name }}
@@ -282,6 +300,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
   temn.msf.name: {{ .Values.msf.others.name }}
@@ -361,6 +385,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
   temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
   temn.msf.name: {{ .Values.msf.others.name }}
@@ -433,6 +463,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.name: ms-paymentorder
   temn.msf.service: DataIngester
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -507,6 +543,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -559,6 +601,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.name: ms-paymentorder
   temn.msf.service: FileIngester 
   temn.msf.security.authz.enabled: "false"
@@ -610,6 +658,12 @@ data:
   MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
   MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
   POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
   temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
   temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
@@ -636,3 +690,36 @@ data:
   temn.tracer.port: {{ .Values.tracing.port | quote}} 
   temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-app-init" }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    #"helm.sh/hook-delete-policy":  hook-succeeded, before-hook-creation  
+data:  
+  database.key: {{ .Values.env.database.DATABASE_KEY }}
+  database.name: {{ .Values.env.database.MONGODB_DBNAME }}
+  {{- if eq .Values.env.database.DATABASE_KEY "mongodb" }} 
+  db.connection.url: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  db.username: {{ .Values.env.database.MONGO_USER_NAME | quote }}
+  db.password: {{ .Values.env.database.MONGO_PASSWORD | quote }} 
+{{- else }}
+  db.connection.url: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  db.username: {{ .Values.env.database.POSTGRESQL_USERNAME | quote }}
+  db.password: {{ .Values.env.database.POSTGRESQL_PASSWORD | quote }} 
+{{- if .Values.env.database.tlsEnabled }}
+  temn.msf.db.ssl.enabled: "true"  
+  temn.msf.db.ssl.ca.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_SERVER_CA_CERT }} 
+  temn.msf.db.ssl.client.cert: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_CERT }} 
+  temn.msf.db.ssl.client.key: {{ .Values.env.database.TLS_MOUNTPATH }}/{{ .Values.env.database.POSTGRESQL_CLIENT_KEY }} 
+{{- end }}
+{{- end }}    
+  db.auto.upgrade: {{ .Values.env.appinit.dbautoupgrade | quote }} 
+  temn.msf.logger.exportType: {{ .Values.env.appinit.exportType }}
+  temn.msf.logger.socketHost: {{ .Values.env.appinit.socketHost | quote }} 
+  temn.msf.logger.socketPort: {{ .Values.env.appinit.socketPort | quote }} 

@@ -47,13 +47,6 @@ REM Description		: A Secret is an object that contains a small amount of sensiti
 REM Possible values : Y | N	  
 REM Default value   : N
 SET db_Enable_Secret="N"
-
-REM Name			: appinit_cred for appinit
-REM Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
-REM Possible values : Y | N	  
-REM Default value   : N
-SET appinit_cred="N"
-
 REM Name : Jwt_Token_Issuer
 REM Description : Identifies the issuer of the authentication token.
 REM Default Value : https://localhost:9443/oauth2/token
@@ -156,6 +149,39 @@ SET eventDirectDelivery=true
 REM -- To enable the start version for DB upgradation
 SET DB_UPGRADE_START_VERSION=""
 
+
+REM Name		  : db_tlsEnabled
+REM Description	  : Indicates 1-way TLS is enabled by default for database
+SET db_tlsEnabled=true
+
+REM Name		  : root_ca_cert_location
+REM Description	  : Indicates the location of Certificate Authority File so that client verifies that it receives data from authorized server
+SET root_ca_cert_location=database/postgresql/certs/ca.crt
+
+REM Name		  : postgresql_twoWayTLSEnabled
+REM Description	  : Indicates 2-way TLS has to be enforced for database
+SET postgresql_twoWayTLSEnabled=false
+
+REM Name		  : client_cert_location
+REM Description	  : Indicates the location of Client Certificate File
+SET client_cert_location=database/postgresql/certs/client.crt
+
+REM Name		  : client_key_location
+REM Description	  : Indicates the location of Client Key File
+SET client_key_location=database/postgresql/keys/client.pk8
+
+REM Name		  : root_ca_cert
+REM Description	  : Indicates the name of Certificate Authority File
+SET "root_ca_cert=%root_ca_cert_location:/=" & set "root_ca_cert=%"
+
+REM Name		  : client_cert
+REM Description	  : Indicates the name of Client Certificate File
+SET "client_cert=%client_cert_location:/=" & set "client_cert=%"
+
+REM Name		  : client_key
+REM Description	  : Indicates the name of Client Key File
+SET "client_key=%client_key_location:/=" & set "client_key=%"
+
 cd ../..
 
 call build-Postgresql.bat build
@@ -171,7 +197,18 @@ echo !str!>>start-postgresqldb-scripts-k8.bat
 )
 ENDLOCAL
 
-call start-postgresqldb-scripts-k8.bat
+if "%postgresql_twoWayTLSEnabled%"=="true" (		
+	call start-postgresqldb-scripts-k8.bat ssl mutual
+) else (
+	call start-postgresqldb-scripts-k8.bat ssl
+)
+if "%postgresql_twoWayTLSEnabled%"=="true" (		
+	kubectl create namespace paymentorder	
+	kubectl create secret generic postgresql-ssl-secret --from-file=%root_ca_cert_location% --from-file=%client_cert_location% --from-file=%client_key_location% -n paymentorder	
+) else (
+	kubectl create namespace paymentorder
+	kubectl create secret generic postgresql-ssl-secret --from-file=%root_ca_cert_location%  -n paymentorder
+)
 
 
 cd ../
@@ -179,13 +216,13 @@ cd ../
 
 REM kubectl create ns poappinit
 
-
 REM helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=%database_Key% --set env.appinit.databaseName=%database_Name% --set env.appinit.dbUserName=%db_Username% --set env.appinit.dbPassword=%db_Password% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set env.appinit.dbConnectionUrl=%db_Connection_Url% --set image.appinit.repository=%APP_INIT_IMAGE%
-
 
 REM kubectl create namespace paymentorder
 
-helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.POSTGRESQL_CONNECTIONURL=%db_Connection_Url% --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.DATABASE_KEY=%database_Key% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.database.POSTGRESQL_USERNAME=%db_Username% --set env.database.POSTGRESQL_PASSWORD=%db_Password% --set env.database.POSTGRESQL_CRED=%db_Enable_Secret%  --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.appinit.dbUpgradeStartVersion=%DB_UPGRADE_START_VERSION%
+
+
+helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.POSTGRESQL_CONNECTIONURL=%db_Connection_Url% --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.DATABASE_KEY=%database_Key% --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.database.temn_msf_db_pass_encryption_key=%encryption_Key% --set env.database.temn_msf_db_pass_encryption_algorithm=%encryption_Algorithm% --set env.genericconfig.basepath=%gc_Base_Path% --set image.paymentorderapi.repository=%apiImage% --set image.paymentorderingester.repository=%ingesterImage% --set image.paymentorderscheduler.repository=%schedulerImage% --set image.fileingester.repository=%fileingesterImage% --set image.schemaregistry.repository=%schemaregistryImage% --set imagePullSecrets=%po_Image_Pull_Secret% --set image.tag=%tag% --set env.kafka.kafkabootstrapservers=%kafka_Bootstrap_Servers% --set env.kafka.kafkaAliases=%kafka_Aliases% --set env.kafka.kafkaip=%kafkaip% --set env.kafka.kafka0ip=%kafka0ip% --set env.kafka.kafka1ip=%kafka1ip% --set env.kafka.kafka2ip=%kafka2ip% --set env.kafka.kafkaHostName=%kafka_Host_Name% --set env.kafka.kafka0HostName=%kafka0_Host_Name% --set env.kafka.kafka1HostName=%kafka1_Host_Name% --set env.kafka.kafka2HostName=%kafka2_Host_Name% --set env.kafka.devdomainHostName=%devdomain_Host_Name% --set env.database.POSTGRESQL_USERNAME=%db_Username% --set env.database.POSTGRESQL_PASSWORD=%db_Password% --set env.database.POSTGRESQL_CRED=%db_Enable_Secret%  --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set env.scheduler.temn_msf_scheduler_inboxcleanup_schedule=%inbox_Cleanup% --set env.scheduler.schedule=%schedule% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.appinit.dbUpgradeStartVersion=%DB_UPGRADE_START_VERSION% --set env.database.tlsEnabled=%db_tlsEnabled% --set env.database.POSTGRESQL_SERVER_CA_CERT=%root_ca_cert% --set env.database.POSTGRESQL_CLIENT_CERT=%client_cert% --set env.database.POSTGRESQL_CLIENT_KEY=%client_key%
 
 
 cd streams/kafka
