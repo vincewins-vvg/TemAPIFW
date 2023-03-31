@@ -187,21 +187,9 @@ cd ../
 
 sleep 60
 
-#kubectl create namespace posqlappinit
-
-#export dbinit_Connection_Url="jdbc:sqlserver://paymentorder-db-service.payments.svc.cluster.local:1433;databaseName=payments"
-
 export APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
-# Name			: appinit_cred for appinit
-# Description		: A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.If appinit_cred is set to 'Y'. It will allow to fetch the DB username and DB password through k8s secrets appinit pod
-# Possible values : Y | N	  
-# Default value   : N
-export appinit_cred="N"
-
 export db_Enable_Secret="N"
-
-#helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=$database_Key --set env.sqlinit.databaseName=$database_Name --set env.sqlinit.dbusername=$db_Username --set env.sqlinit.dbpassword=$db_Password --set image.tag=$tag --set image.sqlinit.repository=$APP_INIT_IMAGE --set env.sqlinit.dbconnectionurl=$dbinit_Connection_Url --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=$dialect --set env.sqlinit.dbdriver=$driver_Name --set env.dbcred=$appinit_cred
 
 #kubectl create namespace payments
 
