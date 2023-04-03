@@ -45,18 +45,17 @@ call start-sqldb-scripts.bat
 
 cd ../
 
-kubectl create namespace posqlappinit
+REM kubectl create namespace posqlappinit
 
-SET dbinit_Connection_Url="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
+REM SET dbinit_Connection_Url="jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments"
 
 SET APP_INIT_IMAGE="temenos/ms-paymentorder-appinit"
 
 SET tag=DEV
 
-helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set image.tag=%tag% --set image.sqlinit.repository=%APP_INIT_IMAGE% --set env.sqlinit.dbconnectionurl=%dbinit_Connection_Url% --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbdriver=com.mysql.jdbc.Driver
+REM helm install posqlappinit ./appinit -n posqlappinit --set env.sqlinit.databaseKey=sql --set env.sqlinit.databaseName=payments --set env.sqlinit.dbusername=root --set env.sqlinit.dbpassword=password --set image.tag=%tag% --set image.sqlinit.repository=%APP_INIT_IMAGE% --set env.sqlinit.dbconnectionurl=%dbinit_Connection_Url% --set env.sqlinit.dbautoupgrade="N" --set env.sqlinit.dbdialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.sqlinit.dbdriver=com.mysql.jdbc.Driver
 
-
-helm install svc ./svc -n payments --set env.database.host=paymentorder-db-service-np --set env.database.db_username=root --set env.database.db_password=password --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=com.mysql.jdbc.Driver --set env.database.dialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.database.db_connection_url=jdbc:mysql://paymentorder-db-service:3306/payments --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.audit.query_enable_system_events=%query_enable_system_events% --set env.audit.query_enable_response=%query_enable_response%
+helm install svc ./svc -n payments --create-namespace -n payments --set env.database.host=paymentorder-db-service --set env.database.db_username=root --set env.database.db_password=password --set env.database.database_key=sql  --set env.database.database_name=payments --set env.database.driver_name=com.mysql.jdbc.Driver --set env.database.dialect=org.hibernate.dialect.MySQL5InnoDBDialect --set env.database.db_connection_url=jdbc:mysql://paymentorder-db-service.payments.svc.cluster.local:3306/payments --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.audit.query_enable_system_events=%query_enable_system_events% --set env.audit.query_enable_response=%query_enable_response% --set image.tag=%tag% --set image.appinit.repository=%APP_INIT_IMAGE%
 REM docker-compose -f kafka.yml -f paymentorder-nuo.yml %*
 
 cd streams/kafka
