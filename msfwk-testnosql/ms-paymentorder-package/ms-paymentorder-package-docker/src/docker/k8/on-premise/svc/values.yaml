@@ -108,9 +108,9 @@ image:
 
 #Name             : paymentorder appinit repository
 #Description      : Specifies the name of the appinit image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
-#Default Value    : temenos/ms-paymentorder-appinit 
+#Default Value    : dev.local/temenos/ms-paymentorder-appinit 
   appinit:
-    repository:  temenos/ms-paymentorder-appinit
+    repository: dev.local/temenos/ms-paymentorder-appinit
 
 #Name             : paymentsapi repository
 #Description      : Specifies the name of the api image stored in external repository.Kubernetes pod can pull Docker images directly when a deployment takes place.
@@ -366,9 +366,9 @@ env:
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
 
 #Name             : SCHEMA_REGISTRY_LISTENERS  
-#Description      :listeners that listen for API requests over either HTTP or HTTPS.If multiple listeners are configured, the first listener’s port is used for its identity.
+#Description      :listeners that listen for API requests over either HTTP or HTTPS.If multiple listeners are configured, the first listenerâ€™s port is used for its identity.
     #Type: list
-    #Default: “http://0.0.0.0:8081”
+    #Default: â€œhttp://0.0.0.0:8081â€�
     #Importance: high
     SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 #Name             : SCHEMA_REGISTRY_CUB_KAFKA_TIMEOUT  

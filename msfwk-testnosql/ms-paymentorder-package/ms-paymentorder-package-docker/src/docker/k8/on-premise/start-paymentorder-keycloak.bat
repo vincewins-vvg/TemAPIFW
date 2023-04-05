@@ -89,15 +89,11 @@ REM call start-mongo-operator.bat
 
 cd ../
 
-kubectl create ns poappinit
-
 SET APP_INIT_IMAGE="dev.local/temenos/ms-paymentorder-appinit"
 
-helm install poappinit ./appinit -n poappinit --set env.appinit.databaseKey=mongodb --set env.appinit.databaseName=%database_Name% --set env.appinit.dbautoupgrade="N" --set image.tag=%tag% --set image.appinit.repository=%APP_INIT_IMAGE% 
+SET DB_UPGRADE_START_VERSION=""
 
-kubectl create namespace paymentorder
-
-helm install ponosql ./svc --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=mongodb --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery%
+helm install ponosql ./svc -n paymentorder --create-namespace -n paymentorder --set env.database.MONGODB_DBNAME=%database_Name% --set env.database.POSTGRESQL_CONNECTIONURL=jdbc:postgresql://po-postgresqldb-service.postgresql.svc.cluster.local:5432/paymentorderdb --set env.database.DATABASE_KEY=mongodb --set pit.JWT_TOKEN_ISSUER=%Jwt_Token_Issuer% --set pit.JWT_TOKEN_PRINCIPAL_CLAIM=%Jwt_Token_Principal_Claim% --set pit.ID_TOKEN_SIGNED=%Id_Token_Signed% --set pit.JWT_TOKEN_PUBLIC_KEY_CERT_ENCODED=%Jwt_Token_Public_Key_Cert_Encoded% --set pit.JWT_TOKEN_PUBLIC_KEY=%Jwt_Token_Public_Key% --set env.eventdelivery.outboxdirectdeliveryenabled=%eventDirectDelivery% --set image.appinit.repository=%APP_INIT_IMAGE% --set env.appinit.dbUpgradeStartVersion=%DB_UPGRADE_START_VERSION% --set image.tag=%tag%
 
 cd streams/kafka
 
