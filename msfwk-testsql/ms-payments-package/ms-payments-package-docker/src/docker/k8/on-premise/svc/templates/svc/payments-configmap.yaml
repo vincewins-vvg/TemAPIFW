@@ -21,6 +21,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}   
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -129,6 +131,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}  
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -191,6 +195,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}  
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -265,6 +271,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}  
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -356,6 +364,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
@@ -443,6 +453,8 @@ data:
   DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
   DIALECT: {{ .Values.env.database.dialect | quote }}
   DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  DB_USERNAME: {{ .Values.env.database.db_username | quote }}
+  DB_PASSWORD: {{ .Values.env.database.db_password | quote }}
   MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
   MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
   temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
