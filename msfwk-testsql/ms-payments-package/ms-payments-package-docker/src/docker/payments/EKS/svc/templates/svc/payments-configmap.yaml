@@ -156,6 +156,61 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: payments-ingester-multipart-config
+  namespace: {{.Values.paymentsnamespace}}
+  labels:
+    app.kubernetes.io/name: payments
+    helm.sh/chart: {{ include "payments.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.database_key | quote }}
+  HOST: {{ .Values.env.database.host | quote }}
+  DATABASE_NAME: {{ .Values.env.database.database_name | quote }}
+  DRIVER_NAME: {{ .Values.env.database.driver_name | quote }}
+  DIALECT: {{ .Values.env.database.dialect | quote }}
+  DB_CONNECTION_URL: {{ .Values.env.database.db_connection_url | quote }}
+  MAX_POOL_SIZE: {{ .Values.env.database.max_pool_size | quote }}
+  MIN_POOL_SIZE: {{ .Values.env.database.min_pool_size | quote }}
+  temn.msf.stream.vendor: {{ .Values.env.kafka.temnmsfstreamvendor | quote }}
+  temn.queue.impl: {{ .Values.env.kafka.temnqueueimpl | quote }}
+  temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
+  temn.msf.name: ms-paymentorder
+  temn.msf.kinesis.flow: "true"
+  temn.runtime.env: {{ .Values.env.aws.runtime }}
+  AWS_ACCESS_KEY_ID: {{ .Values.env.aws.accesskeyid }} 
+  AWS_SECRET_ACCESS_KEY: {{ .Values.env.aws.accesskey }}
+  AWS_SESSION_TOKEN: {{ .Values.env.aws.sessionToken }}
+  temn.msf.stream.kinesis.region: "eu-west-2"
+  temn.msf.service: AvroMultiPartIngester
+  temn.msf.disableInbox: "true"
+  temn.msf.security.authz.enabled: "false"
+  temn.msf.ingest.is.avro.event.ingester : "true"
+  temn.msf.ingest.is.avro.reprocess.event.ingester : "false"
+  temn.msf.ingest.is.avro.multipart.event.ingester : "true"
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  PAYMENT_ORDEREvent: com.temenos.microservice.payments.entity.PaymentOrder
+  temn.config.file.path: mapping/
+  temn.ingester.mapping.enabled: "true"
+  #EXECUTION_ENV: TEST
+  temn.msf.exec.env: serverless
+  temn.exec.env: serverless
+  temn.runtime.env: {{ .Values.env.aws.runtime }}
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.avrotopic | quote }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic | quote }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstream_producerid | quote }}
+  temn.msf.ingest.multipart.source.stream: 600670497877:multipart-topic:1663593140000
+  temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
+  temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
+  temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: payments-ingester-data-config
   namespace: {{.Values.paymentsnamespace}}
   labels:

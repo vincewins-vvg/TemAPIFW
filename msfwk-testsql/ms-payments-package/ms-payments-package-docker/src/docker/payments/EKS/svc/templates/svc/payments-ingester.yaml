@@ -44,6 +44,46 @@ spec:
                 name: posqldbsecret
                 key: PASSWORD   
 ---
+#Config based Avro MutiPart Ingester
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-multipart-ingester
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  replicas: {{ .Values.paymentsingesterReplicaCount }}
+  selector:
+    matchLabels:
+      app: payments-multipart-ingester
+  template:
+    metadata:
+      labels:
+        app: payments-multipart-ingester
+    spec:
+    {{- if eq .Values.serviceaccount.enabled "Y" }}
+      serviceAccountName: payments-serviceaccount
+    {{- end }}
+      containers:
+      - name: payments-multipart-ingester
+        image: {{ .Values.image.paymentsingester.repository }}
+        ports:
+        - containerPort: 8095
+        envFrom:
+          - configMapRef:
+              name: payments-ingester-multipart-config
+        env:
+          # Use secret in real usage
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: USER_NAME 
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: posqldbsecret
+                key: PASSWORD   
+---
 #Command Ingester
 apiVersion: apps/v1
 kind: Deployment
@@ -356,6 +396,24 @@ spec:
       port: 36330
       nodePort: 30331
   type: NodePort
+---
+#Avro Multipart Ingester Service Jacoco
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: payments-avro-multipart-ingester-svc-jacoco
+  name: payments-avro-multipart-ingester-svc-jacoco
+  namespace: {{.Values.paymentsnamespace}}
+spec:
+  selector:
+    app: payments-multipart-ingester
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8095
+      nodePort: 30339
+  type: NodePort    
 ---
 apiVersion: v1
 kind: Service

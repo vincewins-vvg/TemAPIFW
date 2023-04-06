@@ -166,6 +166,10 @@ data:
   temn.msf.ingest.multipart.source.stream: multipart-topic
   temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 {{- if .Values.logging.exportType }}        
@@ -236,6 +240,10 @@ data:
   temn.msf.ingest.multipart.source.stream: multipart-topic
   temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
   temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
   temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
   temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
 {{- if .Values.logging.exportType }}        
@@ -260,6 +268,80 @@ data:
   temn.tracer.host: {{ .Values.tracing.host | quote}}   
 {{- end }}
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "paymentorder.name" . }}{{ "-ingester-multipart-config" }}
+  namespace: {{.Values.namespace}}
+  labels:
+    app.kubernetes.io/name: {{ include "paymentorder.name" . }}{{ "-ingester-multipart-config" }}
+    helm.sh/chart: {{ include "paymentorder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DATABASE_KEY: {{ .Values.env.database.DATABASE_KEY }}
+  MONGODB_DBNAME: {{ .Values.env.database.MONGODB_DBNAME }}
+  MONGODB_CONNECTIONSTR: {{ .Values.env.database.MONGODB_CONNECTIONSTR }}
+  POSTGRESQL_CONNECTIONURL: {{ .Values.env.database.POSTGRESQL_CONNECTIONURL }}
+  temn.msf.db.pass.encryption.key: {{ .Values.env.database.temn_msf_db_pass_encryption_key | quote }}
+  temn.msf.db.pass.encryption.algorithm: {{ .Values.env.database.temn_msf_db_pass_encryption_algorithm | quote }} 
+  temn.msf.name: {{ .Values.msf.others.name }}
+  temn.msf.service: AvroMultiPartIngester 
+  AWS_ACCESS_KEY_ID: {{ .Values.env.aws.accesskeyid }} 
+  AWS_SECRET_ACCESS_KEY: {{ .Values.env.aws.accesskey }}
+  AWS_SESSION_TOKEN: {{ .Values.env.aws.sessionToken }}
+  temn.msf.stream.kinesis.region: "eu-west-2"
+  temn.msf.stream.vendor: kinesis
+  temn.queue.impl: kinesis
+  temn.msf.ingest.is.avro.event.ingester : "true"
+  temn.msf.ingest.is.avro.reprocess.event.ingester : "false"
+  temn.msf.ingest.is.avro.multipart.event.ingester : "true"
+  temn.msf.schema.registry.url: {{ .Values.env.kafka.schema_registry_url | quote }}
+  temn.msf.ingest.source.stream: {{ .Values.kafkatopic.avrotopic }}
+  temn.msf.stream.kafka.bootstrap.servers: {{ .Values.env.kafka.kafkabootstrapservers | quote }}
+  temn.msf.ingest.sink.error.stream: {{ .Values.kafkatopic.errortopic }}
+  temn.msf.ingest.sink.error.stream.producer.id: {{ .Values.kafkatopic.errorstreamproducerid }}
+  temn.msf.ingest.event.ingester: com.temenos.microservice.framework.core.ingester.MicroserviceIngester
+  com.temenos.des.event.table.payment_order.PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.ingester.PaymentorderIngesterUpdater
+  temn.msf.security.authz.enabled: "false"
+  class.inbox.dao: com.temenos.microservice.framework.core.inbox.InboxDaoImpl
+  class.outbox.dao: com.temenos.microservice.framework.core.outbox.OutboxDaoImpl
+  PAYMENT_ORDEREvent: com.temenos.microservice.paymentorder.entity.PaymentOrder
+  temn.config.file.path: mapping/
+  temn.ingester.mapping.enabled: "true"
+  #EXECUTION_ENV: TEST
+  temn.msf.ingest.consumer.max.poll.records: "1"
+  temn.msf.ingest.multipart.source.stream: 600670497877:multipart-topic:1663593140000
+  temn.msf.ingest.reprocess.source.stream: 600670497877:reprocess-event:1663593140000
+  temn.msf.ingest.sink.stream.data.multipart: multipart-topic
+  temn.msf.stream.kinesis.consumer.request.timeout.seconds: {{ .Values.env.kinesis.requesttimeout | quote }}
+  temn.msf.stream.kinesis.consumer.max.records.getrecords: {{ .Values.env.kinesis.maxrecords | quote }}
+  temn.msf.stream.kinesis.consumer.idle.reads.interval.millis: {{ .Values.env.kinesis.idleinterval | quote }}
+  temn.msf.stream.kinesis.consumer.old.leases.delete.waittime.seconds: {{ .Values.env.kinesis.leasesdeletionwaittime | quote }}
+  temn.msf.outbox.direct.delivery.enabled: {{ .Values.env.eventdelivery.outboxdirectdeliveryenabled }}
+  temn.msf.ingest.multipart.source.stream.consumergroup.id: multipart-1  
+{{- if .Values.logging.exportType }}        
+  temn.msf.logger.exportType: {{ .Values.logging.exportType }}            
+{{- if eq .Values.logging.exportType "socket" }}   
+  temn.msf.logger.socketHost: {{ .Values.logging.socketHost | quote }}
+  temn.msf.logger.socketPort: {{ .Values.logging.socketPort | quote}}
+  temn.msf.logger.protocol: {{ .Values.logging.protocol | quote}}
+{{- end }}    
+{{- end }}
+{{- if .Values.metrics.metricsDisabled | quote }}        
+  temn.meter.disabled: {{ .Values.metrics.metricsDisabled | quote }}            
+{{- if eq .Values.metrics.metricsDisabled "false" }}   
+  temn.meter.exporter.host: {{ .Values.metrics.exporterHost | quote }}
+  temn.meter.exporter.port: {{ .Values.metrics.exporterPort | quote}}
+{{- end }}    
+{{- end }}
+{{- if .Values.tracing.enabled }}        
+  temn.msf.tracer.enabled: {{ .Values.tracing.enabled | quote}}           
+  temn.msf.tracer.name: ms_adapter_api
+  temn.tracer.port: {{ .Values.tracing.port | quote}} 
+  temn.tracer.host: {{ .Values.tracing.host | quote}}   
+{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
