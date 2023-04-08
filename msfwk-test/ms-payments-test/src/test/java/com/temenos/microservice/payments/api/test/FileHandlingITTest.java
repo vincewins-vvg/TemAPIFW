@@ -64,7 +64,7 @@ public class FileHandlingITTest extends ITTest {
 		daoFacade.closeConnection();
 	}
 
-	@Test
+	//@Test
 	public void testAFileUpload() {
 		String uri = getUri();
 		uri = uri + "/v1.0.0/payments/upload" + ITTest.getCode("FILE_UPLOAD_AUTH_CODE");

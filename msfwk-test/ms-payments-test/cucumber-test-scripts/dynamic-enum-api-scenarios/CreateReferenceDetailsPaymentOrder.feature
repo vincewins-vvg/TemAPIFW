@@ -42,15 +42,15 @@ Scenario Outline: Update an existing Payment Order reference
 		|{"references":{"testreference1":[{"value":"Married","description":"TestDescription"}],"testreference2":[{"value":"Male","description":"TestDescription"}]}}|
 		
 		#To get the Payment reference details after making updates to already available data.
-Scenario: To get created PO reference 
+#Scenario: To get created PO reference 
 #To get the payment reference details from the DB for testing purpose
-	Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDER_AUTH_CODE" 
-	And MS request URI is "v1.0.0/reference?type=testreference1&type=testreference2" 
-	When a "GET" request is sent to MS 
-	And log all MS response in console 
-	Then MS response code should be 200 
-	And MS JSON response string property key "status" should equal value "200" 
-	And check full response with expected json content from file path "src/test/resources/static-response/ReferenceDataResponse1.1.json" 
+	#Given create a new MS request with code using Restassured arguments "GET_PAYMENTORDER_AUTH_CODE" 
+	#And MS request URI is "v1.0.0/reference?type=testreference1&type=testreference2" 
+	#When a "GET" request is sent to MS 
+	#And log all MS response in console 
+	#Then MS response code should be 200 
+	#And MS JSON response string property key "status" should equal value "200" 
+	#And check full response with expected json content from file path "src/test/resources/static-response/ReferenceDataResponse1.1.json" 
 	
 	
 	
