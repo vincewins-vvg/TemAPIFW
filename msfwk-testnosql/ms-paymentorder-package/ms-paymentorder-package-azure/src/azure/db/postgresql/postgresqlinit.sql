@@ -1,16 +1,3 @@
-CREATE TABLE ms_payment_order ( data jsonb );
-CREATE TABLE ms_inbox_events ( data jsonb );
-CREATE TABLE ms_outbox_events ( data jsonb );
-CREATE TABLE ms_reference_data ( data jsonb );
-CREATE TABLE ms_altkey ( data jsonb );
-CREATE TABLE ms_file_upload ( data jsonb );
-CREATE TABLE ms_payments_user ( data jsonb );
-CREATE TABLE ms_payments_account ( data jsonb );
-CREATE TABLE ms_payment_order_customer ( data jsonb );
-CREATE TABLE ms_payment_order_balance ( data jsonb );
-CREATE TABLE ms_payment_order_transaction ( data jsonb );
-CREATE TABLE ms_error ( data jsonb );
-CREATE TABLE ms_audit_log ( data jsonb );
 
 CREATE UNIQUE INDEX msaltkey ON ms_altkey ((data->'alternateKey'), (data->'alternateName'));
 CREATE UNIQUE INDEX msreftypevalue ON ms_reference_data ((data->'type'), (data->'value'));
