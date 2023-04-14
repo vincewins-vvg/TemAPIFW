@@ -25,7 +25,7 @@ aws kinesis create-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-paymentorder-o
 aws kinesis create-stream --stream-name ${DEPLOYMENT_ENVIRONMENT}-table-update-paymentorder --shard-count 1
 sleep 10
 
-aws rds  create-db-instance --db-name ms_paymentorder --db-instance-identifier PaymentOrderPosgres --engine postgres --master-username root --master-user-password password --engine-version "12.5" --db-instance-class db.t2.micro --allocated-storage 25 --publicly-accessible
+aws rds  create-db-instance --db-name ms_paymentorder --db-instance-identifier PaymentOrderPosgres --engine postgres --master-username root --master-user-password password --engine-version "14.3" --db-instance-class db.t3.micro --allocated-storage 25 --publicly-accessible
 sleep 300
 
 export host=$(aws rds describe-db-instances | python -c 'import json,sys;apis=json.load(sys.stdin); filter=[api for api in apis["DBInstances"] if "paymentorderposgres" == api["DBInstanceIdentifier"]]; print filter[0]["Endpoint"]["Address"]')
