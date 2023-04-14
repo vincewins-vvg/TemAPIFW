@@ -1476,7 +1476,7 @@ public class MS_RestAssuredCucumberSteps {
 
         // To pass api key as header while sending the request if platform is
         // AWS
-        String apiKey = System.getProperty("API_KEY");
+        String apiKey = Environment.getEnvironmentVariable(authEnvVariable, "API_KEY","");//System.getProperty("API_KEY");
         if (apiKey != null) {
             request.header("x-api-Key", apiKey);
         }
