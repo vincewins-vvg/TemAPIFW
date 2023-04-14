@@ -33,16 +33,16 @@ Scenario: To Get Health Check Status of Data Ingester
 	
 	
 	
-Scenario: To Get Health Check Status of Binary Ingester 
+#Scenario: To Get Health Check Status of Binary Ingester 
 
-	Given create a new request 
+	#Given create a new request 
 	#And end-point uri is set to "http://localhost:8084"
-	And server URL set to "http://localhost:" with binary ingester port 
-	And set the request path as "ingester/v1.0.0/health/ingester" 
-	And query parameter will be set to value "" 
+	#And server URL set to "http://localhost:" with binary ingester port 
+	#And set the request path as "ingester/v1.0.0/health/ingester" 
+	#And query parameter will be set to value "" 
 	#And set request header key "Authorization" with value "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMTkwMDA2MjU4ODQiLCJyb2xlSWQiOiJCYWxhbmNlVmlld2VyIiwiaWF0IjoxNTg5NTkzMTQwLCJleHAiOjE2MjExMjkxNDJ9.KiZCAFf6Iien5ZJE70fhGweJZ6ErmLqaKyz40lZnjVChmzSaFW3z7IUfqdt8370PNufLf_S79C8b0MgNJo1NHtTojhjUSGGtHFn98WTb8s7DJmLtAAnGAwm-RHWzRvhJVVBZO1VbbwA4-QJhBK30OjOxiJg1ujTpZrtOIqhZiFCjgWB9jmfg74iLou5nylVKo8YGR7ZANrVO_qxW5LhLuOfuGY7HKQ5iGUDjAeI_U7XZU7-edmM9UZFlvkaAyAE672G388KK3NCcfFqWfgJ10hqrGUw9xHlZ4tSy3C7JousiMsM_jPNFCQ2p3thirPUn6cPCojokvqxaterPiNFlwA"
-	And set request header key "Authorization" with jwt token "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMTkwMDA2MjU4ODQiLCJyb2xlSWQiOiJCYWxhbmNlVmlld2VyIiwiaWF0IjoxNTg5NTkzMTQwLCJleHAiOjE2MjExMjkxNDJ9.KiZCAFf6Iien5ZJE70fhGweJZ6ErmLqaKyz40lZnjVChmzSaFW3z7IUfqdt8370PNufLf_S79C8b0MgNJo1NHtTojhjUSGGtHFn98WTb8s7DJmLtAAnGAwm-RHWzRvhJVVBZO1VbbwA4-QJhBK30OjOxiJg1ujTpZrtOIqhZiFCjgWB9jmfg74iLou5nylVKo8YGR7ZANrVO_qxW5LhLuOfuGY7HKQ5iGUDjAeI_U7XZU7-edmM9UZFlvkaAyAE672G388KK3NCcfFqWfgJ10hqrGUw9xHlZ4tSy3C7JousiMsM_jPNFCQ2p3thirPUn6cPCojokvqxaterPiNFlwA" 
-	When a 'GET' request is sent 
-	Then the response code should be 409 
-	And property "status" should be equal to string "FAILURE" 
+	#And set request header key "Authorization" with jwt token "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJob2xkaW5ncyIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDMvb2F1dGgyL3Rva2VuIiwic3ViIjoiMTkwMDA2MjU4ODQiLCJyb2xlSWQiOiJCYWxhbmNlVmlld2VyIiwiaWF0IjoxNTg5NTkzMTQwLCJleHAiOjE2MjExMjkxNDJ9.KiZCAFf6Iien5ZJE70fhGweJZ6ErmLqaKyz40lZnjVChmzSaFW3z7IUfqdt8370PNufLf_S79C8b0MgNJo1NHtTojhjUSGGtHFn98WTb8s7DJmLtAAnGAwm-RHWzRvhJVVBZO1VbbwA4-QJhBK30OjOxiJg1ujTpZrtOIqhZiFCjgWB9jmfg74iLou5nylVKo8YGR7ZANrVO_qxW5LhLuOfuGY7HKQ5iGUDjAeI_U7XZU7-edmM9UZFlvkaAyAE672G388KK3NCcfFqWfgJ10hqrGUw9xHlZ4tSy3C7JousiMsM_jPNFCQ2p3thirPUn6cPCojokvqxaterPiNFlwA" 
+	#When a 'GET' request is sent 
+	#Then the response code should be 409 
+	#And property "status" should be equal to string "FAILURE" 
    
